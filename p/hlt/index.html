@@ -13,7 +13,7 @@ button{font:inherit;color:inherit;background:none;border:0;outline:0;cursor:poin
 img{display:block;user-select:none;-webkit-user-drag:none;width:100%}
 
 .vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
-.app{position:absolute;left:50%;top:0;bottom:0;width:min(100%,412px);transform:translateX(-50%);overflow:hidden}
+.app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,412px);overflow:hidden}
 .drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
 .pearls{position:absolute;left:-4%;right:-4%;bottom:-46px;z-index:1;pointer-events:none;opacity:.8}
 canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
@@ -208,4 +208,4 @@ let st=performance.now();function band(n){const t=(n-st)/1000;let d=`M${s0} 50 `
 /* 接手环 */
 $('#whb').onclick=()=>$('#wh').classList.toggle('open');
 $('#cp').onclick=()=>{try{navigator.clipboard.writeText($('#url').textContent)}catch(e){}$('#cp').textContent='复制好了';setTimeout(()=>$('#cp').textContent='复制',1600)};
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=22"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=23"></script></body></html>

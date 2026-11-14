@@ -13,7 +13,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 img{display:block;user-select:none;-webkit-user-drag:none}
 /* 底图：她的薄荷竖条纹 + 左上高光 */
 .vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
-.app{position:absolute;left:50%;top:0;bottom:0;width:min(100%,440px);transform:translateX(-50%);overflow:hidden}
+.app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,440px);overflow:hidden}
 
 /* 主角：奶茶杯，固定在右下，内容从它前面滚过 */
 .cup{position:absolute;right:-58px;bottom:-34px;width:min(66%,280px);z-index:1;transform-origin:50% 96%;pointer-events:auto;will-change:transform}
@@ -307,4 +307,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=22"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=23"></script></body></html>
