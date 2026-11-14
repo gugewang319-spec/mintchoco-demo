@@ -56,10 +56,10 @@ function drawEdge(ys,W,bub,p){
  const path=()=>{ex.beginPath();ex.moveTo(0,Y(0));for(let i=1;i<=N;i++){const px=(i-.5)/N*W;ex.quadraticCurveTo((i-1)/N*W,Y(i-1),px,(Y(i-1)+Y(i))/2)}ex.lineTo(W,Y(N))};
  /* 液面以下一道奶茶带：盖住波谷与平切线之间的缝，往下渐隐进新页 */
  path();ex.lineTo(W,BAND);ex.lineTo(0,BAND);ex.closePath();
- const g=ex.createLinearGradient(0,0,0,BAND);g.addColorStop(0,'rgba(222,192,164,.97)');g.addColorStop((TOPPAD+42)/BAND,'rgba(222,192,164,.95)');g.addColorStop(1,'rgba(222,192,164,0)');ex.fillStyle=g;ex.fill();
+ const g=ex.createLinearGradient(0,0,0,BAND);g.addColorStop(0,'rgba(207,236,225,.97)');g.addColorStop((TOPPAD+42)/BAND,'rgba(207,236,225,.95)');g.addColorStop(1,'rgba(207,236,225,0)');ex.fillStyle=g;ex.fill();
  path();ex.lineWidth=4.5;ex.strokeStyle='rgba(255,250,240,.95)';ex.lineCap='round';ex.stroke();
- path();ex.lineWidth=1.25;ex.strokeStyle='#8a5c46';ex.globalAlpha=.85;ex.stroke();ex.globalAlpha=1;
- for(const b of bub){const i=Math.round(b.x*N),y=Y(i)+b.dy+b.v*p*40;ex.beginPath();ex.arc(b.x*W,y,b.r,0,7);ex.lineWidth=1;ex.strokeStyle='rgba(138,92,70,.55)';ex.fillStyle='rgba(255,255,255,.5)';ex.fill();ex.stroke()}}
+ path();ex.lineWidth=1.25;ex.strokeStyle='#5fae95';ex.globalAlpha=.7;ex.stroke();ex.globalAlpha=1;
+ for(const b of bub){const i=Math.round(b.x*N),y=Y(i)+b.dy+b.v*p*40;ex.beginPath();ex.arc(b.x*W,y,b.r,0,7);ex.lineWidth=1;ex.strokeStyle='rgba(95,174,149,.55)';ex.fillStyle='rgba(255,255,255,.5)';ex.fill();ex.stroke()}}
 
 /* el 的外框露出液面以下的部分：外框 translateY(cut)，iframe translateY(-cut)；cut 取波面最低点再往下 TOPPAD 内由奶茶带盖住 */
 function run(pg,dir,ms){return new Promise(res=>{
