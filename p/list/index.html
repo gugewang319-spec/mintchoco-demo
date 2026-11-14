@@ -217,7 +217,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 /* 今天：圆点加小字，不用胶囊（11-12） */
 .wk b{height:auto!important;padding:0!important;border-radius:0!important;background:none!important;border:0!important;color:#4a3027!important;font:15px/1 ZK!important;gap:6px}
 .wk b::before{content:"";width:7px;height:7px;border-radius:50%;background:#5b3a2c}
-</style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="goo" x="-5%" y="-40%" width="110%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="b"/><feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10" result="g"/><feMorphology in="g" operator="dilate" radius="1.1" result="d"/><feFlood flood-color="#3b2219"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="g"/></feMerge></filter></svg>
+/*clamp-fix 11-14：padding 里会露出第三行*/.pl .cap2{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important}.pl .cap2 .c2t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="goo" x="-5%" y="-40%" width="110%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="b"/><feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10" result="g"/><feMorphology in="g" operator="dilate" radius="1.1" result="d"/><feFlood flood-color="#3b2219"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="g"/></feMerge></filter></svg>
 
 <div class="vp"><div class="app" id="app">
  <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
@@ -252,7 +252,7 @@ h+='<div class="wk"><b>本周</b><span>11/5 – 11/10</span><i>薄荷奶层</i><
 WK.forEach((d,i)=>{const p=POS[i];h+=`<button class="cube" style="left:${p[0]}%;top:${p[1]}%;width:${p[2]}%;aspect-ratio:546/583" aria-label="${d[0]}${d[1]}：${d[2]}"><span class="body" style="transform:rotate(${p[3]}deg)"><span class="im"><img src="ice.png" alt=""></span><span class="top"><b>${d[0]}</b></span><span class="side"><i>${d[1]}</i></span><span class="tx"><span>${d[2]}</span></span></span></button>`});
 h+='</div><svg class="wall" id="wall2" viewBox="0 0 400 34" preserveAspectRatio="none" aria-hidden="true"><path/></svg>';
 h+='<div class="wk"><b>更早的几周</b><i>沉到杯底的珍珠</i></div><div class="pls">';
-PW.forEach(p=>{h+=`<button class="pl" aria-label="${p[0]} – ${p[1]}：${p[2]}"><span class="ball"><img src="pearl.png" alt=""><b>${p[0]}<br>${p[1]}<small>${p[3]} 天</small></b></span><span class="cap2">${p[2]}</span></button>`});
+PW.forEach(p=>{h+=`<button class="pl" aria-label="${p[0]} – ${p[1]}：${p[2]}"><span class="ball"><img src="pearl.png" alt=""><b>${p[0]}<br>${p[1]}<small>${p[3]} 天</small></b></span><span class="cap2"><span class="c2t">${p[2]}</span></span></button>`});
 L.innerHTML=h+'</div>';
 [['bit1.png',26,'right:22px;top:-14px',-16],['bit2.png',22,'right:48px;top:-10px',14]].forEach(g=>{const e=document.createElement('span');e.className='gar';e.innerHTML=`<img src="${g[0]}" alt="">`;e.style.cssText+=`width:${g[1]}px;${g[2]}`;$('.capw').appendChild(e);window._cg=(window._cg||[]).concat({e,rot:g[3],per:3+Math.random()*2,ph:Math.random()*6,a:1.5,sp:{x:0,v:0}})});
 /* 挂壁酱：两条，各自的波 */
@@ -358,4 +358,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[[".cap", "push:room", 1, 300], ["[aria-label=\"\u641c\u7d22\u804a\u5929\"]", "push:srch", 0, 0]]</script><script src="../../bridge.js"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".cap", "push:room", 1, 300], ["[aria-label=\"\u641c\u7d22\u804a\u5929\"]", "push:srch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js"></script></body></html>
