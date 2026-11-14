@@ -89,7 +89,7 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .sl .t{font:12.5px/1 WK;color:#7a5a4c;margin-left:auto}
 #band{display:block;width:100%;height:56px;margin-top:8px;overflow:visible}
 .sax{display:flex;justify-content:space-between;font:700 10px/1 Baloo,ZK;color:#9a7a6a}
-.blk.sel::before{content:"";position:absolute;left:-12px;top:6px;bottom:6px;width:3px;border-radius:2px;background:var(--mintb)}
+.blk.sel::before{display:none;content:"";position:absolute;left:-12px;top:6px;bottom:6px;width:3px;border-radius:2px;background:var(--mintb)}
 .hr.sel::before{left:10px}
 /* 记录 */
 .rec{margin:34px 22px 0}
@@ -208,4 +208,4 @@ let st=performance.now();function band(n){const t=(n-st)/1000;let d=`M${s0} 50 `
 /* 接手环 */
 $('#whb').onclick=()=>$('#wh').classList.toggle('open');
 $('#cp').onclick=()=>{try{navigator.clipboard.writeText($('#url').textContent)}catch(e){}$('#cp').textContent='复制好了';setTimeout(()=>$('#cp').textContent='复制',1600)};
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=25"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=26"></script></body></html>
