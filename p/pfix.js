@@ -4,6 +4,8 @@
 .pfx-pb{position:fixed;left:0;right:0;top:0;height:30px;z-index:60;pointer-events:none;opacity:0}
 .pfx-pb i{position:absolute;inset:0;display:block}
 .pfx-on::before{display:none!important}
+.pfx-hb{position:absolute;left:-40px;right:-40px;top:-60px;bottom:-34px;z-index:-1;pointer-events:none;opacity:0;transition:opacity .2s}
+.pfx-hb i{position:absolute;inset:0;display:block}
 .pfx-drw{position:relative;height:0;margin:0 -16px;z-index:-1;pointer-events:none}
 .pfx-drin{position:absolute!important;left:0!important;top:0!important;width:100%!important;z-index:auto!important}`;
   const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
@@ -19,7 +21,7 @@
     }
     if(!h)return;
     /* v18：像 X 一样，页头跟内容一起滚走；只在最顶上留一条很薄的渐进模糊，滚动后才出现 */
-    h.style.position='relative';h.style.top='auto';h.classList.add('pfx-on');
+    h.style.position='sticky';h.style.top='0';h.classList.add('pfx-on');
     const sc=h.closest('#sc,.scroller,.vp,.app,.page,.menu')||document.scrollingElement;
     const pb=document.createElement('div');pb.className='pfx-pb pfx-strip';pb.setAttribute('aria-hidden','true');
     const L=[[6,'0%','45%'],[3,'25%','75%'],[1,'50%','100%']];
@@ -27,6 +29,22 @@
       `<i style="background:linear-gradient(180deg,rgba(232,246,240,.45),rgba(232,246,240,0))"></i>`;
     document.body.appendChild(pb);
     const tgt=sc===document.scrollingElement?window:sc;const f=()=>{pb.style.opacity=Math.min(1,(sc.scrollTop||0)/60)};tgt.addEventListener('scroll',f,{passive:true});f();
+    /* v19：像 X，往下划页头滚走；往回划一点，页头带着渐进模糊滑回来 */
+    const hb=document.createElement('div');hb.className='pfx-hb';hb.setAttribute('aria-hidden','true');
+    const HL=[[9,'45%','70%'],[5,'60%','85%'],[2,'75%','100%']];
+    hb.innerHTML=HL.map(([b,s0,e])=>`<i style="-webkit-backdrop-filter:blur(${b}px);backdrop-filter:blur(${b}px);-webkit-mask-image:linear-gradient(180deg,#000 ${s0},transparent ${e});mask-image:linear-gradient(180deg,#000 ${s0},transparent ${e})"></i>`).join('')+
+      `<i style="background:linear-gradient(180deg,rgba(232,246,240,.6),rgba(232,246,240,.35) 60%,rgba(232,246,240,0))"></i>`;
+    h.insertBefore(hb,h.firstChild);if(getComputedStyle(h).isolation!=='isolate')h.style.isolation='isolate';
+    let hh=h.offsetTop+h.offsetHeight,last=sc.scrollTop||0,rev=false,ty=0;
+    const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const put=(v,anim)=>{h.style.transition=anim&&!RM?'transform .26s cubic-bezier(.2,.8,.2,1)':'none';ty=v;h.style.transform=v?`translate3d(0,${v}px,0)`:''};
+    if(window.ResizeObserver)new ResizeObserver(()=>{hh=h.offsetTop+h.offsetHeight}).observe(h);
+    const g=()=>{const st=sc.scrollTop||0,dy=st-last;last=st;
+      if(st<=0){rev=false;hb.style.opacity=0;put(0,false);return}
+      if(rev){if(dy>3){rev=false;hb.style.opacity=0;put(-Math.min(st,hh+40),true)}return}
+      if(dy<-3&&st>hh){rev=true;hb.style.opacity=1;put(-(hh+40),false);requestAnimationFrame(()=>put(0,true));return}
+      put(-Math.min(st,hh+40),false)};
+    tgt.addEventListener('scroll',g,{passive:true});g();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
 })();
