@@ -124,7 +124,16 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .gone{animation:gone .5s forwards}
 @keyframes gone{to{opacity:0;transform:translateX(30px)}}
 
-/*nav-font 11-14*/.pnav,.pnav *{font-family:"OPPO Sans","HarmonyOS Sans SC","PingFang SC","Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif}</style></head><body>
+/*nav-font 11-14*/.pnav,.pnav *{font-family:"OPPO Sans","HarmonyOS Sans SC","PingFang SC","Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif}.form.open{max-height:640px}
+.fl .cyc::after{content:" ›";display:inline-block;color:var(--mintb);font-size:14px;transition:transform 200ms cubic-bezier(.23,1,.32,1)}
+.fl .cyc[aria-expanded=true]::after{transform:rotate(90deg)}
+.pk{display:grid;overflow:hidden;max-height:0;opacity:0;transition:max-height 240ms cubic-bezier(.23,1,.32,1),opacity 180ms}
+.pk.open{max-height:220px;opacity:1}
+.pk button{display:flex;align-items:center;gap:8px;text-align:left;font:15px/1.4 WK;color:var(--ch);padding:7px 0;border-bottom:1px dashed rgba(138,92,70,.35)}
+.pk button::before{content:"";width:7px;height:7px;border-radius:50%;border:1.2px solid var(--mintb);flex:none}
+.pk button[aria-checked=true]::before{background:var(--mintb)}
+.pk button[aria-checked=true]{color:#2f6e58}
+</style></head><body>
 <div class="vp"><div class="app" id="app">
 <img class="drizzle" src="today-bg.png" alt="">
 <header class="lhead"><div class="lf"><button class="pearlbtn" aria-label="返回设置"><svg width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="m15 18-6-6 6-6"/></svg></button><div class="ttl"><span class="sc" aria-hidden="true">voice</span><h1>声音</h1></div></div><div class="counter" aria-label="3 种音色"><span id="cnt">3</span><b>种</b></div></header>
@@ -228,10 +237,21 @@ $('#vgo').onclick=()=>{const n=$('#f1').value.trim(),id=$('#f3').value.trim(),c=
  const v={id:'v'+Date.now(),n,c:c.id,m:$('#f4').value.trim(),vid:id,col:COLS[V.length%COLS.length],pitch:1,rate:1,vol:1};V.push(v);cur=v.id;openRow=null;
  ['#f1','#f3','#f4'].forEach(s=>$(s).value='');$('#vform').classList.remove('open');render();show(v,1)};
 /* 接一条渠道 */
-const TY=['MiniMax','ElevenLabs','Fish Audio'];let ti=0;$('#g2').onclick=()=>{ti++;$('#g2').textContent=TY[ti%3]};
+const TY=['MiniMax','ElevenLabs','Fish Audio','OpenAI','自己填'];let ti=0;$('#g2').onclick=()=>{ti++;$('#g2').textContent=TY[ti%3]};
 $('#newc').onclick=()=>$('#cform').classList.toggle('open');
+/* 点开就地展开一个小选单，不再循环抽签 */
+function picker(btn,opts,cur,sel){const fl=btn.closest('.fl');let pk=fl.nextElementSibling;
+ if(!pk||!pk.classList.contains('pk')){pk=document.createElement('div');pk.className='pk';pk.setAttribute('role','radiogroup');fl.insertAdjacentElement('afterend',pk);pk.style.marginLeft='70px'}
+ btn.setAttribute('aria-expanded','false');
+ btn.onclick=()=>{const o=pk.classList.contains('open');document.querySelectorAll('.pk.open').forEach(x=>{x.classList.remove('open');const b=x.previousElementSibling.querySelector('.cyc');b&&b.setAttribute('aria-expanded','false')});
+  if(o)return;const L=opts(),c=cur();pk.innerHTML=L.map((t,i)=>`<button role="radio" aria-checked="${t===c}" data-i="${i}">${t}</button>`).join('');
+  pk.querySelectorAll('button').forEach(b=>b.onclick=()=>{sel(L[+b.dataset.i]);pk.classList.remove('open');btn.setAttribute('aria-expanded','false')});
+  pk.classList.add('open');btn.setAttribute('aria-expanded','true')}}
+picker($('#f2'),()=>CH.length?CH.map(c=>c.n):['先接一条渠道'],()=>$('#f2').textContent,v=>{const i=CH.findIndex(c=>c.n===v);if(i>=0){fci=i;fc()}});
+picker($('#g2'),()=>TY,()=>$('#g2').textContent,v=>{ti=TY.indexOf(v);$('#g2').textContent=v});
+
 $('#cgo').onclick=()=>{const n=$('#g1').value.trim(),u=$('#g3').value.trim(),k=$('#g4').value;
  if(!n||!u||!k){$('#cform').classList.remove('shake');void $('#cform').offsetWidth;$('#cform').classList.add('shake');return}
  CH.push({id:'c'+Date.now(),n,t:TY[ti%3],k:k.slice(-4)});['#g1','#g3','#g4'].forEach(s=>$(s).value='');$('#cform').classList.remove('open');render()};
 render();show(V[0]);fc();
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=23"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=24"></script></body></html>
