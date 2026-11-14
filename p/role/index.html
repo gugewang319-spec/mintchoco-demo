@@ -282,7 +282,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .tools .lt:disabled svg{opacity:.35}
 .tools .dk:disabled{background:transparent!important;border:1.25px dashed #8a5c46!important}
 .tools .dk:disabled svg{stroke:#8a5c46!important;opacity:.6}
-/*hdr-align 11-13*/.lhead h1{margin-top:12px}</style></head><body>
+/*hdr-align 11-13*/.lhead h1{margin-top:12px}.rc .rcx{position:absolute;right:-10px;top:-12px;z-index:5;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;padding:0;cursor:pointer;background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1.2px solid #8a5c46;box-shadow:0 4px 10px -6px rgba(74,48,39,.5)}</style></head><body>
 <div class="vp"><div class="app" id="app">
  <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
  <div class="pearls" id="pearls"><img src="pearls.png" alt=""></div>
@@ -346,7 +346,7 @@ secs.forEach((s,i)=>{const items=s.x.split(/[；;\n]/).map(v=>v.trim()).filter(B
  else if(k==='c3')h+=`<section class="ch c3" id="c${i}"><span class="kk">${s.ly?s.ly[0]:''}<small>${s.t}</small></span><p class="ed" data-i="${i}">${s.x}</p></section>`;
  else h+=`<section class="ch c4" id="c${i}"><span class="kk">${kk}</span><ul>${items.map((x,j)=>`<li><img src="${BI[j%5]}" alt=""><span class="ed" data-i="${i}" data-j="${j}">${x}</span></li>`).join('')}</ul></section>`});
 L.innerHTML=h;
-const RC=document.createElement('div');RC.className='rc';RC.innerHTML='<div class="veil"></div><div class="hang"><div class="pp2" id="rin"></div></div><div class="st bk"><div class="rt"><img alt=""></div></div><div class="st fr"><div class="rt"><img alt=""></div></div>';$('#app').appendChild(RC);
+const RC=document.createElement('div');RC.className='rc';RC.innerHTML='<div class="veil"></div><div class="hang"><button class="rcx" aria-label="收起小票"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div class="pp2" id="rin"></div></div><div class="st bk"><div class="rt"><img alt=""></div></div><div class="st fr"><div class="rt"><img alt=""></div></div>';$('#app').appendChild(RC);
 $$('.ch').forEach(c=>{const e=c.querySelector('.ed');if(e&&!c.classList.contains('c4')&&e.textContent.length>150){c.classList.add('fold');const m=document.createElement('button');m.className='more';m.textContent='展开';c.appendChild(m);m.addEventListener('click',()=>{const o=c.classList.toggle('open');m.textContent=o?'收起':'展开'})}});
 /* 引线按实际字宽画 */
 function lines(){const box=$('.dia').getBoundingClientRect();let s='';$$('.an').forEach(a=>{const r=a.querySelector('b').getBoundingClientRect(),ly=secs[+a.dataset.i].ly,p=ly[1];const y=r.top-box.top+r.height/2;const x=ly[2]==='l'?r.right-box.left+6:r.left-box.left-6;s+=`<line data-i="${a.dataset.i}" x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${p[0]}" y2="${p[1]}"/><circle cx="${p[0]}" cy="${p[1]}" r="2.4"/>`});$('.ldr').innerHTML=s}
@@ -386,7 +386,7 @@ function tag(i){if(i<0||open===i){if(open<0)return;RC.classList.add('off');RC.cl
  $$('#rin .ck').forEach(s=>{const row=s.closest('.row');(row.classList.contains('m')?row:s).addEventListener('click',()=>{const o=s.classList.toggle('on');s.setAttribute('aria-checked',o);if(row.classList.contains('m')){row.classList.toggle('on',o);$('#rin .tot b').textContent=$$('#rin .row.m.on').length+' 个模型'}})});
  $('#rin .bye').addEventListener('click',()=>tag(-1));
  RC.classList.remove('on');void RC.offsetWidth;setTimeout(()=>RC.classList.add('on'),260)}
-RC.querySelector('.veil').addEventListener('click',()=>tag(-1));
+RC.querySelector('.veil').addEventListener('click',()=>tag(-1));RC.querySelector('.rcx').addEventListener('click',e=>{e.stopPropagation();tag(-1)});
 $$('.stw,.sx').forEach(s=>s.addEventListener('click',ev=>{ev.stopPropagation();D.s.v+=36;const f=floats.find(q=>q.e===s);if(f)f.s.v-=8;tag(+s.dataset.e)}));
 $$('.an').forEach(a=>a.addEventListener('click',()=>{const k=a.dataset.i;D.s.v+=24;floats.find(q=>q.e===a).s.v-=6;const c=$('#c'+k);c.scrollIntoView({behavior:'smooth',block:'start'});c.classList.add('hl');setTimeout(()=>c.classList.remove('hl'),1600)}));
 /* 电脑上：鼠标靠近哪根吸管，哪根微微上提 */
@@ -477,4 +477,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=21"></script></body></html>
+</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=22"></script></body></html>
