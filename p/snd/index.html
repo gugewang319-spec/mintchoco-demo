@@ -1,0 +1,237 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>声音</title><style>
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:BalooX;src:url(baloo800.ttf)}
+@font-face{font-family:WK;src:url(wk.ttf)}
+@font-face{font-family:Script;src:url(script.ttf)}
+:root{--ch:#5b3a2c;--ink:#4a3027;--cocoa:#8a5c46;--mint3:#2f6e58;--mintb:#3f9a80}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;color:var(--ink)}
+button{font:inherit;color:inherit;background:none;border:0;outline:0;cursor:pointer}
+img{display:block;user-select:none;-webkit-user-drag:none;width:100%}
+
+.vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+.app{position:absolute;left:50%;top:0;bottom:0;width:min(100%,412px);transform:translateX(-50%);overflow:hidden}
+.drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
+.pearls{position:absolute;left:-4%;right:-4%;bottom:-46px;z-index:1;pointer-events:none;opacity:.8}
+canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.o{position:absolute;z-index:6;will-change:transform}
+.bit{position:absolute;pointer-events:none}
+.ground{position:absolute;left:-56px;width:524px;top:694px;z-index:14;pointer-events:none}
+.groundfill{position:absolute;left:0;right:0;top:796px;bottom:0;background:#fbf8eb;z-index:14}
+.sp{position:absolute;pointer-events:none}
+
+
+
+.lhead{position:absolute;left:0;right:0;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 0}
+.ttl{position:relative}
+.ttl h1{font:32px/1 ZK;color:var(--ch);letter-spacing:.06em;position:relative;z-index:1}
+.ttl .sc{position:absolute;left:52px;top:-14px;font:22px/1 Script;color:rgba(63,154,128,.55);transform:rotate(-8deg);white-space:nowrap}
+.lhead .counter{margin:0 0 4px}
+.counter{display:inline-flex;gap:2px;padding:3px;border-radius:5px;background:#5b3a2c}
+.counter span{display:inline-block;min-width:12px;padding:1px 2px;border-radius:2px;background:#fdf9f0;font:700 13px/1.3 Baloo;text-align:center;color:#4a3027}
+.counter b{align-self:center;font:13px/1 ZK;color:#fdf9f0;padding:0 3px}
+
+
+
+
+.pearlbtn{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;cursor:pointer;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.85);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 8px 18px -12px rgba(74,48,39,.45)}
+.pearlbtn svg{stroke:#5b3a2c}
+.lhead .lf{display:flex;align-items:flex-end;gap:12px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
+.pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
+.pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
+.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
+.tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
+
+
+
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;z-index:12;padding:0 0 140px;-webkit-mask-image:linear-gradient(transparent 0 96px,#000 124px);mask-image:linear-gradient(transparent 0 96px,#000 124px);scrollbar-width:none}
+.page::-webkit-scrollbar{display:none}
+.k{font:13px/1 ZK;color:var(--cocoa);letter-spacing:.3em;display:flex;align-items:center;gap:7px}
+.k i{width:7px;height:7px;border-radius:50%;background:var(--mintb)}
+.lnk{font:14px/1.2 ZK;color:var(--cocoa);border-bottom:1.2px dashed var(--cocoa);padding-bottom:2px;letter-spacing:.04em;white-space:nowrap}
+.lnk::after{content:" ›"}
+.lnk.warn{color:#a0533c;border-color:#a0533c}
+/* 唱片区 */
+.hero{position:relative;height:330px;margin-top:124px}
+#rec{position:absolute;left:190px;top:4px;width:300px;height:300px;border-radius:50%;z-index:2}
+#disc{position:absolute;inset:0;will-change:transform}
+#disc img{width:100%;height:100%}
+#disc .tint{position:absolute;left:31%;top:31%;width:38%;height:38%;border-radius:50%;mix-blend-mode:multiply;opacity:.75;transition:background .5s}
+#disc .lab{position:absolute;left:50%;top:50%;width:96px;transform:translate(-50%,-100%);margin-top:-9px;text-align:center;font:13px/1.25 ZK;color:var(--ch);letter-spacing:.06em;pointer-events:none}
+#disc .lab small{position:absolute;left:0;right:0;top:calc(100% + 24px);font:10px/1 Baloo;font-weight:700;color:var(--cocoa);letter-spacing:.12em}
+#arm{position:absolute;left:322px;top:-6px;width:90px;height:220px;z-index:3;transform-origin:62px 22px;transform:rotate(-26deg);transition:transform .7s cubic-bezier(.3,1.2,.5,1);pointer-events:none}
+.playing #arm{transform:rotate(-2deg)}
+.info{position:absolute;left:22px;top:14px;width:162px;z-index:4}
+.info h2{margin-top:14px;font:26px/1.2 ZK;color:var(--ch);letter-spacing:.04em}
+.info .ch{margin-top:10px;font:12.5px/1.5 WK;color:#7a5a4c;word-break:break-all}
+.say{position:absolute;left:22px;top:196px;width:158px;z-index:4;font:16px/1.75 WK;color:#8d7365;outline:0;border-bottom:1.2px dashed rgba(138,92,70,.45);padding-bottom:4px;caret-color:var(--mintb)}
+.say b{font-weight:400;transition:color .15s}
+.say b.on{color:var(--ch)}
+.play{position:absolute;left:22px;top:292px;z-index:4;display:flex;align-items:center;gap:8px;font:14px/1 ZK;color:var(--ch);letter-spacing:.1em}
+.play i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#5b3a2c}
+.play i svg{fill:#fdf9f0}
+/* 曲目表 */
+.tracks{margin:10px 22px 0;border-top:1.3px solid rgba(91,58,44,.55)}
+.tr{position:relative;border-bottom:1px dashed rgba(138,92,70,.35)}
+.tr>.row{display:flex;align-items:baseline;gap:10px;width:100%;padding:15px 0 13px;text-align:left}
+.tr .no{position:relative;width:30px;flex:none;font:800 16px/1 BalooX;color:var(--cocoa)}
+.tr .no img{position:absolute;left:-14px;top:-13px;width:54px;max-width:none;clip-path:inset(0 100% 0 0);transition:clip-path .6s cubic-bezier(.4,0,.2,1)}
+.tr.def .no img{clip-path:inset(0 0 0 0)}
+.tr .nm{font:19px/1.2 ZK;color:var(--ch);letter-spacing:.04em;white-space:nowrap}
+.tr .dots{flex:1;border-bottom:1.6px dotted rgba(138,92,70,.5);transform:translateY(-4px)}
+.tr .pv{font:12.5px/1 WK;color:#7a5a4c;white-space:nowrap}
+.tr.cur .nm{color:#2f6e58}
+.tr.cur .no{color:#2f6e58}
+.tr .eq{display:inline-flex;gap:2px;height:12px;align-items:flex-end;margin-left:2px;opacity:0;transition:opacity .3s}
+.tr .eq u{width:2.5px;background:var(--mintb);border-radius:1px;height:4px}
+.playing .tr.cur .eq{opacity:1}
+.playing .tr.cur .eq u{animation:eq .6s ease-in-out infinite alternate}
+.tr .eq u:nth-child(2){animation-delay:.15s!important}.tr .eq u:nth-child(3){animation-delay:.3s!important}
+@keyframes eq{from{height:3px}to{height:12px}}
+.more{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.3,1,.4,1)}
+.ex .more{max-height:180px}
+.acts{display:flex;gap:22px;align-items:center;padding:0 0 14px 40px;flex-wrap:wrap}
+.warnl{flex-basis:100%;font:12.5px/1.6 WK;color:#a0533c}
+.newrow{display:flex;justify-content:flex-start;padding:16px 0 4px}
+/* 表单：就地展开 */
+.form{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.3,1,.4,1)}
+.form.open{max-height:420px}
+.form .in{padding:6px 0 10px 40px;display:grid;gap:10px}
+.fl{display:grid;grid-template-columns:62px 1fr;align-items:baseline;gap:8px}
+.fl label{font:13px/1 ZK;color:var(--cocoa);letter-spacing:.1em}
+.fl input{font:15px/1.4 WK;color:var(--ch);background:transparent;border:0;border-bottom:1.2px solid rgba(138,92,70,.45);outline:0;padding:3px 0;width:100%;border-radius:0}
+.fl input:focus{border-color:var(--mintb)}
+.fl .cyc{font:15px/1.4 WK;color:var(--ch);text-align:left;border-bottom:1.2px solid rgba(138,92,70,.45);padding:3px 0}
+.fl .cyc::after{content:" ⇄";color:var(--mintb);font-size:12px}
+.form .go{justify-self:start;margin-top:4px}
+.shake{animation:sh .38s}
+@keyframes sh{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+/* 渠道 */
+.chs{margin:34px 22px 0}
+.chs .k{margin-bottom:6px}
+.cr{border-bottom:1px dashed rgba(138,92,70,.35)}
+.cr>.row{display:flex;align-items:baseline;gap:10px;width:100%;padding:13px 0 11px;text-align:left}
+.cr .cn{font:17px/1.2 ZK;color:var(--ch);letter-spacing:.04em}
+.cr .ty{font:12px/1 WK;color:var(--mint3)}
+.cr .key{margin-left:auto;font:700 12.5px/1 Baloo;color:#9a7a6a;letter-spacing:.08em}
+.cr .ct{font:12.5px/1 WK;color:#7a5a4c;width:40px;text-align:right}
+.cr .acts{padding-left:0}
+.gone{animation:gone .5s forwards}
+@keyframes gone{to{opacity:0;transform:translateX(30px)}}
+
+/*nav-font 11-14*/.pnav,.pnav *{font-family:"OPPO Sans","HarmonyOS Sans SC","PingFang SC","Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif}</style></head><body>
+<div class="vp"><div class="app" id="app">
+<img class="drizzle" src="today-bg.png" alt="">
+<header class="lhead"><div class="lf"><button class="pearlbtn" aria-label="返回设置"><svg width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="m15 18-6-6 6-6"/></svg></button><div class="ttl"><span class="sc" aria-hidden="true">voice</span><h1>声音</h1></div></div><div class="counter" aria-label="3 种音色"><span id="cnt">3</span><b>种</b></div></header>
+<main class="page" id="page">
+<section class="hero" id="hero">
+ <button id="rec" aria-label="试听这张"><div id="disc"><img src="vinyl.png" alt=""><i class="tint" id="tint"></i><div class="lab" id="lab"></div></div></button>
+ <svg id="arm" viewBox="0 0 90 220" aria-hidden="true" fill="none" stroke="#8a5c46" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="62" cy="22" r="15" fill="#fbf6ea"/><circle cx="62" cy="22" r="5" fill="#cfe9dc"/><path d="M62 37 C62 90 58 140 40 186" stroke="#5b3a2c" stroke-width="5"/><path d="M62 37 C62 90 58 140 40 186" stroke="#fbf6ea" stroke-width="2.2"/><rect x="26" y="182" width="22" height="30" rx="3" transform="rotate(24 37 197)" fill="#fbf6ea"/></svg>
+ <div class="info"><div class="k"><i></i><span id="st">默认</span></div><h2 id="vn"></h2><div class="ch" id="vc"></div></div>
+ <div class="say" id="say" contenteditable="true" spellcheck="false" role="textbox" aria-label="试听的话"></div>
+ <button class="play" id="play"><i><svg width="12" height="12" viewBox="0 0 12 12"><path id="pi" d="M3 1.5v9l7.5-4.5z"/></svg></i><span id="pt">听一下</span></button>
+</section>
+<section class="tracks" id="tracks"></section>
+<div class="newrow"><button class="lnk" id="newv" style="margin-left:62px">新音色</button></div>
+<div class="form" id="vform" style="margin:0 22px"><div class="in">
+ <div class="fl"><label for="f1">名字</label><input id="f1" placeholder="比如：晚安版"></div>
+ <div class="fl"><label>渠道</label><button class="cyc" id="f2"></button></div>
+ <div class="fl"><label for="f3">音色 ID</label><input id="f3" placeholder="服务商那边的编号"></div>
+ <div class="fl"><label for="f4">模型</label><input id="f4" placeholder="可以不填"></div>
+ <button class="lnk go" id="vgo">建好</button>
+</div></div>
+<section class="chs"><div class="k"><i></i>渠 道</div><div id="chs"></div>
+ <div class="newrow"><button class="lnk" id="newc">接一条</button></div>
+ <div class="form" id="cform"><div class="in" style="padding-left:0">
+  <div class="fl"><label for="g1">名字</label><input id="g1" placeholder="自己认得就行"></div>
+  <div class="fl"><label>服务商</label><button class="cyc" id="g2">MiniMax</button></div>
+  <div class="fl"><label for="g3">地址</label><input id="g3" placeholder="https://"></div>
+  <div class="fl"><label for="g4">密钥</label><input id="g4" type="password" autocomplete="off" placeholder="存好后只显示末四位"></div>
+  <button class="lnk go" id="cgo">登记</button>
+ </div></div>
+</section>
+<img class="bit" src="bit2.png" style="position:relative;width:20px;margin:26px 0 0 352px" alt="">
+</main>
+<div class="navfade" aria-hidden="true"></div>
+<nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
+<button class="tab"><span style="position:relative;display:inline-flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="16.5" rx="2.6" fill="#c4e8da"/><path d="M8.2 3v16.5"/><path d="M13.7 13.4c-1.9-1.3-2.9-2.3-2.9-3.4a1.45 1.45 0 0 1 2.9-.5 1.45 1.45 0 0 1 2.9.5c0 1.1-1 2.1-2.9 3.4Z" fill="#5b3a2c" stroke="none"/><path d="M14.6 19.5v3l1.3-1 1.3 1v-3" fill="#fbf6ea"/></svg><span class="dot"></span></span><span>记忆</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1 0-1.9-.1-2.8-.4L4.8 19.6l1.3-3.5C4.6 14.8 3.5 13.1 3.5 11.2c0-3.9 3.8-7 8.5-7Z" fill="#c4e8da"/><circle cx="8.6" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="15.4" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/></svg><span>聊天</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 21c.5-3.8 3.6-6.3 7.5-6.3s7 2.5 7.5 6.3Z" fill="#c4e8da"/><circle cx="12" cy="8.6" r="4.6" fill="#c4e8da"/><circle cx="10.3" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><circle cx="13.7" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><ellipse cx="9.4" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/><ellipse cx="14.6" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/></svg><span>人格</span></button>
+<button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
+</nav>
+</div></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* 演示数据 */
+let CH=[{id:'c1',n:'海螺',t:'MiniMax',k:'a3f2'},{id:'c2',n:'小鱼',t:'Fish Audio',k:'9c01'}];
+let V=[{id:'v1',n:'晚风',c:'c1',m:'speech-02-hd',vid:'male-qn-jingying',def:1,col:'#cfe9dc',pitch:.75,rate:.95,vol:1},
+ {id:'v2',n:'薄荷',c:'c1',m:'speech-02-turbo',vid:'male-qn-qingse',col:'#f3dcc0',pitch:1.15,rate:1.1,vol:1},
+ {id:'v3',n:'奶油',c:'c2',m:'',vid:'7f2a-whisper',col:'#e3d3e6',pitch:.9,rate:.8,vol:.55}];
+const COLS=['#cfe9dc','#f3dcc0','#e3d3e6','#d8e6c4','#f0cfc8'];
+let cur=V[0].id,openRow=null;
+const chn=id=>CH.find(c=>c.id===id)||{n:'?',t:''};
+function setSay(t){$('#say').innerHTML=[...t].map(c=>'<b>'+c+'</b>').join('')}
+setSay('你好，我是叶铎。今天想听我说什么？');
+function show(v,anim){
+ const put=()=>{$('#vn').textContent=v.n;$('#vc').textContent=chn(v.c).t+' '+chn(v.c).n+(v.m?' · '+v.m:'');$('#st').textContent=v.def?'默认':'试听中';$('#lab').innerHTML=v.n;$('#lab').innerHTML+='<small>SIDE A</small>';$('#tint').style.background=v.col};
+ if(!anim||RM){put();return}
+ const d=$('#disc');d.animate([{transform:`rotate(${ang}deg)`},{transform:`translateX(190px) rotate(${ang+140}deg)`}],{duration:280,easing:'cubic-bezier(.5,0,.8,.5)',fill:'forwards'}).finished.then(()=>{put();d.animate([{transform:`translateX(190px) rotate(${ang-140}deg)`},{transform:`rotate(${ang}deg)`}],{duration:420,easing:'cubic-bezier(.2,.9,.3,1.08)',fill:'forwards'}).finished.then(a=>a.cancel())})}
+function render(){
+ const T=$('#tracks');T.innerHTML='';$('#cnt').textContent=V.length;
+ V.forEach((v,i)=>{const e=document.createElement('div');e.className='tr'+(v.def?' def':'')+(v.id===cur?' cur':'')+(v.id===openRow?' ex':'');e.dataset.id=v.id;
+  e.innerHTML=`<button class="row"><span class="no">A${i+1}<img src="circle.png" alt=""></span><span class="nm">${v.n}</span><span class="eq" aria-hidden="true"><u></u><u></u><u></u></span><span class="dots"></span><span class="pv">${chn(v.c).n}</span></button>
+  <div class="more"><div class="acts">${v.def?'':'<button class="lnk" data-a="def">设为默认</button>'}<button class="lnk" data-a="play">听一下</button><button class="lnk warn" data-a="del">删掉</button></div></div>`;
+  e.querySelector('.row').onclick=()=>{const was=cur;openRow=openRow===v.id?null:v.id;cur=v.id;stop();render();if(was!==v.id)show(v,1)};
+  e.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>act(v,b.dataset.a,e));T.appendChild(e)})
+ renderCh()}
+function act(v,a,e){
+ if(a==='play'){play()}
+ if(a==='def'){V.forEach(x=>x.def=0);v.def=1;render();show(v)}
+ if(a==='del'){const acts=e.querySelector('.acts');if(acts.querySelector('.warnl'))return;
+  acts.insertAdjacentHTML('beforeend',`<span class="warnl">${v.def?'这是默认音色。删了以后 Telegram 语音回复会退回文字，':''}删掉不能恢复，要用得重新建。</span><button class="lnk warn" data-x>确定删</button><button class="lnk" data-n>算了</button>`);
+  acts.querySelector('[data-x]').onclick=()=>{e.classList.add('gone');setTimeout(()=>{V=V.filter(x=>x!==v);if(cur===v.id&&V[0]){cur=V[0].id;show(V[0],1)}openRow=null;render()},450)};
+  acts.querySelector('[data-n]').onclick=()=>render()}}
+function renderCh(){const C=$('#chs');C.innerHTML='';
+ CH.forEach(c=>{const n=V.filter(v=>v.c===c.id),hasDef=n.some(v=>v.def);const e=document.createElement('div');e.className='cr';
+  e.innerHTML=`<button class="row"><span class="cn">${c.n}</span><span class="ty">${c.t}</span><span class="key">····${c.k}</span><span class="ct">${n.length} 种</span></button><div class="more"><div class="acts"><button class="lnk warn" data-a="del">删掉</button></div></div>`;
+  e.querySelector('.row').onclick=()=>e.classList.toggle('ex');
+  e.querySelector('[data-a]').onclick=()=>{const acts=e.querySelector('.acts');if(acts.querySelector('.warnl'))return;
+   acts.insertAdjacentHTML('beforeend',`<span class="warnl">地址和密钥一起删掉${n.length?'，用它的 '+n.length+' 种音色也会跟着删'+(hasDef?'（含默认，Telegram 语音回复会退回文字）':''):''}。不能恢复。</span><button class="lnk warn" data-x>确定删</button>`);
+   acts.querySelector('[data-x]').onclick=()=>{e.classList.add('gone');setTimeout(()=>{CH=CH.filter(x=>x!==c);V=V.filter(v=>v.c!==c.id);if(!V.find(v=>v.id===cur)&&V[0]){cur=V[0].id;show(V[0],1)}render();fc()},450)}};
+  C.appendChild(e)})}
+/* 唱片：待机慢转，播放时转快 */
+let ang=0,spd=0,tgt=RM?0:4,playing=false,timer=null,last=performance.now();
+function loop(now){const dt=Math.min(50,now-last);last=now;spd+=(tgt-spd)*.05;ang=(ang+spd*dt/1000*6)%360;
+ const d=$('#disc');if(!d.getAnimations().length)d.style.transform=`rotate(${ang}deg)`;requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+function play(){if(playing){stop();return}const v=V.find(x=>x.id===cur);if(!v)return;playing=true;tgt=RM?0:33;$('#app').classList.add('playing');$('#pt').textContent='停';$('#pi').setAttribute('d','M2.5 2h2.6v8H2.5zM7 2h2.6v8H7z');
+ const bs=$$('#say b');bs.forEach(b=>b.classList.remove('on'));let i=0;
+ timer=setInterval(()=>{if(i<bs.length){bs[i].classList.add('on');i++}else stop()},v.rate?150/v.rate:150);
+ try{const u=new SpeechSynthesisUtterance($('#say').textContent);u.lang='zh-CN';u.pitch=v.pitch;u.rate=v.rate;u.volume=v.vol;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function stop(){playing=false;tgt=RM?0:4;$('#app').classList.remove('playing');$('#pt').textContent='听一下';$('#pi').setAttribute('d','M3 1.5v9l7.5-4.5z');clearInterval(timer);try{speechSynthesis.cancel()}catch(e){}setTimeout(()=>$$('#say b').forEach(b=>b.classList.remove('on')),600)}
+$('#rec').onclick=play;$('#play').onclick=play;
+$('#say').addEventListener('focus',stop);
+$('#say').addEventListener('blur',()=>setSay($('#say').textContent.trim()||'你好，我是叶铎。'));
+/* 新音色 */
+let fci=0;function fc(){$('#f2').textContent=CH[fci%CH.length]?CH[fci%CH.length].n:'先接一条渠道'}
+$('#f2').onclick=()=>{fci++;fc()};
+$('#newv').onclick=()=>{$('#vform').classList.toggle('open');fc()};
+$('#vgo').onclick=()=>{const n=$('#f1').value.trim(),id=$('#f3').value.trim(),c=CH[fci%CH.length];
+ if(!n||!id||!c){$('#vform').classList.remove('shake');void $('#vform').offsetWidth;$('#vform').classList.add('shake');return}
+ const v={id:'v'+Date.now(),n,c:c.id,m:$('#f4').value.trim(),vid:id,col:COLS[V.length%COLS.length],pitch:1,rate:1,vol:1};V.push(v);cur=v.id;openRow=null;
+ ['#f1','#f3','#f4'].forEach(s=>$(s).value='');$('#vform').classList.remove('open');render();show(v,1)};
+/* 接一条渠道 */
+const TY=['MiniMax','ElevenLabs','Fish Audio'];let ti=0;$('#g2').onclick=()=>{ti++;$('#g2').textContent=TY[ti%3]};
+$('#newc').onclick=()=>$('#cform').classList.toggle('open');
+$('#cgo').onclick=()=>{const n=$('#g1').value.trim(),u=$('#g3').value.trim(),k=$('#g4').value;
+ if(!n||!u||!k){$('#cform').classList.remove('shake');void $('#cform').offsetWidth;$('#cform').classList.add('shake');return}
+ CH.push({id:'c'+Date.now(),n,t:TY[ti%3],k:k.slice(-4)});['#g1','#g3','#g4'].forEach(s=>$(s).value='');$('#cform').classList.remove('open');render()};
+render();show(V[0]);fc();
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script></body></html>

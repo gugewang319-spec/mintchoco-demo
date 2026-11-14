@@ -1,0 +1,310 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>茶茶的薄荷巧克力茶会 · 今天</title>
+<style>
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:Script;src:url(script.ttf)}
+:root{--ch:#5b3a2c;--ink:#4a3027;--cocoa:#8a5c46;--mint:#c4e8da;--mint3:#3f9a80;--pink:#e07f95}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:ZK,system-ui,sans-serif;color:var(--ink)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+/* 底图：她应用里的薄荷竖条纹 + 左上高光 */
+.vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+.scene{position:absolute;left:50%;top:0;width:412px;height:915px;transform-origin:50% 0}
+.abs{position:absolute}
+img{display:block;user-select:none;-webkit-user-drag:none}
+.mv{will-change:transform}
+
+/* 顶部巧克力淋面（她的 today-bg） */
+.drip{left:0;top:0;width:412px;z-index:30;pointer-events:none}
+.drip img{width:412px}
+
+/* 后景：大字 */
+.big{left:14px;top:56px;z-index:13;transform:rotate(-7deg);transform-origin:0 50%;pointer-events:none}
+.big .gm{font:30px/1 Script;color:var(--cocoa);margin-left:6px}
+.big .num{font:800 92px/.9 Baloo;color:var(--ch);letter-spacing:-2px;text-shadow:5px 5px 0 #a6d9c4;margin-top:2px}
+.big .sub{margin:8px 0 0 8px;font:12px/1 ZK;color:var(--cocoa);letter-spacing:.32em}
+.big .sub b{font:700 12px/1 Baloo;letter-spacing:.2em;color:var(--mint3);margin-left:6px}
+.tp{left:150px;top:748px;z-index:24;transform:rotate(-9deg);font:54px/1 Script;color:var(--pink);-webkit-text-stroke:5px #fffaf2;paint-order:stroke fill;pointer-events:none;white-space:nowrap}
+.tp small{display:block;font:13px/1 ZK;-webkit-text-stroke:0;color:var(--cocoa);letter-spacing:.36em;margin:4px 0 0 46px}
+
+/* 缎带（S 形构图线） */
+.ribbon{left:-46px;top:286px;width:470px;z-index:6;transform-origin:50% 50%}
+.ribbon img{width:100%}
+
+/* 主角：芭菲 */
+.hero{left:134px;top:190px;width:250px;z-index:10;transform-origin:52% 96%}
+.hero>img.pf{width:100%}
+.pick{position:absolute;transform-origin:50% 100%;clip-path:inset(0 0 13% 0)}
+.pick img{width:100%}
+.pick .lb{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--ink);line-height:1.15}
+.pick .lb small{font:10px/1.2 ZK;color:var(--cocoa);letter-spacing:.14em}
+.pick .lb b{font:800 21px/1 Baloo;color:var(--ch)}
+.pick .lb i{font-style:normal;font-size:12px}
+.p0{left:22px;bottom:calc(100% - 100px);width:82px}
+.p0 .lb{left:12%;top:6%;width:62%;height:31%}
+.p1{left:88px;bottom:calc(100% - 70px);width:90px}
+.p1 .lb{left:13%;top:8%;width:74%;height:28%}
+.p2{left:158px;bottom:calc(100% - 92px);width:64px}
+.p2 .lb{left:11%;top:19%;width:78%;height:29%}
+.p2 .lb b{font:16px/1 ZK;color:var(--pink)}
+.drop{position:absolute;width:8px;height:11px;margin-left:-4px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(circle at 35% 30%,#9c6a50,#43261a 72%);pointer-events:none;opacity:0}
+.spk{position:absolute;width:14px;height:14px;pointer-events:none;opacity:0;background:radial-gradient(circle,#fffdf6 0 18%,rgba(255,253,246,0) 22%),conic-gradient(from 45deg,transparent 0 10%,#fffdf6 12% 13%,transparent 15% 35%,#fffdf6 37% 38%,transparent 40% 60%,#fffdf6 62% 63%,transparent 65% 85%,#fffdf6 87% 88%,transparent 90%)}
+
+/* 左侧信息：一种形状、贴左边 */
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.7),rgba(255,255,255,.42));-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 1px 0 #fff,0 10px 22px -16px rgba(74,48,39,.5)}
+.now{left:16px;top:204px;width:170px;z-index:14;border-radius:20px 20px 20px 6px;padding:10px 13px 11px}
+.now small{display:flex;align-items:center;gap:6px;font:11px/1 ZK;color:var(--mint3);letter-spacing:.16em}
+.now small::before{content:"";width:6px;height:6px;border-radius:3px;background:var(--mint3);box-shadow:0 0 0 3px rgba(63,154,128,.18)}
+.now p{margin-top:6px;font-size:14px;line-height:1.45}
+.stack{left:16px;top:470px;width:176px;z-index:14;display:flex;flex-direction:column;gap:9px}
+.chip{display:block;width:100%;text-align:left;border-radius:18px;padding:10px 13px;transition:box-shadow .2s,background .2s}
+.chip:active{background:rgba(255,255,255,.82)}
+.chip .t{display:flex;align-items:center;justify-content:space-between;font:11px/1 ZK;color:var(--cocoa);letter-spacing:.14em}
+.chip .t em{font:600 10px/1 Baloo;font-style:normal;color:var(--mint3);letter-spacing:.05em}
+.latte p,.latte .t{padding-right:34px}.latte .t em{display:none}
+.chip p{margin-top:6px;font-size:13.5px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.chip.s p{-webkit-line-clamp:1}.chip.boba{padding-bottom:20px}
+.chip:nth-child(1){transform:rotate(-1.2deg)}.chip:nth-child(2){transform:rotate(.8deg);width:92%}.chip:nth-child(3){transform:rotate(-.6deg);width:84%}
+
+
+/* 饮品卡：每张一种饮品，液面独立周期，文字在最上层不动 */
+.dk{position:relative;overflow:hidden;isolation:isolate}
+.dk>.t,.dk>p,.dk>small{position:relative;z-index:3}
+.liq{position:absolute;left:0;right:0;bottom:0;z-index:1;pointer-events:none}
+.liq::before{content:"";position:absolute;left:0;right:0;top:-7px;height:8px;background:var(--wave) repeat-x 0 0/56px 8px;animation:wv var(--wd,5s) linear infinite}
+.liq.b2::before{opacity:.55;top:-5px;animation-duration:var(--wd2,3.4s);animation-direction:reverse}
+@keyframes wv{to{background-position:56px 0}}
+.slosh .liq{animation:sl .9s cubic-bezier(.3,1.6,.5,1)}
+@keyframes sl{0%{transform:translateY(0) skewY(0)}25%{transform:translateY(-3px) skewY(-3deg)}55%{transform:translateY(1px) skewY(2deg)}100%{transform:none}}
+.dk{cursor:pointer}.dk:active{transform:none}
+/* 热可可 */
+.cocoa .liq{height:34%;background:linear-gradient(180deg,rgba(150,98,72,.34),rgba(110,70,52,.42))}
+.cocoa .liq{--wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='rgba(150,98,72,.34)'/%3E%3C/svg%3E");--wd:6.2s}
+.mm{position:absolute;z-index:2;width:13px;height:11px;border-radius:4px;background:linear-gradient(160deg,#fffdf7,#f1e6d6);box-shadow:inset -1px -1px 0 rgba(138,92,70,.25),0 0 0 .6px rgba(138,92,70,.35)}
+.steam{position:absolute;z-index:9;pointer-events:none;width:34px;height:42px}
+.steam path{fill:none;stroke:rgba(255,255,255,.95);stroke-width:3.2;stroke-linecap:round;filter:drop-shadow(0 0 1.2px rgba(91,58,44,.6)) drop-shadow(0 0 3px rgba(91,58,44,.25))}
+/* 珍珠奶茶 */
+.boba .liq{height:44%;background:linear-gradient(180deg,rgba(214,170,128,.38),rgba(190,140,100,.46))}
+.boba .liq{--wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 1 28 4 T56 4 V8 H0Z' fill='rgba(214,170,128,.38)'/%3E%3C/svg%3E");--wd:7.4s}
+.pearl{position:absolute;z-index:2;bottom:4px;width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%);box-shadow:0 0 0 .6px rgba(60,35,25,.5)}
+.straw{position:absolute;z-index:13;width:10px;height:88px;border-radius:5px;transform-origin:50% 100%;background:repeating-linear-gradient(180deg,#a6d9c4 0 9px,#fffaf2 9px 15px);box-shadow:0 0 0 1px rgba(91,58,44,.55);pointer-events:none}
+/* 拿铁 */
+.latte .liq{height:100%;background:linear-gradient(180deg,rgba(255,250,240,.0) 0,rgba(255,250,240,0) 38%,rgba(196,150,112,.22) 39%,rgba(170,120,88,.32))}
+.latte .liq::before{display:none}
+.foam{position:absolute;z-index:2;right:10px;top:7px;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,#fff8ec 0 55%,#e9d2b6 56% 64%,#b98a66 66%);pointer-events:none}
+.foam b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:20px/1 system-ui;color:#c99f7d;padding-top:2px}
+/* 薄荷苏打 */
+.soda .liq{height:100%;background:linear-gradient(180deg,rgba(166,217,196,.1),rgba(140,205,180,.4))}
+.soda .liq::before{display:none}
+.bub{position:absolute;z-index:2;bottom:-8px;border-radius:50%;border:1.2px solid rgba(255,255,255,.95);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9) 0 18%,rgba(255,255,255,.15) 30%);pointer-events:none}
+.sodaleaf{position:absolute;z-index:2;right:30px;bottom:5px;width:22px;transform-origin:50% 100%}
+
+/* 前景 */
+.fg{z-index:26;pointer-events:auto}
+.fg img{width:100%}
+.leafA{right:-30px;top:-6px;width:96px;filter:blur(2.4px);opacity:.92}
+.leafB{left:-34px;top:400px;width:84px;filter:blur(1.6px);opacity:.9}
+.curl{right:-18px;top:560px;width:64px;filter:blur(2px)}
+canvas#fx{position:absolute;left:0;top:0;width:412px;height:915px;z-index:9;pointer-events:none}
+.lowtier .fg{filter:none!important}
+
+/* 弹出层 */
+.dim{position:fixed;inset:0;background:rgba(74,48,39,.18);opacity:0;pointer-events:none;transition:opacity .3s;z-index:50}
+.sheet{position:fixed;left:50%;bottom:0;width:min(100%,440px);transform:translate(-50%,105%);transition:transform .5s cubic-bezier(.3,1.15,.4,1);z-index:60;border-radius:30px 30px 0 0;padding:12px 22px calc(34px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.72));-webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);border:1.5px solid rgba(255,255,255,.9)}
+.open .dim{opacity:1;pointer-events:auto}.open .sheet{transform:translate(-50%,0)}
+.sheet .grab{display:block;width:40px;height:5px;border-radius:3px;background:rgba(138,92,70,.3);margin:0 auto 14px}
+.sheet h3{font:400 15px/1 ZK;color:var(--cocoa);letter-spacing:.16em}
+.sheet .body{margin-top:14px;font-size:15px;line-height:1.75}
+.sheet .act{margin-top:16px;display:flex;gap:10px}
+.sheet .act button{flex:1;height:46px;border-radius:23px;text-align:center;font:14px/1 ZK;background:rgba(255,255,255,.7);border:1px solid #fff}
+.sheet .act .pri{background:linear-gradient(#cfeee0,#a6d9c4);color:#2f6e58}
+
+/* 底栏：照搬现有 BottomNav */
+.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
+.pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
+.pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
+.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
+.tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.15s!important}}
+.dk>.liq{display:none!important}.slosh .liq{animation:none}.lqc{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}.lowtier .navfade{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}</style></head><body>
+<div class="vp"><div class="scene" id="scene">
+
+ <div class="abs drip"><img src="today-bg.png" alt=""></div>
+
+ <div class="abs big" aria-label="11月11日 周三">
+  <div class="gm">Good Morning ♡</div>
+  <div class="num">11.11</div>
+  <div class="sub">周三<b>NOV 2026</b></div>
+ </div>
+
+ <div class="abs ribbon mv" id="ribbon"><img src="ribbon.png" alt=""></div>
+
+ <div class="abs hero mv" id="hero">
+  <img class="pf" src="parfait.png" alt="薄荷巧克力芭菲">
+  <button class="pick p0 mv" data-k="todo" aria-label="今日提醒 2 项"><img src="pick0.png" alt=""><span class="lb"><small>今日提醒</small><b>2</b></span></button>
+  <button class="pick p1 mv" data-k="msg" aria-label="新消息 2 条"><img src="pick1.png" alt=""><span class="lb"><small>新消息</small><b>2</b></span></button>
+  <button class="pick p2 mv" data-k="muse" aria-label="今日漫想"><img src="pick2.png" alt=""><span class="lb"><small>漫想</small><b>♡</b></span></button>
+  <i class="drop" id="d0"></i><i class="drop" id="d1"></i>
+  <i class="spk" style="left:40px;top:300px"></i><i class="spk" style="left:196px;top:262px"></i><i class="spk" style="left:70px;top:470px"></i><i class="spk" style="left:180px;top:420px"></i>
+ </div>
+
+ <div class="abs now glass dk cocoa"><i class="liq"></i><i class="liq b2" style="height:30%;background:none"></i><i class="mm" data-f="cocoa"></i><i class="mm" data-f="cocoa"></i><i class="mm" data-f="cocoa"></i><small>他现在</small><p>在泡你喜欢的薄荷茶，等你下班。</p></div>
+ <svg class="steam" id="steam" viewBox="0 0 46 56" aria-hidden="true"><path d="M12 54c-6-8 6-12 0-22s6-14 2-24"/><path d="M28 54c-6-8 6-12 0-22s6-14 2-24"/></svg>
+
+ <div class="abs stack">
+  <button class="chip glass dk boba" data-k="chat"><i class="liq"></i><i class="liq b2" style="height:46%;background:none"></i><i class="pearl"></i><i class="pearl"></i><i class="pearl"></i><i class="pearl"></i><i class="pearl"></i><i class="pearl"></i><span class="t">最近聊天<em>19:42</em></span><p>今天降温了，记得把围巾带上哦～</p></button>
+  <button class="chip glass dk latte" data-k="diary"><i class="liq"></i><i class="foam"><b>♥</b></i><span class="t">他的日记<em>DIARY</em></span><p>今天她说想去看海，我把这句话折成一只小纸船…</p></button>
+  <button class="chip glass s dk soda" data-k="cand"><i class="liq"></i><img class="sodaleaf" src="bit19.png" alt=""><span class="t">记忆候选<em>3</em></span><p>等你确认</p></button>
+ </div>
+
+ <i class="straw" id="straw"></i>
+ <canvas id="fx" width="824" height="1830"></canvas>
+
+ <div class="abs tp">Tea Party<small>薄荷巧克力日</small></div>
+
+ <button class="abs fg leafA mv" aria-label="薄荷叶" aria-hidden="true" tabindex="-1"><img src="bit1.png" alt=""></button>
+ <button class="abs fg leafB mv" aria-label="薄荷叶" aria-hidden="true" tabindex="-1"><img src="bit5.png" alt=""></button>
+ <button class="abs fg curl mv" aria-label="巧克力卷" aria-hidden="true" tabindex="-1"><img src="bit0.png" alt=""></button>
+
+</div></div>
+
+<div class="dim" id="dim"></div>
+
+<div class="navfade" aria-hidden="true"></div>
+<nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
+<button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
+<button class="tab"><span style="position:relative;display:inline-flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="16.5" rx="2.6" fill="#c4e8da"/><path d="M8.2 3v16.5"/><path d="M13.7 13.4c-1.9-1.3-2.9-2.3-2.9-3.4a1.45 1.45 0 0 1 2.9-.5 1.45 1.45 0 0 1 2.9.5c0 1.1-1 2.1-2.9 3.4Z" fill="#5b3a2c" stroke="none"/><path d="M14.6 19.5v3l1.3-1 1.3 1v-3" fill="#fbf6ea"/></svg><span class="dot"></span></span><span>记忆</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1 0-1.9-.1-2.8-.4L4.8 19.6l1.3-3.5C4.6 14.8 3.5 13.1 3.5 11.2c0-3.9 3.8-7 8.5-7Z" fill="#c4e8da"/><circle cx="8.6" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="15.4" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/></svg><span>聊天</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 21c.5-3.8 3.6-6.3 7.5-6.3s7 2.5 7.5 6.3Z" fill="#c4e8da"/><circle cx="12" cy="8.6" r="4.6" fill="#c4e8da"/><circle cx="10.3" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><circle cx="13.7" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><ellipse cx="9.4" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/><ellipse cx="14.6" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/></svg><span>人格</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
+</nav>
+
+
+<script>window.LQ=()=>0;window.LQu=()=>0;</script><script>
+/* 内容（演示占位） */
+const D={
+ todo:{t:'今日提醒 · 2 项',b:'21:00 敷面膜<br>23:30 早点睡',a:['加一条','好的']},
+ msg:{t:'新消息 · 2 条',b:'他漫想了：如果茶会有雪，第一杯给你。<br>记忆：3 条候选等你确认。',a:['去看看']},
+ muse:{t:'今日漫想 · 20:10',b:'「如果茶会有雪，第一杯给你。」',a:['回他一句']},
+ chat:{t:'最近聊天 · 19:42',b:'今天降温了，记得把围巾带上哦～',a:['去回他']},
+ diary:{t:'他的日记',b:'今天她说想去看海。我把这句话折成一只小纸船，放在茶托边上，等她哪天想起来，就推给她看。',a:['收进记忆']},
+ cand:{t:'3 条记忆候选',b:'① 她不爱香菜 ② 周五想去看海 ③ 最近在学钩织',a:['逐条看看']}
+};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const sc=$('#sc');
+function openK(k){const d=D[k];sc.innerHTML=`<h3>${d.t}</h3><div class="body">${d.b}</div><div class="act">${d.a.map((x,i)=>`<button class="${i==d.a.length-1?'pri':''}">${x}</button>`).join('')}</div>`;document.body.classList.add('open')}
+$('#dim').onclick=()=>document.body.classList.remove('open');
+
+/* 一屏：按 412×915 缩放 */
+const scene=$('#scene');let S=1;
+function fit(){S=Math.min(innerWidth/412,innerHeight/915);scene.style.transform=`translateX(-50%) scale(${S})`;scene.style.top=Math.max(0,(innerHeight-915*S)/2)+'px'}
+addEventListener('resize',fit);fit();
+
+/* 性能分级 + 减少动效 */
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+let tier=(navigator.deviceMemory&&navigator.deviceMemory<=4)?1:0;
+if(tier)document.body.classList.add('lowtier');
+
+/* 弹簧：每个物件一个角度弹簧，叠在各自的待机曲线上 */
+function spring(){return{x:0,v:0}}
+function step(sp,dt,k=90,c=7){const a=-k*sp.x-c*sp.v;sp.v+=a*dt;sp.x+=sp.v*dt}
+const hero=$('#hero'),ribbon=$('#ribbon');
+const H={sp:spring(),sy:spring()},R={sp:spring()};
+const picks=$$('.pick').map((el,i)=>({el,base:[-14,-2,13][i],amp:[5.5,4,6.5][i],per:[3.7,4.6,3.2][i],ph:[0,1.9,3.7][i],sp:spring()}));
+const fgs=[{el:$('.leafA'),amp:[10,8,7],per:[8.3,6.1,9.4],ph:.4},{el:$('.leafB'),amp:[8,10,9],per:[7.2,9.9,6.6],ph:2.1},{el:$('.curl'),amp:[6,12,14],per:[6.8,8.7,5.3],ph:1.2}].map(o=>({...o,sp:spring(),fx:0,fv:0}));
+
+picks.forEach(p=>p.el.onclick=e=>{e.stopPropagation();p.sp.v+=(Math.random()<.5?-1:1)*170});
+/* 点卡片：杯里的东西就地反应，不弹窗 */
+const KT={};const kick=k=>KT[k]=performance.now()/1000;
+const env=(k,f=3)=>{if(KT[k]==null)return 0;const d=performance.now()/1000-KT[k];return d>2.5?0:Math.exp(-d*f)*Math.max(0,Math.sin(Math.min(d*12,1.5708)))};
+const age=k=>KT[k]==null?9:performance.now()/1000-KT[k];
+$$('.dk').forEach(c=>c.addEventListener('click',()=>{const k=c.classList.contains('cocoa')?'cocoa':c.classList.contains('boba')?'boba':c.classList.contains('latte')?'latte':'soda';kick(k);c.classList.remove('slosh');void c.offsetWidth;c.classList.add('slosh');if(k=='soda')for(let i=0;i<10;i++)spawnBub(true)}));
+hero.querySelector('.pf').onclick=e=>{H.sp.v+=(e.offsetX<129?-1:1)*-60;H.sy.v-=1.6;drip(0,true);burst(e)};
+ribbon.onclick=()=>{R.sp.v+=120};
+fgs.forEach(f=>f.el.onclick=()=>{f.fv+=420});
+
+/* 巧克力滴落：从两处淋酱尖端 */
+const tips=[[90,183],[185,243]];const drops=[$('#d0'),$('#d1')];let nextDrip=[2.5,6];
+function drip(i,now){const d=drops[i],[x,y]=tips[i];d.style.left=x+'px';d.style.top=y+'px';
+ d.animate([{opacity:0,transform:'translateY(0) scale(.3)'},{opacity:1,transform:'translateY(0) scale(1)',offset:.45},{opacity:1,transform:'translateY(4px) scale(1.05,1.15)',offset:.6},{opacity:0,transform:'translateY(64px) scale(.8,1.25)'}],{duration:now?1100:2200,easing:'cubic-bezier(.5,0,.8,.6)'})}
+const spk=$$('.spk').map((s,i)=>({s,per:2.6+i*.9,ph:i*1.7}));
+
+/* 飘落的糖粒（canvas） */
+const cv=$('#fx'),cx=cv.getContext('2d');cx.scale(2,2);
+const srcs=['bit3','bit9','bit4','bit8','bit14','bit11','bit6','bit2'].map(n=>{const im=new Image();im.src=n+'.png';return im});
+const P=[];function mk(y){const im=srcs[Math.floor(Math.random()*srcs.length)];const s=11+Math.random()*10;return{im,s,x:Math.random()*412,y:y??-20-Math.random()*200,vy:18+Math.random()*22,sw:8+Math.random()*16,sp:.6+Math.random()*.9,ph:Math.random()*6.28,r:Math.random()*6.28,vr:(Math.random()-.5)*1.4}}
+function seed(){P.length=0;const n=RM.matches?0:(tier?7:15);for(let i=0;i<n;i++)P.push(mk(Math.random()*820))}
+seed();RM.addEventListener?.('change',seed);
+function burst(e){if(RM.matches)return;const r=hero.getBoundingClientRect(),sr=scene.getBoundingClientRect();const x=(e.clientX-sr.left)/S,y=(e.clientY-sr.top)/S;for(let i=0;i<6;i++){const p=mk(y);p.x=x;p.vy=-60-Math.random()*60;p.vx=(Math.random()-.5)*120;p.g=1;p.life=1.6;P.push(p)}}
+
+
+/* 饮品卡里的小东西：各自周期 */
+const deco=[];
+$$('.cocoa .mm').forEach((m,i)=>{deco.push({el:m,f:(T,on)=>{const x=[98,121,145][i],b=[19,22,18][i];const e=env('cocoa',2.2+i*.4),a=age('cocoa');const hop=a<1.2?Math.max(0,Math.sin((a-i*.08)*7))*Math.exp(-a*2.2)*16:0;const y=(on?Math.sin(T*6.283/[3.1,3.9,2.7][i]+i*2)*2.4:0)+hop,r=(on?Math.sin(T*6.283/[4.3,3.3,5.1][i]+i)*14:0)+e*[30,-24,36][i];m.style.left=x+'px';m.style.bottom=(b+y+window.LQ('cocoa',x+6))+'px';m.style.transform=`rotate(${(r+[8,-12,20][i]).toFixed(1)}deg)`}})});
+$$('.boba .pearl').forEach((m,i)=>{const x=10+i*25+(i%2)*6;deco.push({el:m,f:(T,on)=>{const a=age('boba');const jump=a<1.4?Math.max(0,Math.sin((a-i*.06)*6))*Math.exp(-a*2)*[26,34,22,30,24,32][i]:0;const y=(on?Math.max(0,Math.sin(T*6.283/(2.4+i*.37)+i*1.3))*6:0)+jump;m.style.left=x+'px';m.style.transform=`translate(${window.LQu('boba',x+5).toFixed(1)}px,${(-y).toFixed(1)}px)`}})});
+const soda=$('.soda');const bubs=[];
+function spawnBub(fast){const b=document.createElement('i');b.className='bub';soda.insertBefore(b,soda.children[1]);const s=fast?3+Math.random()*4:4+Math.random()*5;b.style.width=b.style.height=s+'px';const o={el:b,x:8+Math.random()*130,sp:fast?60+Math.random()*50:14+Math.random()*16,ph:fast?0:Math.random()*60,w:1.5+Math.random()*2.5,per:1.2+Math.random()*1.4,fast,t0:performance.now()/1000};bubs.push(o)}
+for(let i=0;i<7;i++)spawnBub(false);
+const foam=$('.foam'),leafS=$('.sodaleaf'),steam=$('#steam'),straw=$('#straw'),nowc=$('.now'),chat=$('.boba');
+function place(){steam.style.left=(nowc.offsetLeft+nowc.offsetWidth-62)+'px';steam.style.top=(nowc.offsetTop-36)+'px';
+ const st=$('.stack');straw.style.left=(st.offsetLeft+chat.offsetLeft+chat.offsetWidth-64)+'px';straw.style.top=(st.offsetTop+chat.offsetTop-58)+'px'}
+place();
+const sp=[...steam.querySelectorAll('path')];
+/* 性能：尺寸缓存（不在帧里读布局）+ 只更新屏幕里看得见的物件 */
+const __sz=new WeakMap(),__ro=new ResizeObserver(es=>{for(const e of es)__sz.set(e.target,[e.target.clientWidth,e.target.clientHeight])});
+const W_=el=>{let s=__sz.get(el);if(!s){s=[el.clientWidth,el.clientHeight];__sz.set(el,s);__ro.observe(el)}return s[0]};
+const H_=el=>{let s=__sz.get(el);if(!s){s=[el.clientWidth,el.clientHeight];__sz.set(el,s);__ro.observe(el)}return s[1]};
+const __vis=new WeakMap(),__io=new IntersectionObserver(es=>{for(const e of es)__vis.set(e.target,e.isIntersecting)},{rootMargin:'80px'});
+const V_=el=>{if(!el)return true;let v=__vis.get(el);if(v===undefined){__vis.set(el,true);__io.observe(el);return true}return v};
+function drinks(T,on){for(const d of deco)d.f(T,on);
+ const h=H_(soda),now=performance.now()/1000;for(let j=bubs.length-1;j>=0;j--){const b=bubs[j];if(b.fast){const y=(now-b.t0)*b.sp;if(y>h+10){b.el.remove();bubs.splice(j,1);continue}b.el.style.transform=`translate(${(b.x+Math.sin(now*9+b.x)*b.w).toFixed(1)}px,${(-y).toFixed(1)}px)`;b.el.style.opacity=Math.min(1,(h+4-y)/14).toFixed(2);continue}const y=on?((T*b.sp+b.ph)%(h+12)):h*.4;b.el.style.transform=`translate(${(b.x+(on?Math.sin(T*6.283/b.per)*b.w:0)).toFixed(1)}px,${(-y).toFixed(1)}px)`;b.el.style.opacity=on?Math.min(1,(h+4-y)/14).toFixed(2):1}
+ {const a=age('soda');const sp=a<1.5?Math.sin(a*14)*Math.exp(-a*3)*28:0;leafS.style.transform=`rotate(${((on?Math.sin(T*6.283/3.6)*9:0)+sp).toFixed(1)}deg) translateY(${((on?Math.sin(T*6.283/2.3)*1.5:0)-Math.abs(sp)*.25).toFixed(1)}px)`}
+ {const a=age('latte');const s=a<1.6?1+Math.sin(a*11)*Math.exp(-a*3.2)*.22:1;foam.style.transform=`scale(${s.toFixed(3)}) rotate(${(a<1.6?Math.sin(a*8)*Math.exp(-a*3)*20:0).toFixed(1)}deg)`}
+ {const a=age('cocoa');steam.style.transform=a<1.8?`scale(${(1+Math.exp(-a*1.6)*.5).toFixed(2)})`:''}
+ sp.forEach((p,i)=>{const k=on&&!RM.matches?((T/[3.2,4.1][i]+i*.5)%1):.3;p.style.opacity=(Math.sin(k*3.1416)*.9).toFixed(2);p.style.transform=`translate(${(RM.matches?0:Math.sin(T*6.283/[2.2,2.9][i])*2).toFixed(1)}px,${(-k*10).toFixed(1)}px)`});
+ {const a=age('boba');const dip=a<1.2?Math.sin(Math.min(a*5,3.1416))*10:0;straw.style.transform=`translateY(${dip.toFixed(1)}px) rotate(${(14+(on?Math.sin(T*6.283/5.7)*2.2:0)+(a<1.5?Math.sin(a*12)*Math.exp(-a*3)*6:0)).toFixed(2)}deg)`}}
+
+/* 帧循环 */
+let last=performance.now(),slow=0,t=0;
+function frame(now){let dt=Math.min(.05,(now-last)/1000);last=now;t+=dt;
+ const on=!RM.matches;
+ if(dt>1/38)slow+=dt;else slow=Math.max(0,slow-dt*.5);
+ if(slow>2&&tier<2){tier++;slow=0;document.body.classList.add('lowtier');seed()}
+ // 芭菲：明显但慢的摆动 + 弹簧
+ step(H.sp,dt,60,5);step(H.sy,dt,140,9);
+ const ha=on?Math.sin(t*6.283/6.5)*1.8+Math.sin(t*6.283/2.9+1)*.5:0;
+ hero.style.transform=`rotate(${(1.5+ha+H.sp.x).toFixed(2)}deg) scale(${(1-H.sy.x*.02).toFixed(4)},${(1+H.sy.x*.025).toFixed(4)})`;
+ // 小旗：各自的周期与相位
+ for(const p of picks){step(p.sp,dt,70,4.5);const a=on?Math.sin(t*6.283/p.per+p.ph)*p.amp:0;p.el.style.transform=`rotate(${(p.base+a+p.sp.x*.1).toFixed(2)}deg)`}
+ // 缎带：飘
+ step(R.sp,dt,50,4);
+ if(on){const ry=Math.sin(t*6.283/7.3)*9,rr=Math.sin(t*6.283/9.1+.7)*3,sx=1+Math.sin(t*6.283/5.2)*.035,sk=Math.sin(t*6.283/4.4+1.3)*3;
+  ribbon.style.transform=`translateY(${ry.toFixed(1)}px) rotate(${(8+rr+R.sp.x*.06).toFixed(2)}deg) skewX(${(sk+R.sp.x*.04).toFixed(2)}deg) scaleX(${sx.toFixed(3)})`}
+ else ribbon.style.transform='rotate(8deg)';
+ // 前景：漂
+ for(const f of fgs){f.fv+=(-40*f.fx-5*f.fv)*dt;f.fx+=f.fv*dt;
+  const X=on?Math.sin(t*6.283/f.per[0]+f.ph)*f.amp[0]:0,Y=on?Math.sin(t*6.283/f.per[1]+f.ph*1.3)*f.amp[1]:0,A=on?Math.sin(t*6.283/f.per[2]+f.ph*.7)*f.amp[2]:0;
+  f.el.style.transform=`translate(${X.toFixed(1)}px,${(Y-f.fx*.6).toFixed(1)}px) rotate(${(A+f.fx).toFixed(1)}deg)`}
+ // 滴落、闪光
+ if(on&&!RM.matches){for(let i=0;i<2;i++)if(t>nextDrip[i]){drip(i);nextDrip[i]=t+4.5+Math.random()*4}
+  for(const k of spk)k.s.style.opacity=Math.max(0,Math.sin(6.283*t/k.per+k.ph)**16).toFixed(3)}
+ drinks(t,on);
+ // 糖粒
+ cx.clearRect(0,0,412,915);
+ for(let i=P.length-1;i>=0;i--){const p=P[i];
+  if(p.g){p.vy+=260*dt;p.x+=p.vx*dt;p.life-=dt;if(p.life<=0){P.splice(i,1);continue}}
+  p.y+=p.vy*dt;p.r+=p.vr*dt;const x=p.x+(p.g?0:Math.sin(t*p.sp+p.ph)*p.sw);
+  if(!p.g&&p.y>860){Object.assign(p,mk())}
+  if(!p.im.complete)continue;const w=p.s,h=p.s*p.im.height/p.im.width;
+  cx.save();cx.globalAlpha=p.g?Math.min(1,p.life):(p.y<40?Math.max(0,(p.y+20)/60):1)*.95;cx.translate(x,p.y);cx.rotate(p.r);cx.drawImage(p.im,-w/2,-h/2,w,h);cx.restore()}
+ requestAnimationFrame(frame)}
+
+/* 底栏 */
+const tabs=$$('.tab'),pill=$('.pill');
+function mv(b){pill.style.width=b.offsetWidth+'px';pill.style.transform=`translateX(${b.offsetLeft-5}px)`;tabs.forEach(x=>x.classList.toggle('on',x===b))}
+tabs.forEach(b=>b.onclick=()=>mv(b));mv(tabs[0]);
+requestAnimationFrame(frame);
+</script>
+<script src="lq.js"></script><script>window.__DEMO_MAP=[["[data-k=chat]", "push:room", 1, 380], ["[data-k=cand]", "tab:mem", 1, 380]]</script><script src="../../bridge.js"></script></body></html>
