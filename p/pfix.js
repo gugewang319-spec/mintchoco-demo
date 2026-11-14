@@ -7,7 +7,7 @@
 .pfx-drz.under{z-index:1!important}`;
   const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
   function scrolls(el){for(let p=el.parentElement;p&&p!==document.body;p=p.parentElement){const o=getComputedStyle(p).overflowY;if(/(auto|scroll)/.test(o))return true}return false}
-  function run(){
+  function run(){document.querySelectorAll('#sc,.scroller,.vp,.app,.page,.menu').forEach(e=>{if(/(auto|scroll)/.test(getComputedStyle(e).overflowY))e.style.overflowX='hidden'});
     const d=document.querySelector('img.drizzle');
     if(d&&scrolls(d)){d.classList.add('pfx-drz');document.body.appendChild(d)}
     const h=[...document.querySelectorAll('.lhead,.head')].find(e=>getComputedStyle(e).position==='sticky');

@@ -350,7 +350,7 @@ const RC=document.createElement('div');RC.className='rc';RC.innerHTML='<div clas
 $$('.ch').forEach(c=>{const e=c.querySelector('.ed');if(e&&!c.classList.contains('c4')&&e.textContent.length>150){c.classList.add('fold');const m=document.createElement('button');m.className='more';m.textContent='展开';c.appendChild(m);m.addEventListener('click',()=>{const o=c.classList.toggle('open');m.textContent=o?'收起':'展开'})}});
 /* 引线按实际字宽画 */
 function lines(){const box=$('.dia').getBoundingClientRect();let s='';$$('.an').forEach(a=>{const r=a.querySelector('b').getBoundingClientRect(),ly=secs[+a.dataset.i].ly,p=ly[1];const y=r.top-box.top+r.height/2;const x=ly[2]==='l'?r.right-box.left+6:r.left-box.left-6;s+=`<line data-i="${a.dataset.i}" x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${p[0]}" y2="${p[1]}"/><circle cx="${p[0]}" cy="${p[1]}" r="2.4"/>`});$('.ldr').innerHTML=s}
-document.fonts.ready.then(lines);lines();
+document.fonts.ready.then(lines);lines();addEventListener('resize',()=>requestAnimationFrame(lines));if(window.ResizeObserver)new ResizeObserver(()=>lines()).observe($('.dia'));document.addEventListener('visibilitychange',()=>{if(!document.hidden)lines()});setTimeout(lines,600);setTimeout(lines,1500);
 /* 编辑：原地改，撤销、重做、保存一直在 */
 const EDS=$$('.ed');const snap=()=>EDS.map(e=>e.textContent);
 let saved=snap(),hist=[snap()],hi=0,tm=0;
