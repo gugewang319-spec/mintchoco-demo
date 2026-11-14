@@ -6,6 +6,9 @@
 .pfx-on::before{display:none!important}
 .pfx-hb{position:absolute;left:-40px;right:-40px;top:-60px;bottom:-34px;z-index:-1;pointer-events:none;opacity:0;transition:opacity .2s}
 .pfx-hb i{position:absolute;inset:0;display:block}
+/* emil-design-eng：按下要有回应（WAAPI 改独立的 scale 属性，不碰原有 transition 和 JS 写的 transform）；底栏高亮 240ms 强 ease-out */
+:root{--ease-out:cubic-bezier(.23,1,.32,1)}
+.pnav .pill{transition:transform 240ms var(--ease-out),width 240ms var(--ease-out)!important}
 .pfx-drw{position:relative;height:0;margin:0 -16px;z-index:-1;pointer-events:none}
 .pfx-drin{position:absolute!important;left:0!important;top:0!important;width:100%!important;z-index:auto!important}`;
   const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
@@ -46,5 +49,13 @@
       put(-Math.min(st,hh+40),false)};
     tgt.addEventListener('scroll',g,{passive:true});g();
   }
+  /* 底栏高亮跟着当前标签走（有的页没写定位脚本） */
+  function pill(){const pl=document.querySelector('.pnav .pill'),on=document.querySelector('.pnav .tab.on');if(pl&&on&&on.offsetWidth){pl.style.width=on.offsetWidth+'px';pl.style.transform=`translateX(${on.offsetLeft-5}px)`}}
+  addEventListener('load',pill);addEventListener('resize',pill);if(window.ResizeObserver){const n=document.querySelector('.pnav');n&&new ResizeObserver(pill).observe(n)}
+  /* 按下 .97、松开回弹；松开比按下快 */
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){const SEL='button,.tab,.lt,.dk,[role=button]',E='cubic-bezier(.23,1,.32,1)';let cur=null;
+    addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest(SEL);if(!b||b.disabled)return;cur=b;b.animate({scale:['1','.97']},{duration:160,easing:E,fill:'forwards'})},{passive:true});
+    const up=()=>{if(!cur)return;const b=cur;cur=null;b.getAnimations().filter(a=>a.effect&&a.effect.getKeyframes().some(k=>'scale' in k)).forEach(a=>a.cancel());b.animate({scale:['.97','1']},{duration:140,easing:E})};
+    addEventListener('pointerup',up,{passive:true});addEventListener('pointercancel',up,{passive:true})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
 })();

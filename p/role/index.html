@@ -165,7 +165,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 
 
 .list{position:relative;z-index:3;padding:0 14px 150px}
-.dia{position:relative;height:412px;margin-top:46px}
+.dia{position:relative;height:412px;margin-top:46px;width:384px;left:50%;margin-left:-192px}.dia>.nm{left:calc(192px - 50vw + 34px)!important}
 .dia .nm{position:absolute;left:4px;top:0}
 .dia .nm b{font:400 40px/1 ZK;color:var(--ch);letter-spacing:.08em}
 .dia .nm span{margin-left:6px;font:15px/1 ZK;color:var(--cocoa);letter-spacing:.1em}
@@ -226,7 +226,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .pp2 .ck{flex:none;font:13.5px/1 Baloo;cursor:pointer;letter-spacing:-.02em;color:#3b3734}
 .pp2 .ck:before{content:"[ ]"}.pp2 .ck.on:before{content:"[✓]"}
 .pp2 .row.m{cursor:pointer;position:relative}
-.pp2 .stp{position:absolute;right:2px;top:50%;width:38px;height:38px;margin-top:-19px;border-radius:50%;border:1.8px solid rgba(91,58,44,.8);box-shadow:inset 0 0 0 2.5px #f8f3e8,inset 0 0 0 3.6px rgba(91,58,44,.6);display:grid;place-items:center;font:400 11px/1 ZK;color:rgba(91,58,44,.85);transform:rotate(-14deg) scale(0);opacity:0;pointer-events:none;mix-blend-mode:multiply}
+.pp2 .stp{position:absolute;right:2px;top:50%;width:38px;height:38px;margin-top:-19px;border-radius:50%;border:1.8px solid rgba(91,58,44,.8);box-shadow:inset 0 0 0 2.5px #f8f3e8,inset 0 0 0 3.6px rgba(91,58,44,.6);display:grid;place-items:center;font:400 11px/1 ZK;color:rgba(91,58,44,.85);transform:rotate(-14deg) scale(.9);opacity:0;pointer-events:none;mix-blend-mode:multiply}
 .pp2 .row.m:nth-child(even) .stp{right:30px}
 .pp2 .row.m.on .stp{animation:stamp .38s cubic-bezier(.3,1.6,.5,1) forwards}
 @keyframes stamp{0%{transform:rotate(-14deg) scale(1.7);opacity:0}60%{opacity:.95}100%{transform:rotate(-14deg) scale(1);opacity:.85}}
@@ -369,7 +369,7 @@ let open=-1;
 const SW=v=>`<i class="ck${v?' on':''}" role="checkbox" aria-checked="${!!v}"></i>`;
 function tag(i){if(i<0||open===i){if(open<0)return;RC.classList.add('off');RC.classList.remove('on');const k=open;open=-1;setTimeout(()=>{$$('.sx')[k].classList.remove('gone');RC.classList.remove('off');D.s.v+=30},700);return}
  const e=EN[i];open=i;const sx=$$('.sx')[i];
- sx.animate([{translate:'0 0'},{translate:'0 -70px',opacity:1},{translate:'-40px -160px',opacity:0}],{duration:420,easing:'ease-in'});setTimeout(()=>sx.classList.add('gone'),400);
+ sx.animate([{translate:'0 0'},{translate:'0 -70px',opacity:1},{translate:'-40px -160px',opacity:0}],{duration:220,easing:'cubic-bezier(.23,1,.32,1)'});setTimeout(()=>sx.classList.add('gone'),400);
  const ar=$('#app').getBoundingClientRect();const hx=ar.width/2,hy=96;
  const hg=RC.querySelector('.hang');hg.style.left=(hx-131)+'px';hg.style.top=hy+'px';
  /* 吸管：翻转后短头在右上，绕短头尖端转 150°，短头朝左下穿进孔里 */
@@ -477,4 +477,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=19"></script></body></html>
+</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=21"></script></body></html>
