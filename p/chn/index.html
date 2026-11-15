@@ -118,16 +118,16 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .tk.out{transform:translateY(60px);opacity:0;animation:none}
 .tk.now .nm{background:linear-gradient(90deg,transparent 19px,rgba(166,217,196,.85) 19px 25px,transparent 25px)}
 .clip{position:absolute;top:-3px;width:11px;height:11px;border-radius:50%;background:#fbf6ea;border:1.3px solid var(--cocoa);margin-left:-5.5px}
-.open{position:absolute;left:22px;top:440px;width:262px;overflow:hidden;padding:0 6px 26px;margin-left:-6px;z-index:10}
+.open{position:absolute;left:22px;top:480px;width:262px;overflow:hidden;padding:0 6px 26px;margin-left:-6px;z-index:10}
 .open .rc{transform:translateY(-104%)}
 .open.on .rc{transform:none}
 .open .lift{position:absolute;right:14px;top:16px;font:12.5px/1.2 WK;color:var(--cocoa);border-bottom:1.1px dashed var(--cocoa);z-index:2}
 .app{overflow-y:auto;scrollbar-width:none}.app::-webkit-scrollbar{display:none}
-.nt{position:absolute;top:0;width:150px;height:238px;border:1.4px dashed rgba(138,92,70,.55);border-top:0;border-radius:0 0 6px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:14px/1.4 WK;color:var(--cocoa);text-align:center}
-.nt b{font:26px/1 Baloo,ZK;font-weight:400}
-.hint{position:absolute;left:22px;top:440px;font:13px/1.6 WK;color:#8a6a5a;z-index:10;transition:opacity .3s}
+.newch{position:absolute;left:22px;top:426px;min-width:180px;min-height:44px;z-index:17;display:flex;align-items:center;font:14px/1.4 WK;color:var(--cocoa);border-bottom:1.3px dashed var(--cocoa)}
+.newch.lit{color:var(--mint3);border-color:var(--mint3)}
+.hint{position:absolute;left:22px;top:480px;font:13px/1.6 WK;color:#8a6a5a;z-index:10;transition:opacity .3s}
 
-.idle{position:absolute;left:22px;right:22px;top:446px;height:330px;z-index:10;transition:opacity .35s}
+.idle{position:absolute;left:22px;right:22px;top:486px;height:330px;z-index:10;transition:opacity .35s}
 .idle.hide{opacity:0;pointer-events:none}
 .spike{position:absolute;left:0;top:0;width:118px;height:322px;display:block}
 .spike svg{position:absolute;inset:0;overflow:visible}
@@ -159,7 +159,6 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .tk{transition:transform .45s cubic-bezier(.3,1.3,.5,1),opacity .35s,rotate .9s cubic-bezier(.25,1.7,.45,1)}
 .tk.drag{transition:transform .45s cubic-bezier(.3,1.3,.5,1),opacity .35s,rotate .12s linear}
 @media (prefers-reduced-motion:reduce){.keyl .ring{transition:none}.kw .keyl::after{transition:none}}
-.nt.lit{border-color:var(--cocoa);background:rgba(252,250,244,.35)}
 .rc.nw input{display:block;width:100%;border:0;background:none;outline:0;color:var(--ch);caret-color:var(--cocoa);padding:0 0 3px;border-bottom:1.2px dotted rgba(91,58,44,.5)}
 .rc.nw input::placeholder{color:#b49c8c}
 .rc.nw .nmI{font:21px/1.25 ZK;width:62%;letter-spacing:.06em}
@@ -183,6 +182,7 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 <div class="top" hidden><span class="k"></span></div>
 <div class="rail" aria-hidden="true"></div>
 <div class="track" id="track"><div class="in" id="tin"></div></div>
+<button class="newch" id="newch">＋ 接一条新渠道 ›</button>
 <div class="idle" id="idle">
 <button class="spike" id="spike" aria-label="串绳：今天出过的单"><svg viewBox="0 0 118 322" id="spsvg"></svg></button>
 <div class="kpi"><div class="lb">今 日 出 单</div><div class="big" id="cntb">1,284</div><div class="u">张 · 到 21:02 为止</div>
@@ -223,19 +223,17 @@ const CH=[
  {n:'旧站',h:'old.example',f:'OpenAI',r:1,off:1,k:[['00a3','off','停用']],m:[0]}
 ];
 const worst=c=>c.off?'off':c.k.some(x=>x[1]=='bad')?'bad':c.k.some(x=>x[1]=='cool')?'cool':'';
-const tin=$('#tin'),STEP=52,X0=22;
+const tin=$('#tin'),STEP=64,X0=22;
 function build(){tin.innerHTML='';
-tin.style.width=(X0+(CH.length-1)*STEP+176+14+150+24)+'px';
+tin.style.width=(X0+(CH.length-1)*STEP+176+14)+'px';
 CH.forEach((c,i)=>{const w=worst(c),t=document.createElement('button');t.className='tk'+(c.now?' now':'')+(c.off?' off':'');t.style.left=(X0+i*STEP)+'px';t.style.zIndex=i+1;
  t.style.setProperty('--sp',(4.6+(i*0.61)%2.7).toFixed(2)+'s');t.style.setProperty('--ph',(-i*0.83).toFixed(2)+'s');t.style.setProperty('--a',(.35+(i%3)*.08)+'deg');
  t.setAttribute('aria-label',c.n+(w=='bad'?'，有密钥超时':''));
  t.innerHTML=`<div class="sh"><div class="p"></div></div><i class="st ${w}"></i><span class="nm">${c.n}</span>${w=='bad'?'<img class="cv" src="circle.png" alt="" style="width:120px;height:44px;left:-34px;top:96px;transform:rotate(90deg)">':''}<span class="kc">${c.k.length}<small>把钥</small></span><div class="rt"><b>${c.n}</b>${c.h}<br>${c.f} · 重试 ×${c.r}<i></i>NO.${String(i+1).padStart(4,'0')}</div><div class="bar"></div>`;
  tin.appendChild(t);const cl=document.createElement('i');cl.className='clip';cl.style.left=(X0+i*STEP+26)+'px';cl.style.zIndex=i+1;tin.appendChild(cl);
  t.onclick=()=>pick(i)});
-{const nx=X0+(CH.length-1)*STEP+176+14,n=document.createElement('button');n.className='nt';n.style.left=nx+'px';n.innerHTML='<b>+</b>接一条<br>新渠道 ›';tin.appendChild(n);const cl=document.createElement('i');cl.className='clip';cl.style.left=(nx+75)+'px';tin.appendChild(cl);n.onclick=newT}
-
  $('.counter').innerHTML=String(CH.length).split('').map(d=>`<span>${d}</span>`).join('')+'<b>条</b>';$('.top .k').innerHTML='<i></i>'+String(CH.length).split('').join(' ')+' 条'}
-let cur=-1;const op=$('#open');build();
+let cur=-1;const op=$('#open');$('#newch').onclick=()=>newT();build();
 function rc(c,i){const ks=c.k.map(([s,cl,tx])=>`<div class="kw"><button class="ln keyl"><span class="k">···${s}</span><span class="st"><i class="${cl=='off'?'cool':cl}"></i>${tx}</span>${cl=='bad'?'<img class="ring" src="circle.png" alt="">':''}</button><div class="keyop"><span class="up">往前挪 ›</span><span class="del">删掉 ›</span></div></div>`).join('');
  const ms=c.m.map(j=>{const[a,b]=M[j].split(':');return`<div class="ln"><span>${a}</span><span class="v">${b}</span></div>`}).join('');
  return `<div class="shade"><div class="rc"><button class="lift">挂回去 ›</button><h2>${c.n}</h2><span class="host">${c.h}</span><div class="cut"></div>
@@ -253,8 +251,8 @@ function wire(){
  $$('#open .addk').forEach(b=>b.onclick=()=>b.previousElementSibling.classList.toggle('on'));
  $$('#open .mo').forEach(b=>b.onclick=()=>{const m=b.nextElementSibling,o=m.style.maxHeight&&m.style.maxHeight!='0px';m.style.maxHeight=o?'0px':(m.scrollHeight+4)+'px';b.querySelector('.lk').textContent=o?'打出来 ›':'收起 ›';setTimeout(fitH,750)});
  $('#open .lift').onclick=()=>pick(cur)}
-function fitH(){const h=cur==-1?0:op.offsetHeight;$('#sp').style.top=Math.max(900,440+h+130)+'px'}
-function pick(i){const tks=$$('.tk');$('.nt')&&$('.nt').classList.remove('lit');
+function fitH(){const h=cur==-1?0:op.offsetHeight;$('#sp').style.top=Math.max(900,480+h+130)+'px'}
+function pick(i){const tks=$$('.tk');$('#newch')&&$('#newch').classList.remove('lit');
  if(cur>=0){tks[cur].classList.remove('out')}
  if(cur===i){cur=-1;op.classList.remove('on');setTimeout(()=>{if(cur<0){op.innerHTML='';fitH()}},RM?0:500);$('#idle').classList.remove('hide');return}
  cur=i;tks[i].classList.add('out');$('#idle').classList.add('hide');op.classList.remove('on');op.innerHTML=rc(CH[i],i);wire();void op.offsetWidth;
@@ -262,9 +260,9 @@ function pick(i){const tks=$$('.tk');$('.nt')&&$('.nt').classList.remove('lit');
  const tr=$('#track'),x=X0+i*STEP;if(x<tr.scrollLeft+10||x>tr.scrollLeft+tr.clientWidth-80)tr.scrollTo({left:x-60,behavior:'smooth'})}
 
 const FM=['OpenAI','Anthropic','Gemini'];
-function newT(){if(cur===-2){cur=-1;$('.nt').classList.remove('lit');op.classList.remove('on');setTimeout(()=>{if(cur==-1){op.innerHTML='';fitH()}},RM?0:500);$('#idle').classList.remove('hide');return}
+function newT(){if(cur===-2){cur=-1;$('#newch').classList.remove('lit');op.classList.remove('on');setTimeout(()=>{if(cur==-1){op.innerHTML='';fitH()}},RM?0:500);$('#idle').classList.remove('hide');return}
  if(cur>=0)$$('.tk')[cur].classList.remove('out');
- cur=-2;$('.nt').classList.add('lit');$('#idle').classList.add('hide');op.classList.remove('on');
+ cur=-2;$('#newch').classList.add('lit');$('#idle').classList.add('hide');op.classList.remove('on');
  const no=String(CH.length+1).padStart(4,'0');
  op.innerHTML=`<div class="shade"><div class="rc nw"><button class="lift hang">挂上去 ›</button><input class="nmI" maxlength="6" placeholder="给它起个名字" aria-label="渠道名字"><input class="hostI" placeholder="api.example.com" aria-label="地址" inputmode="url" autocapitalize="off" spellcheck="false"><div class="cut"></div>
 <button class="ln fm"><span>格式</span><span class="lk"><span class="v">OpenAI</span> ›</span></button><div class="ln"><span>失败重试</span><span class="v">×2</span></div><div class="cut"></div>
@@ -273,13 +271,12 @@ function newT(){if(cur===-2){cur=-1;$('.nt').classList.remove('lit');op.classLis
  const fm=op.querySelector('.fm');fm.onclick=()=>{const v=fm.querySelector('.v');v.textContent=FM[(FM.indexOf(v.textContent)+1)%3];fm.classList.remove('pop');void fm.offsetWidth;fm.classList.add('pop')};
  const kI=op.querySelector('.keyI');kI.oninput=()=>{const st=kI.nextElementSibling;st.innerHTML=kI.value.trim()?'<i></i>···'+kI.value.trim().slice(-4):'<i class="cool"></i>待填'};
  op.querySelector('.hang').onclick=hang;op.querySelectorAll('input').forEach(x=>x.addEventListener('input',()=>x.classList.remove('miss')));
- void op.offsetWidth;setTimeout(()=>{op.classList.add('on');fitH();setTimeout(()=>op.querySelector('.nmI').focus({preventScroll:true}),RM?0:1300)},RM?0:120);
- const tr=$('#track');tr.scrollTo({left:tr.scrollWidth,behavior:'smooth'})}
+ void op.offsetWidth;setTimeout(()=>{op.classList.add('on');fitH();setTimeout(()=>{const input=op.querySelector('.nmI');if(cur===-2&&input)input.focus({preventScroll:true})},RM?0:1300)},RM?0:120)}
 function hang(){const nI=op.querySelector('.nmI'),hI=op.querySelector('.hostI'),kI=op.querySelector('.keyI');let bad=0;
  [nI,hI].forEach(x=>{if(!x.value.trim()){bad=1;x.classList.remove('miss');void x.offsetWidth;x.classList.add('miss')}});if(bad)return;
  const k=kI.value.trim();const nc={n:nI.value.trim(),h:hI.value.trim(),f:op.querySelector('.fm .v').textContent,r:2,k:k?[[k.slice(-4),'','正常']]:[],m:[0]};let at=CH.findIndex(c=>c.off);if(at<0)at=CH.length;CH.splice(at,0,nc);
  op.querySelector('.rc').classList.add('up');
- setTimeout(()=>{cur=-1;op.classList.remove('on');op.innerHTML='';build();const t=$$('.tk')[at];t.classList.add('fresh');$('#idle').classList.remove('hide');fitH();
+ setTimeout(()=>{cur=-1;op.classList.remove('on');op.innerHTML='';build();$('#newch').classList.remove('lit');const t=$$('.tk')[at];t.classList.add('fresh');$('#idle').classList.remove('hide');fitH();
   const tr=$('#track');tr.scrollTo({left:X0+at*STEP-150,behavior:'smooth'})},RM?0:650)}
 
 const SV=$('#spsvg'),C='#8a5c46';
@@ -307,4 +304,4 @@ fitH();
  tr.addEventListener('scroll',()=>{const t=performance.now(),v=(tr.scrollLeft-lx)/Math.max(8,t-lt);lx=tr.scrollLeft;lt=t;
   $$('.tk').forEach((k,i)=>{if(k.classList.contains('out'))return;k.classList.add('drag');const a=Math.max(-7,Math.min(7,-v*4.2*(.75+((i*37)%10)/22)));k.style.rotate=a.toFixed(2)+'deg'});
   clearTimeout(tm);tm=setTimeout(()=>$$('.tk').forEach((k,i)=>{k.classList.remove('drag');setTimeout(()=>k.style.rotate='0deg',(i*53)%90)}),70)},{passive:true})})();
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=27"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=28"></script></body></html>

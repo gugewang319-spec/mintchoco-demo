@@ -35,8 +35,9 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 
 /* 主角：芭菲 */
 .hero{left:134px;top:190px;width:250px;z-index:10;transform-origin:52% 96%}
-.hero>img.pf{width:100%}
-.pick{position:absolute;transform-origin:50% 100%;clip-path:inset(0 0 13% 0)}
+.hero>img.pf{width:100%;position:relative;z-index:0}
+.hero>img.pff{position:absolute;inset:0;z-index:2;pointer-events:none;clip-path:inset(0 0 72% 0)}
+.pick{position:absolute;z-index:1;transform-origin:50% 100%}
 .pick img{width:100%}
 .pick .lb{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--ink);line-height:1.15}
 .pick .lb small{font:10px/1.2 ZK;color:var(--cocoa);letter-spacing:.14em}
@@ -146,6 +147,7 @@ canvas#fx{position:absolute;left:0;top:0;width:412px;height:915px;z-index:9;poin
   <button class="pick p0 mv" data-k="todo" aria-label="今日提醒 2 项"><img src="pick0.png" alt=""><span class="lb"><small>今日提醒</small><b>2</b></span></button>
   <button class="pick p1 mv" data-k="msg" aria-label="新消息 2 条"><img src="pick1.png" alt=""><span class="lb"><small>新消息</small><b>2</b></span></button>
   <button class="pick p2 mv" data-k="muse" aria-label="今日漫想"><img src="pick2.png" alt=""><span class="lb"><small>漫想</small><b>♡</b></span></button>
+  <img class="pf pff" src="parfait.png" alt="" aria-hidden="true">
   <i class="drop" id="d0"></i><i class="drop" id="d1"></i>
   <i class="spk" style="left:40px;top:300px"></i><i class="spk" style="left:196px;top:262px"></i><i class="spk" style="left:70px;top:470px"></i><i class="spk" style="left:180px;top:420px"></i>
  </div>
