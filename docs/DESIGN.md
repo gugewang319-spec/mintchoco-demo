@@ -1,7 +1,7 @@
 # 薄荷巧克力手机端原型 · 设计文档
 
 > 读者：接手修改这个原型前端的 AI 编程工具（如 Kimi Code）和人。
-> 适用范围：本仓库 `mintchoco-demo`（外壳 `index.html` + `p/<页面>/index.html` + `p/pfix.js` + `bridge.js`），截至外壳版本 `V=26`。
+> 适用范围：本仓库 `mintchoco-demo`（外壳 `index.html` + `p/<页面>/index.html` + `p/pfix.js` + `bridge.js`），截至外壳版本 `V=27`。
 > 写于 2026-11-14。原型里的一切数据都是**演示数据**，不连任何后端。
 
 ## 0. 先读这几条
@@ -650,8 +650,8 @@ docs/DESIGN.md      本文
 
 ### 6.2 防缓存版本号
 
-- 外壳 `index.html` 里 `const V=26`，用于 `p/<页>/index.html?v=V`。
-- 每页引用 `../pfix.js?v=26`。
+- 外壳 `index.html` 里 `const V=27`，用于 `p/<页>/index.html?v=V`。
+- 每页引用 `../pfix.js?v=27`。
 - **每次发版两处同步加 1**：外壳的 `V` 和所有页面里的 `pfix.js?v=`。只改一处，手机上会读到旧文件。
 - `bridge.js` 目前没有版本号，改它时要注意缓存（**待确认**是否也加）。
 

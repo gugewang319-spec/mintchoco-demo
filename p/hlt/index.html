@@ -177,8 +177,8 @@ $$('.blk').forEach(b=>b.addEventListener('click',e=>{if(e.target.closest('#sync'
 /* 同步：点一下演示过期 */
 $('#sync').onclick=e=>{e.stopPropagation();const s=$('#app').classList.toggle('stale');$('#synct').textContent=s?'07:52 同步的':'10:52 同步过'};
 /* 心率：一道巧克力酱画的心电线 */
-let rs=false;const cv=$('#ecg'),cx=cv.getContext('2d'),DPR=Math.min(2,devicePixelRatio||1);
-function fit(){const r=cv.getBoundingClientRect();cv.width=r.width*DPR;cv.height=r.height*DPR}fit();addEventListener('resize',fit);
+let rs=false;const cv=$('#ecg'),cx=cv.getContext('2d'),DPR=devicePixelRatio||1;
+function fit(){const r=cv.getBoundingClientRect();cv.width=Math.round(r.width*DPR);cv.height=Math.round(r.height*DPR)}fit();addEventListener('resize',()=>{fit();if(RM)requestAnimationFrame(draw)});
 function beat(p){/* p: 0..1 一拍内的位置，返回向上的高度 */
  const g=(c,w,a)=>a*Math.exp(-Math.pow((p-c)/w,2));
  return g(.18,.035,7)+g(.36,.012,-9)+g(.40,.014,46)+g(.44,.014,-16)+g(.66,.05,11)}
@@ -187,17 +187,17 @@ function draw(now){const dt=Math.min(50,now-last);last=now;const W=cv.width/DPR,
  const bpm=rs?58:72,px=W/2.6;/* 一拍的宽度随心率变 */const bw=px*72/bpm;
  if(!RM&&!$('#app').classList.contains('stale'))off+=dt/1000*px*1.2*(bpm/72)*.9;
  cx.setTransform(DPR,0,0,DPR,0,0);cx.clearRect(0,0,W,H);
- /* 采样点钉在内容坐标上（整数位置），随滚动整体平移，波峰不会每帧被采到不同高度而发抖 */const fr=off-Math.floor(off),pts=[];for(let x=-4-fr;x<=W+4;x+=1){const u=(x+off)/bw,p=u-Math.floor(u);pts.push([x,base-beat(p)])}
+ /* 按设备像素密度采样，采样点钉在内容坐标上，滚动时不重采波峰高度 */const step=1/DPR,fr=off%step,pts=[];for(let x=-4-fr;x<=W+4;x+=step){const u=(x+off)/bw,p=u-Math.floor(u);pts.push([x,base-beat(p)])}
  const path=()=>{cx.beginPath();pts.forEach(([x,y],i)=>i?cx.lineTo(x,y):cx.moveTo(x,y))};
  cx.lineJoin='round';cx.lineCap='round';
  path();cx.strokeStyle='#5b3a2c';cx.lineWidth=4.2;cx.stroke();
- path();cx.strokeStyle='rgba(255,236,214,.55)';cx.lineWidth=1.1;cx.translate(0,-1);cx.stroke();cx.setTransform(DPR,0,0,DPR,0,0);
+ cx.save();cx.translate(0,-1);path();cx.strokeStyle='rgba(255,236,214,.55)';cx.lineWidth=1.1;cx.stroke();cx.restore();
  /* 每到 S 波往下滴一滴 */
  if(!RM&&!$('#app').classList.contains('stale')){const u=(W*.82+off)/bw,p=u-Math.floor(u);if(p>.44&&p<.47&&!drops.some(d=>d.u===Math.floor(u)))drops.push({u:Math.floor(u),x:W*.82,y:base+16,v:0,a:1})}
  for(const d of drops){d.x-=dt/1000*px*1.2*(bpm/72)*.9;d.v+=dt*.00025;d.y+=d.v*dt;if(d.y>H-8){d.a-=dt*.004}
   cx.globalAlpha=Math.max(0,d.a);cx.beginPath();cx.ellipse(d.x,Math.min(d.y,H-6),2.6,3.6,0,0,7);cx.fillStyle='#5b3a2c';cx.fill();cx.globalAlpha=1}
  for(let i=drops.length-1;i>=0;i--)if(drops[i].a<=0||drops[i].x<-10)drops.splice(i,1);
- requestAnimationFrame(draw)}
+ if(!RM)requestAnimationFrame(draw)}
 requestAnimationFrame(draw);
 /* 睡眠：一条薄荷色的波浪带，22 点到次日 10 点 */
 const B=$('#band'),X=h=>(h/12)*368;const s0=X(2+20/60),s1=X(9+40/60);
@@ -208,4 +208,4 @@ let st=performance.now();function band(n){const t=(n-st)/1000;let d=`M${s0} 50 `
 /* 接手环 */
 $('#whb').onclick=()=>$('#wh').classList.toggle('open');
 $('#cp').onclick=()=>{try{navigator.clipboard.writeText($('#url').textContent)}catch(e){}$('#cp').textContent='复制好了';setTimeout(()=>$('#cp').textContent='复制',1600)};
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=26"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=27"></script></body></html>
