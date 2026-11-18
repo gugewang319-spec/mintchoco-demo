@@ -93,17 +93,17 @@ img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .br:active{transform:rotate(var(--t)) scale(.97)}
 .br>img{position:absolute;inset:0;width:100%;height:100%}
 .br .tx{position:absolute;left:10%;right:8%;top:22%;bottom:30%;display:flex;align-items:center;gap:8px}
-.br .n{flex:1;min-width:0;font:14px/1 WK;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.br .tg{font:10px/1 ZK;color:#bfe6d6;white-space:nowrap}
-.br .k{font:400 16px/1 BalooX;color:var(--cream);white-space:nowrap}
+.br .n{flex:1;min-width:0;font:14px/1 WK;color:var(--choc);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.br .tg{font:10px/1 ZK;color:var(--mint);white-space:nowrap}
+.br .k{font:400 16px/1 BalooX;color:var(--choc);white-space:nowrap}
 .br .mc{position:absolute;left:-22px;top:4px;width:40px;animation:hop .45s}
 
 /* ---------- 备用链 ---------- */
-.chain{position:relative;margin:8px 0 0;height:236px}
+.chain{position:relative;margin:8px 0 0;height:256px}
 .chain .ph{--r:1.2deg}
-.rope{position:absolute;left:0;top:96px;width:100%;height:60px}
+.rope{position:absolute;left:0;top:116px;width:100%;height:60px}
 .cd{position:absolute;top:0;width:112px;text-align:center;cursor:pointer;transition:left .45s cubic-bezier(.3,1.3,.5,1)}
-.cd img{width:112px;margin:0 auto}
+.cd img{width:72px;margin:0 auto}
 .cd .o{display:block;margin-top:4px;font:400 18px/1 BalooX;color:var(--choc)}
 .cd .m{display:block;margin-top:3px;font:12px WK;color:var(--ink);white-space:nowrap}
 .cd .s{display:block;font:10px ZK;color:var(--mint);letter-spacing:1px}
@@ -172,8 +172,8 @@ sts.addEventListener('click',ev=>{const y=app.scrollTop;const sp=ev.target.close
  talk(`好，换成 <em>${m}</em> 先用。`);app.scrollTop=y});
 // 备用链：点一颗糖，往前挪一位
 const chain=document.getElementById('chain');let order=[['gpt-4o','小鲸鱼'],['claude-sonnet-4','官方'],['deepseek-v3','夜猫']];const ORD='①②③';
-const cds=order.map(([m,s])=>{const d=document.createElement('div');d.className='cd';d.dataset.m=m;d.innerHTML=`<img src="candy.png" alt=""><span class="o"></span><span class="m">${m}</span><span class="s">${s}</span>`;chain.appendChild(d);return d});
-const tilt=[-6,4,-3],tops=[98,112,96];
+const cds=order.map(([m,s])=>{const d=document.createElement('div');d.className='cd';d.dataset.m=m;d.innerHTML=`<img src="m_bonbon.png" alt=""><span class="o"></span><span class="m">${m}</span><span class="s">${s}</span>`;chain.appendChild(d);return d});
+const tilt=[-6,5,-3],tops=[104,118,102];
 function lay(){const W=inn.offsetWidth,gap=(W-3*112)/4;order.forEach(([m],k)=>{const d=cds.find(c=>c.dataset.m===m);d.style.left=(gap+k*(112+gap))+'px';d.style.top=tops[k]+'px';d.querySelector('img').style.transform=`rotate(${tilt[k]}deg)`;d.querySelector('.o').textContent=ORD[k]})}
 cds.forEach(d=>d.onclick=()=>{const k=order.findIndex(o=>o[0]===d.dataset.m);if(k===0){talk(`<em>${d.dataset.m}</em> 已经排第一啦。`);return}
  [order[k-1],order[k]]=[order[k],order[k-1]];lay();talk(`<em>${d.dataset.m}</em> 往前挪到第 ${k} 个。`)});
