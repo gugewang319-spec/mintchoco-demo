@@ -433,7 +433,13 @@ function wave(ds,f,big,small){ds.forEach((b,i)=>{const g=Math.exp(-((i-f)**2)/1.
 RL.addEventListener('click',ev=>{const b=ev.target.closest('b');if(!b)return;const e=RL._its[+b.dataset.i],sc=$('.scroller');
  sc.scrollTo({top:sc.scrollTop+e.getBoundingClientRect().top-sc.getBoundingClientRect().top-140,behavior:'smooth'})});
 $('.scroller').addEventListener('scroll',()=>requestAnimationFrame(mpos),{passive:true});{const DB=document.createElement('button');DB.className='tobot';DB.setAttribute('aria-label','到底部');DB.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg>';$('#app').appendChild(DB);const sc=$('.scroller');
- const upd=()=>DB.classList.toggle('on',sc.scrollTop>160&&sc.scrollTop<sc.scrollHeight-sc.clientHeight-40);sc.addEventListener('scroll',()=>requestAnimationFrame(upd),{passive:true});upd();
+ /* 按住、滑动时藏起来，停下来 0.45 秒才出来 */
+ let hold=false,mv=0;const ok=()=>sc.scrollTop>160&&sc.scrollTop<sc.scrollHeight-sc.clientHeight-40;
+ const upd=()=>DB.classList.toggle('on',!hold&&ok());const later=()=>{clearTimeout(mv);mv=setTimeout(upd,450)};
+ const hide=()=>{DB.classList.remove('on');later()};
+ addEventListener('touchstart',e=>{if(!DB.contains(e.target)){hold=true;hide()}},{passive:true});
+ addEventListener('touchend',()=>{hold=false;later()},{passive:true});addEventListener('touchcancel',()=>{hold=false;later()},{passive:true});
+ sc.addEventListener('scroll',hide,{passive:true});upd();
  DB.addEventListener('click',()=>sc.scrollTo({top:sc.scrollHeight,behavior:'smooth'}))}
 mrail();wave($$('.dots i').filter(d=>d.style.display!=='none'),0,9,3.5);
 /* 动：每颗糖自己的周期，字跟着糖一起 */
@@ -509,9 +515,11 @@ $$('.pearlbtn').forEach(p=>p.addEventListener('pointerdown',()=>p.animate([{tran
 $$('.bub-me').forEach(b=>b.addEventListener('click',()=>burst(b)));
 $$('.saved').forEach(s=>s.addEventListener('click',()=>s.querySelector('.cbody').animate([{transform:'rotate(0)'},{transform:'rotate(-2.2deg) scale(1.03)'},{transform:'rotate(1.6deg)'},{transform:'rotate(-.6deg)'},{transform:'rotate(0)'}],{duration:560,easing:'ease-out'})));
 
+/* 后台预载、页面被藏起来或刚切回来时的慢帧不算：那是浏览器在节流，不是手机慢 */
+const BGF=raw=>raw>.1||document.hidden||performance.now()<4000||(()=>{try{const b=frameElement&&frameElement.parentElement;return !!(b&&b.classList.contains('off'))}catch(e){return false}})();
 let last=performance.now(),t0=last,slow=0;
-function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now-t0)/1000,on=!RM.matches;
- if(dt>.034)slow++;else slow=Math.max(0,slow-.2);
+function frame(now){const raw=(now-last)/1000,dt=Math.min(.05,raw);last=now;const t=(now-t0)/1000,on=!RM.matches;
+ if(!BGF(raw)){if(dt>.034)slow++;else slow=Math.max(0,slow-.2)}
  if(slow>30&&tier<2){tier++;slow=0;document.body.classList.add('lowtier');seed()}
  step(C.sp,dt,40,4.5);step(C.sy,dt,120,9);
  const rot=(on?Math.sin(t*6.283/6.4)*1.4:0)+C.sp.x*.06;
@@ -534,4 +542,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[["[aria-label=\"搜索记忆\"]", "push:msrch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=38"></script></body></html>
+</script><script>window.__DEMO_MAP=[["[aria-label=\"搜索记忆\"]", "push:msrch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=39"></script></body></html>

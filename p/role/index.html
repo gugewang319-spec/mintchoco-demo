@@ -317,9 +317,14 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .sheet .ed.on{background:none}
 .sheet .pp{cursor:pointer;transition:background .24s}
 .sheet .pp.on{cursor:auto}
-.sheet .pp.on.tm{background:rgba(201,235,220,.62)}
-.sheet .pp.on.tc{background:rgba(246,238,224,.9);box-shadow:inset 0 0 0 1px rgba(91,58,44,.08)}
-.sheet .pp.on.tk{background:rgba(169,133,114,.2)}
+/* 选中那段：不再整块铺底色，改成荧光笔划过每一行（颜色跟索引签） */
+.sheet .pp.on{background:none;box-shadow:none}
+.sheet .pp.on .ed{--hl:rgba(156,214,190,.6);display:inline;-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 2px;background-image:linear-gradient(transparent 48%,var(--hl) 48%,var(--hl) 90%,transparent 90%);background-size:100% 100%;background-repeat:no-repeat;animation:hlsw .42s cubic-bezier(.3,.7,.3,1) both}
+.sheet .pp.on.tc .ed{--hl:rgba(236,208,160,.55)}
+.sheet .pp.on.tk .ed{--hl:rgba(190,150,128,.38)}
+@keyframes hlsw{from{background-size:0 100%}to{background-size:100% 100%}}
+.sheet .ed::selection,.sheet .ed *::selection{background:rgba(120,196,166,.45)}
+@media (prefers-reduced-motion:reduce){.sheet .pp.on .ed{animation:none}}
 .sheet .pp:not(.on)::after{content:'';position:absolute;right:10px;bottom:12px;width:7px;height:7px;border-right:1.3px solid #8a5c46;border-bottom:1.3px solid #8a5c46;rotate:45deg;opacity:.55}
 
 
@@ -525,9 +530,11 @@ $$('.pearlbtn').forEach(p=>p.addEventListener('pointerdown',()=>p.animate([{tran
 $$('.bub-me').forEach(b=>b.addEventListener('click',()=>burst(b)));
 $$('.saved').forEach(s=>s.addEventListener('click',()=>s.querySelector('.cbody').animate([{transform:'rotate(0)'},{transform:'rotate(-2.2deg) scale(1.03)'},{transform:'rotate(1.6deg)'},{transform:'rotate(-.6deg)'},{transform:'rotate(0)'}],{duration:560,easing:'ease-out'})));
 
+/* 后台预载、页面被藏起来或刚切回来时的慢帧不算：那是浏览器在节流，不是手机慢 */
+const BGF=raw=>raw>.1||document.hidden||performance.now()<4000||(()=>{try{const b=frameElement&&frameElement.parentElement;return !!(b&&b.classList.contains('off'))}catch(e){return false}})();
 let last=performance.now(),t0=last,slow=0;
-function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now-t0)/1000,on=!RM.matches;
- if(dt>.034)slow++;else slow=Math.max(0,slow-.2);
+function frame(now){const raw=(now-last)/1000,dt=Math.min(.05,raw);last=now;const t=(now-t0)/1000,on=!RM.matches;
+ if(!BGF(raw)){if(dt>.034)slow++;else slow=Math.max(0,slow-.2)}
  if(slow>30&&tier<2){tier++;slow=0;document.body.classList.add('lowtier');seed()}
  step(C.sp,dt,40,4.5);step(C.sy,dt,120,9);
  const rot=(on?Math.sin(t*6.283/6.4)*1.4:0)+C.sp.x*.06;
@@ -550,4 +557,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=38"></script></body></html>
+</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=39"></script></body></html>

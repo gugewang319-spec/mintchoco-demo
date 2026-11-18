@@ -267,10 +267,12 @@ function drinks(T,on){for(const d of deco)d.f(T,on);
  {const a=age('boba');const dip=a<1.2?Math.sin(Math.min(a*5,3.1416))*10:0;straw.style.transform=`translateY(${dip.toFixed(1)}px) rotate(${(14+(on?Math.sin(T*6.283/5.7)*2.2:0)+(a<1.5?Math.sin(a*12)*Math.exp(-a*3)*6:0)).toFixed(2)}deg)`}}
 
 /* 帧循环 */
+/* 后台预载、页面被藏起来或刚切回来时的慢帧不算：那是浏览器在节流，不是手机慢 */
+const BGF=raw=>raw>.1||document.hidden||performance.now()<4000||(()=>{try{const b=frameElement&&frameElement.parentElement;return !!(b&&b.classList.contains('off'))}catch(e){return false}})();
 let last=performance.now(),slow=0,t=0;
-function frame(now){let dt=Math.min(.05,(now-last)/1000);last=now;t+=dt;
+function frame(now){const raw=(now-last)/1000;let dt=Math.min(.05,raw);last=now;t+=dt;
  const on=!RM.matches;
- if(dt>1/38)slow+=dt;else slow=Math.max(0,slow-dt*.5);
+ if(!BGF(raw)){if(dt>1/38)slow+=dt;else slow=Math.max(0,slow-dt*.5)}
  if(slow>2&&tier<2){tier++;slow=0;document.body.classList.add('lowtier');seed()}
  // 芭菲：明显但慢的摆动 + 弹簧
  step(H.sp,dt,60,5);step(H.sy,dt,140,9);

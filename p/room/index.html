@@ -302,9 +302,11 @@ const W_=el=>{let s=__sz.get(el);if(!s){s=[el.clientWidth,el.clientHeight];__sz.
 const H_=el=>{let s=__sz.get(el);if(!s){s=[el.clientWidth,el.clientHeight];__sz.set(el,s);__ro.observe(el)}return s[1]};
 const __vis=new WeakMap(),__io=new IntersectionObserver(es=>{for(const e of es)__vis.set(e.target,e.isIntersecting)},{rootMargin:'80px'});
 const V_=el=>{if(!el)return true;let v=__vis.get(el);if(v===undefined){__vis.set(el,true);__io.observe(el);return true}return v};
+/* 后台预载、页面被藏起来或刚切回来时的慢帧不算：那是浏览器在节流，不是手机慢 */
+const BGF=raw=>raw>.1||document.hidden||performance.now()<4000||(()=>{try{const b=frameElement&&frameElement.parentElement;return !!(b&&b.classList.contains('off'))}catch(e){return false}})();
 let last=performance.now(),t0=last,slow=0;
-function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now-t0)/1000,on=!RM.matches;
- if(dt>.034)slow++;else slow=Math.max(0,slow-.2);
+function frame(now){const raw=(now-last)/1000,dt=Math.min(.05,raw);last=now;const t=(now-t0)/1000,on=!RM.matches;
+ if(!BGF(raw)){if(dt>.034)slow++;else slow=Math.max(0,slow-.2)}
  if(slow>30&&tier<2){tier++;slow=0;document.body.classList.add('lowtier');seed()}
  step(C.sp,dt,40,4.5);step(C.sy,dt,120,9);
  const rot=(on?Math.sin(t*6.283/6.4)*1.4:0)+C.sp.x*.06;
@@ -327,5 +329,5 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=38"></script><script>/* 单独打开预览时：从奶盖层进来的，返回回到聊天页 */if(window.parent===window&&/from=cup/.test(location.search))document.querySelector('.pearlbtn').addEventListener('click',()=>history.length>1?history.back():location.href='../cup/index.html');</script>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=39"></script><script>/* 单独打开预览时：从奶盖层进来的，返回回到聊天页 */if(window.parent===window&&/from=cup/.test(location.search))document.querySelector('.pearlbtn').addEventListener('click',()=>history.length>1?history.back():location.href='../cup/index.html');</script>
 </body></html>
