@@ -327,5 +327,5 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=32"></script><script>/* 单独打开预览时：从奶盖层进来的，返回回到聊天页 */if(window.parent===window&&/from=cup/.test(location.search))document.querySelector('.pearlbtn').addEventListener('click',()=>history.length>1?history.back():location.href='../cup/index.html');</script>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=33"></script><script>/* 单独打开预览时：从奶盖层进来的，返回回到聊天页 */if(window.parent===window&&/from=cup/.test(location.search))document.querySelector('.pearlbtn').addEventListener('click',()=>history.length>1?history.back():location.href='../cup/index.html');</script>
 </body></html>

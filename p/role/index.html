@@ -170,9 +170,10 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .dk{position:absolute;left:0;top:0;width:384px;height:412px;transform:scale(.58);transform-origin:0 0}
 .dia .lyh,.dia .stw,.dia .dcup,.dia .sx{pointer-events:auto}
 .dia .stw{font-size:21px;padding:10px}
-.dia .nm{position:absolute;left:146px;top:96px;z-index:5}
-.dia .nm b{display:block}.dia .nm span{display:block;margin:6px 0 0 2px!important}
-.dia .nm b{font:400 40px/1 ZK;color:var(--ch);letter-spacing:.08em}
+.dia .nm{position:absolute;left:auto;right:16px;top:2px;z-index:5;text-align:right;display:flex;align-items:baseline;gap:6px;padding-bottom:7px;background:linear-gradient(90deg,transparent,rgba(138,92,70,.45) 30%) bottom/100% 1.2px no-repeat}
+.dia .nm i{position:absolute;right:66px;top:-21px;font:400 19px/1 Sofia,cursive;font-style:normal;color:rgba(63,154,128,.6);rotate:-8deg;white-space:nowrap}
+.dia .nm b{display:inline}.dia .nm span{display:inline;margin:0!important}
+.dia .nm b{font:400 30px/1 ZK;color:var(--ch);letter-spacing:.08em}
 .dia .nm span{margin-left:6px;font:15px/1 ZK;color:var(--cocoa);letter-spacing:.1em}
 .dia .nm p{margin:8px 0 0;font:13.5px/1.5 WK;color:#8a6a5a}
 .drink{position:absolute;inset:0;transform-origin:50% 88%;z-index:3;will-change:transform;pointer-events:none}
@@ -295,7 +296,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .ldr{display:none}
 
 /* 做蛋糕的器物贴纸：代码画，白边贴纸，各自绕支点轻晃 */
-.bk{position:absolute;z-index:2;pointer-events:none;filter:drop-shadow(0 1.5px 1.2px rgba(74,48,39,.26));animation:bkw var(--t,4.6s) ease-in-out var(--d,0s) infinite alternate;transform-origin:var(--o,50% 50%)}
+.bk{position:absolute;z-index:2;pointer-events:none;will-change:rotate;animation:bkw var(--t,4.6s) ease-in-out var(--d,0s) infinite alternate;transform-origin:var(--o,50% 50%)}
 .bk img{display:block;height:100%;width:auto}
 @keyframes bkw{from{rotate:calc(var(--r,0deg) - 2.5deg)}to{rotate:calc(var(--r,0deg) + 2.5deg)}}
 @media (prefers-reduced-motion:reduce){.bk{animation:none;rotate:var(--r,0deg)}}
@@ -304,6 +305,10 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 /* 人设纸页 + 右侧索引签 */
 .sheet{position:relative;margin:-54px 30px 0 2px;min-height:calc(100vh - 345px);padding:82px 18px 16px 22px;border-radius:22px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
 .sheet .pp .kk{display:none}
+/* 索引便签也是毛玻璃，颜色淡淡透出来 */
+.sheet .tb{backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px) saturate(120%);border:1px solid rgba(255,255,255,.7);border-left:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.sheet .tb.m{background:rgba(201,235,220,.72)}.sheet .tb.c{background:rgba(252,246,236,.7)}.sheet .tb.k{background:rgba(169,133,114,.72)}
+.sheet .tb.on{box-shadow:inset 0 1px 0 rgba(255,255,255,.8),2px 3px 8px rgba(74,48,39,.14)}
 .sheet .pp .ed{font-size:17.5px;line-height:1.9}
 .sft small,.sft .savep{white-space:nowrap;flex-shrink:0}.sft .savep{margin-left:auto}
 /* 折叠：每段先露两行，点哪段哪段展开；选中的那段底色透出对应索引签的颜色 */
@@ -384,10 +389,10 @@ let ver=12;
 const dg=n=>String(n).split('').map(d=>`<span>${d}</span>`).join('');
 const L=$('#list');
 const secs=PS.map((p,i)=>({t:p[0]||'整杯',x:p[1],ly:PS.length===1?['没有小标题',[192,250],'l',238]:LY[i]}));
-let h=`<div class="dia"><div class="nm"><b>叶铎</b><span>的配方</span></div>
+let h=`<div class="dia"><div class="nm"><i>recipe</i><b>叶铎</b><span>的配方</span></div>
 <div class="dk"><div class="drink"><span class="sx" data-e="0" style="left:15px;top:-10px;height:175px;transform-origin:86% 100%"><img src="straw-mint.png" alt="Telegram 吸管"></span><span class="sx" data-e="1" style="left:52px;top:48px;height:125px"><img src="wafer.png" alt="API 威化卷"></span><span class="sx" data-e="2" style="left:74px;top:37px;height:135px"><img src="spoon.png" alt="QQ 长勺"></span><img class="dcup" src="cup3.png" alt="叶铎的特调"></div>
 
-<span class="bk" style="left:430px;top:206px;height:124px;--r:-16deg;--o:50% 95%;--t:4.8s"><img src="bk_whisk.png" alt=""></span><span class="bk" style="left:530px;top:30px;height:150px;--r:12deg;--o:50% 10%;--t:5.4s;--d:-1.6s"><img src="bk_bag.png" alt=""></span><span class="bk" style="left:590px;top:190px;height:116px;--r:-30deg;--o:50% 90%;--t:4.2s;--d:-2.4s"><img src="bk_spat.png" alt=""></span><svg class="ldr" viewBox="0 0 384 412" width="384" height="412"></svg>
+<span class="bk" style="left:372px;top:150px;height:120px;--r:-16deg;--o:50% 95%;--t:4.8s"><img src="bk_whisk.png" alt=""></span><span class="bk" style="left:478px;top:112px;height:150px;--r:12deg;--o:50% 10%;--t:5.4s;--d:-1.6s"><img src="bk_bag.png" alt=""></span><span class="bk" style="left:582px;top:150px;height:112px;--r:-30deg;--o:50% 90%;--t:4.2s;--d:-2.4s"><img src="bk_spat.png" alt=""></span><svg class="ldr" viewBox="0 0 384 412" width="384" height="412"></svg>
 ${secs.map((s,i)=>s.ly?`<button class="lyh" data-i="${i}" aria-label="${s.t}" style="left:${s.ly[1][0]-62}px;top:${s.ly[1][1]-30}px"></button>`:'').join('')}
 <span class="stw" data-e="0" style="left:118px;top:-12px">Telegram</span>
 <span class="stw" data-e="1" style="left:-4px;top:96px">API</span>
@@ -421,7 +426,7 @@ $('#bR').addEventListener('click',()=>{if(hi<hist.length-1){hi++;apply(hist[hi])
 $('#bS').addEventListener('click',()=>{ver++;saved=snap();const c=$('#ver');c.animate([{transform:'rotateX(0)'},{transform:'rotateX(90deg)'},{transform:'rotateX(0)'}],{duration:420});setTimeout(()=>{c.innerHTML=dg(ver+1)},210);EDS.forEach(x=>{x.classList.remove('on');x.contentEditable='false'});D.s.v+=30;ui();$('#tip').textContent=`已保存为第 ${ver} 版。`});
 ui();
 /* 动 */
-const sp=()=>({x:0,v:0});const D={e:$('.drink'),s:sp()};
+let DV=true;if(window.IntersectionObserver)new IntersectionObserver(es=>{DV=es[0].isIntersecting}).observe(document.querySelector('.dia'));const sp=()=>({x:0,v:0});const D={e:$('.drink'),s:sp()};
 const floats=[...$$('.stw')].map(e=>({e,per:2.6+Math.random()*2.2,ph:Math.random()*6.28,a:1.6,s:sp()}));
 let open=-1;
 const SW=v=>`<i class="ck${v?' on':''}" role="checkbox" aria-checked="${!!v}"></i>`;
@@ -461,10 +466,10 @@ $$('.lyh').forEach(a=>a.addEventListener('click',ev=>{ev.stopPropagation();const
 const LIFT=[0,0,0];const ROT=[8,-14,32];
 if(matchMedia('(hover:hover)').matches){$('.dia').addEventListener('pointermove',ev=>{$$('.sx').forEach((s,i)=>{const r=s.getBoundingClientRect();const d=Math.hypot(ev.clientX-(r.left+r.width/2),ev.clientY-(r.top+r.height*.3));LIFT[i]=Math.max(0,1-d/110)*9})});$('.dia').addEventListener('pointerleave',()=>{LIFT.fill(0)})}
 const LC=[0,0,0];
-(function lift(){$$('.sx').forEach((s,i)=>{LC[i]+=(LIFT[i]-LC[i])*.15;s.style.transform=`translateY(${(-LC[i]).toFixed(2)}px) rotate(${ROT[i]}deg)`});requestAnimationFrame(lift)})();
+(function lift(){if(DV)$$('.sx').forEach((s,i)=>{const d=LIFT[i]-LC[i];if(Math.abs(d)<.02&&s._t)return;LC[i]+=d*.15;s._t=1;s.style.transform=`translateY(${(-LC[i]).toFixed(2)}px) rotate(${ROT[i]}deg)`});requestAnimationFrame(lift)})();
 $('.drink .dcup').addEventListener('click',ev=>{D.s.v+=40;const S=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ds'))||1,y=(ev.clientY-$('.dk').getBoundingClientRect().top)/(S*.58);let k=-1,bd=1e9;secs.forEach((s,i)=>{if(!s.ly)return;const d=Math.abs(s.ly[1][1]-y);if(d<bd){bd=d;k=i}});if(k>=0)$$('.lyh')[k].click()});
 (function loop(n){const s=n/1000,on=!matchMedia('(prefers-reduced-motion: reduce)').matches;for(const q of floats){q.s.v+=(-140*q.s.x-7*q.s.v)/60;q.s.x+=q.s.v/60;const y=on?Math.sin(s*6.283/q.per+q.ph)*q.a:0;q.e.style.transform=`translateY(${(y+q.s.x).toFixed(1)}px)`}
- D.s.v+=(-90*D.s.x-6*D.s.v)/60;D.s.x+=D.s.v/60;const r=(on?Math.sin(s*6.283/6.8)*1.1:0)+D.s.x*.1;D.e.style.transform=`rotate(${r.toFixed(2)}deg)`;requestAnimationFrame(loop)})(0);
+ D.s.v+=(-90*D.s.x-6*D.s.v)/60;D.s.x+=D.s.v/60;const r=(on?Math.sin(s*6.283/6.8)*1.1:0)+D.s.x*.1;if(DV)D.e.style.transform=`rotate(${r.toFixed(2)}deg)`;requestAnimationFrame(loop)})(0);
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
 /* 性能分级与减少动效 */
 const RM=matchMedia('(prefers-reduced-motion: reduce)');
@@ -545,4 +550,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=32"></script></body></html>
+</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=33"></script></body></html>
