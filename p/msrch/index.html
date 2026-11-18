@@ -1,0 +1,302 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>记忆搜索 · 搜索聊天记录</title>
+<style>
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:BalooX;src:url(baloo800.ttf)}
+@font-face{font-family:Script;src:url(script.ttf)}
+@font-face{font-family:WK;src:url(wk.ttf)}
+:root{--ch:#5b3a2c;--ink:#4a3027;--cocoa:#8a5c46;--mint3:#2f6e58;--mintb:#3f9a80}
+[hidden]{display:none!important}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;color:var(--ink)}
+button,input{font:inherit;color:inherit;background:none;border:0;outline:0}
+button{cursor:pointer}
+img{display:block;user-select:none;-webkit-user-drag:none}
+.vp{position:fixed;inset:0;overflow:hidden;background-color:#e7f4ee;background-image:radial-gradient(120% 40% at 20% 0%,rgba(255,255,255,.8),rgba(255,255,255,0) 60%),linear-gradient(180deg,#e8f6f0 0%,#e3f2ea 30%,#e9ecdf 52%,#eadfcf 70%,#ddc6ad 88%,#cfb193 100%)}
+.app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,440px);overflow:hidden}
+.drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
+.pearls{position:absolute;left:-4%;right:-4%;bottom:-46px;z-index:1;pointer-events:none;opacity:.8}
+.pearls img{width:100%}
+.sc{position:absolute;inset:0;z-index:5;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;
+ -webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 190px),transparent calc(100% - 100px));mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 190px),transparent calc(100% - 100px))}
+.sc::-webkit-scrollbar{display:none}
+.page{position:relative;min-height:100%;padding:0 34px 300px 24px}
+canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:20;pointer-events:none}
+
+.lhead{display:flex;align-items:flex-end;justify-content:space-between;padding:66px 0 0}
+.ttl{position:relative}
+.ttl h1{font:32px/1 ZK;color:var(--ch);letter-spacing:.06em;position:relative;z-index:1}
+.ttl .s{position:absolute;left:52px;top:-14px;font:22px/1 Script;color:rgba(63,154,128,.55);transform:rotate(-8deg);white-space:nowrap}
+.cancel{font:15px/1 ZK;color:var(--cocoa);letter-spacing:.06em;padding:8px 2px}
+
+/* 搜索：字直接写在奶茶上，下面一道巧克力酱 */
+.qa{position:relative;margin-top:34px;padding-right:86px}
+.qa input{width:100%;font:400 27px/1.3 ZK;color:var(--ch);letter-spacing:.04em;caret-color:var(--mintb);padding:4px 0 8px}
+.qa input::placeholder{color:rgba(138,92,70,.38)}
+.qa input::-webkit-search-cancel-button{display:none}
+.qa svg.line{position:absolute;left:-4px;right:70px;top:46px;width:calc(100% - 66px);height:22px;overflow:visible;pointer-events:none}
+.qa svg.line path{fill:#5b3a2c;stroke:#3b2219;stroke-width:.9;stroke-linejoin:round}
+.sieve{position:absolute;right:-30px;top:-14px;width:118px;transform-origin:62% 46%}
+.sieve img{width:100%;transform:rotate(-16deg)}
+.sieve span{position:absolute;right:30px;top:74px;font:11.5px/1 ZK;color:var(--cocoa);letter-spacing:.1em;white-space:nowrap;opacity:.8}
+
+/* 筛选：一行小字，点开就地展开 */
+.fl{margin-top:30px}
+.fbar{display:flex;align-items:baseline;justify-content:space-between}
+.fbar button{font:13px/1 ZK;color:var(--cocoa);letter-spacing:.08em;display:flex;align-items:baseline;gap:6px;padding:4px 0}
+.fbar .ar{font-style:normal;font-size:10px;transition:transform .3s;display:inline-block}
+.fl.open .fbar .ar{transform:rotate(180deg)}
+.fbar i{font:13px/1 ZK;font-style:normal;color:var(--mint3);letter-spacing:.08em}
+.box{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.3,1,.5,1)}
+.fl.open .box{grid-template-rows:1fr}
+.box>div{overflow:hidden}
+.row{display:flex;gap:14px;align-items:baseline;padding:12px 0 2px}
+.row>span{flex:none;width:30px;font:12px/1 ZK;color:var(--cocoa);letter-spacing:.12em}
+.opts{display:flex;flex-wrap:wrap;gap:6px 18px}
+.op{position:relative;font:15px/1.6 WK;color:rgba(74,48,39,.72);padding:2px 1px}
+.op.on{color:var(--ch);font-weight:700}
+.op svg{position:absolute;left:-8px;top:-4px;width:calc(100% + 16px);height:calc(100% + 8px);overflow:visible;pointer-events:none}
+.op svg path{stroke-dasharray:1.02;stroke-dashoffset:1.02;transition:stroke-dashoffset .45s ease-out}
+.op.on svg path{stroke-dashoffset:0}
+.cal{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.3,1,.5,1)}
+.cal.on{grid-template-rows:1fr}
+.cal>div{overflow:hidden}
+.mrow{display:flex;align-items:center;justify-content:space-between;margin:8px 0 2px}
+.mrow h3{font:700 15px/1 Baloo,ZK;color:var(--ch)}
+.mrow button{width:34px;height:34px;font:18px/1 system-ui;color:var(--cocoa)}
+.mrow button[aria-disabled=true]{opacity:.25}
+.wkd,.days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+.wkd span{font:11.5px/2 WK;color:rgba(122,90,76,.75)}
+.days{isolation:isolate}
+.d{position:relative;height:38px;font:600 14px/38px Baloo,ZK;color:var(--ink)}
+.d.no{color:rgba(74,48,39,.22)}
+.d .dot{position:absolute;left:50%;bottom:3px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--mintb)}
+.d.in::before{content:"";position:absolute;inset:5px -1px;z-index:-1;background-image:radial-gradient(circle,#fffdf8 0 1.1px,transparent 1.7px),radial-gradient(circle,#fffdf8 0 .8px,transparent 1.3px);background-size:6px 6px,5px 5px;background-position:0 0,3px 2px}
+.d.ed::after{content:"";position:absolute;inset:4px 6px;border:1.6px solid var(--ch);border-radius:50% 46% 52% 48%;transform:rotate(-8deg)}
+
+/* 结果：没有框。糖粉大日期左右交错，正文始终左对齐 */
+.res{margin-top:18px}
+.day{position:relative;padding:26px 0 30px;isolation:isolate}
+.day:last-of-type::before{-webkit-mask-image:linear-gradient(#000 calc(100% - 120px),transparent);mask-image:linear-gradient(#000 calc(100% - 120px),transparent)}
+.day::before{content:"";position:absolute;top:0;bottom:0;left:-24px;right:-34px;background:var(--lay);z-index:-1}
+.dh{display:flex;align-items:flex-end;gap:10px}
+.day.r .dh{flex-direction:row-reverse;text-align:right}
+.num{position:relative;font-family:BalooX,ZK;font-weight:400;line-height:.9;letter-spacing:-.01em;color:transparent;
+ background:linear-gradient(180deg,#86563f 0%,#6b4433 50%,#5b3a2c 100%);-webkit-background-clip:text;background-clip:text;
+ opacity:0;filter:blur(5px);transform:translateY(-10px)}
+.dh small{font:13px/1.3 ZK;color:var(--mint3);letter-spacing:.08em;padding-bottom:6px;opacity:0;transition:opacity .5s .2s}
+.dh small b{display:block;font:600 12px/1.2 Baloo,ZK;color:var(--cocoa);letter-spacing:0}
+.on .num{opacity:1;filter:none;transform:none;transition:opacity .5s,filter .7s,transform .7s cubic-bezier(.3,1.5,.5,1)}
+.on .dh small{opacity:1}
+.hits{margin-top:14px}
+.hit{display:block;width:100%;text-align:left;opacity:0;transform:translateY(26px)}
+.on .hit{opacity:1;transform:none;transition:opacity .5s,transform .75s cubic-bezier(.3,1.45,.5,1)}
+.hit+.hit{margin-top:22px}
+.hit>p{font:17px/1.75 WK;color:var(--ink);word-break:break-word}
+.hit mark{background:linear-gradient(180deg,transparent 60%,rgba(166,217,196,.9) 60% 92%,transparent 92%);color:var(--ch);font-weight:700;padding:0 1px}
+.hit>small{display:block;margin-top:3px;font:12px/1.4 WK;color:rgba(122,90,76,.8);letter-spacing:.04em}
+.hit>small em{font:600 12px/1 Baloo,ZK;font-style:normal}
+/* 就地展开前后文：像贺卡打开 */
+.ctx{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.3,1.2,.5,1)}
+.ctx>div{overflow:hidden}
+.ctx p{font:15px/1.7 WK;color:rgba(74,48,39,.6);padding-left:12px;border-left:1.2px dashed rgba(138,92,70,.45);transform:rotateX(70deg);transform-origin:50% 0;transition:transform .5s cubic-bezier(.3,1.3,.5,1);opacity:.0}
+.ctx.a p{transform-origin:50% 100%}
+.ctx p span{display:block;font:11.5px/1.4 ZK;color:rgba(122,90,76,.7);letter-spacing:.08em}
+.hit.open .ctx{grid-template-rows:1fr}
+.hit.open .ctx p{transform:none;opacity:1;transition:transform .5s cubic-bezier(.3,1.3,.5,1),opacity .3s}
+.ctx.b p{margin-bottom:8px}.ctx.a p{margin-top:8px}
+
+/* 天与天之间：一道奶层波浪，越往下越深 */
+.wave{display:block;position:relative;width:calc(100% + 58px);margin-left:-24px;height:22px;overflow:visible}
+/* 小料：只在页边，半截探出屏幕 */
+.gar{position:absolute;z-index:3;pointer-events:auto;transform-origin:50% 80%}
+.gar img{width:100%}
+
+/* 右边一列小圆点：日期索引 */
+.idx{position:absolute;right:6px;top:50%;z-index:22;display:flex;flex-direction:column;gap:2px;transform:translateY(-50%);transition:opacity .5s;opacity:0}
+.idx.show,.idx:active{opacity:1}
+.idx[hidden]{display:none}
+.idx button{position:relative;width:22px;height:20px}
+.idx button::before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:rgba(138,92,70,.45);transition:transform .35s cubic-bezier(.3,1.6,.5,1),background .3s}
+.idx button.on::before{background:#a6d9c4;box-shadow:0 0 0 1.2px var(--cocoa);transform:scale(1.6)}
+.idx button span{position:absolute;right:22px;top:50%;transform:translateY(-50%);font:600 11px/1 Baloo,ZK;color:var(--cocoa);opacity:0;transition:opacity .3s;white-space:nowrap}
+.idx button.on span{opacity:1}
+
+.more{display:block;margin:26px 0 0;font:14px/1 ZK;color:var(--mint3);letter-spacing:.1em;padding:6px 0 4px;border-bottom:1.2px dashed var(--mint3)}
+.empty{margin:36px 0 0;font:17px/1.9 WK;color:var(--cocoa)}
+.empty small{display:block;font:12.5px/1.6 ZK;color:rgba(122,90,76,.7)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* 返回钮（11-12） */
+.lhead{justify-content:flex-start!important;align-items:center!important;gap:12px}
+.pearlbtn{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;cursor:pointer}
+.pearlbtn:active{transform:scale(.92)}
+.pearlbtn{background:rgba(252,250,244,.62)!important;backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.85)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 8px 18px -12px rgba(74,48,39,.45)!important}
+.pearlbtn svg{stroke:#5b3a2c!important}.pearlbtn .dots{fill:#5b3a2c!important}
+/*hdr-align 11-13*/.lhead{margin-left:-6px;margin-top:-8px;align-items:flex-end!important}/* 记忆结果 */
+.hit.mh{position:relative;text-align:left;padding-right:58px}
+.mh h3{margin:0 0 6px;font:400 18px/1.35 ZK;color:#4a3027;letter-spacing:.04em}
+.mh.imp h3{color:#2f6e58}
+.mh .mt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh.open .mt{display:block}
+.mcy{position:absolute;right:0;top:2px;width:48px;transform:rotate(-10deg);filter:drop-shadow(0 2px 2px rgba(74,48,39,.18))}
+</style></head><body>
+<div class="vp"><div class="app">
+<img class="drizzle" src="today-bg.png" alt="">
+<div class="pearls"><img src="pearls.png" alt=""></div>
+<div class="sc" id="sc"><div class="page">
+ <header class="lhead"><button class="pearlbtn back" type="button" aria-label="返回记忆"><svg width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="m15 18-6-6 6-6"/></svg></button><div class="ttl"><span class="s" aria-hidden="true">memory</span><h1>搜记忆</h1></div></header>
+
+ <form class="qa" id="q" autocomplete="off" role="search">
+  <input id="qi" type="search" placeholder="想找哪颗糖" value="甜" aria-label="搜索记忆" enterkeyhint="search">
+  <svg class="line" id="line" aria-hidden="true"><path/></svg>
+  <button type="submit" class="sieve" id="sieve" aria-label="筛一筛"><img src="sieve-s.png" alt=""><span>点我筛</span></button>
+ </form>
+
+ <div class="fl" id="fl">
+  <div class="fbar"><button type="button" id="flb" aria-expanded="false"><span id="sum">全部类型 · 全部日子</span><em class="ar">▾</em></button><i id="cnt"></i></div>
+  <div class="box"><div>
+   <div class="row"><span>类型</span><div class="opts" id="ens"></div></div>
+   <div class="row"><span>日期</span><div class="opts" id="dts"></div></div>
+   <div class="cal" id="cal"><div>
+    <div class="mrow"><button type="button" id="pm" aria-label="上个月">‹</button><h3 id="mt"></h3><button type="button" id="nm" aria-label="下个月">›</button></div>
+    <div class="wkd"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+    <div class="days" id="days"></div>
+   </div></div>
+  </div></div>
+ </div>
+
+ <div class="res" id="res"></div>
+ <p class="empty" id="empty" hidden></p>
+ <button type="button" class="more" id="more" hidden>再筛一点</button>
+</div></div>
+<nav class="idx" id="idx" hidden></nav>
+<canvas id="fx"></canvas>
+</div></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const RM=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const T=new Date();T.setHours(0,0,0,0);const ago=n=>{const d=new Date(T);d.setDate(d.getDate()-n);return d};
+const WK='日一二三四五六';
+// 演示数据。字段对应接口：created_at、snippet、speaker、entry_kind；前后文为演示
+const HITS=[
+ // [几天前, 标题, 内容, 类型, 关于谁, 证据数, 重要]（演示数据）
+ [11,'一起去了新开的甜品店','她点了薄荷巧克力芭菲，说比想象中好吃。走的时候还回头看了一眼橱窗，说下次要试那个开心果的。','经历','关系',3,0],
+ [14,'那本书的结局','看完了那本书，结局让她难过了好久。她问我，如果是我会怎么写。我说我会让他们在最后一页重新遇见，她笑了，说这样太便宜作者了。','经历','茶茶',4,0],
+ [17,'冬天的热可可','冬天怕冷，最喜欢热热的可可配棉花糖，越甜越好。','偏好','茶茶',2,0],
+ [19,'吵架了不隔夜','不管多生气，睡前一定要说晚安，再甜甜地抱一下。','约定','关系',2,1],
+ [21,'万圣节的故事','给她讲了一个吓人的故事，她假装不怕，其实把被子拉到了下巴，后来要我讲个甜一点的哄睡。','经历','关系',3,0],
+ [30,'第一次叫我名字','我说过，会一直记得她第一次叫我名字的那天，声音甜甜的。','自述','叶铎',1,1],
+ [38,'窗台上的薄荷','宿舍窗台上养了一盆薄荷，叶子长得很快，泡水有点甜。','事实','茶茶',1,0],
+ [45,'不爱太甜的奶茶','奶茶只要三分糖，太甜会腻，珍珠要多。','偏好','茶茶',2,0],
+];
+const CY={'茶茶':'cy-mint.png','叶铎':'cy-cream.png','关系':'cy-cocoa.png'};
+
+const REC=new Set(HITS.map(h=>ago(h[0]).toDateString()));
+const RING=['M30 5C58 0 96 6 97 20C98 34 62 39 40 37C14 35 2 28 3 18C4 9 18 4 46 3C60 2.6 70 4 76 6','M64 4C90 6 99 16 96 26C92 37 58 39 34 37C10 35 1 26 4 16C7 7 26 2 52 2.5C64 3 74 6 80 9','M24 6C54 0 97 5 97 21C97 35 60 39 38 37C12 35 2 27 4 17C6 8 22 3 50 3C62 3 72 5 79 8'];
+const ring=i=>`<svg viewBox="0 0 100 40" preserveAspectRatio="none"><path pathLength="1" d="${RING[i%3]}" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
+let ent='',rng='all',cs=null,ce=null,shown=6,mon=new Date(T.getFullYear(),T.getMonth(),1);
+const qi=$('#qi'),q=$('#q'),sc=$('#sc');
+$('#flb').onclick=()=>{const o=$('#fl').classList.toggle('open');$('#flb').setAttribute('aria-expanded',o)};
+
+/* ---------- 巧克力酱横线（带两三滴） ---------- */
+const LINE={drips:[]};
+function lineShape(){const s=$('#line'),w=s.getBoundingClientRect().width;LINE.w=w;LINE.drips=[0.18,0.52,0.81].map((p,i)=>({x:w*p,wd:5+i%2*3,base:5+i*3,per:3.1+i*.9,ph:i*1.7}))}
+function lineDraw(t,on){const w=LINE.w;if(!w)return;let d=`M2 3 Q${w*.25} 1 ${w*.5} 2.6 T${w-2} 2.4 Q${w} 3.4 ${w-3} 5.2`;
+ const ds=[...LINE.drips].sort((a,b)=>b.x-a.x);
+ for(const u of ds){const L=u.base+(on?Math.sin(t*6.283/u.per+u.ph)*1.6:0)+(LINE.k?Math.exp(-(t-LINE.k)*2.4)*7:0);
+  d+=` L${(u.x+u.wd/2).toFixed(1)} 5.2 C${(u.x+u.wd/2).toFixed(1)} ${(5+L*.6).toFixed(1)} ${(u.x+u.wd*.5).toFixed(1)} ${(5+L).toFixed(1)} ${u.x.toFixed(1)} ${(5+L).toFixed(1)} C${(u.x-u.wd*.5).toFixed(1)} ${(5+L).toFixed(1)} ${(u.x-u.wd/2).toFixed(1)} ${(5+L*.6).toFixed(1)} ${(u.x-u.wd/2).toFixed(1)} 5.2`}
+ d+=` L4 5.4 Q0 5 2 3Z`;$('#line path').setAttribute('d',d)}
+
+/* ---------- 小料 ---------- */
+const FLOATS=[];
+function garnish(host,src,w,css,rot){const e=document.createElement('span');e.className='gar';e.innerHTML=`<img src="${src}" alt="">`;e.style.cssText=`width:${w}px;${css}`;host.appendChild(e);
+ const f={e,rot,per:3.4+Math.random()*2.8,ph:Math.random()*6.28,a:1.8,ra:2.6,sp:{x:0,v:0},vis:true};FLOATS.push(f);return f}
+const SV={e:$('#sieve'),rot:0,per:6.8,ph:1,a:1.2,ra:1.6,sp:{x:0,v:0},vis:true};FLOATS.push(SV);
+garnish($('.lhead'),'leaf.png',24,'right:-14px;top:150px',-24);
+
+/* ---------- 筛选 ---------- */
+function opts(el,list,cur,on){el.innerHTML=list.map((e,i)=>`<button type="button" class="op${e[0]===cur?' on':''}" data-v="${e[0]}">${e[1]}${ring(i)}</button>`).join('');
+ el.querySelectorAll('.op').forEach(b=>b.onclick=()=>on(b.dataset.v))}
+function drawOpts(){
+ opts($('#ens'),[['','全部'],['经历','经历'],['偏好','偏好'],['约定','约定'],['自述','自述'],['事实','事实']],ent,v=>{ent=v;drawOpts();go()});
+ const cl=cs&&ce?`${cs.getMonth()+1}/${cs.getDate()} 至 ${ce.getMonth()+1}/${ce.getDate()}`:'选日期';
+ opts($('#dts'),[['all','全部日子'],['30','最近 30 天'],['c',cl]],rng,v=>{rng=v;$('#cal').classList.toggle('on',v==='c');drawOpts();if(v!=='c'||(cs&&ce))go()});
+ $('#sum').textContent=`${ent||'全部类型'} · ${rng==='c'?cl:rng==='30'?'最近 30 天':'全部日子'}`;
+}
+function cal(){const y=mon.getFullYear(),m=mon.getMonth();$('#mt').textContent=`${y} 年 ${m+1} 月`;
+ const lead=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();let h='';
+ for(let i=0;i<lead;i++)h+='<span></span>';
+ for(let d=1;d<=n;d++){const dt=new Date(y,m,d),fut=dt>T;let c='d';if(fut)c+=' no';
+  if(cs&&ce&&dt>=cs&&dt<=ce)c+=' in';if((cs&&+dt===+cs)||(ce&&+dt===+ce))c+=' ed';
+  h+=`<button type="button" class="${c}" data-d="${d}">${d}${REC.has(dt.toDateString())&&!fut?'<i class="dot"></i>':''}</button>`}
+ $('#days').innerHTML=h;$('#nm').setAttribute('aria-disabled',y===T.getFullYear()&&m===T.getMonth());
+ $$('#days .d').forEach(b=>b.onclick=()=>{const dt=new Date(y,m,+b.dataset.d);if(dt>T)return;
+  if(!cs||ce){cs=dt;ce=null}else{ce=dt;if(ce<cs)[cs,ce]=[ce,cs]}cal();drawOpts();if(cs&&ce)go()})}
+$('#pm').onclick=()=>{mon.setMonth(mon.getMonth()-1);cal()};
+$('#nm').onclick=()=>{if($('#nm').getAttribute('aria-disabled')==='true')return;mon.setMonth(mon.getMonth()+1);cal()};
+
+/* ---------- 结果 ---------- */
+function inR(n){const d=ago(n);if(rng==='all')return true;if(rng==='c')return cs&&ce&&d>=cs&&d<=ce;return n<30}
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+// 奶层颜色：薄荷奶 → 奶茶 → 可可，越旧越深
+const LAY=['rgba(244,251,247,0)','rgba(240,232,214,.45)','rgba(232,214,188,.55)','rgba(214,186,155,.55)','rgba(196,160,128,.5)','rgba(176,138,108,.5)'];
+const SUG=['#fbfffc','#f8f6ee','#f7eee0','#f3e4cf','#efdcc3','#ead2b6'];
+const GAR=[['bit2.png',46,'right:-46px;top:30px',14],['candy-s.png',92,'left:-74px;top:18px',-18],['bit3.png',40,'right:-44px;top:26px',-10],['wrapper-s.png',96,'left:-78px;top:20px',12],['bit5.png',42,'right:-46px;top:28px',8],['bit1.png',40,'left:-48px;top:26px',-14]];
+function wave(i){const c=LAY[Math.min(i,LAY.length-1)],c0=LAY[Math.min(i-1,LAY.length-1)],W=480,a=4+i%2*2,k=2+i%2;
+ let top='';for(let x=0;x<=W;x+=12)top+=`${x},${(10+Math.sin(x/W*6.283*k+i)*a).toFixed(1)} `;
+ return `<svg class="wave" viewBox="0 0 ${W} 22" preserveAspectRatio="none" aria-hidden="true" style="background:${c0}"><polygon points="0,22 ${top}${W},22" fill="${c}"/><polyline points="${top}" fill="none" stroke="#8a5c46" stroke-opacity=".4" stroke-width="1.1" vector-effect="non-scaling-stroke"/></svg>`}
+let groups=[],io=null;
+function render(anim){const kw=qi.value.trim();const all=HITS.filter(h=>inR(h[0])&&(h[1]+h[2]).includes(kw)&&(!ent||h[3]===ent));
+ const hits=all.slice(0,shown);$('#more').hidden=all.length<=shown;
+ $('#cnt').textContent=kw&&hits.length?`筛出 ${all.length} 颗`:'';
+ const g=[];hits.forEach(h=>{const l=g[g.length-1];if(l&&l.n===h[0])l.h.push(h);else g.push({n:h[0],h:[h]})});groups=g;
+ for(let i=FLOATS.length-1;i>=0;i--)if(FLOATS[i].day)FLOATS.splice(i,1);
+ const res=$('#res');
+ res.innerHTML=g.map((x,i)=>{const d=ago(x.n),sz=Math.max(52,72-i*4),r=i%2;
+  return `${i?wave(i):''}<section class="day${r?' r':''}" id="d${i}" style="--lay:${LAY[Math.min(i,LAY.length-1)]};--sug:${SUG[Math.min(i,SUG.length-1)]}"><div class="dh"><span class="num" data-t="${d.getMonth()+1}/${d.getDate()}" style="font-size:${sz}px">${d.getMonth()+1}/${d.getDate()}</span><small>周${WK[d.getDay()]}${x.n===0?' · 今天':x.n===1?' · 昨天':''}<b>${x.h.length} 颗</b></small></div><div class="hits">${
+   x.h.map((h,j)=>{const H=s=>kw?esc(s).split(esc(kw)).join(`<mark>${esc(kw)}</mark>`):esc(s);return `<button type="button" class="hit mh${h[6]?' imp':''}" style="transition-delay:${i*110+120+j*70}ms"><img class="mcy" src="${CY[h[4]]}" alt=""><h3>${h[6]?'「':''}${H(h[1])}${h[6]?'」':''}</h3><p class="mt">${H(h[2])}</p><small>${h[3]} · ${h[4]} · <em>证据 ${h[5]}</em></small></button>`}).join('')}</div></section>`}).join('');
+ $$('#res .day').forEach((el,i)=>{el.querySelector('.num').style.transitionDelay=`${i*110}ms`;el.querySelector('.dh small').style.transitionDelay=`${i*110+250}ms`;const a=GAR[i%GAR.length];const f=garnish(el,a[0],a[1],a[2],a[3]);f.day=1;f.sec=el});
+ const e=$('#empty');e.hidden=!!hits.length||!kw;e.innerHTML='罐子里没筛出这颗糖。<small>换个词、换个类型，或者把日子放宽一点</small>';
+ // 右侧索引
+ const idx=$('#idx');idx.hidden=g.length<3;idx.innerHTML=g.map((x,i)=>{const d=ago(x.n);return `<button type="button" data-i="${i}" aria-label="${d.getMonth()+1}月${d.getDate()}日"><span>${d.getMonth()+1}/${d.getDate()}</span></button>`}).join('');
+ idx.querySelectorAll('button').forEach(b=>b.onclick=()=>{const t=$('#d'+b.dataset.i);sc.scrollTo({top:t.offsetTop-90,behavior:RM()?'auto':'smooth'})});
+ if(io)io.disconnect();io=new IntersectionObserver(es=>es.forEach(x=>{const f=FLOATS.find(f=>f.sec===x.target);if(f)f.vis=x.isIntersecting}),{root:sc});$$('#res .day').forEach(s=>io.observe(s));
+ syncIdx();
+ $$('.hit').forEach(b=>b.onclick=()=>b.classList.toggle('open'));
+ const show=()=>{$$('#res .day').forEach((s,i)=>{s.classList.add('on');if(anim&&!RM())setTimeout(()=>sugarAt(s.querySelector('.num')),i*110+80)})};
+ if(anim)requestAnimationFrame(()=>requestAnimationFrame(show));else $$('#res .day,#res .hit,#res .num').forEach(x=>x.style.transition='none'),show();
+}
+function syncIdx(){const bs=$$('#idx button');if(!bs.length)return;let k=0;$$('#res .day').forEach((s,i)=>{if(s.offsetTop-sc.scrollTop<sc.clientHeight*.45)k=i});bs.forEach((b,i)=>b.classList.toggle('on',i===k))}
+let idT=0;sc.addEventListener('scroll',()=>{syncIdx();const x=$('#idx');x.classList.add('show');clearTimeout(idT);idT=setTimeout(()=>x.classList.remove('show'),1400)},{passive:true});
+$('#idx').addEventListener('pointerdown',()=>{clearTimeout(idT);$('#idx').classList.add('show')});
+
+/* ---------- 糖粉：筛的时候往下落，日期落下来拼成 ---------- */
+const cv=$('#fx'),cx=cv.getContext('2d');let P=[],raf=0,DPR=Math.min(2,devicePixelRatio||1);
+function fit(){const r=cv.getBoundingClientRect();cv.width=r.width*DPR;cv.height=r.height*DPR;cx.setTransform(DPR,0,0,DPR,0,0)}
+function base(){return cv.getBoundingClientRect()}
+function grains(n,x0,x1,y0,y1,vy){for(let i=0;i<n;i++)P.push({x:x0+Math.random()*(x1-x0),y:y0+Math.random()*(y1-y0),vy:vy+Math.random()*1.2,vx:(Math.random()-.5)*.6,r:.9+Math.random()*1.6,a:1,m:Math.random()<.18});if(!raf)tick()}
+function fromSieve(n){const b=base(),r=$('#sieve img').getBoundingClientRect();grains(n,r.left-b.left+r.width*.2,r.left-b.left+r.width*.75,r.top-b.top+r.height*.45,r.top-b.top+r.height*.7,.6)}
+function sugarAt(el){if(!el)return;const b=base(),r=el.getBoundingClientRect();grains(16,r.left-b.left,r.right-b.left,r.top-b.top-30,r.top-b.top,.9)}
+function tick(){const b=base();cx.clearRect(0,0,b.width,b.height);P=P.filter(p=>p.a>.04&&p.y<b.height);
+ for(const p of P){p.x+=p.vx;p.y+=p.vy;p.vy+=.035;p.a*=.972;cx.globalAlpha=p.a;cx.fillStyle=p.m?'#9fd8c2':'#fffaf2';cx.strokeStyle='rgba(138,92,70,.28)';cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fill();cx.stroke()}
+ raf=P.length?requestAnimationFrame(tick):0}
+let shakeT=0;
+function go(){shown=6;render(true)}
+q.onsubmit=e=>{e.preventDefault();if(!qi.value.trim()){qi.focus();return}qi.blur();
+ $$('#res .day').forEach(s=>s.classList.remove('on'));
+ shakeT=performance.now()/1000;LINE.k=shakeT;if(!RM())fromSieve(40);setTimeout(go,RM()?0:420)};
+setInterval(()=>{if(!RM()&&sc.scrollTop<200)fromSieve(3)},6400);
+$('#more').onclick=()=>{shown+=6;render(false)};
+document.addEventListener('click',e=>{const f=FLOATS.find(x=>x.e!==SV.e&&x.e.contains(e.target));if(f)f.sp.v-=10});
+
+drawOpts();cal();fit();lineShape();render(true);
+addEventListener('resize',()=>{fit();lineShape()});
+(function loop(n){const s=n/1000,on=!RM();lineDraw(s,on);
+ for(const f of FLOATS){if(!f.vis&&!f.sp.v)continue;f.sp.v+=(-140*f.sp.x-7*f.sp.v)/60;f.sp.x+=f.sp.v/60;if(Math.abs(f.sp.v)<.01&&Math.abs(f.sp.x)<.001){f.sp.v=0;f.sp.x=0}
+  let y=on?Math.sin(s*6.283/f.per+f.ph)*f.a:0,r=f.rot+(on?Math.sin(s*6.283/(f.per*1.4)+f.ph)*f.ra:0),x=0;
+  if(f===SV&&shakeT){const a=s-shakeT;if(a<.9){x=Math.sin(a*36)*6*(1-a/.9);r+=Math.sin(a*36)*4*(1-a/.9)}}
+  f.e.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${(1-f.sp.x*.03).toFixed(3)},${(1+f.sp.x*.03).toFixed(3)})`}
+ requestAnimationFrame(loop)})(0);
+</script><script>window.__DEMO_MAP=[[".pearlbtn.back", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=27"></script></body></html>
