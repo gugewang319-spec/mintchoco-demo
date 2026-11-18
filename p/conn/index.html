@@ -30,41 +30,61 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .pearlbtn svg{stroke:#5b3a2c}
 .lhead .lf{display:flex;align-items:flex-end;gap:12px}
 
-/* 茶会请柬：生图卡面，字和输入框叠在上面；字号跟卡宽走（cqw） */
+/* 信：小鸟叼着信封飞来（只在开场），点信封拆开，信纸抽出展开，在信上填地址和钥匙 */
 .stage{position:relative;margin:20px auto 0;width:min(300px,calc(100% - 64px))}
-.card{position:relative;width:100%;aspect-ratio:720/1035;container-type:inline-size;transform-origin:50% 100%;animation:sway 6.4s ease-in-out infinite alternate}
-@keyframes sway{from{rotate:-1.2deg}to{rotate:.9deg}}
-.card>img{position:absolute;inset:0;width:100%;height:100%}
-.card .shine{position:absolute;inset:4% 6%;border-radius:14px;overflow:hidden;pointer-events:none}
+.card{position:relative;width:100%;container-type:inline-size;padding:9cqw 9cqw 8cqw;background:#fbf7ee;border-radius:3px;
+ background-image:linear-gradient(180deg,transparent 33.2%,rgba(138,92,70,.07) 33.4%,transparent 34.2%,transparent 66.4%,rgba(138,92,70,.07) 66.6%,transparent 67.4%),repeating-linear-gradient(90deg,rgba(196,232,218,.0) 0 14px,rgba(196,232,218,.0) 14px 28px);
+ box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 10px 24px -16px rgba(74,48,39,.4);transform-origin:50% 0}
+.card::before{content:"";position:absolute;inset:3.4cqw;border:1.2px solid rgba(95,174,149,.55);outline:1px solid rgba(95,174,149,.3);outline-offset:-4px;border-radius:2px;pointer-events:none}
+.card .shine{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .card .shine i{position:absolute;top:-20%;bottom:-20%;width:38%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);rotate:12deg}
-.seal{position:absolute;left:49.9%;top:11.2%;translate:-50% -50%;font:8.4cqw/1 ZK;color:rgba(250,240,224,.92);letter-spacing:0}
-.inv{position:absolute;left:14%;right:14%;top:32%;text-align:center}
-.inv i{display:block;font:6.6cqw/1 Script;font-style:normal;color:rgba(63,154,128,.7);rotate:-4deg}
-.inv h2{margin-top:1.6cqw;font:normal 9.6cqw/1 ZK;color:var(--ch);letter-spacing:.32em;padding-left:.32em}
-.inv p{margin-top:4.4cqw;font:4.7cqw/1.75 WK;color:#6b4a3c}
-.memo{margin:10px auto 0;text-align:center;font:12px/1.6 WK;color:rgba(122,90,76,.72)}
-.fld{position:absolute;left:16.5%;right:16.3%;display:flex;align-items:flex-end;gap:2cqw}
-.fld label{flex:none;font:4.1cqw/1 ZK;letter-spacing:.12em;color:var(--cocoa);padding-bottom:2.2cqw;white-space:nowrap}
+.inv{text-align:center}
+.inv i{display:block;font:6.6cqw/1 Script;font-style:normal;color:rgba(63,154,128,.75);rotate:-4deg}
+.inv h2{margin-top:2cqw;font:normal 9.6cqw/1 ZK;color:var(--ch);letter-spacing:.32em;padding-left:.32em}
+.inv p{margin-top:5cqw;font:4.7cqw/1.8 WK;color:#6b4a3c}
+.fld{position:relative;display:flex;align-items:flex-end;gap:2cqw;margin-top:6cqw;border-bottom:1.3px solid rgba(138,92,70,.55)}
+.f1{margin-top:8cqw}
+.fld label{flex:none;font:4.1cqw/1 ZK;letter-spacing:.12em;color:var(--cocoa);padding-bottom:2.4cqw;white-space:nowrap}
 .fld .in{position:relative;flex:1;min-width:0;display:flex;align-items:flex-end}
 .fld input{flex:1;min-width:0;height:9cqw;border:0;outline:0;background:transparent;font:16px/9cqw WK;color:var(--ink);padding:0 2px;letter-spacing:.02em}
 .fld input::placeholder{color:rgba(138,92,70,.38)}
 .fld input[type=password]{letter-spacing:.18em}
-.f1{top:calc(70.3% - 9.6cqw)}
-.f2{top:calc(76.2% - 9.6cqw)}
-.fld.bad label{color:#b5543f}
-.fld.bad .in::after{content:"";position:absolute;left:0;right:0;bottom:-.6cqw;height:1.6px;background:#b5543f}
+.fld.bad{border-bottom-color:#b5543f}.fld.bad label{color:#b5543f}
 .eye{flex:none;width:9cqw;height:9cqw;display:grid;place-items:center;opacity:.75}
 .eye svg{stroke:#8a5c46;width:6.4cqw;height:6.4cqw}
-.st{position:absolute;left:16.5%;top:81.6%;display:flex;align-items:center;gap:1.8cqw;font:3.9cqw/1 WK;color:rgba(122,90,76,.72)}
+.foot{position:relative;display:flex;align-items:center;justify-content:space-between;margin-top:6cqw;min-height:17cqw}
+.st{display:flex;align-items:center;gap:1.8cqw;font:3.9cqw/1 WK;color:rgba(122,90,76,.72)}
 .st i{width:2.2cqw;height:2.2cqw;border-radius:50%;background:#c9b3a6}
 .st.ok i{background:var(--mintb);box-shadow:0 0 0 1cqw rgba(63,154,128,.18)}
 .st.ok{color:var(--mint3)}
-/* 回执章：赴约成功盖在右下虚线圈里 */
-.chop{position:absolute;left:77.4%;top:83.7%;width:17cqw;aspect-ratio:1;translate:-50% -50%;pointer-events:none;opacity:0}
-.chop svg{width:100%;height:100%;overflow:visible}
-.chop.on{opacity:1}
-.chop.hit{animation:hit .42s var(--ease-out) both}
+.chop{width:17cqw;aspect-ratio:1;border-radius:50%;border:1.2px dashed rgba(138,92,70,.35);display:grid;place-items:center}
+.chop svg{width:100%;height:100%;overflow:visible;opacity:0}
+.chop.on svg{opacity:1}
+.chop.hit svg{animation:hit .42s var(--ease-out) both}
 @keyframes hit{0%{opacity:0;scale:1.9;rotate:-24deg}60%{opacity:1;scale:.92}100%{opacity:1;scale:1}}
+
+/* 开场：小鸟、信封 */
+.intro{position:fixed;inset:0;z-index:30;pointer-events:none}
+.intro.live{pointer-events:auto}
+.flyer{position:absolute;left:0;top:0;width:110px;height:120px;will-change:transform}
+.flyer .b{position:absolute;left:0;top:0;width:110px}
+.flyer .b.d{left:-3px;top:47px;width:120px;visibility:hidden}
+.flyer.dn .b.u{visibility:hidden}.flyer.dn .b.d{visibility:visible}
+.flyer .hold{position:absolute;left:-34px;top:62px;width:96px;rotate:-12deg;transform-origin:30px 0}
+.envbox{position:absolute;left:50%;top:44%;width:min(250px,calc(100% - 96px));aspect-ratio:560/614;translate:-50% -50%;visibility:hidden;cursor:pointer}
+.envbox img{position:absolute;left:0;width:100%}
+.envbox .eo,.envbox .ef{top:0;opacity:0}
+.envbox .ec{top:43.6%;width:100%}
+.envbox .peek{position:absolute;left:9%;right:9%;top:36%;height:48%;background:#fbf7ee;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(138,92,70,.12);opacity:0;display:grid;place-items:start center;padding-top:6%}
+.envbox .peek i{font:17px/1 Script;font-style:normal;color:rgba(63,154,128,.75);rotate:-4deg}
+.envbox.open .eo,.envbox.open .ef,.envbox.open .peek{opacity:1}
+.envbox.open .ec{opacity:0}
+.hint{position:absolute;left:0;right:0;top:calc(44% + min(150px,calc(50vw - 30px)));text-align:center;font:13px/1 WK;letter-spacing:.2em;color:rgba(122,90,76,.7);opacity:0;transition:opacity .4s}
+.hint.on{opacity:1}
+.memo{margin:10px auto 0;padding:0 24px;text-align:center;font:12px/1.6 WK;color:rgba(122,90,76,.72)}
+.envbox.bob{animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{translate:-50% calc(-50% - 5px)}}
+html.gate.pre .lhead,html.gate.pre .stage{visibility:hidden}
 
 /* 一级：巧克力牌（每屏最多一个） */
 .go{position:relative;display:block;margin:22px auto 0;width:min(196px,60%);aspect-ratio:560/197;transition:scale .16s var(--ease-out)}
@@ -97,14 +117,12 @@ html.gate .pearlbtn,html.gate .pnav,html.gate .navfade,html.gate .alt{display:no
 
 <div class="stage">
  <div class="card" id="card">
-  <img src="invite.webp" alt="">
   <div class="shine" aria-hidden="true"><i id="shine"></i></div>
-  <span class="seal" aria-hidden="true">茶</span>
   <div class="inv"><i aria-hidden="true">Mint Choco Tea Party</i><h2>茶会邀请</h2><p>亲爱的你：<br>薄荷巧克力茶会，<br>今晚为你留了座位。</p></div>
   <div class="fld f1" id="f1"><label for="url">赴会地址</label><div class="in"><input id="url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://你的网关"></div></div>
   <div class="fld f2" id="f2"><label for="key">钥匙签名</label><div class="in"><input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="签在这里"><button class="eye" id="eye" aria-label="显示钥匙"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12C5 7.8 8.4 6 12 6s7 1.8 9.5 6c-2.5 4.2-5.9 6-9.5 6s-7-1.8-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/><path id="slash" d="M4 20 20 4"/></svg></button></div></div>
-  <p class="st" id="st"><i></i><span id="stx">还没回执</span></p>
-  <div class="chop" id="chop" aria-hidden="true"><svg viewBox="0 0 40 40" style="rotate:-10deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.6)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">到</text></svg></div>
+  <div class="foot"><p class="st" id="st"><i></i><span id="stx">还没回执</span></p>
+  <div class="chop" id="chop" aria-hidden="true"><svg viewBox="0 0 40 40" style="rotate:-10deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.6)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">到</text></svg></div></div>
  </div>
  <button class="go" id="go"><img src="plaque.png" alt=""><span id="gotx">赴约</span></button>
  <p class="memo">地址和钥匙只记在这一次打开里，关掉就忘。</p>
@@ -112,6 +130,11 @@ html.gate .pearlbtn,html.gate .pnav,html.gate .navfade,html.gate .alt{display:no
 </div>
 <img class="bit" src="bit2.png" style="width:18px;right:26px;top:170px;z-index:9" alt="">
 </div></div>
+<div class="intro" id="intro" aria-hidden="true">
+ <div class="flyer" id="flyer"><img class="hold" src="env_c.webp" alt=""><img class="b u" src="bird_u.webp" alt=""><img class="b d" src="bird_d.webp" alt=""></div>
+ <div class="envbox" id="envbox" role="button" aria-label="拆开信封"><img class="eo" src="env_o.webp" alt=""><div class="peek"><i>Mint Choco</i></div><img class="ef" src="env_f.webp" alt=""><img class="ec" src="env_c.webp" alt=""></div>
+ <p class="hint" id="hint">轻点拆信</p>
+</div>
 <div class="navfade" aria-hidden="true"></div>
 <nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
 <button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
@@ -145,5 +168,41 @@ go.onclick=async()=>{
  navigator.vibrate&&navigator.vibrate(12);setOk(true);
  if(GATE){gotx.textContent='入席中';setTimeout(()=>parent!==window&&parent.postMessage({demo:'enter'},'*'),RM?150:650)}};
 alt.onclick=()=>{S={url:'',key:'',ok:false};$('#url').value='';$('#key').value='';setOk(false);$('#url').focus({preventScroll:true})};
+
+/* 开场：小鸟叼信飞来 → 信封落下 → 点开 → 信纸抽出、展开。点一下可跳过飞行；减弱动效时直接给信 */
+(()=>{const I=$('#intro');
+ if(!GATE||RM){I.remove();return}
+ const H=document.documentElement;H.classList.add('pre');I.classList.add('live');
+ const F=$('#flyer'),E=$('#envbox'),hint=$('#hint');
+ let flap=0,landed=false,fa=null;F.style.transform='translate(-200px,-200px)';
+ const W=innerWidth,Hh=innerHeight,er=()=>E.getBoundingClientRect();
+ // 信封落点：先让它占位算位置
+ E.style.visibility='hidden';const R=er();
+ const tx=R.left+R.width*.5-10,ty=R.top-70;   /* 小鸟停在信封正上方 */
+ const fly=()=>{flap=setInterval(()=>F.classList.toggle('dn'),120);fa=F.animate([
+  {transform:`translate(${W+40}px,${Hh*.08}px) rotate(6deg)`},
+  {transform:`translate(${W*.72}px,${Hh*.2}px) rotate(-4deg)`,offset:.45},
+  {transform:`translate(${tx+16}px,${ty-14}px) rotate(3deg)`,offset:.8},
+  {transform:`translate(${tx}px,${ty}px) rotate(0deg)`}],{duration:1500,easing:'cubic-bezier(.35,.1,.3,1)',fill:'forwards'});fa.finished.then(land)};
+ const land=()=>{if(landed)return;landed=true;fa&&fa.finish();
+  const hold=F.querySelector('.hold');const hr=hold.getBoundingClientRect();hold.style.visibility='hidden';
+  E.style.visibility='visible';const r=er();
+  E.animate([{transform:`translate(${hr.left+hr.width/2-(r.left+r.width/2)}px,${hr.top-r.top-r.height*.3}px) scale(${hr.width/r.width}) rotate(-12deg)`},{transform:'translate(0,6px) scale(1) rotate(2deg)',offset:.75},{transform:'none'}],{duration:620,easing:'cubic-bezier(.3,.7,.3,1)'});
+  const cur=getComputedStyle(F).transform;
+  F.animate([{transform:cur},{transform:`translate(${-140}px,${-120}px) rotate(-10deg)`}],{duration:900,delay:120,easing:'cubic-bezier(.5,0,.7,.4)',fill:'forwards'}).finished.then(()=>{clearInterval(flap);F.remove()});
+  setTimeout(()=>{hint.style.top=(E.querySelector('.ec').getBoundingClientRect().bottom+8)+'px';hint.classList.add('on');E.classList.add('bob')},700)};
+ document.fonts.ready.then(()=>setTimeout(fly,450));
+ I.addEventListener('click',e=>{if(!landed){if(!fa)fly();land();return}});
+ E.addEventListener('click',async e=>{e.stopPropagation();if(!landed||E.classList.contains('open'))return;
+  hint.classList.remove('on');E.getAnimations().forEach(a=>a.cancel());E.classList.add('open');
+  const pk=E.querySelector('.peek');
+  await pk.animate([{transform:'none'},{transform:'translateY(-52%)'}],{duration:520,easing:'cubic-bezier(.3,.7,.3,1)',fill:'forwards'}).finished;
+  /* 信封往下退，信纸换成真的信，从折着的一截展开 */
+  E.animate([{transform:'none',opacity:1},{transform:'translateY(60px)',opacity:0}],{duration:380,easing:'ease-in',fill:'forwards'});
+  H.classList.remove('pre');const C=$('#card'),L=$('.lhead'),B=[$('#go'),$('.memo')];
+  C.animate([{clipPath:'inset(0 0 66.6% 0)',transform:'translateY(14px) scale(.96)'},{clipPath:'inset(0 0 33.3% 0)',transform:'translateY(6px) scale(.985)',offset:.45},{clipPath:'inset(0 0 0 0)',transform:'none'}],{duration:620,easing:'cubic-bezier(.3,.7,.3,1)'});
+  [L,...B].forEach((x,i)=>x&&x.animate([{opacity:0},{opacity:1}],{duration:360,delay:260+i*80,fill:'backwards'}));
+  setTimeout(()=>I.remove(),420)});
+})();
 </script>
-<script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=39"></script></body></html>
+<script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=40"></script></body></html>
