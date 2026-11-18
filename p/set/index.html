@@ -156,7 +156,6 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 <div class="tier pl" style="transition-delay:.35s">
  <button class="it wide" data-c="0" aria-label="渠道和模型"><span class="ob"><img class="s1" src="c-ticket.png" style="height:122px" alt=""><img class="s2" src="c-teabag.png" style="height:104px" alt=""></span>
   <span class="tag"><span><b class="nm">渠道 · 模型</b><span class="v">3<small>条</small> 4<small>款</small></span></span><span class="warn">备用超时<img class="circ" src="circle.png" alt=""></span></span></button>
- <button class="plus" aria-label="接一条新渠道"><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
 </div>
 <div class="tier pl" style="transition-delay:.45s;margin-top:26px">
  <button class="it" data-c="2" aria-label="声音"><span class="ob"><img class="s3" src="c-vinyl.png" style="height:104px;margin-bottom:8px" alt=""></span><span class="tag"><b class="nm">声音</b><span class="v">3<small>种</small></span></span></button>
@@ -184,7 +183,7 @@ function fit(){const r=cv.getBoundingClientRect();cv.width=r.width*DPR;cv.height
 function bub(n,x,y,top){const b=cv.getBoundingClientRect();for(let i=0;i<n;i++)B.push({x:x??Math.random()*b.width,y:y??b.height+10,r:1.5+Math.random()*3,vy:-(.35+Math.random()*.6),w:Math.random()*6.28,stop:top?y-120:-10})}
 fit();addEventListener('resize',fit);for(let i=0;i<(RM?0:10);i++){bub(1);B[B.length-1].y=Math.random()*cv.getBoundingClientRect().height}
 function place(){const sh=$('#shelf');$('#cols').style.top=(sh.offsetTop+sh.offsetHeight+18)+'px'}
-$$('.it,.plus').forEach(e=>e.addEventListener('click',()=>{e.classList.remove('hit');void e.offsetWidth;e.classList.add('hit')}));
+$$('.it').forEach(e=>e.addEventListener('click',()=>{e.classList.remove('hit');void e.offsetWidth;e.classList.add('hit')}));
 $$('.ingr button').forEach(b=>b.onclick=()=>{b.classList.add('hit');setTimeout(()=>b.classList.remove('hit'),300)});
 place();requestAnimationFrame(()=>$('#app').classList.add('ready'));
 let t0=performance.now();addEventListener('resize',place);
@@ -194,4 +193,4 @@ function loop(now){const t=(now-t0)/1000,m=RM?0:1;
  B=B.filter(b=>{b.y+=b.vy;b.w+=.04;const x=b.x+Math.sin(b.w)*2;cx.beginPath();cx.arc(x,b.y,b.r,0,7);cx.strokeStyle='rgba(138,92,70,.35)';cx.lineWidth=1;cx.stroke();cx.fillStyle='rgba(255,255,255,.45)';cx.fill();return b.y>b.stop});
  requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
-</script><script>window.__DEMO_MAP=[["#big", "push:use", 0, 0], [".mcard", "push:conn", 0, 0], [".it[data-c=\"0\"]", "push:chn", 1, 200], [".plus", "push:chn", 1, 200], [".it[data-c=\"2\"]", "push:snd", 1, 200], [".it[data-c=\"3\"]", "push:hlt", 1, 200]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=42"></script></body></html>
+</script><script>window.__DEMO_MAP=[["#big", "push:use", 0, 0], [".mcard", "push:conn", 0, 0], [".it[data-c=\"0\"]", "push:chn", 1, 200], [".it[data-c=\"2\"]", "push:snd", 1, 200], [".it[data-c=\"3\"]", "push:hlt", 1, 200]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=43"></script></body></html>
