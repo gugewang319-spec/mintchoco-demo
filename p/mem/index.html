@@ -264,10 +264,34 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .flt.tm{margin-top:-10px;gap:16px}.flt.tm .lb{flex:none;font:12px/1 ZK;color:#b49a88;letter-spacing:.1em;align-self:center}.flt.tm button{font-size:13.5px}
 .mrail{gap:9px!important}.mrail b{transition:background .25s!important;transform:none!important}.mrail b.cur{background:#7fc8ad}
 .dots{align-items:center}.dots i{flex:none;box-sizing:border-box}
-/* 展开：底栏同款毛玻璃小圆钮，箭头向下，展开后转上去 */
-.mi.long .ft:after{content:""!important;margin-left:auto;width:28px;height:28px;flex:none;border-radius:50%;background:rgba(252,250,244,.62) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b3a2c' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E") center/16px no-repeat;backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 4px 12px rgba(74,48,39,.12);transition:transform .3s}
-.mi.long.open .ft:after{transform:rotate(180deg)}
-.mi:not(.long) .ft{min-height:28px}
+/* 筛选：选中是薄荷胶囊 */
+.flt{gap:6px!important;align-items:center}
+.flt button{padding:8px 12px;border-radius:17px;transition:background .2s,color .2s}
+.flt button.on{background:#c9ebdc;color:#2c4a3e!important;box-shadow:inset 0 0 0 1px rgba(47,110,88,.18)}
+.flt button.on:after{display:none!important}
+.flt button.on em{color:#2f6e58}
+/* 日历跳转 */
+.flt.tm{flex-wrap:wrap;overflow:visible;margin-top:-12px!important}
+.cbt{display:flex;align-items:center;gap:6px;font:14px/1 ZK!important;color:#8a6a5a!important}
+.cbt i{width:6px;height:6px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-2px);margin-left:2px;transition:transform .25s}
+.cbt.on i{transform:rotate(-135deg) translate(-2px,0)}
+.cal{flex:0 0 100%;margin:8px 0 2px;padding:12px 12px 10px;border-radius:20px;background:rgba(252,250,244,.62);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 6px 18px rgba(74,48,39,.1)}
+.cal[hidden]{display:none}
+.cal .ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal .ch b{font:400 15px/1 ZK;color:var(--ch);letter-spacing:.06em}
+.cal .ch button{width:30px;height:30px;padding:0!important;border-radius:50%;font:20px/1 Baloo!important;color:#6b4a3b!important}
+.cal .ch button:disabled{opacity:.25}
+.cal .wk,.cal .gd{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+.cal .wk span{font:12px/1 ZK;color:#b49a88;padding:4px 0 8px}
+.cal .gd>*{height:34px;display:grid;place-items:center;font:600 13px/1 Baloo;color:#c9b4a4}
+.cal .gd .hd{width:32px;height:32px;margin:1px auto;padding:0!important;border-radius:16px;background:#c9ebdc;color:#2c4a3e!important;font:700 13px/1 Baloo!important}
+.cal .tip{margin:6px 0 0;text-align:center;font:12px/1 ZK;color:#b49a88}
+.mi.hit{animation:hit 1.4s ease}
+@keyframes hit{0%,100%{background:transparent}25%{background:rgba(201,235,220,.7)}}
+.mi{border-radius:14px}
+/* 到底部：底栏同款毛玻璃小圆钮 */
+.tobot{position:fixed;z-index:39;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));width:42px;height:42px;margin-left:-21px;border-radius:50%;display:grid;place-items:center;background:rgba(252,250,244,.62);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 6px 16px rgba(74,48,39,.14);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .25s,transform .25s}
+.tobot.on{opacity:1;transform:none;pointer-events:auto}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
  <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
@@ -316,17 +340,31 @@ MEMS.sort((a,b)=>b[4].localeCompare(a[4]));MEMS.forEach((m,i)=>{const e=document
  const ttl=m[7]?`<i class="q l">「</i>${m[2]}<i class="q r">」</i>`:m[2];
  e.innerHTML=`<div class="mg"><b>${m[4]}</b><span>${m[0]}</span><img class="cy" src="${CY[m[1]]}" alt="" style="transform:rotate(${RT[i]}deg)"></div><div class="rd"><h3>${ttl}</h3><p>${m[3]}</p><div class="ft">证据 ${m[5]}<i>·</i>${m[1]}${m[6]?'<em class="rv">待复核</em>':''}</div></div>`;
  const mo=+m[4].split('.')[0];if(mo!==MEMS._mo){MEMS._mo=mo;const d=document.createElement('div');d.className='mon';d.dataset.m=mo;d.innerHTML=`<b>${mo}</b><span>月</span><i></i>`;$('.mems').appendChild(d)}
- e.dataset.t=m[0];e.dataset.m=mo;$('.mems').appendChild(e)});
+ e.dataset.t=m[0];e.dataset.m=mo;e.dataset.k=m[4].split('.').map(x=>x.padStart(2,'0')).join('.');$('.mems').appendChild(e)});
 /* 按类型 + 按月份筛：只亮字，原地换，不滚动 */
-{const types=['全部',...new Set(MEMS.map(m=>m[0]))],mons=[...new Set(MEMS.map(m=>+m[4].split('.')[0]))],F=$('.flt'),T=$('.flt.tm');let ft='全部',fm=0;
+{const types=['全部',...new Set(MEMS.map(m=>m[0]))],mons=[...new Set(MEMS.map(m=>+m[4].split('.')[0]))],F=$('.flt'),T=$('.flt.tm');let ft='全部';
  F.innerHTML=types.map((x,i)=>`<button role="tab" class="${i?'':'on'}" data-t="${x}">${x}<em>${x==='全部'?MEMS.length:MEMS.filter(m=>m[0]===x).length}</em></button>`).join('');
- T.innerHTML=`<span class="lb">时间</span><button role="tab" class="on" data-m="0">全部</button>`+mons.map(m=>`<button role="tab" data-m="${m}">${m}月<em>${MEMS.filter(x=>+x[4].split('.')[0]===m).length}</em></button>`).join('');
+ let cy=2026,cmo=mons[0];
+ const CAL='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/></svg>';
+ T.innerHTML=`<button class="cbt" aria-expanded="false">${CAL}<span>按日子跳</span><i></i></button><div class="cal" hidden></div>`;
+ const C=$('.cal',T),CB=$('.cbt',T);
+ function drawCal(){const days=new Set(MEMS.filter(m=>+m[4].split('.')[0]===cmo).map(m=>+m[4].split('.')[1]));
+  const first=new Date(cy,cmo-1,1).getDay(),n=new Date(cy,cmo,0).getDate(),pi=mons.indexOf(cmo);
+  let g='';for(let i=0;i<first;i++)g+='<span></span>';for(let d=1;d<=n;d++)g+=days.has(d)?`<button class="hd" data-d="${d}">${d}</button>`:`<span class="nd">${d}</span>`;
+  C.innerHTML=`<div class="ch"><button class="pv" ${pi>=mons.length-1?'disabled':''} aria-label="上个月">‹</button><b>${cy} 年 ${cmo} 月</b><button class="nx" ${pi<=0?'disabled':''} aria-label="下个月">›</button></div><div class="wk">${'日一二三四五六'.split('').map(x=>`<span>${x}</span>`).join('')}</div><div class="gd">${g}</div><p class="tip">有糖的日子才能点</p>`}
+ CB.addEventListener('click',()=>{const ap=$('.scroller'),y=ap.scrollTop,o=C.hidden;C.hidden=!o;CB.setAttribute('aria-expanded',o);CB.classList.toggle('on',o);if(o)drawCal();requestAnimationFrame(()=>ap.scrollTop=y)});
+ C.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b||b.disabled)return;const pi=mons.indexOf(cmo);
+  if(b.classList.contains('pv')){cmo=mons[pi+1];drawCal();return}if(b.classList.contains('nx')){cmo=mons[pi-1];drawCal();return}
+  const key=`${String(cmo).padStart(2,'0')}.${String(b.dataset.d).padStart(2,'0')}`;
+  if(ft!=='全部'){ft='全部';$$('button',F).forEach((x,i)=>x.classList.toggle('on',i===0));apply()}
+  const e=$$('.mems .mi').find(x=>x.dataset.k===key);if(!e)return;C.hidden=true;CB.classList.remove('on');CB.setAttribute('aria-expanded','false');
+  const sc=$('.scroller');requestAnimationFrame(()=>{sc.scrollTo({top:sc.scrollTop+e.getBoundingClientRect().top-sc.getBoundingClientRect().top-120,behavior:'smooth'});e.classList.remove('hit');void e.offsetWidth;e.classList.add('hit')})});
  function apply(){const ap=$('.scroller'),y=ap.scrollTop;
-  $$('.mems .mi').forEach(e=>e.hidden=!((ft==='全部'||e.dataset.t===ft)&&(!fm||+e.dataset.m===fm)));
+  $$('.mems .mi').forEach(e=>e.hidden=!((ft==='全部'||e.dataset.t===ft)));
   $$('.mems .mon').forEach(d=>d.hidden=!$$(`.mems .mi[data-m="${d.dataset.m}"]`).some(e=>!e.hidden));
   requestAnimationFrame(()=>{ap.scrollTop=y;mrail()})}
  F.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;$$('button',F).forEach(x=>x.classList.toggle('on',x===b));ft=b.dataset.t;apply()});
- T.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;T.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));fm=+b.dataset.m;apply()})}
+}
 $$('.mi.long').forEach(e=>e.addEventListener('click',()=>{const o=e.classList.toggle('open');e.setAttribute('aria-expanded',o)}));
 
 /* 右侧小滑轨：棕线包着薄荷小圆，一颗记忆一个点，当前那颗变大 */
@@ -343,7 +381,10 @@ function mpos(){const sc=$('.scroller'),its=RL._its||[];if(!its.length)return;co
 function wave(ds,f,big,small){ds.forEach((b,i)=>{const g=Math.exp(-((i-f)**2)/1.1),s=small+(big-small)*g;b.style.width=b.style.height=s.toFixed(1)+'px';b.style.opacity=(.28+.72*g).toFixed(2);b.classList.toggle('cur',Math.abs(i-f)<.5)})}
 RL.addEventListener('click',ev=>{const b=ev.target.closest('b');if(!b)return;const e=RL._its[+b.dataset.i],sc=$('.scroller');
  sc.scrollTo({top:sc.scrollTop+e.getBoundingClientRect().top-sc.getBoundingClientRect().top-140,behavior:'smooth'})});
-$('.scroller').addEventListener('scroll',()=>requestAnimationFrame(mpos),{passive:true});mrail();wave($$('.dots i').filter(d=>d.style.display!=='none'),0,9,3.5);
+$('.scroller').addEventListener('scroll',()=>requestAnimationFrame(mpos),{passive:true});{const DB=document.createElement('button');DB.className='tobot';DB.setAttribute('aria-label','到底部');DB.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg>';$('#app').appendChild(DB);const sc=$('.scroller');
+ const upd=()=>DB.classList.toggle('on',sc.scrollTop>160&&sc.scrollTop<sc.scrollHeight-sc.clientHeight-40);sc.addEventListener('scroll',()=>requestAnimationFrame(upd),{passive:true});upd();
+ DB.addEventListener('click',()=>sc.scrollTo({top:sc.scrollHeight,behavior:'smooth'}))}
+mrail();wave($$('.dots i').filter(d=>d.style.display!=='none'),0,9,3.5);
 /* 动：每颗糖自己的周期，字跟着糖一起 */
 const sp=()=>({x:0,v:0});
 const floats=[...$$('.mi .cy').map((e,i)=>({e,rot:[-10,8,-6,12,-8,6,-12][i%7],per:3.6+Math.random()*2.8,ph:Math.random()*6.28,a:2.2,ra:.5,s:sp()})),...$$('.cand').map(e=>({e,per:3+Math.random()*2,ph:Math.random()*6.28,a:1.6,ra:.6,s:sp()}))];
