@@ -1,6 +1,7 @@
 <!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>模型 · 极繁样张</title>
 <style>
-@font-face{font-family:ZK;src:url(zk.ttf)}@font-face{font-family:WK;src:url(wk.ttf)}@font-face{font-family:Script;src:url(script.ttf)}@font-face{font-family:BalooX;src:url(baloo800.ttf)}
+@font-face{font-family:ZK;src:url(zk.ttf)}@font-face{font-family:WK;src:url(wk.ttf)}
+@font-face{font-family:Sofia;src:url(sofia.ttf)}@font-face{font-family:Script;src:url(script.ttf)}@font-face{font-family:BalooX;src:url(baloo800.ttf)}
 :root{--ink:#5e4c43;--ink2:#8a7a70;--choc:#5b3a2c;--ol:#6b4a3b;--mint:#2f6e58;--mintl:#9fd3bf;--cream:#fffaf0}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;color:var(--ink)}
@@ -112,8 +113,43 @@ img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .ft{position:absolute;left:24px;bottom:42px;font:min(30px,7vw) Script;white-space:nowrap;color:var(--ol);transform:rotate(-4deg)}
 .drink{position:absolute;right:16px;bottom:8px;width:76px;transform:rotate(5deg)}
 .cookie{position:absolute;right:86px;bottom:2px;width:70px;transform:rotate(-8deg)}
+
+/* —— 极繁层（与聊天页同一套）—— */
+.vp::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(91,58,44,.28) 0 1.6px,transparent 2.2px),radial-gradient(circle,rgba(91,58,44,.18) 0 1.2px,transparent 1.8px);background-size:46px 46px,46px 46px;background-position:0 0,23px 23px}
+.bgd{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bgd img{position:absolute;transform:rotate(var(--r));filter:drop-shadow(0 2px 2px rgba(74,48,39,.15));animation:fl 9s ease-in-out infinite alternate}
+@keyframes fl{to{transform:rotate(calc(var(--r) + 8deg)) translateY(-8px)}}
+.bigw{position:absolute;left:-8px;top:30%;font:700 96px/.86 Sofia,cursive;color:transparent;-webkit-text-stroke:1.2px rgba(91,58,44,.2);transform:rotate(-8deg);white-space:nowrap}
+.bigw.b2{left:auto;right:-20px;top:62%;transform:rotate(6deg);-webkit-text-stroke-color:rgba(47,110,88,.24)}
+.cover,.vn,#sts,.ch,.foot{z-index:1}
+.vn{position:relative}
+/* 呼吸感：每件装饰绕自己的支点微动，节奏错开 */
+@keyframes sw{from{rotate:calc(var(--a,2deg) * -1)}to{rotate:var(--a,2deg)}}
+@keyframes bh{from{scale:1}to{scale:var(--s,1.035)}}
+@keyframes bob2{from{translate:0 0}to{translate:0 -2.5px}}
+.cone{transform-origin:50% 95%;--a:3deg;animation:sw 4.4s ease-in-out infinite alternate}
+.stand{transform-origin:50% 100%;--s:1.025;animation:bh 4s ease-in-out infinite alternate}
+.curls{transform-origin:10% 80%;--a:1.5deg;animation:sw 5.4s ease-in-out -1s infinite alternate}
+.vn .leaf{transform-origin:20% 90%;--a:5deg;animation:sw 3.8s ease-in-out infinite alternate}
+.dc{transform-origin:80% 50%;--a:2deg;animation:sw 5s ease-in-out -2s infinite alternate}
+.cookie{animation:bob2 3.4s ease-in-out infinite alternate}
+.drink{transform-origin:50% 100%;--s:1.03;animation:bh 3.8s ease-in-out -1s infinite alternate}
+.drip{transform-origin:50% 0;animation:dr 5s ease-in-out infinite alternate}
+@keyframes dr{from{scale:1 1}to{scale:1 1.08}}
+/* 白边贴纸 + 松露挂件 */
+.stk{position:absolute;z-index:6;pointer-events:none;filter:drop-shadow(0 1.5px 1px rgba(74,48,39,.28));--s:1.04;animation:bh var(--d,4s) ease-in-out infinite alternate}
+.stk.s1{width:40px;right:-30px;top:-22px;rotate:16deg;--d:4.4s}
+.stk.s2{width:40px;left:-12px;bottom:-16px;rotate:-14deg;--d:3.8s}
+.ph .stk.s3{inset:auto;width:38px;height:auto;right:6px;top:-8px;rotate:18deg;--d:5s}
+.fig{position:relative}
+.chm{position:absolute;z-index:6;right:56px;bottom:-60px;width:28px;height:62px;transform-origin:50% 0;--a:7deg;animation:sw 2.8s ease-in-out infinite alternate;pointer-events:none}
+.chm::before{content:"";position:absolute;left:50%;top:0;width:1px;height:32px;background:rgba(91,58,44,.6)}
+.chm::after{content:"";position:absolute;left:calc(50% - 3px);top:-3px;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px rgba(91,58,44,.5)}
+.chm img{position:absolute;left:0;top:28px;width:28px;filter:drop-shadow(0 2px 1px rgba(74,48,39,.3))}
+@media (prefers-reduced-motion:reduce){.bgd img,.cone,.stand,.curls,.vn .leaf,.dc,.cookie,.drink,.drip,.stk,.chm{animation:none!important}}
 </style></head><body>
 <div class="vp"><div class="app" id="app"><div class="in" id="in">
+<div class="bgd" aria-hidden="true"><b class="bigw">Mint<br>Choco</b><b class="bigw b2">Models</b><img src="bit1.png" alt="" style="width:34px;left:6%;top:24%;--r:-18deg;opacity:.6;animation-delay:-0.0s"><img src="bit4.png" alt="" style="width:30px;left:86%;top:27%;--r:12deg;opacity:.55;animation-delay:-1.3s"><img src="bit2.png" alt="" style="width:38px;left:3%;top:38%;--r:20deg;opacity:.55;animation-delay:-2.6s"><img src="whip.png" alt="" style="width:32px;left:90%;top:41%;--r:-8deg;opacity:.7;animation-delay:-3.9s"><img src="bit6.png" alt="" style="width:30px;left:2%;top:52%;--r:-10deg;opacity:.55;animation-delay:-5.2s"><img src="truf.png" alt="" style="width:24px;left:92%;top:55%;--r:0deg;opacity:.7;animation-delay:-6.5s"><img src="bit1.png" alt="" style="width:32px;left:88%;top:66%;--r:30deg;opacity:.6;animation-delay:-7.8s"><img src="leaves.png" alt="" style="width:40px;left:1%;top:68%;--r:14deg;opacity:.7;animation-delay:-9.1s"><img src="bit3.png" alt="" style="width:22px;left:50%;top:71.5%;--r:0deg;opacity:.5;animation-delay:-10.4s"><img src="bit4.png" alt="" style="width:30px;left:4%;top:82%;--r:-14deg;opacity:.55;animation-delay:-11.7s"><img src="whip.png" alt="" style="width:28px;left:46%;top:93%;--r:10deg;opacity:.65;animation-delay:-13.0s"></div>
 <img class="drip" src="drizzle.png" alt="">
 
 <header class="cover">
@@ -125,7 +161,7 @@ img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
  <div class="meta">
   <div class="no"><span><b>03</b>本期</span></div>
   <div class="fig"><b id="nst">6</b><span>中转站</span></div>
-  <div class="fig"><b id="nmd">14</b><span>款</span></div>
+  <div class="fig"><img class="stk s1" src="stk_bar.png" alt=""><b id="nmd">14</b><span>款</span></div>
  </div>
 </header>
 
@@ -133,13 +169,13 @@ img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
  <div class="np"><img src="m_plaque.png" alt=""><span>薄荷店长</span></div>
  <img class="leaf" src="k_mint.png" alt="">
  <p id="say">今天先用 <em>gpt-4o</em>，没回应就按备用链换下一个。点哪块巧克力，就换哪个先用。</p>
- <i class="nx"></i>
+ <i class="nx"></i><img class="stk s2" src="stk_whip.png" alt=""><i class="chm"><img src="stk_truf.png" alt=""></i>
 </section>
 
 <div id="sts"></div>
 <img class="dc" src="m_curls.png" alt="" style="right:-40px;margin-top:-30px;width:160px;transform:rotate(-12deg);position:relative;left:auto;float:right">
 <section class="ch chain" id="chain">
- <div class="ph"><img src="m_plaque.png" alt=""><h2>备用链</h2></div>
+ <div class="ph"><img src="m_plaque.png" alt=""><h2>备用链</h2><img class="stk s3" src="stk_leaf.png" alt=""></div>
  <svg class="rope" viewBox="0 0 412 60" preserveAspectRatio="none"><path d="M-4 14 Q103 52 206 22 T416 18" fill="none" stroke="#6b4a3b" stroke-width="1.6" stroke-linecap="round"/><path d="M-4 18 Q103 56 206 26 T416 22" fill="none" stroke="#9fd3bf" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round"/></svg>
 </section>
 
