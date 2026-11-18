@@ -261,6 +261,13 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .mrail b:after{content:"";position:absolute;inset:-8px}
 .mrail b.cur{transform:scale(1.55);background:#7fc8ad}
 @media (prefers-reduced-motion:reduce){.mrail,.mrail b{transition:none}}
+.flt.tm{margin-top:-10px;gap:16px}.flt.tm .lb{flex:none;font:12px/1 ZK;color:#b49a88;letter-spacing:.1em;align-self:center}.flt.tm button{font-size:13.5px}
+.mrail{gap:9px!important}.mrail b{transition:background .25s!important;transform:none!important}.mrail b.cur{background:#7fc8ad}
+.dots{align-items:center}.dots i{flex:none;box-sizing:border-box}
+/* 展开：底栏同款毛玻璃小圆钮，箭头向下，展开后转上去 */
+.mi.long .ft:after{content:""!important;margin-left:auto;width:28px;height:28px;flex:none;border-radius:50%;background:rgba(252,250,244,.62) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b3a2c' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E") center/16px no-repeat;backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 4px 12px rgba(74,48,39,.12);transition:transform .3s}
+.mi.long.open .ft:after{transform:rotate(180deg)}
+.mi:not(.long) .ft{min-height:28px}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
  <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
@@ -302,7 +309,7 @@ const WAVE=`<svg class="top" viewBox="0 0 412 34" preserveAspectRatio="none"><pa
 h+=`<section class="desk">${WAVE}<div class="hd"><span class="sign"><img src="sign.png" alt=""><b>包装台</b></span><span class="sub"><em id="cc">${CANDS.length}</em>条</span></div><div class="bench"><div class="cands">`;
 CANDS.forEach((c,i)=>{h+=`<div class="cand" data-i="${i}"><img src="wrapper.png" alt=""><div class="tx"><span class="tg">${c[0]} · <em>${c[1]}</em></span><p>${c[2]}</p></div></div>`});
 h+=`</div><div class="tools"><img class="tape" src="tape.png" alt=""><div class="acts"><button class="ok" aria-label="包好"><i>${OK}</i>包好</button><button class="no" aria-label="化掉"><i>${NO}</i>化掉</button></div><div class="pile"><img src="cy-cocoa.png" style="left:4px;bottom:0;transform:rotate(-12deg)"><img src="cy-mint.png" style="right:0;bottom:4px;transform:rotate(8deg)"><img src="cy-cream.png" style="left:30px;bottom:26px;transform:rotate(-3deg)"></div><div class="dots">${CANDS.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div></div></div></section>`;
-h+=`<div class="sec"><h2>最近收进罐子的</h2></div><div class="flt" role="tablist"></div><div class="mems"></div><div class="mft"><p>Sweet little memories</p><img src="cy-mint.png" alt="" style="right:58px;bottom:6px;rotate:-14deg"><img src="cy-cocoa.png" alt="" style="right:14px;bottom:14px;rotate:10deg"><img src="cy-cream.png" alt="" style="right:34px;bottom:34px;rotate:-4deg"></div>`;
+h+=`<div class="sec"><h2>最近收进罐子的</h2></div><div class="flt" role="tablist"></div><div class="flt tm" role="tablist"></div><div class="mems"></div><div class="mft"><p>Sweet little memories</p><img src="cy-mint.png" alt="" style="right:58px;bottom:6px;rotate:-14deg"><img src="cy-cocoa.png" alt="" style="right:14px;bottom:14px;rotate:10deg"><img src="cy-cream.png" alt="" style="right:34px;bottom:34px;rotate:-4deg"></div>`;
 L.innerHTML=h;
 const CY={'茶茶':'cy-mint.png','叶铎':'cy-cream.png','关系':'cy-cocoa.png'};const RT=[-10,8,-6,12,-8,6,-12];
 MEMS.sort((a,b)=>b[4].localeCompare(a[4]));MEMS.forEach((m,i)=>{const e=document.createElement('article');e.className='mi'+(m[7]?' imp':'')+(m[3].length>34?' long':'');e.tabIndex=0;e.setAttribute('aria-expanded','false');
@@ -310,14 +317,16 @@ MEMS.sort((a,b)=>b[4].localeCompare(a[4]));MEMS.forEach((m,i)=>{const e=document
  e.innerHTML=`<div class="mg"><b>${m[4]}</b><span>${m[0]}</span><img class="cy" src="${CY[m[1]]}" alt="" style="transform:rotate(${RT[i]}deg)"></div><div class="rd"><h3>${ttl}</h3><p>${m[3]}</p><div class="ft">证据 ${m[5]}<i>·</i>${m[1]}${m[6]?'<em class="rv">待复核</em>':''}</div></div>`;
  const mo=+m[4].split('.')[0];if(mo!==MEMS._mo){MEMS._mo=mo;const d=document.createElement('div');d.className='mon';d.dataset.m=mo;d.innerHTML=`<b>${mo}</b><span>月</span><i></i>`;$('.mems').appendChild(d)}
  e.dataset.t=m[0];e.dataset.m=mo;$('.mems').appendChild(e)});
-/* 按类型筛：只亮字，原地换，不滚动 */
-{const types=['全部',...new Set(MEMS.map(m=>m[0]))],F=$('.flt');
+/* 按类型 + 按月份筛：只亮字，原地换，不滚动 */
+{const types=['全部',...new Set(MEMS.map(m=>m[0]))],mons=[...new Set(MEMS.map(m=>+m[4].split('.')[0]))],F=$('.flt'),T=$('.flt.tm');let ft='全部',fm=0;
  F.innerHTML=types.map((x,i)=>`<button role="tab" class="${i?'':'on'}" data-t="${x}">${x}<em>${x==='全部'?MEMS.length:MEMS.filter(m=>m[0]===x).length}</em></button>`).join('');
- F.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const ap=$('.scroller'),y=ap.scrollTop;
-  $$('.flt button').forEach(x=>x.classList.toggle('on',x===b));const t=b.dataset.t;
-  $$('.mems .mi').forEach(e=>e.hidden=!(t==='全部'||e.dataset.t===t));
+ T.innerHTML=`<span class="lb">时间</span><button role="tab" class="on" data-m="0">全部</button>`+mons.map(m=>`<button role="tab" data-m="${m}">${m}月<em>${MEMS.filter(x=>+x[4].split('.')[0]===m).length}</em></button>`).join('');
+ function apply(){const ap=$('.scroller'),y=ap.scrollTop;
+  $$('.mems .mi').forEach(e=>e.hidden=!((ft==='全部'||e.dataset.t===ft)&&(!fm||+e.dataset.m===fm)));
   $$('.mems .mon').forEach(d=>d.hidden=!$$(`.mems .mi[data-m="${d.dataset.m}"]`).some(e=>!e.hidden));
-  requestAnimationFrame(()=>{ap.scrollTop=y;mrail()})})}
+  requestAnimationFrame(()=>{ap.scrollTop=y;mrail()})}
+ F.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;$$('button',F).forEach(x=>x.classList.toggle('on',x===b));ft=b.dataset.t;apply()});
+ T.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;T.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));fm=+b.dataset.m;apply()})}
 $$('.mi.long').forEach(e=>e.addEventListener('click',()=>{const o=e.classList.toggle('open');e.setAttribute('aria-expanded',o)}));
 
 /* 右侧小滑轨：棕线包着薄荷小圆，一颗记忆一个点，当前那颗变大 */
@@ -327,11 +336,14 @@ function mrail(){const sc=$('.scroller'),its=$$('.mems .mi').filter(e=>!e.hidden
 function mpos(){const sc=$('.scroller'),its=RL._its||[];if(!its.length)return;const r0=sc.getBoundingClientRect(),mid=r0.top+r0.height*.4;
  const fr=its[0].getBoundingClientRect(),la=its[its.length-1].getBoundingClientRect();
  RL.classList.toggle('on',fr.top<r0.bottom-120&&la.bottom>r0.top+80);
- let k=0,bd=1e9;its.forEach((e,i)=>{const r=e.getBoundingClientRect(),d=Math.abs(r.top+r.height/2-mid);if(d<bd){bd=d;k=i}});
- [...RL.querySelectorAll('b')].forEach((b,i)=>b.classList.toggle('cur',i===k))}
+ let k=0,bd=1e9;const cs=its.map(e=>{const r=e.getBoundingClientRect();return r.top+r.height/2});cs.forEach((c,i)=>{const d=Math.abs(c-mid);if(d<bd){bd=d;k=i}});
+ let f=k;if(cs.length>1){const j=mid<cs[k]?k-1:k+1;if(j>=0&&j<cs.length)f=k+(j-k)*Math.min(1,Math.abs(mid-cs[k])/Math.abs(cs[j]-cs[k]))}
+ wave([...RL.querySelectorAll('b')],f,12,4)}
+/* 波峰：选中的最大最清楚，往两边变小变淡 */
+function wave(ds,f,big,small){ds.forEach((b,i)=>{const g=Math.exp(-((i-f)**2)/1.1),s=small+(big-small)*g;b.style.width=b.style.height=s.toFixed(1)+'px';b.style.opacity=(.28+.72*g).toFixed(2);b.classList.toggle('cur',Math.abs(i-f)<.5)})}
 RL.addEventListener('click',ev=>{const b=ev.target.closest('b');if(!b)return;const e=RL._its[+b.dataset.i],sc=$('.scroller');
  sc.scrollTo({top:sc.scrollTop+e.getBoundingClientRect().top-sc.getBoundingClientRect().top-140,behavior:'smooth'})});
-$('.scroller').addEventListener('scroll',()=>requestAnimationFrame(mpos),{passive:true});mrail();
+$('.scroller').addEventListener('scroll',()=>requestAnimationFrame(mpos),{passive:true});mrail();wave($$('.dots i').filter(d=>d.style.display!=='none'),0,9,3.5);
 /* 动：每颗糖自己的周期，字跟着糖一起 */
 const sp=()=>({x:0,v:0});
 const floats=[...$$('.mi .cy').map((e,i)=>({e,rot:[-10,8,-6,12,-8,6,-12][i%7],per:3.6+Math.random()*2.8,ph:Math.random()*6.28,a:2.2,ra:.5,s:sp()})),...$$('.cand').map(e=>({e,per:3+Math.random()*2,ph:Math.random()*6.28,a:1.6,ra:.6,s:sp()}))];
@@ -342,12 +354,12 @@ J.e.addEventListener('click',()=>{J.s.v+=40});
 function shake(){J.s.v+=55}
 const CS=$('.cands');
 function cur(){const live=$$('.cand:not(.gone):not(.melt):not(.pack)');if(!live.length)return null;const mid=CS.scrollLeft+CS.clientWidth/2;let best=live[0],bd=1e9;for(const c of live){const d=Math.abs(c.offsetLeft+c.offsetWidth/2-mid);if(d<bd){bd=d;best=c}}return best}
-CS.addEventListener('scroll',()=>{const c=cur(),live=$$('.cand:not(.gone):not(.melt):not(.pack)');$$('.dots i').forEach((d,i)=>d.classList.toggle('on',live[i]===c))},{passive:true});
+CS.addEventListener('scroll',()=>{const c=cur(),live=$$('.cand:not(.gone):not(.melt):not(.pack)');const k=live.indexOf(c);wave($$('.dots i').filter(d=>d.style.display!=='none'),k<0?0:k,9,3.5);$$('.dots i').forEach((d,i)=>d.classList.toggle('on',live[i]===c))},{passive:true});
 $('.acts .ok').addEventListener('click',()=>{const c=cur();if(!c)return;const r=c.getBoundingClientRect(),jr=J.e.getBoundingClientRect();c.classList.add('pack');
  setTimeout(()=>{const f=document.createElement('img');f.src='cy-mint.png';f.className='fly';document.body.appendChild(f);const x0=r.left+r.width/2,y0=r.top+r.height/2,x1=jr.left+jr.width*.5,y1=jr.top+jr.height*.25;const t0=performance.now();const LID=J.e.querySelector('.jlid'),RMx=matchMedia('(prefers-reduced-motion: reduce)').matches;if(LID&&!RMx)LID.animate([{transform:'none'},{transform:'translateY(-9%) rotate(-12deg)'}],{duration:220,delay:300,easing:'cubic-bezier(.23,1,.32,1)',fill:'forwards'});
   (function go(n){const k=Math.min(1,(n-t0)/650),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const x=x0+(x1-x0)*e,y=y0+(y1-y0)*e-Math.sin(k*Math.PI)*110;f.style.left=x-32+'px';f.style.top=y-15+'px';f.style.transform=`rotate(${k*360}deg) scale(${1-k*.45})`;if(k<1)requestAnimationFrame(go);else{f.remove();if(LID&&!RMx){LID.getAnimations().forEach(q=>q.cancel());LID.animate([{transform:'translateY(-9%) rotate(-12deg)'},{transform:'none'}],{duration:160,easing:'cubic-bezier(.23,1,.32,1)'})}setTimeout(shake,120);total++;$('#cnt').textContent=total}})(t0);c.classList.add('gone');bump()},330)});
 $('.acts .no').addEventListener('click',()=>{const c=cur();if(!c)return;c.classList.add('melt');setTimeout(()=>{c.classList.add('gone');bump()},900)});
-function bump(){const live=$$('.cand:not(.gone):not(.melt):not(.pack)');$('#cc').textContent=live.length;const ds=$$('.dots i');ds.forEach((d,i)=>{d.style.display=i<live.length?'':'none';d.classList.toggle('on',i===0)})}
+function bump(){const live=$$('.cand:not(.gone):not(.melt):not(.pack)');$('#cc').textContent=live.length;const ds=$$('.dots i');ds.forEach((d,i)=>{d.style.display=i<live.length?'':'none';d.classList.toggle('on',i===0)});wave(ds.filter(d=>d.style.display!=='none'),0,9,3.5)}
 (function loop(n){const s=n/1000,on=!matchMedia('(prefers-reduced-motion: reduce)').matches;for(const q of floats){q.s.v+=(-140*q.s.x-7*q.s.v)/60;q.s.x+=q.s.v/60;const y=on?Math.sin(s*6.283/q.per+q.ph)*q.a:0,r=(q.rot||0)+(on?Math.sin(s*6.283/(q.per*1.4)+q.ph)*q.ra:0);if(!q.e.classList.contains('melt')&&!q.e.classList.contains('pack'))q.e.style.transform=`translateY(${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${(1-q.s.x*.03).toFixed(3)},${(1+q.s.x*.03).toFixed(3)})`}
  J.s.v+=(-90*J.s.x-6*J.s.v)/60;J.s.x+=J.s.v/60;const jr=(on?Math.sin(s*6.283/6.5)*1.2:0)+J.s.x*.12;J.e.style.transform=`rotate(${jr.toFixed(2)}deg)`;requestAnimationFrame(loop)})(0);
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
