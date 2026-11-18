@@ -30,46 +30,40 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .pearlbtn svg{stroke:#5b3a2c}
 .lhead .lf{display:flex;align-items:flex-end;gap:12px}
 
-/* 会员集点卡：生图卡面，字和输入框叠在上面 */
-.stage{position:relative;margin:24px auto 0;width:min(300px,calc(100% - 64px))}
-.card{position:relative;width:100%;aspect-ratio:720/998;transform-origin:50% 100%;animation:sway 6.4s ease-in-out infinite alternate}
+/* 茶会请柬：生图卡面，字和输入框叠在上面；字号跟卡宽走（cqw） */
+.stage{position:relative;margin:20px auto 0;width:min(300px,calc(100% - 64px))}
+.card{position:relative;width:100%;aspect-ratio:720/1035;container-type:inline-size;transform-origin:50% 100%;animation:sway 6.4s ease-in-out infinite alternate}
 @keyframes sway{from{rotate:-1.2deg}to{rotate:.9deg}}
 .card>img{position:absolute;inset:0;width:100%;height:100%}
-.card .shine{position:absolute;inset:3% 3%;border-radius:12px;overflow:hidden;pointer-events:none}
+.card .shine{position:absolute;inset:4% 6%;border-radius:14px;overflow:hidden;pointer-events:none}
 .card .shine i{position:absolute;top:-20%;bottom:-20%;width:38%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);rotate:12deg}
-.band{position:absolute;left:9%;right:22%;top:4.2%;height:11%;display:flex;align-items:center;gap:7px}
-.band b{font:19px/1 ZK;color:#2f6e58;letter-spacing:.08em}
-.band i{font:15px/1 Script;font-style:normal;color:rgba(47,110,88,.7);rotate:-6deg;translate:0 -3px}
-.no{position:absolute;right:9%;top:28%;font:11px/1 Baloo,ZK;letter-spacing:.12em;color:rgba(138,92,70,.7)}
-.fld{position:absolute;left:9%;right:9%;display:flex;align-items:flex-end;gap:8px}
-.fld label{flex:none;font:12.5px/1 ZK;letter-spacing:.14em;color:var(--cocoa);padding-bottom:8px;white-space:nowrap}
-.fld .in{flex:1;min-width:0}
-.fld .in{position:relative;display:flex;align-items:flex-end}
-.fld input{flex:1;min-width:0;height:28px;border:0;outline:0;background:transparent;font:16px/28px WK;color:var(--ink);padding:0 2px;letter-spacing:.02em}
+.seal{position:absolute;left:49.9%;top:11.2%;translate:-50% -50%;font:8.4cqw/1 ZK;color:rgba(250,240,224,.92);letter-spacing:0}
+.inv{position:absolute;left:14%;right:14%;top:32%;text-align:center}
+.inv i{display:block;font:6.6cqw/1 Script;font-style:normal;color:rgba(63,154,128,.7);rotate:-4deg}
+.inv h2{margin-top:1.6cqw;font:normal 9.6cqw/1 ZK;color:var(--ch);letter-spacing:.32em;padding-left:.32em}
+.inv p{margin-top:4.4cqw;font:4.7cqw/1.75 WK;color:#6b4a3c}
+.memo{margin:10px auto 0;text-align:center;font:12px/1.6 WK;color:rgba(122,90,76,.72)}
+.fld{position:absolute;left:16.5%;right:16.3%;display:flex;align-items:flex-end;gap:2cqw}
+.fld label{flex:none;font:4.1cqw/1 ZK;letter-spacing:.12em;color:var(--cocoa);padding-bottom:2.2cqw;white-space:nowrap}
+.fld .in{position:relative;flex:1;min-width:0;display:flex;align-items:flex-end}
+.fld input{flex:1;min-width:0;height:9cqw;border:0;outline:0;background:transparent;font:16px/9cqw WK;color:var(--ink);padding:0 2px;letter-spacing:.02em}
 .fld input::placeholder{color:rgba(138,92,70,.38)}
 .fld input[type=password]{letter-spacing:.18em}
-.f1{top:calc(36.4% - 30px)}
-.f2{top:calc(80% - 30px)}
-/* 第二条线（卡面只印了一条，补一条同色细线） */
-
+.f1{top:calc(70.3% - 9.6cqw)}
+.f2{top:calc(76.2% - 9.6cqw)}
 .fld.bad label{color:#b5543f}
-.fld.bad .in::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.6px;background:#b5543f}
-
-
-.eye{flex:none;width:30px;height:28px;display:grid;place-items:center;opacity:.75}
-.eye svg{stroke:#8a5c46}
-.memo{position:absolute;left:9%;right:9%;top:44%;font:12.5px/1.75 WK;color:rgba(122,90,76,.82)}
-.memo b{font-weight:400;color:var(--mint3)}
-.st{position:absolute;left:9%;right:9%;top:57.5%;display:flex;align-items:center;gap:6px;font:12.5px/1 WK;color:rgba(122,90,76,.7)}
-.st i{width:7px;height:7px;border-radius:50%;background:#c9b3a6}
-.st.ok i{background:var(--mintb);box-shadow:0 0 0 3px rgba(63,154,128,.18)}
+.fld.bad .in::after{content:"";position:absolute;left:0;right:0;bottom:-.6cqw;height:1.6px;background:#b5543f}
+.eye{flex:none;width:9cqw;height:9cqw;display:grid;place-items:center;opacity:.75}
+.eye svg{stroke:#8a5c46;width:6.4cqw;height:6.4cqw}
+.st{position:absolute;left:16.5%;top:81.6%;display:flex;align-items:center;gap:1.8cqw;font:3.9cqw/1 WK;color:rgba(122,90,76,.72)}
+.st i{width:2.2cqw;height:2.2cqw;border-radius:50%;background:#c9b3a6}
+.st.ok i{background:var(--mintb);box-shadow:0 0 0 1cqw rgba(63,154,128,.18)}
 .st.ok{color:var(--mint3)}
-/* 集点格：每连上一次盖一个章 */
-.stamp{position:absolute;width:13.4%;aspect-ratio:1;translate:-50% -50%;top:90%;border-radius:50%;display:grid;place-items:center;pointer-events:none;opacity:0}
-.stamp svg{width:100%;height:100%;overflow:visible}
-.stamp.on{opacity:1}
-.stamp.old{opacity:.55}
-.stamp.hit{animation:hit .42s var(--ease-out) both}
+/* 回执章：赴约成功盖在右下虚线圈里 */
+.chop{position:absolute;left:77.4%;top:83.7%;width:17cqw;aspect-ratio:1;translate:-50% -50%;pointer-events:none;opacity:0}
+.chop svg{width:100%;height:100%;overflow:visible}
+.chop.on{opacity:1}
+.chop.hit{animation:hit .42s var(--ease-out) both}
 @keyframes hit{0%{opacity:0;scale:1.9;rotate:-24deg}60%{opacity:1;scale:.92}100%{opacity:1;scale:1}}
 
 /* 一级：巧克力牌（每屏最多一个） */
@@ -83,7 +77,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .alt.show{visibility:visible}
 .shake{animation:shake .38s ease-in-out}
 @keyframes shake{20%{translate:-6px 0}40%{translate:5px 0}60%{translate:-3px 0}80%{translate:2px 0}}
-@media (prefers-reduced-motion:reduce){.card{animation:none}.stamp.hit{animation:none}.shake{animation:none}}
+@media (prefers-reduced-motion:reduce){.card{animation:none}.chop.hit{animation:none}.shake{animation:none}}
 .navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
 .pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
 .pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
@@ -99,21 +93,22 @@ html.gate .pearlbtn,html.gate .pnav,html.gate .navfade,html.gate .alt{display:no
 <div class="vp"><div class="app" id="app">
 <div class="scroller" id="sc"><div class="content">
 <img class="drizzle" src="today-bg.png" alt="">
-<header class="lhead"><div class="lf"><button class="pearlbtn" aria-label="回到设置"><svg width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="m15 18-6-6 6-6"/></svg></button><div class="ttl"><span class="sc" aria-hidden="true">member card</span><h1>连接</h1></div></div><div class="counter"><span id="n1">0</span><span id="n2">2</span><b>章</b></div></header>
+<header class="lhead"><div class="lf"><button class="pearlbtn" aria-label="回到设置"><svg width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="m15 18-6-6 6-6"/></svg></button><div class="ttl"><span class="sc" aria-hidden="true">invitation</span><h1>请柬</h1></div></div></header>
 
 <div class="stage">
  <div class="card" id="card">
-  <img src="card.webp" alt="">
+  <img src="invite.webp" alt="">
   <div class="shine" aria-hidden="true"><i id="shine"></i></div>
-  <div class="band"><b>茶会会员</b><i>Mint Choco</i></div>
-  <div class="fld f1" id="f1"><label for="url">网关地址</label><div class="in"><input id="url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://你的网关"></div></div>
-  <p class="memo">地址和钥匙只记在<b>这一次打开</b>里，<br>关掉就忘。</p>
-  <p class="st" id="st"><i></i><span id="stx">还没连</span></p>
-  <div class="fld f2" id="f2"><label for="key">管理钥匙</label><div class="in"><input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="贴在这里"><button class="eye" id="eye" aria-label="显示钥匙"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12C5 7.8 8.4 6 12 6s7 1.8 9.5 6c-2.5 4.2-5.9 6-9.5 6s-7-1.8-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/><path id="slash" d="M4 20 20 4"/></svg></button></div></div>
-  <div class="stamp on old" style="left:14.3%"><svg viewBox="0 0 40 40" style="rotate:-12deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div><div class="stamp on old" style="left:32.1%"><svg viewBox="0 0 40 40" style="rotate:8deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div><div class="stamp" style="left:49.9%"><svg viewBox="0 0 40 40" style="rotate:-5deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div><div class="stamp" style="left:67.8%"><svg viewBox="0 0 40 40" style="rotate:10deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div><div class="stamp" style="left:85.6%"><svg viewBox="0 0 40 40" style="rotate:-8deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div>
+  <span class="seal" aria-hidden="true">茶</span>
+  <div class="inv"><i aria-hidden="true">Mint Choco Tea Party</i><h2>茶会邀请</h2><p>亲爱的你：<br>薄荷巧克力茶会，<br>今晚为你留了座位。</p></div>
+  <div class="fld f1" id="f1"><label for="url">赴会地址</label><div class="in"><input id="url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://你的网关"></div></div>
+  <div class="fld f2" id="f2"><label for="key">钥匙签名</label><div class="in"><input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="签在这里"><button class="eye" id="eye" aria-label="显示钥匙"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12C5 7.8 8.4 6 12 6s7 1.8 9.5 6c-2.5 4.2-5.9 6-9.5 6s-7-1.8-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/><path id="slash" d="M4 20 20 4"/></svg></button></div></div>
+  <p class="st" id="st"><i></i><span id="stx">还没回执</span></p>
+  <div class="chop" id="chop" aria-hidden="true"><svg viewBox="0 0 40 40" style="rotate:-10deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.6)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">到</text></svg></div>
  </div>
- <button class="go" id="go"><img src="plaque.png" alt=""><span id="gotx">刷卡进门</span></button>
- <button class="alt" id="alt">换一张卡</button>
+ <button class="go" id="go"><img src="plaque.png" alt=""><span id="gotx">赴约</span></button>
+ <p class="memo">地址和钥匙只记在这一次打开里，关掉就忘。</p>
+ <button class="alt" id="alt">换一张请柬</button>
 </div>
 <img class="bit" src="bit2.png" style="width:18px;right:26px;top:170px;z-index:9" alt="">
 </div></div>
@@ -132,26 +127,23 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
 /* 只存在内存里：不写 localStorage / sessionStorage，页面关掉就没了 */
-let S={url:'',key:'',ok:false},stamps=2;
+let S={url:'',key:'',ok:false};
 const st=$('#st'),stx=$('#stx'),go=$('#go'),gotx=$('#gotx'),alt=$('#alt'),card=$('#card');
-function count(){const s=String(stamps).padStart(2,'0');$('#n1').textContent=s[0];$('#n2').textContent=s[1]}
 $('#eye').onclick=()=>{const k=$('#key'),sh=k.type==='password';k.type=sh?'text':'password';$('#slash').style.display=sh?'none':'';$('#eye').setAttribute('aria-label',sh?'藏起钥匙':'显示钥匙')};
 ['url','key'].forEach(id=>$('#'+id).addEventListener('input',()=>{$('#'+(id==='url'?'f1':'f2')).classList.remove('bad');if(S.ok){S.ok=false;setOk(false)}}));
-function setOk(v){st.classList.toggle('ok',v);stx.textContent=v?'连上了 · 刚刚':'还没连';go.classList.toggle('done',v);gotx.textContent=v?'已经连上':'刷卡进门';alt.classList.toggle('show',v)}
+function setOk(v){st.classList.toggle('ok',v);stx.textContent=v?'已赴约 · 刚刚':'还没回执';go.classList.toggle('done',v);gotx.textContent=v?'已赴约':'赴约';if(!v)$('#chop').classList.remove('on','hit');alt.classList.toggle('show',v)}
 go.onclick=async()=>{
  if(S.ok)return;
  const u=$('#url').value.trim(),k=$('#key').value.trim();
  const bu=!/^https?:\/\/\S+$/.test(u),bk=!k;
  $('#f1').classList.toggle('bad',bu);$('#f2').classList.toggle('bad',bk);
  if(bu||bk){card.classList.remove('shake');void card.offsetWidth;card.classList.add('shake');navigator.vibrate&&navigator.vibrate(20);return}
- stx.textContent='刷卡中…';
+ stx.textContent='回执中…';
  if(!RM){await $('#shine').animate([{left:'-60%'},{left:'130%'}],{duration:620,easing:'cubic-bezier(.4,0,.2,1)'}).finished}
  S={url:u,key:k,ok:true};
- const el=$$('.stamp')[stamps%5];stamps++;count();
- el.classList.remove('old');el.classList.add('on');if(!RM){el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit')}
+ const el=$('#chop');el.classList.add('on');if(!RM){el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit')}
  navigator.vibrate&&navigator.vibrate(12);setOk(true);
- if(GATE){gotx.textContent='进门中';setTimeout(()=>parent!==window&&parent.postMessage({demo:'enter'},'*'),RM?150:650)}};
+ if(GATE){gotx.textContent='入席中';setTimeout(()=>parent!==window&&parent.postMessage({demo:'enter'},'*'),RM?150:650)}};
 alt.onclick=()=>{S={url:'',key:'',ok:false};$('#url').value='';$('#key').value='';setOk(false);$('#url').focus({preventScroll:true})};
-count();
 </script>
-<script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=37"></script></body></html>
+<script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=38"></script></body></html>
