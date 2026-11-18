@@ -62,49 +62,119 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
 .dd li:last-child{border:0}
 .dd li.on::before{content:"";position:absolute;left:0;top:6px;width:26px;height:22px;background:url(m_macaron.png) center/contain no-repeat}
 
-/* 底栏：奶油花边托盘 + 手绘甜点图标，选中那个跳起来、垫一枚彩色小碟 */
-.dk{position:relative;height:88px;margin-top:26px}
-.dk .tray{position:absolute;left:0;right:0;bottom:0;height:70px;border-radius:24px 24px 28px 28px;background:#fffaf0;box-shadow:0 0 0 2px var(--ol),0 5px 0 -1px #c9a48a,0 5px 0 1px var(--ol)}
-.dk .tray::before{content:"";position:absolute;left:12px;right:12px;top:-9px;height:14px;background:radial-gradient(circle at 7px 9px,#fffaf0 6px,var(--ol) 6.2px 7.8px,transparent 8px) center 0/14px 14px round no-repeat;clip-path:inset(0 0 5px 0)}
-.dk .tray::after{content:"";position:absolute;left:14px;right:14px;bottom:9px;height:7px;border-radius:4px;background:repeating-linear-gradient(115deg,#9fd3bf 0 6px,#fffaf0 6px 10px,#f2c9c0 10px 16px,#fffaf0 16px 20px);box-shadow:0 0 0 1.3px var(--ol)}
-.dk nav{position:absolute;inset:0 6px;display:grid;grid-template-columns:repeat(5,1fr)}
-.dk .tb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:20px}
-.dk .tb .ic{position:relative;width:46px;height:46px;transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
-.dk .tb .ic img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;filter:saturate(.75) brightness(1.02);transition:filter .3s}
-.dk .tb .ic::before{content:"";position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px var(--ol),0 0 0 5px #fffaf0,0 0 0 6.5px var(--ol);transform:scale(0);transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
-.dk .tb .t{margin-top:3px;font:12px ZK;color:var(--ink2);transition:color .2s}
-.dk .tb .dot{position:absolute;z-index:2;right:-2px;top:2px;width:10px;height:10px;border-radius:50%;background:#e59a86;box-shadow:0 0 0 1.5px var(--ol),0 0 0 3px #fffaf0}
-.dk .tb.on .ic{transform:translateY(-22px) scale(1.12)}
-.dk .tb.on .ic img{filter:none;animation:bob 2.6s ease-in-out infinite}
+/* 底栏：守全站规矩——奶油不透明、可可细描边、只用薄荷/奶油/巧克力；杯套条纹在下沿，珍珠沉在角落 */
+.dk{position:relative;height:90px;margin-top:26px}
+.dk .tray{position:absolute;left:0;right:0;bottom:0;height:70px;border-radius:24px;background:#fffaf0;box-shadow:0 0 0 1.5px var(--ol),inset 0 0 0 4px #fffaf0,inset 0 0 0 5.2px var(--mintl);overflow:hidden}
+.dk .tray::after{content:"";position:absolute;left:0;right:0;bottom:0;height:13px;border-top:1.2px solid var(--ol);background:repeating-linear-gradient(90deg,#c4e8da 0 9px,#fffaf0 9px 18px)}
+.dk .pl{position:absolute;bottom:4px;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%);z-index:1}
+.dk .lf{position:absolute;left:-8px;top:12px;width:30px;transform:rotate(-24deg);z-index:2}
+.dk nav{position:absolute;inset:0 6px;display:grid;grid-template-columns:repeat(5,1fr);z-index:3}
+.dk .tb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:18px}
+.dk .tb .ic{position:relative;width:44px;height:44px;transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+.dk .tb .ic img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;filter:saturate(.7);opacity:.9;transition:filter .3s,opacity .3s}
+.dk .tb .ic::before{content:"";position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#f4fffa,#c4e8da 72%);box-shadow:0 0 0 1.5px var(--ol),0 0 0 4px #fffaf0,0 0 0 5.2px var(--ol);transform:scale(0);transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.dk .tb .t{margin-top:2px;font:12px ZK;color:var(--ink2)}
+.dk .tb .dot{position:absolute;z-index:2;right:-1px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--choc);box-shadow:0 0 0 2px #fffaf0}
+.dk .tb.on .ic{transform:translateY(-22px) scale(1.1)}
+.dk .tb.on .ic img{filter:none;opacity:1;animation:bob 2.6s ease-in-out infinite}
 .dk .tb.on .ic::before{transform:scale(1)}
-.dk .tb.on .t{position:relative;z-index:1;margin-top:-12px;padding:2px 9px 3px;border-radius:9px;background:var(--choc);color:#fffaf0;box-shadow:0 0 0 1.5px #fffaf0,0 0 0 2.8px var(--ol)}
+.dk .tb.on .t{position:relative;z-index:1;margin-top:-12px;padding:2px 9px 3px;border-radius:9px;background:var(--choc);color:#fffaf0;box-shadow:0 0 0 1.5px #fffaf0,0 0 0 2.7px var(--ol)}
 @keyframes bob{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg) translateY(-2px)}}
-@media (prefers-reduced-motion:reduce){.dk .tb.on .ic img{animation:none}}
+@media (prefers-reduced-motion:reduce){.dk .tb.on .ic img,.cup .lq::before,.bub{animation:none}}
+
+/* 饮品卡：奶油杯身（不透明、不毛玻璃）+ 杯底液面，小料沉在杯底 */
+.cups{display:grid;gap:12px}
+.cup{position:relative;display:block;width:100%;text-align:left;overflow:hidden;isolation:isolate;border-radius:18px 18px 22px 22px;padding:11px 14px 24px;background:#fffaf0;box-shadow:0 0 0 1.5px var(--ol),inset 0 0 0 4px #fffaf0,inset 0 0 0 5.2px rgba(159,211,191,.9)}
+.cup:nth-child(2){width:94%;margin-left:4%}
+.cup .t{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;font:12px/1 ZK;color:#8a5c46;letter-spacing:.14em}
+.cup .t em{font:400 13px/1 BalooX;font-style:normal;color:var(--mint);letter-spacing:0}
+.cup p{position:relative;z-index:3;margin-top:7px;font:14px/1.45 WK;color:var(--ink)}
+.cup .lq{position:absolute;z-index:1;left:0;right:0;bottom:0;height:var(--h,36%);background:var(--lc);transition:height .5s cubic-bezier(.3,1.6,.5,1)}
+.cup .lq::before{content:"";position:absolute;left:0;right:0;top:-7px;height:8px;background:var(--wv) repeat-x 0 0/56px 8px;animation:wv 6s linear infinite}
+.cup.slosh .lq{animation:slo .7s}
+@keyframes wv{to{background-position:56px 0}}
+@keyframes slo{30%{transform:skewY(-3deg)}60%{transform:skewY(2deg)}}
+.cocoa{--lc:rgba(150,98,72,.30);--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='rgba(150,98,72,.30)'/%3E%3C/svg%3E")}
+.boba{--h:42%;padding-bottom:24px;--lc:rgba(214,170,128,.34);--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 1 28 4 T56 4 V8 H0Z' fill='rgba(214,170,128,.34)'/%3E%3C/svg%3E")}
+.soda{--h:100%;--lc:linear-gradient(180deg,rgba(166,217,196,.08),rgba(140,205,180,.42))}
+.soda .lq::before{display:none}
+.mm{position:absolute;z-index:2;bottom:5px;width:13px;height:11px;border-radius:4px;background:#fffdf7;box-shadow:0 0 0 1px rgba(107,74,59,.55)}
+.pearl{position:absolute;z-index:2;bottom:5px;width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%)}
+.bub{position:absolute;z-index:2;width:7px;height:7px;border-radius:50%;box-shadow:0 0 0 1px rgba(47,110,88,.45);background:rgba(255,255,255,.6);animation:up var(--d,4s) linear infinite}
+@keyframes up{from{transform:translateY(0);opacity:0}15%{opacity:1}to{transform:translateY(-70px);opacity:0}}
+.cup .lf{position:absolute;z-index:2;right:12px;bottom:4px;width:26px}
+.boba.slosh .pearl{animation:jp .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes jp{40%{transform:translateY(-16px)}}
+
+/* 列表行 */
+.rows{display:grid;gap:8px}
+.row{position:relative;height:56px;width:calc(100% - 20px);margin-left:12px;transform:rotate(var(--t,0deg))}
+.row:nth-child(odd){--t:-.6deg}.row:nth-child(even){--t:.6deg}
+.row>img{position:absolute;inset:0;width:100%;height:100%}
+.row .tx{position:absolute;left:9%;right:8%;top:22%;bottom:30%;display:flex;align-items:center;gap:8px}
+.row .n{flex:1;font:14px/1 WK;color:var(--choc);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .tg{font:10px/1 ZK;color:var(--mint)}
+.row .mc{position:absolute;left:-20px;top:6px;width:38px}
+.row .use{position:absolute;right:-8px;top:-12px;width:38px;height:38px;display:grid;place-items:center;font:11px/1 ZK;color:var(--choc);background:radial-gradient(circle at 38% 32%,#f4fffa,#bfe6d6 72%);border-radius:50%;box-shadow:0 0 0 1.5px var(--ol),0 0 0 4px var(--cream);transform:rotate(12deg)}
+
+/* 对话框 */
+.vn{position:relative;margin-top:22px;padding:24px 18px 16px;background:var(--cream);border:1.5px solid var(--ol);border-radius:16px;box-shadow:inset 0 0 0 4px var(--cream),inset 0 0 0 5.2px var(--mintl)}
+.vn .np{position:absolute;left:14px;top:-19px;width:124px;height:36px;display:grid;place-items:center}
+.vn .np img{position:absolute;inset:0;width:100%;height:100%}
+.vn .np span{position:relative;font:15px ZK;color:var(--cream);letter-spacing:2px}
+.vn p{font:15px/1.7 WK;color:var(--ink)}
+.vn p em{font-style:normal;color:var(--mint)}
+.vn .lf{position:absolute;right:-10px;top:-16px;width:40px;transform:rotate(18deg)}
+.vn .acts{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
+
+/* 数字徽章 */
+.nums{display:flex;align-items:flex-end;gap:22px}
+.big{font:400 64px/.9 BalooX;color:var(--choc);text-shadow:4px 4px 0 #a6d9c4}
+.big small{font:13px ZK;color:#8a5c46;margin-left:4px;text-shadow:none}
+.seal{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font:400 18px/1 BalooX;color:var(--choc);background:radial-gradient(circle at 38% 32%,#f4fffa,#bfe6d6 72%);box-shadow:0 0 0 1.5px var(--ol),0 0 0 4px var(--cream),0 0 0 5.2px var(--ol)}
+.seal.c{background:radial-gradient(circle at 38% 32%,#8a5c46,#5b3a2c 72%);color:var(--cream)}
+.sub{margin:28px 0 14px 4px;font:13px ZK;color:var(--ink2);letter-spacing:.2em}
+.sub::before,.sub::after{content:"";display:inline-block;width:22px;border-top:1.5px dashed var(--mintl);vertical-align:middle;margin:0 8px}
 .cap{margin:8px 0 0 6px;font:12px WK;color:var(--ink2)}
 </style></head><body>
 <div class="vp"><div class="app" id="app"><div class="in">
 <img class="drip" src="drizzle.png" alt="">
 <header class="ttl"><h1>组件</h1><span class="en">Parts</span></header>
 
-<section class="sec"><div class="lab"><b>01</b><span>按钮</span><i>主 · 次 · 文字</i></div>
+<section class="sec"><div class="lab"><b>01</b><span>页顶</span><i>淋酱 + 大标题，就是这页最上面</i></div></section>
+<section class="sec"><div class="lab"><b>02</b><span>饮品卡</span><i>点一下杯子会晃</i></div>
+ <div class="cups">
+ <button class="cup cocoa"><i class="lq"></i><i class="mm" style="left:62%"></i><i class="mm" style="left:70%;bottom:8px;transform:rotate(18deg)"></i><i class="mm" style="left:78%"></i><span class="t">热可可 · 她的消息<em>19:42</em></span><p>今天降温了，记得把围巾带上哦～</p></button>
+ <button class="cup boba"><i class="lq"></i><i class="pearl" style="left:14px"></i><i class="pearl" style="left:30px;bottom:8px"></i><i class="pearl" style="left:46px"></i><i class="pearl" style="left:62px;bottom:7px"></i><span class="t">珍珠奶茶 · 聊天<em>3</em></span><p>上次聊到想去看海，要接着聊吗？</p></button>
+ <button class="cup soda"><i class="lq"></i><i class="bub" style="left:30%;bottom:6px;--d:3.6s"></i><i class="bub" style="left:52%;bottom:4px;--d:4.6s;animation-delay:1.2s"></i><i class="bub" style="left:70%;bottom:8px;--d:3.1s;animation-delay:2s"></i><img class="lf" src="leaf.png" alt=""><span class="t">薄荷苏打 · 记忆候选<em>2</em></span><p>等你确认</p></button>
+ </div></section>
+<section class="sec"><div class="lab"><b>03</b><span>列表行</span><i>点一下换选中</i></div>
+ <div class="rows" id="rows">
+ <div class="row on"><img src="m_barm.png" alt=""><img class="mc" src="m_macaron.png" alt=""><div class="tx"><span class="n">gpt-4o</span><span class="tg">对话</span></div><span class="use">在用</span></div>
+ <div class="row"><img src="m_barm.png" alt=""><div class="tx"><span class="n">claude-sonnet</span><span class="tg">长文</span></div></div>
+ <div class="row"><img src="m_barm.png" alt=""><div class="tx"><span class="n">deepseek-chat</span><span class="tg">便宜</span></div></div>
+ </div></section>
+<section class="sec"><div class="lab"><b>04</b><span>按钮</span><i>主 · 次 · 文字</i></div>
  <div class="rw"><button class="b1">保存</button><button class="b2">试一下</button><button class="b3">恢复默认</button></div></section>
-
-<section class="sec"><div class="lab"><b>02</b><span>开关</span></div>
+<section class="sec"><div class="lab"><b>05</b><span>对话框</span><i>提示、确认都用它</i></div>
+ <div class="vn" role="dialog" aria-label="薄荷店长"><div class="np"><img src="m_plaque.png" alt=""><span>薄荷店长</span></div><img class="lf" src="leaf.png" alt="">
+ <p>要把 <em>gpt-4o</em> 从备用链里拿掉吗？拿掉以后会先用下一个。</p>
+ <div class="acts"><button class="b3">再想想</button><button class="b1">拿掉</button></div></div></section>
+<section class="sec"><div class="lab"><b>06</b><span>数字</span><i>大数字 · 圆章</i></div>
+ <div class="nums"><span class="big">13<small>款</small></span><span class="seal">03</span><span class="seal c">12</span></div></section>
+<section class="sec"><div class="lab"><b>07</b><span>底栏</span><i>点一下试试</i></div>
+ <div class="dk"><i class="tray"><i class="pl" style="right:26px"></i><i class="pl" style="right:40px;bottom:6px"></i><i class="pl" style="right:14px;bottom:7px"></i></i><img class="lf" src="leaf.png" alt=""><nav aria-label="主导航"><button class="tb on" style="--c:#cfeee0"><span class="ic"><img src="i_cup.png" alt=""></span><span class="t">今天</span></button><button class="tb" style="--c:#f6d9d2"><span class="ic"><img src="i_box.png" alt=""><i class="dot"></i></span><span class="t">记忆</span></button><button class="tb" style="--c:#f8ebc4"><span class="ic"><img src="i_chat.png" alt=""></span><span class="t">聊天</span></button><button class="tb" style="--c:#d9ecf2"><span class="ic"><img src="i_mac.png" alt=""></span><span class="t">人格</span></button><button class="tb" style="--c:#e9dccf"><span class="ic"><img src="i_gear.png" alt=""></span><span class="t">设置</span></button></nav></div></section>
+<p class="sub">其他控件</p>
+<section class="sec"><div class="lab"><b>08</b><span>开关</span></div>
  <div class="rw" style="gap:18px"><button class="sw on" aria-pressed="true"><img src="m_macaron.png" alt=""></button><span class="swl">看图时自动压缩</span></div>
  <div class="rw" style="gap:18px;margin-top:14px"><button class="sw" aria-pressed="false"><img src="m_macaron.png" alt=""></button><span class="swl">夜里换便宜的</span></div></section>
-
-<section class="sec"><div class="lab"><b>03</b><span>输入框</span></div>
+<section class="sec"><div class="lab"><b>09</b><span>输入框</span></div>
  <div class="ipw"><input class="ip" placeholder="给中转站起个名字" aria-label="中转站名字"></div></section>
-
-<section class="sec"><div class="lab"><b>04</b><span>滑条</span><i>温度</i></div>
+<section class="sec"><div class="lab"><b>10</b><span>滑条</span><i>温度</i></div>
  <div class="rw" style="gap:8px;flex-wrap:nowrap"><div class="sl" id="sl" style="flex:1" role="slider" aria-label="温度" aria-valuemin="0" aria-valuemax="2"><i class="tr"></i><i class="fl"></i><img src="m_bonbon.png" alt=""></div><b class="slv" id="slv">0.7</b></div></section>
-
-<section class="sec"><div class="lab"><b>05</b><span>小选单</span></div>
+<section class="sec"><div class="lab"><b>11</b><span>小选单</span></div>
  <div class="dd" id="dd"><button class="b2 cur"><span id="ddv">跟着备用链走</span></button>
  <div class="bd"><div><ul><li class="on">跟着备用链走</li><li>一直用这一个</li><li>按价格从低到高</li></ul></div></div></div></section>
-
-<section class="sec"><div class="lab"><b>06</b><span>底栏</span><i>点一下试试</i></div>
- <div class="dk"><i class="tray"></i><nav aria-label="主导航"><button class="tb on" style="--c:#cfeee0"><span class="ic"><img src="i_cup.png" alt=""></span><span class="t">今天</span></button><button class="tb" style="--c:#f6d9d2"><span class="ic"><img src="i_box.png" alt=""><i class=dot></i></span><span class="t">记忆</span></button><button class="tb" style="--c:#f8ebc4"><span class="ic"><img src="i_chat.png" alt=""></span><span class="t">聊天</span></button><button class="tb" style="--c:#d9ecf2"><span class="ic"><img src="i_mac.png" alt=""></span><span class="t">人格</span></button><button class="tb" style="--c:#e9dccf"><span class="ic"><img src="i_gear.png" alt=""></span><span class="t">设置</span></button></nav></div></section>
 </div></div></div>
 <script>
 const app=document.getElementById('app');const keep=f=>e=>{const y=app.scrollTop;f(e);requestAnimationFrame(()=>app.scrollTop=y)};
@@ -117,4 +187,7 @@ function draw(){const w=sl.offsetWidth-24,x=12+w*v/2;fl.style.width=(x-12)+'px';
 function at(e){const r=sl.getBoundingClientRect();v=Math.round(Math.max(0,Math.min(1,(e.clientX-r.left-12)/(r.width-24)))*20)/10;draw()}
 sl.onpointerdown=e=>{sl.setPointerCapture(e.pointerId);at(e);sl.onpointermove=at};sl.onpointerup=()=>sl.onpointermove=null;
 draw();addEventListener('resize',draw);document.fonts&&document.fonts.ready.then(draw);
+
+document.querySelectorAll('.cup').forEach(c=>c.onclick=()=>{c.classList.remove('slosh');void c.offsetWidth;c.classList.add('slosh')});
+const rws=document.getElementById('rows');rws.querySelectorAll('.row').forEach(r=>r.onclick=keep(()=>{if(r.classList.contains('on'))return;const o=rws.querySelector('.row.on');o.classList.remove('on');o.querySelector('.mc').remove();o.querySelector('.use').remove();r.classList.add('on');r.insertAdjacentHTML('beforeend','<img class="mc" src="m_macaron.png" alt=""><span class="use">在用</span>')}));
 </script></body></html>
