@@ -269,7 +269,11 @@ function wire(){
  $$('#open .keyl').forEach(b=>b.onclick=()=>{const o=!b.classList.contains('ex');$$('.keyl').forEach(x=>x.classList.remove('ex'));if(o)b.classList.add('ex')});
  const kn=()=>{$('#open .kn').textContent=$$('#open .kw:not(.gone)').length};
  $$('#open .kw').forEach(w=>{const b=w.querySelector('.keyl'),d=w.querySelector('.del'),u=w.querySelector('.up');
-  d.onclick=()=>{const g=w.classList.toggle('gone');d.textContent=g?'放回去 ›':'删掉 ›';u.style.display=g?'none':'';kn()};
+  const setG=g=>{w.classList.toggle('gone',g);d.textContent=g?'放回去 ›':'删掉 ›';u.style.display=g?'none':'';kn()};
+  d.onclick=async()=>{if(w.classList.contains('gone')){setG(false);return}
+   const tail=w.querySelector('.k').textContent,nm=CH[cur].n;
+   if(!await MC.confirm({title:'删掉这把钥匙？',body:`${tail} 会从「${nm}」拿掉，<b>删了就得重新粘贴</b>，正在用它的请求会换下一把。`,ok:'删掉'}))return;
+   setG(true);MC.toast(`删掉了 ${tail}`,{undo:()=>setG(false)})};
   u.onclick=()=>{const f=$('#open .kw');if(f!==w){f.before(w)}b.classList.remove('ex');w.classList.remove('flash');void w.offsetWidth;w.classList.add('flash')}});
  $$('#open .addk').forEach(b=>b.onclick=()=>b.previousElementSibling.classList.toggle('on'));
  $$('#open .mo').forEach(b=>b.onclick=()=>{const m=b.nextElementSibling,o=m.style.maxHeight&&m.style.maxHeight!='0px';m.style.maxHeight=o?'0px':(m.scrollHeight+4)+'px';b.querySelector('.lk').textContent=o?'打出来 ›':'收起 ›';setTimeout(fitH,750)});
@@ -278,6 +282,7 @@ function wire(){
  const c=CH[cur],t=$$('.tk')[cur];
  op.querySelector('.nmI').oninput=e=>{const v=e.target.value.trim();if(!v)return;c.n=v;t.querySelector('.nm').textContent=v;t.querySelector('.rt b').textContent=v};
  op.querySelector('.hostI').oninput=e=>{c.h=e.target.value.trim()};
+ op.querySelectorAll('.ed').forEach(x=>{x.dataset.v=x.value;x.onchange=()=>{if(x.value.trim()&&x.value!==x.dataset.v){x.dataset.v=x.value;MC.toast('改好了')}}});
  $$('#open .newk .keyI').forEach(k=>k.oninput=()=>{const st=k.nextElementSibling;st.innerHTML=k.value.trim()?'<i></i>已填':'<i class="cool"></i>待填'})}
 function snap(){if(RM)return;setTimeout(()=>{const h=$('#hold');h.classList.remove('snap');void h.offsetWidth;h.classList.add('snap')},380)}
 function fitH(){const h=cur==-1?0:op.offsetHeight;$('#sp').style.top=Math.max(900,444+h+130)+'px'}
@@ -311,6 +316,7 @@ function hang(){const nI=op.querySelector('.nmI'),hI=op.querySelector('.hostI'),
  [nI,hI].forEach(x=>{if(!x.value.trim()){bad=1;x.classList.remove('miss');void x.offsetWidth;x.classList.add('miss')}});if(bad)return;
  const k=kI.value.trim();const nc={n:nI.value.trim(),h:hI.value.trim(),f:NWC.f,r:NWC.r,k:k?[[k.slice(-4),'','正常']]:[],m:[0]};let at=CH.findIndex(c=>c.off);if(at<0)at=CH.length;CH.splice(at,0,nc);
  op.querySelector('.rc').classList.add('up');
+ MC.toast(`「${nc.n}」挂上去了`,{undo:()=>{const j=CH.indexOf(nc);if(j>=0){CH.splice(j,1);if(cur>=0)cur=-1;op.classList.remove('on');op.innerHTML='';build();$('#idle').classList.remove('hide');fitH()}}});
  setTimeout(()=>{cur=-1;op.classList.remove('on');op.innerHTML='';build();const t=$$('.tk')[at];t.classList.add('fresh');$('#idle').classList.remove('hide');fitH();
   const tr=$('#track');tr.scrollTo({left:X0+at*STEP-150,behavior:'smooth'})},RM?0:650)}
 
@@ -329,4 +335,4 @@ fitH();
  tr.addEventListener('scroll',()=>{const t=performance.now(),v=(tr.scrollLeft-lx)/Math.max(8,t-lt);lx=tr.scrollLeft;lt=t;
   $$('.tk').forEach((k,i)=>{if(k.classList.contains('out'))return;k.classList.add('drag');const a=Math.max(-7,Math.min(7,-v*4.2*(.75+((i*37)%10)/22)));k.style.rotate=a.toFixed(2)+'deg'});
   clearTimeout(tm);tm=setTimeout(()=>$$('.tk').forEach((k,i)=>{k.classList.remove('drag');setTimeout(()=>k.style.rotate='0deg',(i*53)%90)}),70)},{passive:true})})();
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=45"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../ui.js?v=46"></script><script src="../pfix.js?v=46"></script></body></html>
