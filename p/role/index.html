@@ -281,7 +281,35 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .tools .lt:disabled svg{opacity:.35}
 .tools .dk:disabled{background:transparent!important;border:1.25px dashed #8a5c46!important}
 .tools .dk:disabled svg{stroke:#8a5c46!important;opacity:.6}
-/*hdr-align 11-13*/.lhead h1{margin-top:12px}/*x*/.rc .rcxx{position:absolute;right:-10px;top:-12px;z-index:5;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;padding:0;cursor:pointer;background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1.2px solid #8a5c46;box-shadow:0 4px 10px -6px rgba(74,48,39,.5)}.dia{transform:scale(var(--ds,1));transform-origin:50% 0;margin-bottom:calc(412px * (var(--ds,1) - 1))}.rc .hang{-webkit-user-select:none;user-select:none;touch-action:pan-y}</style></head><body>
+/*hdr-align 11-13*/.lhead h1{margin-top:12px}/*x*/.rc .rcxx{position:absolute;right:-10px;top:-12px;z-index:5;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;padding:0;cursor:pointer;background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1.2px solid #8a5c46;box-shadow:0 4px 10px -6px rgba(74,48,39,.5)}.dia{transform:scale(var(--ds,1));transform-origin:50% 0;margin-bottom:calc(412px * (var(--ds,1) - 1))}.rc .hang{-webkit-user-select:none;user-select:none;touch-action:pan-y}@font-face{font-family:Sofia;src:url(sofia.ttf)}
+/* 去掉引线；杯层热区 */
+.ldr{display:none}
+.lyh{position:absolute;z-index:2;width:124px;height:60px;padding:0;border:0;background:none;border-radius:30px;cursor:pointer}
+.dia .sx,.dia .stw{z-index:4}
+/* 人设纸页 + 右侧索引签 */
+.sheet{position:relative;margin:18px 30px 0 2px;padding:22px 18px 16px 20px;border-radius:18px;background:rgba(252,250,244,.72);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);box-shadow:0 0 0 1px rgba(91,58,44,.1),0 8px 22px rgba(74,48,39,.1)}
+.sheet .tabs{position:absolute;top:0;bottom:0;right:-30px;width:34px}
+.tb{position:absolute;right:0;width:30px;height:58px;padding:0;border:0;border-radius:0 12px 12px 0;display:grid;place-items:center;box-shadow:inset 1px 0 0 rgba(91,58,44,.08);transition:width .24s cubic-bezier(.23,1,.32,1),right .24s cubic-bezier(.23,1,.32,1)}
+.tb span{font:400 15px/1 Sofia,cursive;letter-spacing:.06em;color:#5b3a2c;transform:rotate(-4deg)}
+.tb.m{background:#c9ebdc}.tb.c{background:#f6eee0;box-shadow:inset 0 0 0 1px rgba(91,58,44,.14)}.tb.k{background:#a98572}.tb.k span{color:#fff6ea}
+.tb.on{width:36px;right:-6px;box-shadow:2px 3px 8px rgba(74,48,39,.16)}
+.pp{position:relative;margin:0 -8px 14px;padding:10px 10px 10px;border-radius:14px;transition:background .24s}
+.pp.on{background:rgba(201,235,220,.7)}
+.pp .kk{display:block;margin-bottom:4px;font:12px/1 ZK;color:#2f6e58;letter-spacing:.12em}
+.pp .ed{margin:0;font:16px/1.85 WK,serif;color:#4a3027;outline:none;white-space:pre-wrap}
+.pp .ed[contenteditable=true]{caret-color:#2f6e58}
+.sft{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:12px;border-top:1px dashed rgba(91,58,44,.22)}
+.sft small{flex:1;font:13px/1 Baloo;color:#8a6a5a}
+.sft .lt{width:36px;height:36px}
+.savep{display:flex;align-items:center;gap:6px;height:42px;padding:0 16px!important;border-radius:21px;background:#4a2c22;color:#fff3e2;font:15px/1 ZK;letter-spacing:.1em;box-shadow:0 4px 10px rgba(74,48,39,.25)}
+.savep:disabled{background:transparent;color:#8a6a5a;box-shadow:inset 0 0 0 1.4px rgba(91,58,44,.4);border:0}
+.savep .counter{margin:0 2px}
+.sheet .tip{margin:8px 2px 0;font:12.5px/1.5 WK;color:#8a6a5a;min-height:0}
+.sheet .sk1{position:absolute;right:-16px;top:-24px;width:44px;rotate:16deg;filter:drop-shadow(0 1.5px 1px rgba(74,48,39,.28));animation:skb 4.4s ease-in-out infinite alternate}
+.sheet .sk2{position:absolute;left:-14px;bottom:-14px;width:36px;rotate:-14deg;filter:drop-shadow(0 1.5px 1px rgba(74,48,39,.28));animation:skb 3.8s ease-in-out infinite alternate}
+@keyframes skb{from{scale:1}to{scale:1.05}}
+@media (prefers-reduced-motion:reduce){.sheet .sk1,.sheet .sk2{animation:none}}
+</style></head><body>
 <div class="vp"><div class="app" id="app">
  <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
  <div class="pearls" id="pearls"><img src="pearls.png" alt=""></div>
@@ -327,23 +355,20 @@ let h=`<div class="dia"><div class="nm"><b>叶铎</b><span>的配方</span></div
 <div class="drink"><span class="sx" data-e="0" style="left:133px;top:-10px;height:175px;transform-origin:86% 100%"><img src="straw-mint.png" alt="Telegram 吸管"></span><span class="sx" data-e="1" style="left:170px;top:48px;height:125px"><img src="wafer.png" alt="API 威化卷"></span><span class="sx" data-e="2" style="left:192px;top:37px;height:135px"><img src="spoon.png" alt="QQ 长勺"></span><img class="dcup" src="cup3.png" alt="叶铎的特调"></div>
 
 <svg class="ldr" viewBox="0 0 384 412" width="384" height="412"></svg>
-${secs.map((s,i)=>s.ly?`<div class="an ${s.ly[2]}" data-i="${i}" style="top:${s.ly[3]}px"><b>${s.t}</b><i>${s.ly[0]}</i></div>`:'').join('')}
+${secs.map((s,i)=>s.ly?`<button class="lyh" data-i="${i}" aria-label="${s.t}" style="left:${s.ly[1][0]-62}px;top:${s.ly[1][1]-30}px"></button>`:'').join('')}
 <span class="stw" data-e="0" style="left:236px;top:-12px">Telegram</span>
 <span class="stw" data-e="1" style="left:104px;top:104px">API</span>
 <span class="stw off" data-e="2" style="left:292px;top:50px">QQ</span></div>`;
 const UN='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a5c46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>';
 const RE=UN.replace('<svg','<svg style="transform:scaleX(-1)"');
 const SV='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
-h+=`<div class="tools"><div class="meta">第<span class="counter" id="ver">${dg(ver)}</span>版<small id="cnt"></small></div><button class="lt" id="bU" aria-label="撤销" disabled>${UN}</button><button class="lt" id="bR" aria-label="重做" disabled>${RE}</button><button class="dk" id="bS" aria-label="保存" disabled>${SV}</button></div><div class="tip" id="tip"></div>`;
+
 /* 版式按内容的样子来定：第一段首字下沉；有分号或换行的是清单；很短的做引语；其余用边注。相邻两段不重复 */
 const BI=['bit1.png','bit2.png','bit4.png','bit5.png','bit6.png'];
-let prev='';
-secs.forEach((s,i)=>{const items=s.x.split(/[；;\n]/).map(v=>v.trim()).filter(Boolean);let k=i===0?'c1':items.length>=2?'c4':s.x.length<=48?'c2':'c3';if(k===prev&&k!=='c4')k=k==='c2'?'c3':'c2';prev=k;
- const kk=PS.length===1?'整杯':s.t;
- if(k==='c1')h+=`<section class="ch c1" id="c${i}"><span class="kk">${kk}</span><p class="ed" data-i="${i}">${s.x}</p></section>`;
- else if(k==='c2')h+=`<section class="ch c2" id="c${i}"><span class="kk">${kk}</span><div class="q"><p class="ed" data-i="${i}">${s.x}</p></div></section>`;
- else if(k==='c3')h+=`<section class="ch c3" id="c${i}"><span class="kk">${s.ly?s.ly[0]:''}<small>${s.t}</small></span><p class="ed" data-i="${i}">${s.x}</p></section>`;
- else h+=`<section class="ch c4" id="c${i}"><span class="kk">${kk}</span><ul>${items.map((x,j)=>`<li><img src="${BI[j%5]}" alt=""><span class="ed" data-i="${i}" data-j="${j}">${x}</span></li>`).join('')}</ul></section>`});
+const TC=['m','c','k','m','c','k'];
+h+=`<section class="sheet"><img class="sk1" src="stk_truf.png" alt=""><div class="tabs">${secs.map((s,i)=>`<button class="tb ${TC[i]}${i?'':' on'}" data-i="${i}" aria-label="${s.t}"><span>${String(i+1).padStart(2,'0')}</span></button>`).join('')}</div>
+${secs.map((s,i)=>`<div class="pp${i?'':' on'}" id="c${i}" data-i="${i}"><span class="kk">${PS.length===1?'整杯':s.t}</span><p class="ed" data-i="${i}">${s.x}</p></div>`).join('')}
+<div class="sft"><small id="cnt"></small><button class="lt" id="bU" aria-label="撤销" disabled>${UN}</button><button class="lt" id="bR" aria-label="重做" disabled>${RE}</button><button class="savep" id="bS" aria-label="保存" disabled>存成<span class="counter" id="ver">${dg(ver+1)}</span>版</button></div><div class="tip" id="tip"></div><img class="sk2" src="stk_leaf.png" alt=""></section>`;
 L.innerHTML=h;
 const RC=document.createElement('div');RC.className='rc';RC.innerHTML='<div class="veil"></div><div class="hang"><div class="pp2" id="rin" tabindex="0" aria-label="入口小票"></div></div><div class="st bk"><div class="rt"><img alt=""></div></div><div class="st fr"><div class="rt"><img alt=""></div></div>';$('#app').appendChild(RC);
 $$('.ch').forEach(c=>{const e=c.querySelector('.ed');if(e&&!c.classList.contains('c4')&&e.textContent.length>150){c.classList.add('fold');const m=document.createElement('button');m.className='more';m.textContent='展开';c.appendChild(m);m.addEventListener('click',()=>{const o=c.classList.toggle('open');m.textContent=o?'收起':'展开'})}});
@@ -360,11 +385,11 @@ EDS.forEach(e=>{e.addEventListener('click',()=>{EDS.forEach(x=>{x.classList.togg
  e.addEventListener('input',()=>{clearTimeout(tm);tm=setTimeout(()=>{hist=hist.slice(0,hi+1);hist.push(snap());hi++;ui()},450);ui()})});
 $('#bU').addEventListener('click',()=>{if(hi>0){hi--;apply(hist[hi])}});
 $('#bR').addEventListener('click',()=>{if(hi<hist.length-1){hi++;apply(hist[hi])}});
-$('#bS').addEventListener('click',()=>{ver++;saved=snap();const c=$('#ver');c.animate([{transform:'rotateX(0)'},{transform:'rotateX(90deg)'},{transform:'rotateX(0)'}],{duration:420});setTimeout(()=>{c.innerHTML=dg(ver)},210);EDS.forEach(x=>{x.classList.remove('on');x.contentEditable='false'});D.s.v+=30;ui();$('#tip').textContent=`已保存为第 ${ver} 版。`});
+$('#bS').addEventListener('click',()=>{ver++;saved=snap();const c=$('#ver');c.animate([{transform:'rotateX(0)'},{transform:'rotateX(90deg)'},{transform:'rotateX(0)'}],{duration:420});setTimeout(()=>{c.innerHTML=dg(ver+1)},210);EDS.forEach(x=>{x.classList.remove('on');x.contentEditable='false'});D.s.v+=30;ui();$('#tip').textContent=`已保存为第 ${ver} 版。`});
 ui();
 /* 动 */
 const sp=()=>({x:0,v:0});const D={e:$('.drink'),s:sp()};
-const floats=[...$$('.stw'),...$$('.an')].map(e=>({e,per:2.6+Math.random()*2.2,ph:Math.random()*6.28,a:1.6,s:sp()}));
+const floats=[...$$('.stw')].map(e=>({e,per:2.6+Math.random()*2.2,ph:Math.random()*6.28,a:1.6,s:sp()}));
 let open=-1;
 const SW=v=>`<i class="ck${v?' on':''}" role="checkbox" aria-checked="${!!v}"></i>`;
 function tag(i){if(i<0||open===i){if(open<0)return;RC.classList.add('off');RC.classList.remove('on');const k=open;open=-1;setTimeout(()=>{$$('.sx')[k].classList.remove('gone');RC.classList.remove('off');D.s.v+=30},700);return}
@@ -393,13 +418,18 @@ RC.querySelector('.veil').addEventListener('click',()=>tag(-1));RC.querySelector
  const end=()=>{if(y0==null)return;y0=null;hg.animate([{translate:hg.style.translate||'0 0'},{translate:'0 0'}],{duration:dy>80?260:200,easing:'cubic-bezier(.23,1,.32,1)'});hg.style.translate='';if(dy>80)tag(-1)};
  st.addEventListener('pointerup',end);st.addEventListener('pointercancel',end)})}
 $$('.stw,.sx').forEach(s=>s.addEventListener('click',ev=>{ev.stopPropagation();D.s.v+=36;const f=floats.find(q=>q.e===s);if(f)f.s.v-=8;tag(+s.dataset.e)}));
-$$('.an').forEach(a=>a.addEventListener('click',()=>{const k=a.dataset.i;D.s.v+=24;floats.find(q=>q.e===a).s.v-=6;const c=$('#c'+k);c.scrollIntoView({behavior:'smooth',block:'start'});c.classList.add('hl');setTimeout(()=>c.classList.remove('hl'),1600)}));
+function act(k){$$('.pp').forEach(p=>p.classList.toggle('on',p.dataset.i==k));$$('.tb').forEach(b=>b.classList.toggle('on',b.dataset.i==k))}
+function placeTabs(){$$('.tb').forEach(b=>{const p=$('#c'+b.dataset.i);b.style.top=(p.offsetTop+4)+'px'})}
+placeTabs();document.fonts.ready.then(placeTabs);addEventListener('resize',placeTabs);if(window.ResizeObserver)new ResizeObserver(placeTabs).observe($('.sheet'));
+$$('.tb').forEach(b=>b.addEventListener('click',()=>act(b.dataset.i)));
+$$('.ed').forEach(e=>e.addEventListener('click',()=>act(e.dataset.i)));
+$$('.lyh').forEach(a=>a.addEventListener('click',ev=>{ev.stopPropagation();const k=a.dataset.i;D.s.v+=24;act(k);const c=$('#c'+k),sc=$('#sc');sc.scrollTo({top:sc.scrollTop+c.getBoundingClientRect().top-sc.getBoundingClientRect().top-140,behavior:'smooth'})}));
 /* 电脑上：鼠标靠近哪根吸管，哪根微微上提 */
 const LIFT=[0,0,0];const ROT=[8,-14,32];
 if(matchMedia('(hover:hover)').matches){$('.dia').addEventListener('pointermove',ev=>{$$('.sx').forEach((s,i)=>{const r=s.getBoundingClientRect();const d=Math.hypot(ev.clientX-(r.left+r.width/2),ev.clientY-(r.top+r.height*.3));LIFT[i]=Math.max(0,1-d/110)*9})});$('.dia').addEventListener('pointerleave',()=>{LIFT.fill(0)})}
 const LC=[0,0,0];
 (function lift(){$$('.sx').forEach((s,i)=>{LC[i]+=(LIFT[i]-LC[i])*.15;s.style.transform=`translateY(${(-LC[i]).toFixed(2)}px) rotate(${ROT[i]}deg)`});requestAnimationFrame(lift)})();
-$('.drink .dcup').addEventListener('click',()=>{D.s.v+=40});
+$('.drink .dcup').addEventListener('click',ev=>{D.s.v+=40;const S=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ds'))||1,y=(ev.clientY-$('.dia').getBoundingClientRect().top)/S;let k=-1,bd=1e9;secs.forEach((s,i)=>{if(!s.ly)return;const d=Math.abs(s.ly[1][1]-y);if(d<bd){bd=d;k=i}});if(k>=0)$$('.lyh')[k].click()});
 (function loop(n){const s=n/1000,on=!matchMedia('(prefers-reduced-motion: reduce)').matches;for(const q of floats){q.s.v+=(-140*q.s.x-7*q.s.v)/60;q.s.x+=q.s.v/60;const y=on?Math.sin(s*6.283/q.per+q.ph)*q.a:0;q.e.style.transform=`translateY(${(y+q.s.x).toFixed(1)}px)`}
  D.s.v+=(-90*D.s.x-6*D.s.v)/60;D.s.x+=D.s.v/60;const r=(on?Math.sin(s*6.283/6.8)*1.1:0)+D.s.x*.1;D.e.style.transform=`rotate(${r.toFixed(2)}deg)`;requestAnimationFrame(loop)})(0);
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
