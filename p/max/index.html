@@ -71,6 +71,33 @@ img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
 @keyframes hop{40%{transform:translateY(-16px) rotate(-12deg)}}
 .dc{position:absolute;z-index:0}
 
+
+/* ---------- 中转站（可折叠） ---------- */
+#sts{position:relative;padding:0 0 6px}
+.st{position:relative;margin:0 0 10px}
+.sp{position:relative;width:calc(100% - 44px);max-width:340px;height:66px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:0 30px 0 34px;cursor:pointer;transform:rotate(var(--r,0deg));transition:transform .25s}
+.sp>img{position:absolute;inset:0;width:100%;height:100%}
+.sp:active{transform:rotate(var(--r,0deg)) scale(.97)}
+.sp h2{position:relative;flex:1;min-width:0;font:400 19px/1 ZK;color:var(--cream);letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp small{position:relative;font:12px ZK;color:#d8efe5;white-space:nowrap}
+.sp .ar{position:relative;width:9px;height:9px;border-right:2px solid #d8efe5;border-bottom:2px solid #d8efe5;transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s}
+.st.op .sp .ar{transform:rotate(225deg) translate(-2px,-2px)}
+.sp .use{position:absolute;right:-6px;top:-12px;width:40px;height:40px;display:grid;place-items:center;font:11px/1 ZK;color:var(--choc);
+ background:radial-gradient(circle at 38% 32%,#f4fffa,#bfe6d6 72%);border-radius:50%;box-shadow:0 0 0 1.5px var(--ol),0 0 0 4px var(--cream);transform:rotate(12deg)}
+.bd{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+.st.op .bd{grid-template-rows:1fr}
+.bd>div{overflow:hidden;min-height:0}
+.ls{padding:10px 0 4px;display:flex;flex-direction:column;gap:6px;align-items:center}
+.br{position:relative;width:calc(100% - 64px);max-width:320px;height:58px;cursor:pointer;transform:rotate(var(--t,0deg));transition:transform .2s}
+.br:nth-child(odd){--t:-.8deg}.br:nth-child(even){--t:.8deg;left:6px}
+.br:active{transform:rotate(var(--t)) scale(.97)}
+.br>img{position:absolute;inset:0;width:100%;height:100%}
+.br .tx{position:absolute;left:10%;right:8%;top:22%;bottom:30%;display:flex;align-items:center;gap:8px}
+.br .n{flex:1;min-width:0;font:14px/1 WK;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.br .tg{font:10px/1 ZK;color:#bfe6d6;white-space:nowrap}
+.br .k{font:400 16px/1 BalooX;color:var(--cream);white-space:nowrap}
+.br .mc{position:absolute;left:-22px;top:4px;width:40px;animation:hop .45s}
+
 /* ---------- 备用链 ---------- */
 .chain{position:relative;margin:8px 0 0;height:236px}
 .chain .ph{--r:1.2deg}
@@ -97,58 +124,52 @@ img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
  <img class="curls" src="m_curls.png" alt="">
  <div class="meta">
   <div class="no"><span><b>03</b>本期</span></div>
-  <div class="fig"><b>3</b><span>中转站</span></div>
-  <div class="fig"><b>6</b><span>款</span></div>
+  <div class="fig"><b id="nst">6</b><span>中转站</span></div>
+  <div class="fig"><b id="nmd">14</b><span>款</span></div>
  </div>
 </header>
 
 <section class="vn" aria-live="polite">
  <div class="np"><img src="m_plaque.png" alt=""><span>薄荷店长</span></div>
  <img class="leaf" src="k_mint.png" alt="">
- <p id="say">今天先用 <em>gpt-4o</em>，没回应就按备用链换下一个。点哪颗糖，就换哪个先用。</p>
+ <p id="say">今天先用 <em>gpt-4o</em>，没回应就按备用链换下一个。点哪块巧克力，就换哪个先用。</p>
  <i class="nx"></i>
 </section>
 
-<section class="ch" id="c1">
- <img class="dc" src="k_bean.png" alt="" style="right:20px;top:-6px;width:34px;transform:rotate(20deg)">
- <div class="ph" style="--r:-1.5deg"><img src="m_plaque.png" alt=""><span class="idx">01</span><h2>小鲸鱼中转</h2><small>2 款</small></div>
- <div class="row" data-m="gpt-4o"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">gpt-4o</span><span class="t">看图</span></div></div><div class="num"><b>128K</b><i>上下文</i></div></div>
- <div class="row rv" data-m="gpt-4.1-mini"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">gpt-4.1-mini</span><span class="t">长文</span></div></div><div class="num"><b>1M</b><i>上下文</i></div></div>
-</section>
-
-<section class="ch" id="c2">
- <img class="dc" src="m_cone.png" alt="" style="left:-18px;top:96px;width:46px;transform:rotate(18deg)">
- <div class="ph" style="--r:1.5deg"><img src="m_plaque.png" alt=""><span class="idx">02</span><h2>Anthropic 官方</h2><small>2 款</small></div>
- <div class="row rv" data-m="claude-sonnet-4"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">claude-sonnet-4</span><span class="t">看图</span></div></div><div class="num"><b>200K</b><i>上下文</i></div></div>
- <div class="row" data-m="claude-haiku-4"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">claude-haiku-4</span><span class="t">快</span></div></div><div class="num"><b>200K</b><i>上下文</i></div></div>
-</section>
-
-<section class="ch" id="c3">
- <img class="dc" src="m_curls.png" alt="" style="right:-40px;top:200px;width:160px;transform:rotate(-12deg)">
- <div class="ph" style="--r:-1deg"><img src="m_plaque.png" alt=""><span class="idx">03</span><h2>夜猫小站</h2><small>2 款</small></div>
- <div class="row" data-m="deepseek-v3"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">deepseek-v3</span><span class="t">流式</span></div></div><div class="num"><b>64K</b><i>上下文</i></div></div>
- <div class="row rv" data-m="qwen-max"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">qwen-max</span><span class="t">夜里便宜</span></div></div><div class="num"><b>32K</b><i>上下文</i></div></div>
-</section>
-
+<div id="sts"></div>
+<img class="dc" src="m_curls.png" alt="" style="right:-40px;margin-top:-30px;width:160px;transform:rotate(-12deg);position:relative;left:auto;float:right">
 <section class="ch chain" id="chain">
- <div class="ph"><img src="m_plaque.png" alt=""><span class="idx">04</span><h2>备用链</h2></div>
+ <div class="ph"><img src="m_plaque.png" alt=""><h2>备用链</h2></div>
  <svg class="rope" viewBox="0 0 412 60" preserveAspectRatio="none"><path d="M-4 14 Q103 52 206 22 T416 18" fill="none" stroke="#6b4a3b" stroke-width="1.6" stroke-linecap="round"/><path d="M-4 18 Q103 56 206 26 T416 22" fill="none" stroke="#9fd3bf" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round"/></svg>
 </section>
 
 <div class="foot"><p class="ft">Mint Chocolate Models</p><img class="cookie" src="cookie.png" alt=""><img class="drink" src="drink.png" alt=""></div>
-<img class="mac" id="mac" src="m_macaron.png" alt="先用">
 </div></div></div>
 <script>
-const app=document.getElementById('app'),inn=document.getElementById('in'),mac=document.getElementById('mac'),say=document.getElementById('say');
+const app=document.getElementById('app'),inn=document.getElementById('in'),say=document.getElementById('say');
 let cur='gpt-4o',typing;
 function talk(html){clearInterval(typing);const tmp=document.createElement('div');tmp.innerHTML=html;const full=tmp.textContent;let i=0;say.textContent='';
  typing=setInterval(()=>{i++;if(i>=full.length){clearInterval(typing);say.innerHTML=html;return}say.textContent=full.slice(0,i)},28)}
-function place(hop){const r=document.querySelector(`.row[data-m="${cur}"]`);if(!r)return;const w=r.querySelector('.wr'),b=inn.getBoundingClientRect(),q=w.getBoundingClientRect();
- const rv=r.classList.contains('rv');mac.style.left=(rv?q.left-b.left-8:q.right-b.left-46)+'px';mac.style.top=(q.top-b.top-14)+'px';
- if(hop){mac.classList.remove('hop');void mac.offsetWidth;mac.classList.add('hop')}}
-document.querySelectorAll('.row').forEach(r=>r.onclick=()=>{const y=app.scrollTop;if(r.dataset.m===cur){talk(`<em>${cur}</em> 已经在用啦。`);return}
- cur=r.dataset.m;place(true);talk(`好，换成 <em>${cur}</em> 先用。`);app.scrollTop=y});
-document.querySelectorAll('.ch:not(.chain) .ph').forEach(p=>p.onclick=()=>{p.classList.remove('sw');void p.offsetWidth;p.classList.add('sw')});
+
+const STS=[
+ {n:'小鲸鱼中转',m:[['gpt-4o','看图','128K'],['gpt-4.1-mini','长文','1M'],['o4-mini','推理','200K']]},
+ {n:'Anthropic 官方',m:[['claude-sonnet-4','看图','200K'],['claude-haiku-4','快','200K']]},
+ {n:'夜猫小站',m:[['deepseek-v3','流式','64K'],['qwen-max','夜里便宜','32K']]},
+ {n:'OpenRouter',m:[['gemini-2.5-pro','看图','1M'],['llama-4-maverick','','1M'],['mistral-large','','128K']]},
+ {n:'薄荷自建',m:[['qwen3-32b','本地','32K'],['glm-4.5-air','','128K']]},
+ {n:'备用小铺',m:[['kimi-k2','长文','128K']]}];
+const sts=document.getElementById('sts');let curSt=0;
+document.getElementById('nst').textContent=STS.length;document.getElementById('nmd').textContent=STS.reduce((a,s)=>a+s.m.length,0);
+function renderSt(){sts.innerHTML=STS.map((s,i)=>`<div class="st${i===0?' op':''}" data-i="${i}"><div class="sp" style="--r:${i%2?1:-1}deg"><img src="m_plaque.png" alt=""><h2>${s.n}</h2><small>${s.m.length} 款</small><i class="ar"></i>${i===curSt?'<span class="use">在用</span>':''}</div>
+ <div class="bd"><div><div class="ls">${s.m.map(([m,tg,k])=>`<div class="br" data-m="${m}" data-s="${i}"><img src="m_bar.png" alt=""><div class="tx"><span class="n">${m}</span>${tg?`<span class="tg">${tg}</span>`:''}<span class="k">${k}</span></div>${m===cur?'<img class="mc" src="m_macaron.png" alt="先用">':''}</div>`).join('')}</div></div></div></div>`).join('');}
+renderSt();
+sts.addEventListener('click',ev=>{const y=app.scrollTop;const sp=ev.target.closest('.sp');
+ if(sp){sp.parentNode.classList.toggle('op');requestAnimationFrame(()=>app.scrollTop=y);return}
+ const br=ev.target.closest('.br');if(!br)return;const m=br.dataset.m;
+ if(m===cur){talk(`<em>${m}</em> 已经在用啦。`);return}
+ cur=m;const old=sts.querySelector('.mc');old&&old.remove();br.insertAdjacentHTML('beforeend','<img class="mc" src="m_macaron.png" alt="先用">');
+ const s=+br.dataset.s;if(s!==curSt){const u=sts.querySelector('.use');u&&u.remove();sts.querySelector(`.st[data-i="${s}"] .sp`).insertAdjacentHTML('beforeend','<span class="use">在用</span>');curSt=s}
+ talk(`好，换成 <em>${m}</em> 先用。`);app.scrollTop=y});
 // 备用链：点一颗糖，往前挪一位
 const chain=document.getElementById('chain');let order=[['gpt-4o','小鲸鱼'],['claude-sonnet-4','官方'],['deepseek-v3','夜猫']];const ORD='①②③';
 const cds=order.map(([m,s])=>{const d=document.createElement('div');d.className='cd';d.dataset.m=m;d.innerHTML=`<img src="candy.png" alt=""><span class="o"></span><span class="m">${m}</span><span class="s">${s}</span>`;chain.appendChild(d);return d});
@@ -156,7 +177,7 @@ const tilt=[-6,4,-3],tops=[98,112,96];
 function lay(){const W=inn.offsetWidth,gap=(W-3*112)/4;order.forEach(([m],k)=>{const d=cds.find(c=>c.dataset.m===m);d.style.left=(gap+k*(112+gap))+'px';d.style.top=tops[k]+'px';d.querySelector('img').style.transform=`rotate(${tilt[k]}deg)`;d.querySelector('.o').textContent=ORD[k]})}
 cds.forEach(d=>d.onclick=()=>{const k=order.findIndex(o=>o[0]===d.dataset.m);if(k===0){talk(`<em>${d.dataset.m}</em> 已经排第一啦。`);return}
  [order[k-1],order[k]]=[order[k],order[k-1]];lay();talk(`<em>${d.dataset.m}</em> 往前挪到第 ${k} 个。`)});
-const all=()=>{lay();place(false)};all();addEventListener('resize',all);document.fonts&&document.fonts.ready.then(all);
+const all=()=>{lay()};all();addEventListener('resize',all);document.fonts&&document.fonts.ready.then(all);
 window.addEventListener('load',all);
 </script>
 </body></html>
