@@ -242,4 +242,6 @@ PW.forEach(p=>{const b=document.createElement('button');b.className='pl';b.setAt
  b.innerHTML=`<span class="ball"><img src="pearl.png" alt=""><b>${p[3]}</b></span><small>${p[0]}<br>${p[1]}</small>`;
  b.onclick=keep(()=>{if(pc===b){b.classList.remove('sel');pex.classList.remove('op');pc=null;return}pc&&pc.classList.remove('sel');b.classList.add('sel');pc=b;$('#pd').textContent=`${p[0]} – ${p[1]}`;$('#pn').textContent=`聊了 ${p[3]} 天`;$('#pt').textContent=p[2];pex.classList.add('op')});pls.appendChild(b)});
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
-</script></body></html>
+</script><script>window.__DEMO_MAP=[["#today","push:room",1,300]]</script><script src="../../bridge.js"></script>
+<script>/* 单独打开预览时：点奶盖层直接进聊天室 */if(window.parent===window)document.getElementById('today').addEventListener('click',()=>setTimeout(()=>location.href='../room/index.html?from=cup',300));</script>
+</body></html>
