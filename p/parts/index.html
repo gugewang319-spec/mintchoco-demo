@@ -25,8 +25,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
 .b1{min-width:120px;height:52px;padding:0 26px;border:solid 18px transparent;border-width:0 26px;border-image:url(m_plaque.png) 0 120 fill / 0 26px stretch;display:grid;place-items:center;font:17px ZK;color:var(--cream);letter-spacing:2px;transition:transform .15s}
 .b2{min-width:104px;height:46px;padding:0 20px;border:solid transparent;border-width:0 22px;border-image:url(m_barm.png) 0 110 fill / 0 22px stretch;display:grid;place-items:center;font:15px ZK;color:var(--choc);transition:transform .15s}
 .b1:active,.b2:active{transform:scale(.94) rotate(-1deg)}
-.b3{height:40px;padding:0 6px;font:14px ZK;color:var(--mint);border-bottom:2px dashed var(--mintl)}
+.b3{height:34px;padding:0 6px;font:14px ZK;color:var(--mint);border-bottom:2px dashed var(--mintl)}
 
+.lv{margin:14px 0 8px 4px;font:12px WK;color:var(--ink2)}
+.lv:first-of-type{margin-top:0}
+.rbs{gap:12px}
+.rb{position:relative;width:48px;height:48px;flex:none;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.rb img{position:absolute;inset:0;width:100%;height:100%}
+.rb svg{position:absolute;left:25%;top:25%;width:50%;height:50%}
+.rb.sm{width:34px;height:34px}
+.rb:active{transform:scale(.88) rotate(-12deg)}
 /* 开关：奶油槽 + 马卡龙 */
 .sw{position:relative;flex:none;width:70px;height:36px;border-radius:18px;background:var(--cream);box-shadow:0 0 0 1.5px var(--ol),inset 0 2px 3px rgba(107,74,59,.15);transition:background .3s}
 .sw::after{content:"";position:absolute;left:8px;right:8px;top:50%;height:0;border-top:1.6px dashed transparent;transition:border-color .3s}
@@ -154,8 +162,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
  <div class="row"><img src="m_barm.png" alt=""><div class="tx"><span class="n">claude-sonnet</span><span class="tg">长文</span></div></div>
  <div class="row"><img src="m_barm.png" alt=""><div class="tx"><span class="n">deepseek-chat</span><span class="tg">便宜</span></div></div>
  </div></section>
-<section class="sec"><div class="lab"><b>04</b><span>按钮</span><i>主 · 次 · 文字</i></div>
- <div class="rw"><button class="b1">保存</button><button class="b2">试一下</button><button class="b3">恢复默认</button></div></section>
+<section class="sec"><div class="lab"><b>04</b><span>按钮</span><i>按重要程度分级</i></div>
+ <p class="lv">一级 · 巧克力牌，每屏最多一个</p><div class="rw"><button class="b1">保存</button></div>
+ <p class="lv">二级 · 薄荷排块，常用操作</p><div class="rw"><button class="b2">试一下</button><button class="b2">导入</button></div>
+ <p class="lv">三级 · 圆形小甜点，返回、关闭、加号</p><div class="rw rbs"><button class="rb" aria-label="返回"><img src="c_choc.png" alt=""><svg viewBox="0 0 24 24" fill="none" stroke="#fffaf0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg></button><button class="rb" aria-label="新建"><img src="c_choc.png" alt=""><svg viewBox="0 0 24 24" fill="none" stroke="#fffaf0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12M6 12h12"/></svg></button><button class="rb" aria-label="关闭"><img src="c_mint.png" alt=""><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7 7 17"/></svg></button><button class="rb" aria-label="重试"><img src="c_mint.png" alt=""><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 12a6 6 0 1 1-2-4.5"/><path d="M18.5 4.5V8H15"/></svg></button><button class="rb sm" aria-label="关闭"><img src="c_mint.png" alt=""><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7 7 17"/></svg></button><button class="rb sm" aria-label="新建"><img src="c_choc.png" alt=""><svg viewBox="0 0 24 24" fill="none" stroke="#fffaf0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12M6 12h12"/></svg></button></div>
+ <p class="lv">四级 · 文字按钮，不抢眼的</p><div class="rw"><button class="b3">恢复默认</button><button class="b3">跳过</button></div>
+ <p class="lv">专属 · 每页自己的物件就是按钮，比如上面的饮品卡和列表行</p>
+</section>
 <section class="sec"><div class="lab"><b>05</b><span>对话框</span><i>提示、确认都用它</i></div>
  <div class="vn" role="dialog" aria-label="薄荷店长"><div class="np"><img src="m_plaque.png" alt=""><span>薄荷店长</span></div><img class="lf" src="leaf.png" alt="">
  <p>要把 <em>gpt-4o</em> 从备用链里拿掉吗？拿掉以后会先用下一个。</p>
