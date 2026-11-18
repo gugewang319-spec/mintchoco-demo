@@ -22,17 +22,17 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
 .rb:active{transform:scale(.88) rotate(-12deg)}
 
 /* 量杯：杯身 + 左侧刻度，每一层一个刻度牌 */
-.cup{position:relative;margin:0 14px 0 46px;border:1.5px solid var(--ol);border-top:0;border-radius:0 0 38px 38px;background:rgba(255,250,240,.55);box-shadow:inset 0 0 0 4px rgba(255,250,240,.7),inset 0 0 0 5.2px rgba(159,211,191,.8);overflow:visible}
-.cup::before{content:"";position:absolute;left:-7px;right:-7px;top:-6px;height:10px;border-radius:6px;background:var(--cream);box-shadow:0 0 0 1.5px var(--ol)}
+.cup{position:relative;margin:0 14px 0 46px;border:1px solid rgba(255,255,255,.95);border-top:0;border-radius:0 0 38px 38px;background:linear-gradient(160deg,rgba(255,255,255,.5),rgba(255,255,255,.22));-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 14px 30px -18px rgba(74,48,39,.5);overflow:visible}
+.cup::before{content:"";position:absolute;left:-7px;right:-7px;top:-6px;height:10px;border-radius:6px;background:rgba(255,255,255,.75);border:1px solid #fff;box-shadow:0 4px 10px -6px rgba(74,48,39,.4)}
 .cup .gl{position:absolute;left:12px;top:24px;bottom:40px;width:7px;border-radius:4px;background:rgba(255,255,255,.75);pointer-events:none;z-index:4}
 .ly{position:relative;padding:22px 16px 18px 22px}
-.ly+.ly{border-top:1.4px solid var(--ol)}
-.ly.foam{background:linear-gradient(#fffdf6,#fbf3e4);border-radius:0;padding-top:26px}
-.ly.milk{background:linear-gradient(rgba(214,240,229,.85),rgba(196,232,218,.9))}
-.ly.tea{background:linear-gradient(rgba(226,196,166,.6),rgba(205,168,134,.75));border-radius:0 0 36px 36px;padding-bottom:26px}
+.ly+.ly{border-top:1px solid rgba(255,255,255,.9)}
+.ly.foam{background:linear-gradient(rgba(255,253,246,.7),rgba(251,243,228,.55));border-radius:0;padding-top:26px}
+.ly.milk{background:linear-gradient(rgba(214,240,229,.5),rgba(196,232,218,.6))}
+.ly.tea{background:linear-gradient(rgba(226,196,166,.4),rgba(205,168,134,.55));border-radius:0 0 36px 36px;padding-bottom:26px}
 .ly.milk::before,.ly.tea::before{content:"";position:absolute;left:0;right:0;top:-9px;height:9px;background:var(--wv) repeat-x 0 0/48px 9px}
-.ly.milk{--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='9'%3E%3Cpath d='M0 9V5Q12 0 24 5T48 5V9Z' fill='%23d6f0e5'/%3E%3C/svg%3E")}
-.ly.tea{--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='9'%3E%3Cpath d='M0 9V5Q12 0 24 5T48 5V9Z' fill='%23ead3bd'/%3E%3C/svg%3E")}
+.ly.milk{--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='9'%3E%3Cpath d='M0 9V5Q12 0 24 5T48 5V9Z' fill='%23e6f5ee' fill-opacity='.7'/%3E%3C/svg%3E")}
+.ly.tea{--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='9'%3E%3Cpath d='M0 9V5Q12 0 24 5T48 5V9Z' fill='%23efdcc8' fill-opacity='.7'/%3E%3C/svg%3E")}
 /* 刻度：伸出杯外的线 + 名牌 */
 .tk{position:absolute;left:-40px;top:-1px;width:50px;height:0;border-top:1.6px solid var(--ol)}
 .ly:first-child .tk{top:20px}
@@ -59,50 +59,35 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
 .ex .bx a{display:inline-block;margin-top:6px;font:13px ZK;color:var(--mint);border-bottom:1.5px dashed var(--mintl);text-decoration:none}
 
 /* 制冰格：一周七格，有聊天的格子里放一块冰 */
-.tray{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:7px;border-radius:12px;background:#f6fcf9;box-shadow:0 0 0 1.5px var(--ol),inset 0 -3px 0 rgba(107,74,59,.12)}
-.sl{position:relative;aspect-ratio:1/1.25;border-radius:8px;background:rgba(159,211,191,.28);box-shadow:inset 0 0 0 1.2px rgba(107,74,59,.45),inset 0 3px 4px rgba(107,74,59,.12);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3px}
+.tray{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:6px;border-radius:14px;background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 #fff}
+.sl{position:relative;aspect-ratio:1/1.3;border-radius:9px;background:rgba(255,255,255,.35);box-shadow:inset 0 1px 3px rgba(74,48,39,.15);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3px}
 .sl small{position:relative;z-index:2;font:10px/1 ZK;color:var(--ink2)}
 .sl.on small{color:var(--choc)}
-.ice{position:absolute;left:12%;top:9%;width:76%;aspect-ratio:1;border-radius:24%;transform:rotate(var(--r,0deg));transition:transform .35s cubic-bezier(.3,1.6,.5,1);
- background:linear-gradient(150deg,rgba(255,255,255,.95) 0 18%,rgba(232,248,242,.75) 30%,rgba(190,228,214,.55) 70%,rgba(160,212,195,.7));box-shadow:0 0 0 1.3px var(--ol),inset -3px -4px 0 rgba(120,190,165,.35),inset 2px 2px 0 rgba(255,255,255,.9)}
-.ice::before{content:"";position:absolute;left:18%;top:16%;width:30%;height:12%;border-radius:4px;background:#fff;transform:rotate(-20deg);opacity:.9}
-.ice::after{content:"";position:absolute;right:18%;bottom:20%;width:12%;height:12%;border-radius:50%;background:rgba(255,255,255,.8)}
-.sl.sel .ice{transform:translateY(-6px) rotate(calc(var(--r,0deg) * -1)) scale(1.06)}
-.sl.sel{background:rgba(159,211,191,.6)}
-.sl b{position:absolute;z-index:2;top:30%;left:0;right:0;text-align:center;font:400 11px/1 BalooX;color:var(--mint)}
+.ice{position:absolute;left:8%;top:6%;width:84%;height:auto;transition:transform .35s cubic-bezier(.3,1.6,.5,1);filter:drop-shadow(0 3px 3px rgba(74,48,39,.18))}
+
+
+.sl.sel .ice{transform:translateY(-5px) scale(1.06)}
+.sl.sel{background:rgba(196,232,218,.7)}
+.sl b{position:absolute;z-index:2;top:24%;left:0;right:0;text-align:center;font:400 11px/1 BalooX;color:var(--mint)}
 
 /* 杯底珍珠：一周一颗，沉在底部 */
 .pls{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;align-items:end}
 .pl{display:flex;flex-direction:column;align-items:center;gap:5px}
-.ball{position:relative;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#b0846a 0 10%,#6a4232 38%,#3f2419 72%);box-shadow:0 0 0 1.4px var(--ol);display:grid;place-items:center;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
-.ball::before{content:"";position:absolute;left:24%;top:18%;width:22%;height:14%;border-radius:50%;background:rgba(255,240,225,.75);transform:rotate(-25deg)}
-.ball b{font:400 15px/1 BalooX;color:var(--cream)}
+.ball{position:relative;width:48px;height:48px;display:grid;place-items:center;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}.ball img{position:absolute;inset:-6%;width:112%;height:112%;object-fit:contain}.ball b{position:relative}
+
+.ball b{font:400 15px/1 BalooX;color:var(--cream);text-shadow:0 1px 2px rgba(0,0,0,.4)}
 .pl small{font:10.5px/1.2 ZK;color:var(--choc);text-align:center}
 .pl.sel .ball{transform:translateY(-8px)}
-.pl:nth-child(2) .ball{width:40px;height:40px}.pl:nth-child(3) .ball{width:50px;height:50px}.pl:nth-child(4) .ball{width:38px;height:38px}
+
 .bot{position:absolute;right:20px;bottom:10px;width:30px;transform:rotate(30deg);opacity:.95}
 
 .navw{position:fixed;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:40;margin:0 auto;width:min(100%,412px);padding:0 12px}
 .navw .dk{margin-top:0}
-/* 底栏：守全站规矩——奶油不透明、可可细描边、只用薄荷/奶油/巧克力；杯套条纹在下沿，珍珠沉在角落 */
-.dk{position:relative;height:90px;margin-top:26px}
-.dk .tray{position:absolute;left:0;right:0;bottom:0;height:70px;border-radius:24px;background:#fffaf0;box-shadow:0 0 0 1.5px var(--ol),inset 0 0 0 4px #fffaf0,inset 0 0 0 5.2px var(--mintl);overflow:hidden}
-.dk .tray::after{content:"";position:absolute;left:0;right:0;bottom:0;height:13px;border-top:1.2px solid var(--ol);background:repeating-linear-gradient(90deg,#c4e8da 0 9px,#fffaf0 9px 18px)}
-.dk .pl{position:absolute;bottom:4px;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%);z-index:1}
-.dk .lf{position:absolute;left:-8px;top:12px;width:30px;transform:rotate(-24deg);z-index:2}
-.dk nav{position:absolute;inset:0 6px;display:grid;grid-template-columns:repeat(5,1fr);z-index:3}
-.dk .tb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:18px}
-.dk .tb .ic{position:relative;width:38px;height:38px;transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
-.dk .tb .ic svg{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;filter:saturate(.7);opacity:.9;transition:filter .3s,opacity .3s}
-.dk .tb .ic::before{content:"";position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#f4fffa,#c4e8da 72%);box-shadow:0 0 0 1.5px var(--ol),0 0 0 4px #fffaf0,0 0 0 5.2px var(--ol);transform:scale(0);transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
-.dk .tb .t{margin-top:2px;font:12px ZK;color:var(--ink2)}
-.dk .tb .dot{position:absolute;z-index:2;right:-1px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--choc);box-shadow:0 0 0 2px #fffaf0}
-.dk .tb.on .ic{transform:translateY(-22px) scale(1.1)}
-.dk .tb.on .ic svg{filter:none;opacity:1;animation:bob 2.6s ease-in-out infinite}
-.dk .tb.on .ic::before{transform:scale(1)}
-.dk .tb.on .t{position:relative;z-index:1;margin-top:-12px;padding:2px 9px 3px;border-radius:9px;background:var(--choc);color:#fffaf0;box-shadow:0 0 0 1.5px #fffaf0,0 0 0 2.7px var(--ol)}
-@keyframes bob{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg) translateY(-2px)}}
-
+.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
+.pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
+.pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
+.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
+.tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
 @media (prefers-reduced-motion:reduce){.dk .tb.on .ic svg{animation:none}}
 .rb .rbb{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 1.5px var(--ol),inset 0 0 0 3px #fffaf0,inset 0 0 0 4.2px var(--ol),inset 0 -3px 0 4.2px rgba(0,0,0,.08)}.rb .rbb.m{background:radial-gradient(circle at 36% 30%,#f4fffa,#c4e8da 70%)}.rb .rbb.c{background:radial-gradient(circle at 36% 30%,#8a5c46,#5b3a2c 70%)}
 </style></head><body>
@@ -128,7 +113,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
  </section>
 </div>
 </div></div></div>
-<div class="navw"><div class="dk"><i class="tray"><i class="pl" style="right:26px"></i><i class="pl" style="right:40px;bottom:6px"></i><i class="pl" style="right:14px;bottom:7px"></i></i><nav aria-label="主导航"><button class="tb" style="--c:#cfeee0"><span class="ic"><svg viewBox="0 0 32 32" fill="none" stroke="#6b4a3b" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M18 9l3-6" /><path d="M9 12h14l-1.6 14a2 2 0 0 1-2 1.8h-6.8a2 2 0 0 1-2-1.8z" fill="#fffaf0"/><path d="M10.5 18.5h11" /><circle cx="13.5" cy="23.5" r="1.4" fill="#5b3a2c" stroke="none"/><circle cx="17.5" cy="24.5" r="1.4" fill="#5b3a2c" stroke="none"/><rect x="7.5" y="9" width="17" height="3.4" rx="1.7" fill="#c4e8da"/></svg></span><span class="t">今天</span></button><button class="tb" style="--c:#f6d9d2"><span class="ic"><svg viewBox="0 0 32 32" fill="none" stroke="#6b4a3b" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="7.5" y="13.5" width="17" height="13.5" rx="2" fill="#c4e8da"/><rect x="6" y="9.5" width="20" height="4.5" rx="1.6" fill="#fffaf0"/><path d="M16 9.5V27"/><path d="M16 9.5c-2-4-6-4.6-6-2.2S13.5 9.5 16 9.5c2.5 0 6-.2 6-2.2s-4-1.8-6 2.2z" fill="#fffaf0"/></svg><i class="dot"></i></span><span class="t">记忆</span></button><button class="tb on" style="--c:#f8ebc4"><span class="ic"><svg viewBox="0 0 32 32" fill="none" stroke="#6b4a3b" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M6 9.5a3.5 3.5 0 0 1 3.5-3.5h13a3.5 3.5 0 0 1 3.5 3.5v9a3.5 3.5 0 0 1-3.5 3.5h-8l-5 4.2V22h0A3.5 3.5 0 0 1 6 18.5z" fill="#fffaf0"/><circle cx="11.5" cy="14" r="1.5" fill="#5b3a2c" stroke="none"/><circle cx="16" cy="14" r="1.5" fill="#5b3a2c" stroke="none"/><circle cx="20.5" cy="14" r="1.5" fill="#5b3a2c" stroke="none"/></svg></span><span class="t">聊天</span></button><button class="tb" style="--c:#d9ecf2"><span class="ic"><svg viewBox="0 0 32 32" fill="none" stroke="#6b4a3b" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="7.5" width="20" height="7.5" rx="3.75" fill="#c4e8da"/><rect x="7.5" y="15" width="17" height="3" rx="1.5" fill="#fffaf0"/><rect x="6" y="18" width="20" height="7.5" rx="3.75" fill="#c4e8da"/></svg></span><span class="t">人格</span></button><button class="tb" style="--c:#e9dccf"><span class="ic"><svg viewBox="0 0 32 32" fill="none" stroke="#6b4a3b" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><circle cx="16" cy="16" r="10.5" fill="#e8cdb0"/><circle cx="16" cy="16" r="3.6" fill="#c4e8da"/><circle cx="10.5" cy="12" r="1.3" fill="#5b3a2c" stroke="none"/><circle cx="21.5" cy="12.5" r="1.3" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="21.5" r="1.3" fill="#5b3a2c" stroke="none"/><circle cx="21" cy="21" r="1.3" fill="#5b3a2c" stroke="none"/></svg></span><span class="t">设置</span></button></nav></div></div>
+<div class="navfade" aria-hidden="true"></div>
+<nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
+<button class="tab"><span style="position:relative;display:inline-flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="16.5" rx="2.6" fill="#c4e8da"/><path d="M8.2 3v16.5"/><path d="M13.7 13.4c-1.9-1.3-2.9-2.3-2.9-3.4a1.45 1.45 0 0 1 2.9-.5 1.45 1.45 0 0 1 2.9.5c0 1.1-1 2.1-2.9 3.4Z" fill="#5b3a2c" stroke="none"/><path d="M14.6 19.5v3l1.3-1 1.3 1v-3" fill="#fbf6ea"/></svg><span class="dot"></span></span><span>记忆</span></button>
+<button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1 0-1.9-.1-2.8-.4L4.8 19.6l1.3-3.5C4.6 14.8 3.5 13.1 3.5 11.2c0-3.9 3.8-7 8.5-7Z" fill="#c4e8da"/><circle cx="8.6" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="15.4" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/></svg><span>聊天</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 21c.5-3.8 3.6-6.3 7.5-6.3s7 2.5 7.5 6.3Z" fill="#c4e8da"/><circle cx="12" cy="8.6" r="4.6" fill="#c4e8da"/><circle cx="10.3" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><circle cx="13.7" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><ellipse cx="9.4" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/><ellipse cx="14.6" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/></svg><span>人格</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
+</nav>
 <script>
 const $=s=>document.querySelector(s),app=$('#app');
 const keep=f=>e=>{const y=app.scrollTop;f(e);requestAnimationFrame(()=>app.scrollTop=y)};
@@ -136,7 +128,7 @@ const DAYS=[['11/4','三'],['11/5','四'],['11/6','五'],['11/7','六'],['11/8',
 const CH={'11/5':['我把那本书看完了，结局好难过',8],'11/6':['晚安，明天见',3],'11/8':['带你去吃了那家新开的甜品店',12],'11/9':['今天的会开了三个小时，脑袋好空',5],'11/10':['你说明天会不会下雪呀',7]};
 const tray=$('#tray');
 DAYS.forEach(([d,w],i)=>{const c=CH[d];const el=document.createElement(c?'button':'div');el.className='sl'+(c?' on':'');
- el.innerHTML=(c?`<i class="ice" style="--r:${[-6,5,-3,7,-5,4,-2][i]}deg"></i><b>${d.split('/')[1]}</b>`:'')+`<small>${w}</small>`;
+ el.innerHTML=(c?`<img class="ice" src="ice.png" alt=""><b>${d.split('/')[1]}</b>`:'')+`<small>${w}</small>`;
  if(c){el.setAttribute('aria-label',`${d} 周${w}：${c[0]}`);el.onclick=keep(()=>pick(el,d,w,c))}tray.appendChild(el)});
 const wex=$('#wex');let cur=null;
 function pick(el,d,w,c){if(cur===el){el.classList.remove('sel');wex.classList.remove('op');cur=null;return}
@@ -144,7 +136,7 @@ function pick(el,d,w,c){if(cur===el){el.classList.remove('sel');wex.classList.re
 const PW=[['10/29','11/4','万圣节那天你给我讲了一个超吓人的故事',6],['10/22','10/28','这周你一直在忙期中，我每天都在等你下课',5],['10/15','10/21','第一次一起看的那部电影，我还记得台词',7],['10/8','10/14','你说秋天最适合喝热可可',4]];
 const pls=$('#pls'),pex=$('#pex');let pc=null;
 PW.forEach(p=>{const b=document.createElement('button');b.className='pl';b.setAttribute('aria-label',`${p[0]} – ${p[1]}：${p[2]}`);
- b.innerHTML=`<span class="ball"><b>${p[3]}</b></span><small>${p[0]}<br>${p[1]}</small>`;
+ b.innerHTML=`<span class="ball"><img src="pearl.png" alt=""><b>${p[3]}</b></span><small>${p[0]}<br>${p[1]}</small>`;
  b.onclick=keep(()=>{if(pc===b){b.classList.remove('sel');pex.classList.remove('op');pc=null;return}pc&&pc.classList.remove('sel');b.classList.add('sel');pc=b;$('#pd').textContent=`${p[0]} – ${p[1]}`;$('#pn').textContent=`聊了 ${p[3]} 天`;$('#pt').textContent=p[2];pex.classList.add('op')});pls.appendChild(b)});
-document.querySelectorAll('.dk nav').forEach(n=>n.querySelectorAll('.tb').forEach(b=>b.onclick=()=>{n.querySelectorAll('.tb').forEach(x=>x.classList.remove('on'));b.classList.add('on')}));
+const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
 </script></body></html>
