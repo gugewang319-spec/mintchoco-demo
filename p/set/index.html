@@ -87,6 +87,49 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .cols .t i{width:6px;height:6px;border-radius:50%;background:var(--mintb)}
 .cols button{border-bottom:1.2px dashed var(--cocoa);padding-bottom:3px;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
 .cols button.hit{transform:translateY(-3px)}
+
+/* 吧台搁板：物件就是按钮，名字和数写在搁板前沿的价签上；不折叠 */
+.shelf{position:absolute;left:34px;right:34px;top:352px;z-index:12}
+.shelf .hd{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:4px}
+.shelf .hd h2{position:relative;font:24px/1 ZK;color:var(--ch);letter-spacing:.14em}
+.shelf .hd h2 .sc{position:absolute;left:54px;top:-12px;font:21px/1 Script;color:rgba(63,154,128,.6);rotate:-7deg;white-space:nowrap;letter-spacing:0}
+.tier{position:relative;display:flex;align-items:flex-start;gap:12px;margin-top:8px}
+.tier:not(.hd)::before{content:"";position:absolute;left:-12px;right:-12px;top:124px;height:14px;border-radius:4px 4px 6px 6px;
+ background:linear-gradient(#a4bfb3 0 2px,#7a4c3b 2px 4px,#6b4132 4px 70%,#5b3a2c);box-shadow:0 1px 0 rgba(255,255,255,.5) inset}
+.it{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;padding:0}
+.it .ob{position:relative;height:125px;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:4px;transform-origin:50% 100%}
+.it .ob img{width:auto;transform-origin:50% 100%}
+.it .tag{position:relative;margin-top:8px;min-width:120px;min-height:54px;padding:7px 12px 7px 20px;border-radius:5px;background:#fdf8ee;border:1.2px solid var(--cocoa);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;text-align:left}
+.it .tag::before{content:"";position:absolute;left:7px;top:50%;width:5px;height:5px;margin-top:-3px;border-radius:50%;border:1.2px solid var(--cocoa);background:#e4f3ed}
+.it .tag::after{content:"";position:absolute;left:50%;top:-8px;width:1.2px;height:8px;background:var(--cocoa)}
+.it .nm{font:18px/1 ZK;color:var(--ch);letter-spacing:.1em;white-space:nowrap}
+.it .v{font:800 21px/1 BalooX,ZK;color:var(--ch);white-space:nowrap}
+.it .v small{font:12px/1 ZK;margin-left:2px}
+.it .warn{position:relative;font:12px/1 WK;color:#a0533c;white-space:nowrap}
+.it .warn .circ{left:-8px;top:-6px;width:calc(100% + 16px);height:calc(100% + 12px)}
+.it.wide{flex:2.2}
+.it.wide .tag{flex-direction:row;align-items:center;gap:10px}
+.it.wide .tag>span{display:flex;flex-direction:column;gap:4px}
+.plus{flex:none;align-self:flex-start;margin-top:68px;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;
+ background:radial-gradient(circle at 38% 32%,#e7f6ef,#c4e8da 60%,#a9d9c6);border:1.3px solid var(--cocoa);transform-origin:50% 100%}
+.plus svg{width:22px;height:22px}
+/* 呼吸：各自绕底部支点轻晃，节奏错开；黑胶慢转 */
+@keyframes sway{0%,100%{rotate:-1.4deg}50%{rotate:1.4deg}}
+@keyframes spin{to{rotate:360deg}}
+.ob .s1{animation:sway 5.3s ease-in-out infinite}
+.ob .s2{animation:sway 6.9s ease-in-out -2s infinite}
+.ob .s3{transform-origin:50% 50%;animation:spin 14s linear infinite}
+.ob .s4{animation:sway 7.7s ease-in-out -4s infinite}
+.it.hit .ob,.plus.hit{animation:hop .34s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hop{40%{transform:translateY(-7px) scale(1.04)}}
+.it:active .tag{background:#f3ece0}
+/* 配料：大一点的小甜点块 */
+.ingr .il{column-gap:10px!important;row-gap:10px!important}
+.ingr .il i{display:none}
+.ingr button{min-height:44px;padding:0 16px!important;border:1.2px solid rgba(138,92,70,.55)!important;border-radius:14px;background:rgba(253,248,238,.75);font:17px/1 ZK!important}
+.ingr button.mcard{background:#c4e8da}
+.tier.pl{clip-path:none!important;opacity:0;translate:0 8px;transition:opacity .5s,translate .5s}
+.ready .tier.pl{opacity:1;translate:0 0}
 /* 逐行印出 */
 .pl{clip-path:inset(0 100% 0 0);transition:clip-path .5s steps(14)}
 .ready .pl{clip-path:inset(0 0 0 0)}
@@ -108,18 +151,19 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 <img id="sprig" src="sprig.png" alt="">
 <div class="cmp pl" style="transition-delay:.15s">比上周同一时候，<span class="ul">到了<em>七</em>成<img src="under.png" alt=""></span> · 聊天 96.1 万 · 记忆 32.3 万</div>
 
-<section class="facts">
-<div class="hd pl" style="transition-delay:.25s"><h2>这一杯的成分</h2><span>点一行看明细</span></div>
-<button class="row bad pl" style="transition-delay:.35s" data-c="0"><div class="l"><span class="nm">渠道</span><span class="v">3<small>条</small></span></div><span class="sub">备用那条超时<img class="circ" src="circle.png" alt=""></span><div class="ex"><span>直连<b>0.8s</b></span><span>中转<b>1.4s</b></span><span>备用<b>超时</b></span><a>去调 ›</a></div></button>
-<button class="row pl" style="transition-delay:.45s" data-c="1"><div class="l"><span class="nm">模型</span><span class="v">4<small>个</small></span></div><span class="sub">分在 2 个渠道里</span><div class="ex"><span>Claude<b>41%</b></span><span>DeepSeek<b>33%</b></span><span>GPT · Gemini<b>18% · 8%</b></span><a>去调 ›</a></div></button>
-<button class="row pl" style="transition-delay:.55s" data-c="2"><div class="l"><span class="nm">声音</span><span class="v">3<small>种</small></span></div><span class="sub">默认：晚风</span><div class="ex"><span>晚风 · 薄荷 · 奶油</span><a>去调 ›</a></div></button>
-<button class="row pl" style="transition-delay:.65s" data-c="3"><div class="l"><span class="nm">健康</span><span class="v">6284<small>步</small></span></div><span class="sub">10:52 同步过</span><div class="ex"><span>睡眠<b>7h20m</b></span><span>心率<b>72</b></span><a>去看 ›</a></div></button>
+<section class="shelf" id="shelf">
+<div class="hd tier pl" style="transition-delay:.25s;margin:0"><h2><span class="sc" aria-hidden="true">bar</span>吧台</h2></div>
+<div class="tier pl" style="transition-delay:.35s">
+ <button class="it wide" data-c="0" aria-label="渠道和模型"><span class="ob"><img class="s1" src="c-ticket.png" style="height:122px" alt=""><img class="s2" src="c-teabag.png" style="height:104px" alt=""></span>
+  <span class="tag"><span><b class="nm">渠道 · 模型</b><span class="v">3<small>条</small> 4<small>款</small></span></span><span class="warn">备用超时<img class="circ" src="circle.png" alt=""></span></span></button>
+ <button class="plus" aria-label="接一条新渠道"><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+</div>
+<div class="tier pl" style="transition-delay:.45s;margin-top:26px">
+ <button class="it" data-c="2" aria-label="声音"><span class="ob"><img class="s3" src="c-vinyl.png" style="height:104px;margin-bottom:8px" alt=""></span><span class="tag"><b class="nm">声音</b><span class="v">3<small>种</small></span></span></button>
+ <button class="it" data-c="3" aria-label="健康"><span class="ob"><img class="s4" src="c-thermo.png" style="height:120px" alt=""></span><span class="tag"><b class="nm">健康</b><span class="v">6284<small>步</small></span></span></button>
+</div>
 </section>
-<img class="cut" id="c0" src="c-ticket.png" style="height:72px" alt="">
-<img class="cut" id="c1" src="c-teabag.png" style="height:70px" alt="">
-<img class="cut" id="c2" src="c-vinyl.png" style="height:52px" alt="">
-<img class="cut" id="c3" src="c-thermo.png" style="height:64px" alt="">
-<div class="ingr pl" id="cols" style="transition-delay:.8s"><div class="ih"><span class="sc" aria-hidden="true">ingredients</span><h3>配料</h3><span class="ic">4 种 · 点名字进去</span></div><p class="il"><button>工具<sup>3 个</sup></button><i></i><button>搜索</button><i></i><button><span class="en">MCP</span><sup class="off">未连</sup></button><i></i><button class="mcard">换一张请柬</button></p></div>
+<div class="ingr pl" id="cols" style="transition-delay:.8s"><div class="ih"><span class="sc" aria-hidden="true">ingredients</span><h3>配料</h3></div><p class="il"><button>工具<sup>3 个</sup></button><i></i><button>搜索</button><i></i><button><span class="en">MCP</span><sup class="off">未连</sup></button><i></i><button class="mcard">换一张请柬</button></p></div>
 <img class="bit" src="bit2.png" style="width:20px;left:352px;top:772px;z-index:9" alt="">
 <div class="navfade" aria-hidden="true"></div>
 <nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
@@ -139,19 +183,15 @@ const cv=$('#fx'),cx=cv.getContext('2d'),DPR=Math.min(2,devicePixelRatio||1);let
 function fit(){const r=cv.getBoundingClientRect();cv.width=r.width*DPR;cv.height=r.height*DPR;cx.setTransform(DPR,0,0,DPR,0,0)}
 function bub(n,x,y,top){const b=cv.getBoundingClientRect();for(let i=0;i<n;i++)B.push({x:x??Math.random()*b.width,y:y??b.height+10,r:1.5+Math.random()*3,vy:-(.35+Math.random()*.6),w:Math.random()*6.28,stop:top?y-120:-10})}
 fit();addEventListener('resize',fit);for(let i=0;i<(RM?0:10);i++){bub(1);B[B.length-1].y=Math.random()*cv.getBoundingClientRect().height}
-/* 小剪纸压在每行行尾、跨过分隔线；跟着行走 */
-const C=$$('.cut').map((e,i)=>({e,T:[5.3,6.9,4.6,7.7][i],ph:i*1.7,k:0}));
-function place(){const a0=$('#app').getBoundingClientRect(),st=$('#app').scrollTop,a={top:a0.top-st,left:a0.left};$$('.row').forEach((r,i)=>{const b=r.getBoundingClientRect();C[i].top=b.top-a.top+b.height*.5-C[i].e.offsetHeight*.42})
- const last=$$('.row')[3].getBoundingClientRect();$('#cols').style.top=(last.bottom-a.top+14)+'px'}
-$$('.row').forEach((e,i)=>e.onclick=()=>{const o=!e.classList.contains('open');$$('.row').forEach(x=>x.classList.remove('open'));if(o)e.classList.add('open');C[i].k=1});
+function place(){const sh=$('#shelf');$('#cols').style.top=(sh.offsetTop+sh.offsetHeight+18)+'px'}
+$$('.it,.plus').forEach(e=>e.addEventListener('click',()=>{e.classList.remove('hit');void e.offsetWidth;e.classList.add('hit')}));
 $$('.ingr button').forEach(b=>b.onclick=()=>{b.classList.add('hit');setTimeout(()=>b.classList.remove('hit'),300)});
 place();requestAnimationFrame(()=>$('#app').classList.add('ready'));
-let t0=performance.now();
-function loop(now){const t=(now-t0)/1000,m=RM?0:1;place();
- C.forEach((c,i)=>{c.k*=.965;const sw=i==2?`rotate(${m*(t*14%360)+c.k*30*Math.sin(t*9)}deg)`:`rotate(${m*1.6*Math.sin(t*6.283/c.T+c.ph)+c.k*8*Math.sin(t*14)}deg)`;c.e.style.top=c.top+'px';c.e.style.transformOrigin=i==2?'50% 50%':'50% 4%';c.e.style.transform=`translateY(${m*1.2*Math.sin(t*6.283/(c.T*1.3)+c.ph)}px) ${sw}`});
+let t0=performance.now();addEventListener('resize',place);
+function loop(now){const t=(now-t0)/1000,m=RM?0:1;
  bigK*=.95;$('#bn').style.transform=`translateY(${-bigK*5*Math.abs(Math.sin(t*10))}px)`;
  cx.clearRect(0,0,cv.width,cv.height);if(Math.random()<.03&&!RM)bub(1);
  B=B.filter(b=>{b.y+=b.vy;b.w+=.04;const x=b.x+Math.sin(b.w)*2;cx.beginPath();cx.arc(x,b.y,b.r,0,7);cx.strokeStyle='rgba(138,92,70,.35)';cx.lineWidth=1;cx.stroke();cx.fillStyle='rgba(255,255,255,.45)';cx.fill();return b.y>b.stop});
  requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
-</script><script>window.__DEMO_MAP=[["#big", "push:use", 0, 0], [".mcard", "push:conn", 0, 0], [".row[data-c=\"0\"] .ex a", "push:chn", 0, 0], [".row[data-c=\"1\"] .ex a", "push:mdl", 0, 0], [".row[data-c=\"2\"] .ex a", "push:snd", 0, 0], [".row[data-c=\"3\"] .ex a", "push:hlt", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=40"></script></body></html>
+</script><script>window.__DEMO_MAP=[["#big", "push:use", 0, 0], [".mcard", "push:conn", 0, 0], [".it[data-c=\"0\"]", "push:chn", 1, 200], [".plus", "push:chn", 1, 200], [".it[data-c=\"2\"]", "push:snd", 1, 200], [".it[data-c=\"3\"]", "push:hlt", 1, 200]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=41"></script></body></html>
