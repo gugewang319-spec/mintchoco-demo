@@ -93,6 +93,8 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .tab.on>span{font-weight:600}
 .tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
 /*nav-font 11-14*/.pnav,.pnav *{font-family:"OPPO Sans","HarmonyOS Sans SC","PingFang SC","Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif}
+/* 开场进门：没有返回、没有底栏 */
+html.gate .pearlbtn,html.gate .pnav,html.gate .navfade,html.gate .alt{display:none}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
 <div class="scroller" id="sc"><div class="content">
@@ -125,6 +127,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 </nav>
 </div></div>
 <script>
+const GATE=/[?&]gate=1/.test(location.search);if(GATE)document.documentElement.classList.add('gate');
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
@@ -146,8 +149,9 @@ go.onclick=async()=>{
  S={url:u,key:k,ok:true};
  const el=$$('.stamp')[stamps%5];stamps++;count();
  el.classList.remove('old');el.classList.add('on');if(!RM){el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit')}
- navigator.vibrate&&navigator.vibrate(12);setOk(true)};
+ navigator.vibrate&&navigator.vibrate(12);setOk(true);
+ if(GATE){gotx.textContent='进门中';setTimeout(()=>parent!==window&&parent.postMessage({demo:'enter'},'*'),RM?150:650)}};
 alt.onclick=()=>{S={url:'',key:'',ok:false};$('#url').value='';$('#key').value='';setOk(false);$('#url').focus({preventScroll:true})};
 count();
 </script>
-<script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=35"></script></body></html>
+<script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=36"></script></body></html>
