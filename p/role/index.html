@@ -200,8 +200,9 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .rc{position:absolute;inset:0;z-index:8;pointer-events:none;overflow:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .rc.on{overflow-y:auto}.rc::-webkit-scrollbar{display:none}.rc .veil{position:fixed}
 .rc.on{pointer-events:auto}
-.rc .veil{position:absolute;inset:0;z-index:0;background:rgba(232,244,238,0);transition:background .4s}
-.rc.on .veil{background:rgba(232,244,238,.55);backdrop-filter:blur(3px)}
+/* 遮罩不放进小票的滚动层，小票滑的时候背景不动 */
+.rcv{position:absolute;inset:0;z-index:7;pointer-events:none;background:rgba(232,244,238,0);transition:background .4s}
+.rc.on+.rcv{background:rgba(232,244,238,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
 /* 挂钩：吸管短头穿过小票的孔，小票挂在上面 */
 .rc .st{position:absolute;z-index:3;opacity:0;transition:opacity .25s}
 .rc.on .st{opacity:1}
@@ -380,7 +381,7 @@ h+=`<section class="sheet"><img class="sk1" src="stk_truf.png" alt=""><div class
 ${secs.map((s,i)=>`<div class="pp${i?'':' on'}" id="c${i}" data-i="${i}"><span class="kk">${PS.length===1?'整杯':s.t}</span><p class="ed" data-i="${i}">${s.x}</p></div>`).join('')}
 <div class="sft"><small id="cnt"></small><button class="lt" id="bU" aria-label="撤销" disabled>${UN}</button><button class="lt" id="bR" aria-label="重做" disabled>${RE}</button><button class="savep" id="bS" aria-label="保存" disabled>存成<span class="counter" id="ver">${dg(ver+1)}</span>版</button></div><div class="tip" id="tip"></div><img class="sk2" src="stk_leaf.png" alt=""></section>`;
 L.innerHTML=h;
-const RC=document.createElement('div');RC.className='rc';RC.innerHTML='<div class="veil"></div><div class="hang"><div class="pp2" id="rin" tabindex="0" aria-label="入口小票"></div></div><div class="st bk"><div class="rt"><img alt=""></div></div><div class="st fr"><div class="rt"><img alt=""></div></div>';$('#app').appendChild(RC);
+const RC=document.createElement('div');RC.className='rc';RC.innerHTML='<div class="hang"><div class="pp2" id="rin" tabindex="0" aria-label="入口小票"></div></div><div class="st bk"><div class="rt"><img alt=""></div></div><div class="st fr"><div class="rt"><img alt=""></div></div>';$('#app').appendChild(RC);const RV=document.createElement('div');RV.className='rcv';$('#app').appendChild(RV);
 $$('.ch').forEach(c=>{const e=c.querySelector('.ed');if(e&&!c.classList.contains('c4')&&e.textContent.length>150){c.classList.add('fold');const m=document.createElement('button');m.className='more';m.textContent='展开';c.appendChild(m);m.addEventListener('click',()=>{const o=c.classList.toggle('open');m.textContent=o?'收起':'展开'})}});
 /* 引线按实际字宽画 */
 function dfit(){const k=Math.min(1,(innerWidth-12)/384);document.documentElement.style.setProperty('--ds',k.toFixed(4));const nm=document.querySelector('.dia>.nm');if(nm){nm.style.setProperty('left','auto','important');nm.style.setProperty('right',((26-innerWidth/2+192*k)/k).toFixed(1)+'px','important')}return k}
@@ -421,7 +422,7 @@ function tag(i){if(i<0||open===i){if(open<0)return;RC.classList.add('off');RC.cl
  $$('#rin .ck').forEach(s=>{const row=s.closest('.row');(row.classList.contains('m')?row:s).addEventListener('click',()=>{const o=s.classList.toggle('on');s.setAttribute('aria-checked',o);if(row.classList.contains('m')){row.classList.toggle('on',o);$('#rin .tot b').textContent=$$('#rin .row.m.on').length+' 个模型'}})});
  $('#rin .bye').addEventListener('click',()=>tag(-1));
  RC.classList.remove('on');void RC.offsetWidth;setTimeout(()=>RC.classList.add('on'),260)}
-RC.querySelector('.veil').addEventListener('click',()=>tag(-1));$('#rin').addEventListener('click',ev=>{if(ev.target.closest('.ck,.row.m,button'))return;tag(-1)});RC.querySelectorAll('.st').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();tag(-1)}));
+RC.addEventListener('click',ev=>{if(ev.target===RC)tag(-1)});$('#rin').addEventListener('click',ev=>{if(ev.target.closest('.ck,.row.m,button'))return;tag(-1)});RC.querySelectorAll('.st').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();tag(-1)}));
 {const hg=RC.querySelector('.hang');RC.querySelectorAll('.st').forEach(st=>{let y0=null,dy=0;st.style.touchAction='none';
  st.addEventListener('pointerdown',e=>{if(open<0)return;y0=e.clientY;dy=0;hg.style.transition='';st.setPointerCapture(e.pointerId)});
  st.addEventListener('pointermove',e=>{if(y0==null)return;dy=Math.max(0,e.clientY-y0);hg.style.translate=`0 ${dy*.85}px`});
@@ -522,4 +523,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=29"></script></body></html>
+</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=30"></script></body></html>
