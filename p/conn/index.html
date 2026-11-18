@@ -1,0 +1,153 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>连接</title>
+<style>
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:WK;src:url(wk.ttf)}
+@font-face{font-family:Script;src:url(script.ttf)}
+:root{--ch:#5b3a2c;--ink:#4a3027;--cocoa:#8a5c46;--mint3:#2f6e58;--mintb:#3f9a80;--ease-out:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;color:var(--ink)}
+button{font:inherit;color:inherit;background:none;border:0;outline:0;cursor:pointer}
+img{display:block;user-select:none;-webkit-user-drag:none}
+.vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+.app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,412px);overflow:hidden}
+.scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+.content{position:relative;min-height:100%;padding:0 0 130px}
+.drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
+.bit{position:absolute;pointer-events:none}
+.lhead{position:relative;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 0}
+.ttl{position:relative}
+.ttl h1{font:32px/1 ZK;color:var(--ch);letter-spacing:.06em;position:relative;z-index:1}
+.ttl .sc{position:absolute;left:52px;top:-14px;font:22px/1 Script;color:rgba(63,154,128,.55);transform:rotate(-8deg);white-space:nowrap}
+.lhead .counter{margin:0 0 4px}
+.counter{display:inline-flex;gap:2px;padding:3px;border-radius:5px;background:#5b3a2c}
+.counter span{display:inline-block;min-width:12px;padding:1px 2px;border-radius:2px;background:#fdf9f0;font:700 13px/1.3 Baloo,ZK;text-align:center;color:#4a3027}
+.counter b{align-self:center;font:13px/1 ZK;color:#fdf9f0;padding:0 3px}
+.pearlbtn{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;cursor:pointer;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.85);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 8px 18px -12px rgba(74,48,39,.45)}
+.pearlbtn svg{stroke:#5b3a2c}
+.lhead .lf{display:flex;align-items:flex-end;gap:12px}
+
+/* 会员集点卡：生图卡面，字和输入框叠在上面 */
+.stage{position:relative;margin:24px auto 0;width:min(300px,calc(100% - 64px))}
+.card{position:relative;width:100%;aspect-ratio:720/998;transform-origin:50% 100%;animation:sway 6.4s ease-in-out infinite alternate}
+@keyframes sway{from{rotate:-1.2deg}to{rotate:.9deg}}
+.card>img{position:absolute;inset:0;width:100%;height:100%}
+.card .shine{position:absolute;inset:3% 3%;border-radius:12px;overflow:hidden;pointer-events:none}
+.card .shine i{position:absolute;top:-20%;bottom:-20%;width:38%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);rotate:12deg}
+.band{position:absolute;left:9%;right:22%;top:4.2%;height:11%;display:flex;align-items:center;gap:7px}
+.band b{font:19px/1 ZK;color:#2f6e58;letter-spacing:.08em}
+.band i{font:15px/1 Script;font-style:normal;color:rgba(47,110,88,.7);rotate:-6deg;translate:0 -3px}
+.no{position:absolute;right:9%;top:28%;font:11px/1 Baloo,ZK;letter-spacing:.12em;color:rgba(138,92,70,.7)}
+.fld{position:absolute;left:9%;right:9%;display:flex;align-items:flex-end;gap:8px}
+.fld label{flex:none;font:12.5px/1 ZK;letter-spacing:.14em;color:var(--cocoa);padding-bottom:8px;white-space:nowrap}
+.fld .in{flex:1;min-width:0}
+.fld .in{position:relative;display:flex;align-items:flex-end}
+.fld input{flex:1;min-width:0;height:28px;border:0;outline:0;background:transparent;font:16px/28px WK;color:var(--ink);padding:0 2px;letter-spacing:.02em}
+.fld input::placeholder{color:rgba(138,92,70,.38)}
+.fld input[type=password]{letter-spacing:.18em}
+.f1{top:calc(36.4% - 30px)}
+.f2{top:calc(80% - 30px)}
+/* 第二条线（卡面只印了一条，补一条同色细线） */
+
+.fld.bad label{color:#b5543f}
+.fld.bad .in::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.6px;background:#b5543f}
+
+
+.eye{flex:none;width:30px;height:28px;display:grid;place-items:center;opacity:.75}
+.eye svg{stroke:#8a5c46}
+.memo{position:absolute;left:9%;right:9%;top:44%;font:12.5px/1.75 WK;color:rgba(122,90,76,.82)}
+.memo b{font-weight:400;color:var(--mint3)}
+.st{position:absolute;left:9%;right:9%;top:57.5%;display:flex;align-items:center;gap:6px;font:12.5px/1 WK;color:rgba(122,90,76,.7)}
+.st i{width:7px;height:7px;border-radius:50%;background:#c9b3a6}
+.st.ok i{background:var(--mintb);box-shadow:0 0 0 3px rgba(63,154,128,.18)}
+.st.ok{color:var(--mint3)}
+/* 集点格：每连上一次盖一个章 */
+.stamp{position:absolute;width:13.4%;aspect-ratio:1;translate:-50% -50%;top:90%;border-radius:50%;display:grid;place-items:center;pointer-events:none;opacity:0}
+.stamp svg{width:100%;height:100%;overflow:visible}
+.stamp.on{opacity:1}
+.stamp.old{opacity:.55}
+.stamp.hit{animation:hit .42s var(--ease-out) both}
+@keyframes hit{0%{opacity:0;scale:1.9;rotate:-24deg}60%{opacity:1;scale:.92}100%{opacity:1;scale:1}}
+
+/* 一级：巧克力牌（每屏最多一个） */
+.go{position:relative;display:block;margin:22px auto 0;width:min(196px,60%);aspect-ratio:560/197;transition:scale .16s var(--ease-out)}
+.go img{position:absolute;inset:0;width:100%;height:100%}
+.go span{position:relative;z-index:1;display:grid;place-items:center;height:100%;font:20px/1 ZK;letter-spacing:.24em;color:#fbf3e6;padding-left:.24em}
+.go:active{scale:.96}
+.go.done span{color:#cdeee0}
+/* 四级：文字按钮 */
+.alt{display:block;margin:12px auto 0;font:13.5px/1 WK;color:var(--cocoa);padding:6px 10px;border-bottom:1px dashed rgba(138,92,70,.5);visibility:hidden}
+.alt.show{visibility:visible}
+.shake{animation:shake .38s ease-in-out}
+@keyframes shake{20%{translate:-6px 0}40%{translate:5px 0}60%{translate:-3px 0}80%{translate:2px 0}}
+@media (prefers-reduced-motion:reduce){.card{animation:none}.stamp.hit{animation:none}.shake{animation:none}}
+.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
+.pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
+.pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
+.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}
+.tab span{font-size:11px;line-height:1.2}
+.tab.on{color:#4a3027}
+.tab.on>span{font-weight:600}
+.tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
+/*nav-font 11-14*/.pnav,.pnav *{font-family:"OPPO Sans","HarmonyOS Sans SC","PingFang SC","Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif}
+</style></head><body>
+<div class="vp"><div class="app" id="app">
+<div class="scroller" id="sc"><div class="content">
+<img class="drizzle" src="today-bg.png" alt="">
+<header class="lhead"><div class="lf"><button class="pearlbtn" aria-label="回到设置"><svg width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="m15 18-6-6 6-6"/></svg></button><div class="ttl"><span class="sc" aria-hidden="true">member card</span><h1>连接</h1></div></div><div class="counter"><span id="n1">0</span><span id="n2">2</span><b>章</b></div></header>
+
+<div class="stage">
+ <div class="card" id="card">
+  <img src="card.webp" alt="">
+  <div class="shine" aria-hidden="true"><i id="shine"></i></div>
+  <div class="band"><b>茶会会员</b><i>Mint Choco</i></div>
+  <div class="fld f1" id="f1"><label for="url">网关地址</label><div class="in"><input id="url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://你的网关"></div></div>
+  <p class="memo">地址和钥匙只记在<b>这一次打开</b>里，<br>关掉就忘。</p>
+  <p class="st" id="st"><i></i><span id="stx">还没连</span></p>
+  <div class="fld f2" id="f2"><label for="key">管理钥匙</label><div class="in"><input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="贴在这里"><button class="eye" id="eye" aria-label="显示钥匙"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12C5 7.8 8.4 6 12 6s7 1.8 9.5 6c-2.5 4.2-5.9 6-9.5 6s-7-1.8-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/><path id="slash" d="M4 20 20 4"/></svg></button></div></div>
+  <div class="stamp on old" style="left:14.3%"><svg viewBox="0 0 40 40" style="rotate:-12deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div><div class="stamp on old" style="left:32.1%"><svg viewBox="0 0 40 40" style="rotate:8deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div><div class="stamp" style="left:49.9%"><svg viewBox="0 0 40 40" style="rotate:-5deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div><div class="stamp" style="left:67.8%"><svg viewBox="0 0 40 40" style="rotate:10deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div><div class="stamp" style="left:85.6%"><svg viewBox="0 0 40 40" style="rotate:-8deg"><circle cx="20" cy="20" r="17" fill="rgba(201,235,220,.55)" stroke="#3f9a80" stroke-width="2"/><circle cx="20" cy="20" r="13" fill="none" stroke="#3f9a80" stroke-width=".9" stroke-dasharray="2 2"/><text x="20" y="25.5" text-anchor="middle" font-family="ZK" font-size="15" fill="#2f6e58">连</text></svg></div>
+ </div>
+ <button class="go" id="go"><img src="plaque.png" alt=""><span id="gotx">刷卡进门</span></button>
+ <button class="alt" id="alt">换一张卡</button>
+</div>
+<img class="bit" src="bit2.png" style="width:18px;right:26px;top:170px;z-index:9" alt="">
+</div></div>
+<div class="navfade" aria-hidden="true"></div>
+<nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
+<button class="tab"><span style="position:relative;display:inline-flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="16.5" rx="2.6" fill="#c4e8da"/><path d="M8.2 3v16.5"/><path d="M13.7 13.4c-1.9-1.3-2.9-2.3-2.9-3.4a1.45 1.45 0 0 1 2.9-.5 1.45 1.45 0 0 1 2.9.5c0 1.1-1 2.1-2.9 3.4Z" fill="#5b3a2c" stroke="none"/><path d="M14.6 19.5v3l1.3-1 1.3 1v-3" fill="#fbf6ea"/></svg><span class="dot"></span></span><span>记忆</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1 0-1.9-.1-2.8-.4L4.8 19.6l1.3-3.5C4.6 14.8 3.5 13.1 3.5 11.2c0-3.9 3.8-7 8.5-7Z" fill="#c4e8da"/><circle cx="8.6" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="15.4" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/></svg><span>聊天</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 21c.5-3.8 3.6-6.3 7.5-6.3s7 2.5 7.5 6.3Z" fill="#c4e8da"/><circle cx="12" cy="8.6" r="4.6" fill="#c4e8da"/><circle cx="10.3" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><circle cx="13.7" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><ellipse cx="9.4" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/><ellipse cx="14.6" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/></svg><span>人格</span></button>
+<button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
+</nav>
+</div></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
+/* 只存在内存里：不写 localStorage / sessionStorage，页面关掉就没了 */
+let S={url:'',key:'',ok:false},stamps=2;
+const st=$('#st'),stx=$('#stx'),go=$('#go'),gotx=$('#gotx'),alt=$('#alt'),card=$('#card');
+function count(){const s=String(stamps).padStart(2,'0');$('#n1').textContent=s[0];$('#n2').textContent=s[1]}
+$('#eye').onclick=()=>{const k=$('#key'),sh=k.type==='password';k.type=sh?'text':'password';$('#slash').style.display=sh?'none':'';$('#eye').setAttribute('aria-label',sh?'藏起钥匙':'显示钥匙')};
+['url','key'].forEach(id=>$('#'+id).addEventListener('input',()=>{$('#'+(id==='url'?'f1':'f2')).classList.remove('bad');if(S.ok){S.ok=false;setOk(false)}}));
+function setOk(v){st.classList.toggle('ok',v);stx.textContent=v?'连上了 · 刚刚':'还没连';go.classList.toggle('done',v);gotx.textContent=v?'已经连上':'刷卡进门';alt.classList.toggle('show',v)}
+go.onclick=async()=>{
+ if(S.ok)return;
+ const u=$('#url').value.trim(),k=$('#key').value.trim();
+ const bu=!/^https?:\/\/\S+$/.test(u),bk=!k;
+ $('#f1').classList.toggle('bad',bu);$('#f2').classList.toggle('bad',bk);
+ if(bu||bk){card.classList.remove('shake');void card.offsetWidth;card.classList.add('shake');navigator.vibrate&&navigator.vibrate(20);return}
+ stx.textContent='刷卡中…';
+ if(!RM){await $('#shine').animate([{left:'-60%'},{left:'130%'}],{duration:620,easing:'cubic-bezier(.4,0,.2,1)'}).finished}
+ S={url:u,key:k,ok:true};
+ const el=$$('.stamp')[stamps%5];stamps++;count();
+ el.classList.remove('old');el.classList.add('on');if(!RM){el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit')}
+ navigator.vibrate&&navigator.vibrate(12);setOk(true)};
+alt.onclick=()=>{S={url:'',key:'',ok:false};$('#url').value='';$('#key').value='';setOk(false);$('#url').focus({preventScroll:true})};
+count();
+</script>
+<script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=35"></script></body></html>
