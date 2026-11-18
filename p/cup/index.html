@@ -90,27 +90,59 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
 .tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
 @media (prefers-reduced-motion:reduce){.dk .tb.on .ic svg{animation:none}}
 .rb .rbb{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 1px var(--ol)}.rb .rbb.m{background:radial-gradient(circle at 36% 30%,#f4fffa,#c4e8da 70%)}.rb .rbb.c{background:radial-gradient(circle at 36% 30%,#8a5c46,#5b3a2c 70%)}
+
+/* 饮品卡：三杯一份菜单 */
+.menu{display:grid;gap:16px;margin:0 16px}
+.dc{position:relative;overflow:hidden;border-radius:8px;padding:14px 14px 0;background:rgba(255,250,240,.88);box-shadow:0 0 0 1px var(--ol),0 10px 22px -18px rgba(74,48,39,.6)}
+.dc .lh b{order:0;font:400 12px Num;color:var(--mint);letter-spacing:.06em;margin-right:2px}
+.dc .it{background:transparent;box-shadow:none;padding:0 0 4px;border-radius:0}
+.zone{position:relative;height:46px;margin:6px -14px 0}
+.zone.tall{height:92px;margin-top:2px}
+.zone .lq{position:absolute;left:0;right:0;bottom:0;height:var(--h,70%);background:var(--lc)}
+.zone .lq::before{content:"";position:absolute;left:0;right:0;top:-7px;height:8px;background:var(--wv) repeat-x 0 0/56px 8px;animation:wv 7s linear infinite}
+@keyframes wv{to{background-position:56px 0}}
+.foam .zone{--h:62%;--lc:linear-gradient(180deg,#fdf6e8,#efdcc4);--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='%23fdf6e8'/%3E%3C/svg%3E")}
+.foam .zone .lq{box-shadow:inset 0 -14px 0 rgba(196,150,110,.28)}
+.soda .zone{--h:78%;--lc:linear-gradient(180deg,rgba(196,232,218,.75),rgba(150,210,186,.8));--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='%23c4e8da' fill-opacity='.75'/%3E%3C/svg%3E")}
+.tea .zone{--h:86%;--lc:linear-gradient(180deg,rgba(226,196,166,.7),rgba(196,156,120,.85));--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='%23e2c4a6' fill-opacity='.7'/%3E%3C/svg%3E")}
+.bub{position:absolute;z-index:2;bottom:4px;width:6px;height:6px;border-radius:50%;box-shadow:0 0 0 1px rgba(107,74,59,.35);background:rgba(255,255,255,.7);animation:up var(--d,4s) linear infinite}
+@keyframes up{from{transform:translateY(0);opacity:0}20%{opacity:1}to{transform:translateY(-26px);opacity:0}}
+.ices{position:absolute;inset:0 10px;display:grid;grid-template-columns:repeat(5,1fr);align-items:start}
+.ic2{position:relative;display:flex;flex-direction:column;align-items:center;padding-top:6px;animation:fl var(--d,3.6s) ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes fl{50%{transform:translateY(4px) rotate(var(--r,2deg))}}
+.ic2 img{width:46px;filter:drop-shadow(0 3px 3px rgba(74,48,39,.18));transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.ic2 b{position:absolute;top:22px;font:400 13px/1 Num;color:var(--mint)}
+.ic2 small{margin-top:3px;font:10.5px/1 ZK;color:var(--choc)}
+.ic2.sel img{transform:translateY(-6px) scale(1.08)}
+.pls{position:absolute;inset:auto 10px 6px;display:grid;grid-template-columns:repeat(4,1fr);align-items:end}
+.pl{display:flex;flex-direction:column;align-items:center;gap:3px}
+.pl small{font:10px/1.15 ZK;color:#fffaf0;text-align:center;text-shadow:0 1px 1px rgba(74,48,39,.4)}
+.ball{width:42px;height:42px}
+.dc .ex .bx{margin:0 -14px;padding:10px 14px 12px;border-radius:0;box-shadow:none;border-top:1px solid var(--ol);background:rgba(255,250,240,.96)}
+.dc .ex.op{margin-bottom:0}
+@media (prefers-reduced-motion:reduce){.zone .lq::before,.bub,.ic2{animation:none}}
 </style></head><body>
 <div class="vp"><div class="app" id="app"><div class="in">
 <img class="drip" src="drizzle.png" alt="">
 <header class="hd"><div class="ttl"><h1>Chat Menu<small>聊天</small></h1><div class="sub"><i></i>本店 · 共 10 杯 · since 10/08</div></div>
  <div class="hb"><button class="rb" aria-label="搜索"><i class="rbb m"></i><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4.5 4.5"/></svg></button><button class="rb" aria-label="新聊天"><i class="rbb c"></i><svg viewBox="0 0 24 24" fill="none" stroke="#fffaf0" stroke-width="2.4" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></button></div></header>
 
-<div class="cup" id="cup"><i class="gl"></i>
- <section class="ly foam"><span class="tk"><i></i><b>今<br>天<small>01</small></b></span>
-  <div class="lh"><span>奶盖层<s>today</s></span><em>6 轮</em></div>
+<div class="menu">
+ <article class="dc foam">
+  <div class="lh"><b>No.01</b><span>奶盖层<s>today</s></span><em>6 轮</em></div>
   <button class="it" id="today"><span class="k">11/11 周三 · 19:42<em>NEW</em></span><p>下班啦，好冷，想喝一杯热可可</p></button>
- </section>
- <section class="ly milk"><span class="tk"><i></i><b>本<br>周<small>02</small></b></span>
-  <div class="lh"><span>制冰格<s>this week</s></span><em>5 天</em></div>
-  <div class="tray" id="tray"></div>
+  <div class="zone"><i class="lq"></i><i class="cap"></i><i class="bub" style="left:22%;--d:3.8s"></i><i class="bub" style="left:58%;--d:4.6s;animation-delay:1.4s"></i><i class="bub" style="left:80%;--d:3.2s;animation-delay:2.4s"></i></div>
+ </article>
+ <article class="dc soda">
+  <div class="lh"><b>No.02</b><span>薄荷浮冰<s>this week</s></span><em>5 天</em></div>
+  <div class="zone tall"><i class="lq"></i><div class="ices" id="ices"></div></div>
   <div class="ex" id="wex"><div><div class="bx"><span class="k"><b id="wd"></b><span id="wn"></span></span><p id="wt"></p><a href="#" onclick="return false">接着这天聊 ›</a></div></div></div>
- </section>
- <section class="ly tea"><span class="tk"><i></i><b>更<br>早<small>03</small></b></span>
-  <div class="lh"><span>杯底珍珠<s>earlier</s></span><em>4 周</em></div>
-  <div class="pls" id="pls"></div>
+ </article>
+ <article class="dc tea">
+  <div class="lh"><b>No.03</b><span>沉底珍珠<s>earlier</s></span><em>4 周</em></div>
+  <div class="zone tall"><i class="lq"></i><div class="pls" id="pls"></div></div>
   <div class="ex" id="pex"><div><div class="bx"><span class="k"><b id="pd"></b><span id="pn"></span></span><p id="pt"></p><a href="#" onclick="return false">看这一周 ›</a></div></div></div>
- </section>
+ </article>
 </div>
 </div></div></div>
 <div class="navfade" aria-hidden="true"></div>
@@ -126,10 +158,9 @@ const $=s=>document.querySelector(s),app=$('#app');
 const keep=f=>e=>{const y=app.scrollTop;f(e);requestAnimationFrame(()=>app.scrollTop=y)};
 const DAYS=[['11/4','三'],['11/5','四'],['11/6','五'],['11/7','六'],['11/8','日'],['11/9','一'],['11/10','二']];
 const CH={'11/5':['我把那本书看完了，结局好难过',8],'11/6':['晚安，明天见',3],'11/8':['带你去吃了那家新开的甜品店',12],'11/9':['今天的会开了三个小时，脑袋好空',5],'11/10':['你说明天会不会下雪呀',7]};
-const tray=$('#tray');
-DAYS.forEach(([d,w],i)=>{const c=CH[d];const el=document.createElement(c?'button':'div');el.className='sl'+(c?' on':'');
- el.innerHTML=(c?`<img class="ice" src="ice.png" alt=""><b>${d.split('/')[1]}</b>`:'')+`<small>${w}</small>`;
- if(c){el.setAttribute('aria-label',`${d} 周${w}：${c[0]}`);el.onclick=keep(()=>pick(el,d,w,c))}tray.appendChild(el)});
+const ices=$('#ices');let k=0;
+DAYS.forEach(([d,w],i)=>{const c=CH[d];if(!c)return;const el=document.createElement('button');el.className='ic2';el.style.cssText=`--d:${3.2+k*.5}s;--dl:${-k*.7}s;--r:${k%2?-3:3}deg`;k++;
+ el.innerHTML=`<img src="ice.png" alt=""><b>${d.split('/')[1]}</b><small>周${w}</small>`;el.setAttribute('aria-label',`${d} 周${w}：${c[0]}`);el.onclick=keep(()=>pick(el,d,w,c));ices.appendChild(el)});
 const wex=$('#wex');let cur=null;
 function pick(el,d,w,c){if(cur===el){el.classList.remove('sel');wex.classList.remove('op');cur=null;return}
  cur&&cur.classList.remove('sel');el.classList.add('sel');cur=el;$('#wd').textContent=`${d} 周${w}`;$('#wn').textContent=`聊了 ${c[1]} 轮`;$('#wt').textContent=c[0];wex.classList.add('op')}
