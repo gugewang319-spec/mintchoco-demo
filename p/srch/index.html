@@ -14,7 +14,7 @@ html,body{height:100%;overflow:hidden;color:var(--ink)}
 button,input{font:inherit;color:inherit;background:none;border:0;outline:0}
 button{cursor:pointer}
 img{display:block;user-select:none;-webkit-user-drag:none}
-.vp{position:fixed;inset:0;overflow:hidden;background-color:#e7f4ee;background-image:radial-gradient(120% 40% at 20% 0%,rgba(255,255,255,.8),rgba(255,255,255,0) 60%),linear-gradient(180deg,#e8f6f0 0%,#e3f2ea 30%,#e9ecdf 52%,#eadfcf 70%,#ddc6ad 88%,#cfb193 100%)}
+.vp{position:fixed;inset:0;overflow:hidden;background-color:#cfb193;background-image:radial-gradient(120% 40% at 20% 0%,rgba(255,255,255,.8),rgba(255,255,255,0) 60%)}
 .app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,440px);overflow:hidden}
 .drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
 .pearls{position:absolute;left:-4%;right:-4%;bottom:-46px;z-index:1;pointer-events:none;opacity:.8}
@@ -22,7 +22,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .sc{position:absolute;inset:0;z-index:5;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;
  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 190px),transparent calc(100% - 100px));mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 190px),transparent calc(100% - 100px))}
 .sc::-webkit-scrollbar{display:none}
-.page{position:relative;min-height:100%;padding:0 34px 300px 24px}
+.page{position:relative;min-height:100%;padding:0 34px 300px 24px;background:linear-gradient(180deg,#e8f6f0 0%,#e3f2ea 18%,#e9ecdf 42%,#eadfcf 64%,#ddc6ad 84%,#cfb193 100%)}
 canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:20;pointer-events:none}
 
 .lhead{display:flex;align-items:flex-end;justify-content:space-between;padding:66px 0 0}
@@ -79,8 +79,6 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:20;pointer-ev
 /* 结果：没有框。糖粉大日期左右交错，正文始终左对齐 */
 .res{margin-top:18px}
 .day{position:relative;padding:26px 0 30px;isolation:isolate}
-.day:last-of-type::before{-webkit-mask-image:linear-gradient(#000 calc(100% - 120px),transparent);mask-image:linear-gradient(#000 calc(100% - 120px),transparent)}
-.day::before{content:"";position:absolute;top:0;bottom:0;left:-24px;right:-34px;background:var(--lay);z-index:-1}
 .dh{display:flex;align-items:flex-end;gap:10px}
 .day.r .dh{flex-direction:row-reverse;text-align:right}
 .num{position:relative;font-family:BalooX,ZK;font-weight:400;line-height:.9;letter-spacing:-.01em;color:transparent;
@@ -230,13 +228,11 @@ $('#nm').onclick=()=>{if($('#nm').getAttribute('aria-disabled')==='true')return;
 /* ---------- 结果 ---------- */
 function inR(n){const d=ago(n);if(rng==='7')return n<7;if(rng==='c')return cs&&ce&&d>=cs&&d<=ce;return n<30}
 const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-// 奶层颜色：薄荷奶 → 奶茶 → 可可，越旧越深
-const LAY=['rgba(244,251,247,0)','rgba(240,232,214,.45)','rgba(232,214,188,.55)','rgba(214,186,155,.55)','rgba(196,160,128,.5)','rgba(176,138,108,.5)'];
-const SUG=['#fbfffc','#f8f6ee','#f7eee0','#f3e4cf','#efdcc3','#ead2b6'];
+// 薄荷到可可的底色由 .vp 的连续渐变负责，结果层不再叠加矩形色块
 const GAR=[['bit2.png',46,'right:-46px;top:30px',14],['candy-s.png',92,'left:-74px;top:18px',-18],['bit3.png',40,'right:-44px;top:26px',-10],['wrapper-s.png',96,'left:-78px;top:20px',12],['bit5.png',42,'right:-46px;top:28px',8],['bit1.png',40,'left:-48px;top:26px',-14]];
-function wave(i){const c=LAY[Math.min(i,LAY.length-1)],c0=LAY[Math.min(i-1,LAY.length-1)],W=480,a=4+i%2*2,k=2+i%2;
+function wave(i){const W=480,a=4+i%2*2,k=2+i%2;
  let top='';for(let x=0;x<=W;x+=12)top+=`${x},${(10+Math.sin(x/W*6.283*k+i)*a).toFixed(1)} `;
- return `<svg class="wave" viewBox="0 0 ${W} 22" preserveAspectRatio="none" aria-hidden="true" style="background:${c0}"><polygon points="0,22 ${top}${W},22" fill="${c}"/><polyline points="${top}" fill="none" stroke="#8a5c46" stroke-opacity=".4" stroke-width="1.1" vector-effect="non-scaling-stroke"/></svg>`}
+ return `<svg class="wave" viewBox="0 0 ${W} 22" preserveAspectRatio="none" aria-hidden="true"><polyline points="${top}" fill="none" stroke="#8a5c46" stroke-opacity=".4" stroke-width="1.1" vector-effect="non-scaling-stroke"/></svg>`}
 let groups=[],io=null;
 function render(anim){const kw=qi.value.trim();const all=HITS.filter(h=>inR(h[0])&&h[1].includes(kw)&&(!ent||h[3]===ent));
  const hits=all.slice(0,shown);$('#more').hidden=all.length<=shown;
@@ -245,7 +241,7 @@ function render(anim){const kw=qi.value.trim();const all=HITS.filter(h=>inR(h[0]
  for(let i=FLOATS.length-1;i>=0;i--)if(FLOATS[i].day)FLOATS.splice(i,1);
  const res=$('#res');
  res.innerHTML=g.map((x,i)=>{const d=ago(x.n),sz=Math.max(52,72-i*4),r=i%2;
-  return `${i?wave(i):''}<section class="day${r?' r':''}" id="d${i}" style="--lay:${LAY[Math.min(i,LAY.length-1)]};--sug:${SUG[Math.min(i,SUG.length-1)]}"><div class="dh"><span class="num" data-t="${d.getMonth()+1}/${d.getDate()}" style="font-size:${sz}px">${d.getMonth()+1}/${d.getDate()}</span><small>周${WK[d.getDay()]}${x.n===0?' · 今天':x.n===1?' · 昨天':''}<b>${x.h.length} 句</b></small></div><div class="hits">${
+  return `${i?wave(i):''}<section class="day${r?' r':''}" id="d${i}"><div class="dh"><span class="num" data-t="${d.getMonth()+1}/${d.getDate()}" style="font-size:${sz}px">${d.getMonth()+1}/${d.getDate()}</span><small>周${WK[d.getDay()]}${x.n===0?' · 今天':x.n===1?' · 昨天':''}<b>${x.h.length} 句</b></small></div><div class="hits">${
    x.h.map((h,j)=>`<button type="button" class="hit" style="transition-delay:${i*110+120+j*70}ms"><div class="ctx b"><div><p><span>前一句 · ${h[2]==='我'?'他':'我'}</span>${esc(h[5])}</p></div></div><p>${esc(h[1]).split(esc(kw)).join(`<mark>${esc(kw)}</mark>`)}</p><small>${h[2]} · ${EN[h[3]]} · <em>${h[4]}</em></small><div class="ctx a"><div><p><span>后一句 · ${h[2]==='我'?'他':'我'}</span>${esc(h[6])}</p></div></div></button>`).join('')}</div></section>`}).join('');
  $$('#res .day').forEach((el,i)=>{el.querySelector('.num').style.transitionDelay=`${i*110}ms`;el.querySelector('.dh small').style.transitionDelay=`${i*110+250}ms`;const a=GAR[i%GAR.length];const f=garnish(el,a[0],a[1],a[2],a[3]);f.day=1;f.sec=el});
  const e=$('#empty');e.hidden=!!hits.length||!kw;e.innerHTML='这段日子里，筛子里什么也没落下。<small>换个词、换个入口，或者把日期放宽一点</small>';
@@ -255,29 +251,26 @@ function render(anim){const kw=qi.value.trim();const all=HITS.filter(h=>inR(h[0]
  if(io)io.disconnect();io=new IntersectionObserver(es=>es.forEach(x=>{const f=FLOATS.find(f=>f.sec===x.target);if(f)f.vis=x.isIntersecting}),{root:sc});$$('#res .day').forEach(s=>io.observe(s));
  syncIdx();
  $$('.hit').forEach(b=>b.onclick=()=>b.classList.toggle('open'));
- const show=()=>{$$('#res .day').forEach((s,i)=>{s.classList.add('on');if(anim&&!RM())setTimeout(()=>sugarAt(s.querySelector('.num')),i*110+80)})};
+ const show=()=>$$('#res .day').forEach(s=>s.classList.add('on'));
  if(anim)requestAnimationFrame(()=>requestAnimationFrame(show));else $$('#res .day,#res .hit,#res .num').forEach(x=>x.style.transition='none'),show();
 }
 function syncIdx(){const bs=$$('#idx button');if(!bs.length)return;let k=0;$$('#res .day').forEach((s,i)=>{if(s.offsetTop-sc.scrollTop<sc.clientHeight*.45)k=i});bs.forEach((b,i)=>b.classList.toggle('on',i===k))}
 let idT=0;sc.addEventListener('scroll',()=>{syncIdx();const x=$('#idx');x.classList.add('show');clearTimeout(idT);idT=setTimeout(()=>x.classList.remove('show'),1400)},{passive:true});
 $('#idx').addEventListener('pointerdown',()=>{clearTimeout(idT);$('#idx').classList.add('show')});
 
-/* ---------- 糖粉：筛的时候往下落，日期落下来拼成 ---------- */
-const cv=$('#fx'),cx=cv.getContext('2d');let P=[],raf=0,DPR=Math.min(2,devicePixelRatio||1);
-function fit(){const r=cv.getBoundingClientRect();cv.width=r.width*DPR;cv.height=r.height*DPR;cx.setTransform(DPR,0,0,DPR,0,0)}
-function base(){return cv.getBoundingClientRect()}
+/* ---------- 糖粉：只在提交或筛选变化时，从筛子落少量颗粒 ---------- */
+const cv=$('#fx'),cx=cv.getContext('2d');let P=[],raf=0,DPR=Math.min(2,devicePixelRatio||1),cvRect;
+function fit(){cvRect=cv.getBoundingClientRect();cv.width=cvRect.width*DPR;cv.height=cvRect.height*DPR;cx.setTransform(DPR,0,0,DPR,0,0)}
+function base(){return cvRect}
 function grains(n,x0,x1,y0,y1,vy){for(let i=0;i<n;i++)P.push({x:x0+Math.random()*(x1-x0),y:y0+Math.random()*(y1-y0),vy:vy+Math.random()*1.2,vx:(Math.random()-.5)*.6,r:.9+Math.random()*1.6,a:1,m:Math.random()<.18});if(!raf)tick()}
 function fromSieve(n){const b=base(),r=$('#sieve img').getBoundingClientRect();grains(n,r.left-b.left+r.width*.2,r.left-b.left+r.width*.75,r.top-b.top+r.height*.45,r.top-b.top+r.height*.7,.6)}
-function sugarAt(el){if(!el)return;const b=base(),r=el.getBoundingClientRect();grains(16,r.left-b.left,r.right-b.left,r.top-b.top-30,r.top-b.top,.9)}
 function tick(){const b=base();cx.clearRect(0,0,b.width,b.height);P=P.filter(p=>p.a>.04&&p.y<b.height);
  for(const p of P){p.x+=p.vx;p.y+=p.vy;p.vy+=.035;p.a*=.972;cx.globalAlpha=p.a;cx.fillStyle=p.m?'#9fd8c2':'#fffaf2';cx.strokeStyle='rgba(138,92,70,.28)';cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fill();cx.stroke()}
  raf=P.length?requestAnimationFrame(tick):0}
 let shakeT=0;
-function go(){shown=6;render(true)}
+function go(delay=0){shown=6;shakeT=performance.now()/1000;LINE.k=shakeT;if(!RM())fromSieve(12);setTimeout(()=>render(true),RM()?0:delay)}
 q.onsubmit=e=>{e.preventDefault();if(!qi.value.trim()){qi.focus();return}qi.blur();
- $$('#res .day').forEach(s=>s.classList.remove('on'));
- shakeT=performance.now()/1000;LINE.k=shakeT;if(!RM())fromSieve(40);setTimeout(go,RM()?0:420)};
-setInterval(()=>{if(!RM()&&sc.scrollTop<200)fromSieve(3)},6400);
+ $$('#res .day').forEach(s=>s.classList.remove('on'));go(260)};
 $('#more').onclick=()=>{shown+=6;render(false)};
 document.addEventListener('click',e=>{const f=FLOATS.find(x=>x.e!==SV.e&&x.e.contains(e.target));if(f)f.sp.v-=10});
 
@@ -286,7 +279,7 @@ addEventListener('resize',()=>{fit();lineShape()});
 (function loop(n){const s=n/1000,on=!RM();lineDraw(s,on);
  for(const f of FLOATS){if(!f.vis&&!f.sp.v)continue;f.sp.v+=(-140*f.sp.x-7*f.sp.v)/60;f.sp.x+=f.sp.v/60;if(Math.abs(f.sp.v)<.01&&Math.abs(f.sp.x)<.001){f.sp.v=0;f.sp.x=0}
   let y=on?Math.sin(s*6.283/f.per+f.ph)*f.a:0,r=f.rot+(on?Math.sin(s*6.283/(f.per*1.4)+f.ph)*f.ra:0),x=0;
-  if(f===SV&&shakeT){const a=s-shakeT;if(a<.9){x=Math.sin(a*36)*6*(1-a/.9);r+=Math.sin(a*36)*4*(1-a/.9)}}
+  if(f===SV&&shakeT&&on){const a=s-shakeT;if(a<.28){x=Math.sin(a*36)*6*(1-a/.28);r+=Math.sin(a*36)*4*(1-a/.28)}}
   f.e.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${(1-f.sp.x*.03).toFixed(3)},${(1+f.sp.x*.03).toFixed(3)})`}
  requestAnimationFrame(loop)})(0);
-</script><script>window.__DEMO_MAP=[[".pearlbtn.back", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=27"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn.back", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=28"></script></body></html>

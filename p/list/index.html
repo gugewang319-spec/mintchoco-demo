@@ -168,7 +168,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .wk span{font:600 14px/1 Baloo;color:var(--cocoa)}.wk i{font:12px/1 ZK;font-style:normal;color:#2f6e58;letter-spacing:.06em}
 .list{position:relative;z-index:3;padding:0 14px 150px}
 /* 奶盖＝今天 */
-.cap{position:relative;display:block;width:100%;text-align:left;margin-top:6px;padding:46px 22px 34px;background:none;cursor:pointer}
+.cap{position:relative;display:block;width:100%;text-align:left;margin-top:6px;padding:38px 20px 24px;background:none;cursor:pointer}
 .cap .bg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .cap .bg{filter:drop-shadow(0 7px 9px rgba(74,48,39,.11))}
 .cap .bg .sh{fill:url(#capCream);stroke:rgba(138,92,70,.34);stroke-width:1.2}
@@ -187,26 +187,31 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .wall{display:block;width:88%;margin:8px auto 0;height:24px;overflow:visible;opacity:.62;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .wall path{fill:#7a5a4c;stroke:none}
 /* 冰块＝本周 */
-.ices{position:relative;height:0;padding-bottom:158%}
-.cube{position:absolute;display:block;cursor:pointer;text-align:left}
+.ices{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,132px));justify-content:space-between;gap:12px 20px;height:auto;padding:0 12px}
+.cube{position:relative;display:block;left:auto!important;top:auto!important;width:100%!important;cursor:pointer;text-align:left}
+.cube:nth-child(5){grid-column:1/-1;width:132px!important;justify-self:center}
 .cube .body{position:absolute;inset:0;transform-origin:50% 60%;will-change:transform}
 .cube .im,.cube .fr{position:absolute;inset:0;pointer-events:none}
 .cube .im img,.cube .fr img{width:100%;height:100%;object-fit:contain}
 .cube .top{position:absolute;left:14%;right:16%;top:3.5%;height:11%;display:flex;align-items:center;justify-content:center;transform:perspective(200px) rotateX(48deg);transform-origin:50% 100%}
-.cube .top b{font:700 15px/1 Baloo;color:var(--ch);letter-spacing:.04em}
+.cube .top b{font:700 13px/1 Baloo;color:var(--ch);letter-spacing:.04em}
 .cube .side{position:absolute;left:85.5%;width:10%;top:20%;bottom:22%;display:flex;align-items:center;justify-content:center;transform:skewY(-10deg)}
-.cube .side i{writing-mode:vertical-rl;font:12px/1 WK;font-style:normal;color:var(--cocoa);letter-spacing:.25em}
-.cube .tx{position:absolute;left:20%;right:22%;top:23%;bottom:20%;display:flex;align-items:center}
-.cube .tx span{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font:14px/1.5 WK;color:var(--ink)}
+.cube .side i{writing-mode:vertical-rl;font:11px/1 WK;font-style:normal;color:var(--cocoa);letter-spacing:.25em}
+.cube .tx{position:absolute;left:18%;right:20%;top:24%;bottom:18%;display:flex;align-items:center}
+.cube .tx span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font:13px/1.45 WK;color:var(--ink)}
 /* 珍珠＝更早的周 */
-.pls{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;padding:0 6px}
+.pls{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;padding:0 12px}
 .pl{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer}
-.pl:nth-child(even){margin-top:34px}
-.pl .ball{position:relative;width:118px;height:118px;display:grid;place-items:center;transform-origin:50% 90%;will-change:transform}
+.pl:nth-child(even){margin-top:24px}
+.pl .ball{position:relative;width:96px;height:96px;display:grid;place-items:center;transform-origin:50% 90%;will-change:transform}
 .pl .ball img{position:absolute;inset:0;width:100%;height:100%;transform-origin:50% 90%}
-.pl .ball b{position:relative;font:700 15px/1.15 Baloo;color:#fff3e2;text-shadow:0 1px 2px rgba(46,26,18,.5)}
-.pl .ball b small{display:block;font:12px/1.3 ZK;color:rgba(255,243,226,.85);letter-spacing:.06em}
+.pl .ball b{position:relative;font:700 13px/1.15 Baloo;color:#fff3e2;text-shadow:0 1px 2px rgba(46,26,18,.5)}
+.pl .ball b small{display:block;font:10.5px/1.3 ZK;color:rgba(255,243,226,.85);letter-spacing:.06em}
 .pl .cap2{width:100%;max-width:148px;margin-top:7px;padding:3px 2px 7px;border:0;border-bottom:1.1px dashed rgba(138,92,70,.42);background:none;font:13px/1.45 WK;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rvw{position:relative;margin:12px 22px 4px;padding:12px 0;border-top:1.2px dashed rgba(138,92,70,.45);border-bottom:1.2px dashed rgba(138,92,70,.45)}
+.rvw .rh{font:13px/1.4 ZK;color:var(--mint3);letter-spacing:.06em}
+.rvw p{margin:8px 0;font:15px/1.65 WK;color:var(--ink)}
+.rvw button{display:flex;align-items:center;min-height:44px;margin-left:auto;font:12.5px/1 ZK;color:var(--cocoa);border-bottom:1.2px dashed var(--cocoa)}
 .navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
 .pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
 .pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
@@ -259,14 +264,14 @@ L.innerHTML=h+'</div>';
 const walls=['#wall2'].map((s,k)=>({p:$(s).querySelector('path'),d:[30,95,120,210,300,330,372].map((x,i)=>({x:x+Math.random()*14,w:[14,9,7,16,10,7,12][i],b:[18,7,4,24,12,5,15][i]*(k?.8:1),per:3+Math.random()*3,ph:Math.random()*6.28})),k}));
 function wallPath(W,t,on){const top=3;let d='M4 0 L396 0 Q400 0 400 2 L400 '+(top+(on?Math.sin(t*1.3)*.7:0)).toFixed(1);const ds=[...W.d].sort((a,b)=>b.x-a.x);for(const q of ds){const L=q.b*.72+(on?Math.sin(t*6.283/q.per+q.ph)*2:0),y0=top+Math.sin(q.x*.035+t*.8)*1.2;d+=` Q${q.x+q.w} ${y0} ${q.x+q.w/2} ${y0+1.5} C${q.x+q.w*.5} ${y0+L*.7} ${q.x+q.w*.62} ${y0+L} ${q.x} ${y0+L} C${q.x-q.w*.62} ${y0+L} ${q.x-q.w*.5} ${y0+L*.7} ${q.x-q.w/2} ${y0+1.5}`}d+=' L0 3 L0 2 Q0 0 4 0Z';W.p.setAttribute('d',d)}
 /* 冰块和珍珠：只动图片层，字不动 */
-const floats=[...$$('.cube').map((c,i)=>({e:c.querySelector('.body'),rot:POS[i][3],per:3.4+Math.random()*2.6,ph:Math.random()*6.28,a:4,ra:1.6,sp:{x:0,v:0}})),...$$('.pl .ball').map(e=>({e,rot:0,per:4+Math.random()*3,ph:Math.random()*6.28,a:2.5,sp:{x:0,v:0}}))];
+const floats=[...$$('.cube').map((c,i)=>({e:c.querySelector('.body'),rot:POS[i][3],per:3.4+Math.random()*2.6,ph:Math.random()*6.28,a:0,ra:0,sp:{x:0,v:0}})),...$$('.pl .ball').map(e=>({e,rot:0,per:4+Math.random()*3,ph:Math.random()*6.28,a:0,ra:0,sp:{x:0,v:0}}))];
 floats.push(...(window._cg||[]));
 const CAP={drips:[],k:0};
 function capShape(){const c=$('.cap'),W=c.offsetWidth,H=c.offsetHeight,r=18,sb=H-14,n=Math.max(6,Math.round((W-4)/44)),sw=(W-2)/n;CAP.W=W;let d=`M1 ${r} Q1 1 ${r} 1 L${W-r} 1 Q${W-1} 1 ${W-1} ${r} L${W-1} ${sb}`,rim='';for(let i=n;i>0;i--){const x1=1+i*sw,x0=1+(i-1)*sw,dp=7+((i*7)%3)*1.5;d+=` C${x1-sw*.1} ${sb+dp} ${x0+sw*.1} ${sb+dp} ${x0} ${sb}`;rim+=`M${(x1-sw*.25).toFixed(1)} ${(sb+dp*.55).toFixed(1)} Q${((x0+x1)/2).toFixed(1)} ${(sb+dp*.8).toFixed(1)} ${(x0+sw*.25).toFixed(1)} ${(sb+dp*.55).toFixed(1)} `}d+=' Z';c.querySelector('.sh').setAttribute('d',d);c.querySelector('.rim').setAttribute('d',rim);c.querySelector('.h').setAttribute('d',`M18 4.5 Q${(W*.3).toFixed(1)} 2.8 ${(W*.46).toFixed(1)} 4.5`);
  const m=Math.max(4,Math.round(W/44));CAP.drips=[];for(let i=0;i<m;i++){const q=Math.random();CAP.drips.push({x:26+(i+.5+(Math.random()-.5)*.7)/m*(W-52),w:8+Math.random()*9,base:6+q*q*13,amp:3+q*3,per:10+Math.random()*7,ph:Math.random()})}
  const bds=[...c.querySelectorAll('.bd')];[...CAP.drips].sort((a,b)=>b.base-a.base).slice(0,2).forEach((q,i)=>{q.act=1;q.bd=bds[i]})}
 function capSauce(t,on){const c=$('.cap'),w=CAP.W,top=14;if(!w)return;let d=`M18 .6 Q${w/2} -1.2 ${w-18} .6 Q${w-.6} .6 ${w-.6} 17 L${w-.6} 21 Q${w-.6} 25 ${w-4} 24 Q${w-7} 22 ${w-9} ${top+2} Q${w-11} ${top} ${w-15} ${top}`;const ds=[...CAP.drips].sort((a,b)=>b.x-a.x);
- for(const q of ds){const L=q.base+(on&&q.act?dripLen(q,t):0)+(CAP.k?Math.max(0,Math.exp(-(t-CAP.k)*2.5))*5:0);const x0=q.x+q.w/2,x1=q.x-q.w/2;d+=` L${x0.toFixed(1)} ${top} C${x0.toFixed(1)} ${(top+L*.6).toFixed(1)} ${(q.x+q.w*.55).toFixed(1)} ${(top+L).toFixed(1)} ${q.x.toFixed(1)} ${(top+L).toFixed(1)} C${(q.x-q.w*.55).toFixed(1)} ${(top+L).toFixed(1)} ${x1.toFixed(1)} ${(top+L*.6).toFixed(1)} ${x1.toFixed(1)} ${top}`}
+ for(const q of ds){const L=q.base+(on&&q.act?dripLen(q,t):0)+(on&&CAP.k?Math.max(0,Math.exp(-(t-CAP.k)*2.5))*5:0);const x0=q.x+q.w/2,x1=q.x-q.w/2;d+=` L${x0.toFixed(1)} ${top} C${x0.toFixed(1)} ${(top+L*.6).toFixed(1)} ${(q.x+q.w*.55).toFixed(1)} ${(top+L).toFixed(1)} ${q.x.toFixed(1)} ${(top+L).toFixed(1)} C${(q.x-q.w*.55).toFixed(1)} ${(top+L).toFixed(1)} ${x1.toFixed(1)} ${(top+L*.6).toFixed(1)} ${x1.toFixed(1)} ${top}`}
  d+=` L15 ${top} Q11 ${top} 9 ${top+2} Q7 22 4 24 Q.6 25 .6 21 L.6 17 Q.6 .6 18 .6Z`;c.querySelector('.s').setAttribute('d',d);dripBead(CAP.drips,top,t,on)}
 /* 酱汁：慢垂、尖端一掐、缩回（黏稠滤镜 #goo） */
 function dripPhase(q,t){return ((t/q.per+q.ph)%1+1)%1}
@@ -276,8 +281,11 @@ function dripBead(drips,top,t,on){for(const q of drips){if(!q.bd)continue;const 
  if(!on)r=0;q.bd.setAttribute('cx',q.x.toFixed(1));q.bd.setAttribute('cy',y.toFixed(1));q.bd.setAttribute('r',r.toFixed(2))}}
 $('.cap').addEventListener('click',()=>{CAP.k=performance.now()/1000});
 capShape();addEventListener('resize',capShape);$('.cap').addEventListener('click',()=>(window._cg||[]).forEach((q,i)=>q.sp.v+=i?8:-8));
-$$('.cube,.pl').forEach(b=>b.addEventListener('click',()=>{const f=floats.find(q=>b.contains(q.e));if(f)f.sp.v+=-9}));
-(function loop(n){const s=n/1000,on=!matchMedia('(prefers-reduced-motion: reduce)').matches;walls.forEach(W=>wallPath(W,s,on));capSauce(s,on);for(const q of floats){q.sp.v+=(-140*q.sp.x-7*q.sp.v)/60;q.sp.x+=q.sp.v/60;const y=(on?Math.sin(s*6.283/q.per+q.ph)*q.a:0);const r=q.rot+(on?Math.sin(s*6.283/(q.per*1.4)+q.ph)*(q.ra??1.4):0);const tf=`translateY(${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${(1-q.sp.x*.03).toFixed(3)},${(1+q.sp.x*.03).toFixed(3)})`;q.e.style.transform=tf;if(q.e2)q.e2.style.transform=tf}requestAnimationFrame(loop)})(0);
+let recordOpen=null;
+function closeRecord(focus){const old=$('#recordview');if(old)old.remove();if(recordOpen){recordOpen.setAttribute('aria-expanded','false');if(focus)recordOpen.focus()}recordOpen=null}
+$$('.cube,.pl').forEach(b=>{b.setAttribute('aria-controls','recordview');b.setAttribute('aria-expanded','false');b.addEventListener('click',()=>{const f=floats.find(q=>b.contains(q.e));if(f)f.sp.v+=-9;if(recordOpen===b){closeRecord(true);return}closeRecord(false);recordOpen=b;const cube=b.classList.contains('cube'),i=cube?$$('.cube').indexOf(b):$$('.pl').indexOf(b),d=cube?WK[i]:PW[i],label=cube?`${d[0]} · ${d[1]}`:`${d[0]} – ${d[1]} · ${d[3]} 天`;
+ const view=document.createElement('section');view.className='rvw';view.id='recordview';view.innerHTML=`<div class="rh">${label}</div><p>${d[2]}</p><button type="button">收起详情 ›</button>`;view.querySelector('button').onclick=()=>closeRecord(true);(cube?$('.ices'):$('.pls')).after(view);b.setAttribute('aria-expanded','true');view.scrollIntoView({behavior:RM.matches?'auto':'smooth',block:'nearest'})})});
+(function loop(n){const s=n/1000,on=!matchMedia('(prefers-reduced-motion: reduce)').matches;walls.forEach(W=>wallPath(W,s,on));capSauce(s,on);for(const q of floats){if(!on){q.sp.x=0;q.sp.v=0}q.sp.v+=(-140*q.sp.x-7*q.sp.v)/60;q.sp.x+=q.sp.v/60;const y=(on?Math.sin(s*6.283/q.per+q.ph)*q.a:0);const r=q.rot+(on?Math.sin(s*6.283/(q.per*1.4)+q.ph)*(q.ra??1.4):0);const tf=`translateY(${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${(1-q.sp.x*.03).toFixed(3)},${(1+q.sp.x*.03).toFixed(3)})`;q.e.style.transform=tf;if(q.e2)q.e2.style.transform=tf}requestAnimationFrame(loop)})(0);
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
 /* 性能分级与减少动效 */
 const RM=matchMedia('(prefers-reduced-motion: reduce)');
@@ -358,4 +366,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[[".cap", "push:room", 1, 300], ["[aria-label=\"\u641c\u7d22\u804a\u5929\"]", "push:srch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=27"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".cap", "push:room", 1, 300], ["[aria-label=\"\u641c\u7d22\u804a\u5929\"]", "push:srch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=28"></script></body></html>

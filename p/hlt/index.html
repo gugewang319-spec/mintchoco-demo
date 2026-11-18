@@ -94,7 +94,7 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 /* 记录 */
 .rec{margin:34px 22px 0}
 .rec .rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.rec .flt{font:12.5px/1 WK;color:#7a5a4c;display:flex;gap:10px;align-items:baseline;opacity:0;transition:opacity .3s}
+.rec .flt{font:12.5px/1 WK;color:#7a5a4c;display:flex;gap:10px;align-items:baseline;opacity:1;transition:opacity .3s}
 .rec .flt.on{opacity:1}
 .rows{position:relative;padding-left:18px}
 .rows::before{content:"";position:absolute;left:4px;top:8px;bottom:8px;border-left:1.3px solid rgba(138,92,70,.4)}
@@ -171,8 +171,10 @@ const mx=Math.max(...HOURS);$('#hours').innerHTML=HOURS.map(h=>h?`<u style="widt
 (function(){const t0=performance.now(),d=RM?0:900;(function f(n){const k=d?Math.min(1,(n-t0)/d):1,e=1-Math.pow(1-k,3);$('#stp').textContent=Math.round(TOTAL*e).toLocaleString('en');if(k<1)requestAnimationFrame(f)})(t0)})();
 /* 记录 */
 $('#rows').innerHTML=R.map(r=>`<div class="r" data-k="${r.k}" style="--c:${COL[r.k]}"><span class="tm">${r.d?'<small>'+r.d+'</small>':''}${r.t}</span><span class="kd">${r.n}</span><span class="vl">${r.v}<small>${r.u}</small></span></div>`).join('');
-let flt=null;function setF(k){flt=flt===k?null:k;$$('.r').forEach(r=>r.classList.toggle('hide',!!flt&&r.dataset.k!==flt));$$('.blk').forEach(b=>b.classList.toggle('sel',b.dataset.k===flt));$('#flt').classList.toggle('on',!!flt);$('#fltt').textContent=flt?'只看'+NM[flt]:''}
-$('#all').onclick=()=>setF(flt);
+let flt=null,showAll=false;
+function updateRows(){let n=0;$$('.r').forEach(r=>{const match=!flt||r.dataset.k===flt;if(match)n++;r.classList.toggle('hide',!match||(!showAll&&n>3))});$$('.blk').forEach(b=>b.classList.toggle('sel',b.dataset.k===flt));$('#fltt').textContent=flt?'只看'+NM[flt]:'';$('#all').textContent=showAll?'收起':'查看全部';$('#all').hidden=n<=3;$('#all').setAttribute('aria-expanded',showAll);$('#all').setAttribute('aria-controls','rows')}
+function setF(k){flt=flt===k?null:k;updateRows()}
+$('#all').onclick=()=>{showAll=!showAll;updateRows()};updateRows();
 $$('.blk').forEach(b=>b.addEventListener('click',e=>{if(e.target.closest('#sync'))return;if(b.id==='hrb'){rs=!rs;b.classList.toggle('rs',rs)}setF(b.dataset.k);if(flt===null&&b.id==='hrb'){}}));
 /* 同步：点一下演示过期 */
 $('#sync').onclick=e=>{e.stopPropagation();const s=$('#app').classList.toggle('stale');$('#synct').textContent=s?'07:52 同步的':'10:52 同步过'};
@@ -208,4 +210,4 @@ let st=performance.now();function band(n){const t=(n-st)/1000;let d=`M${s0} 50 `
 /* 接手环 */
 $('#whb').onclick=()=>$('#wh').classList.toggle('open');
 $('#cp').onclick=()=>{try{navigator.clipboard.writeText($('#url').textContent)}catch(e){}$('#cp').textContent='复制好了';setTimeout(()=>$('#cp').textContent='复制',1600)};
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=27"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=28"></script></body></html>
