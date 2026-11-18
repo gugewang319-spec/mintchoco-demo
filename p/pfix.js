@@ -13,7 +13,7 @@
 .pfx-drin{position:absolute!important;left:0!important;top:0!important;width:100%!important;z-index:auto!important}`;
   const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
   function scrolls(el){for(let p=el.parentElement;p&&p!==document.body;p=p.parentElement){const o=getComputedStyle(p).overflowY;if(/(auto|scroll)/.test(o))return true}return false}
-  function run(){document.querySelectorAll('#sc,.scroller,.vp,.app,.page,.menu').forEach(e=>{if(/(auto|scroll)/.test(getComputedStyle(e).overflowY)){e.style.overflowX='hidden';[...e.children].forEach(c=>{if(c.classList.contains('content')||c.offsetWidth>=e.clientWidth-2)c.style.overflowX='clip'});e.addEventListener('scroll',()=>{if(e.scrollLeft)e.scrollLeft=0},{passive:true})}});
+  function run(){document.querySelectorAll('#sc,.scroller,.vp,.app,.page,.menu').forEach(e=>{if(/(auto|scroll)/.test(getComputedStyle(e).overflowY)){e.style.overflowX='hidden';[...e.children].forEach(c=>{if((c.classList.contains('content')||c.offsetWidth>=e.clientWidth-2)&&!/(auto|scroll)/.test(getComputedStyle(c).overflowX))c.style.overflowX='clip'});e.addEventListener('scroll',()=>{if(e.scrollLeft)e.scrollLeft=0},{passive:true})}});
     const d=document.querySelector('img.drizzle');
     const h=[...document.querySelectorAll('.lhead,.head')].find(e=>getComputedStyle(e).position==='sticky');
     if(d&&scrolls(d)){

@@ -77,6 +77,10 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .keyop{display:flex;gap:16px;justify-content:flex-end;max-height:0;overflow:hidden;transition:max-height .35s}
 .keyl.ex+.keyop{max-height:30px}
 .keyop span{font:12.5px/1.8 WK;color:var(--cocoa);border-bottom:1.1px dashed var(--cocoa);line-height:1.2}
+.pk{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;max-height:0;overflow:hidden;transition:max-height .3s}
+.pk.on{max-height:110px;padding:2px 0 8px}
+.pk button{min-height:32px;padding:0 12px;border-radius:16px;font:600 12.5px/1 Baloo,ZK;color:#6f5446;border:1.1px solid rgba(138,92,70,.35);background:rgba(252,250,244,.5)}
+.pk button.on{background:#a6d9c4;border-color:#3f9a80;color:#2f4a3e}
 .more{max-height:0;overflow:hidden;transition:max-height .7s steps(6,end)}
 .more .ln{font-size:12.5px}
 .more .ln .v{font-weight:500;font-size:12px}
@@ -235,12 +239,12 @@ let cur=-1;const op=$('#open');build();
 function rc(c,i){const ks=c.k.map(([s,cl,tx])=>`<div class="kw"><button class="ln keyl"><span class="k">···${s}</span><span class="st"><i class="${cl=='off'?'cool':cl}"></i>${tx}</span>${cl=='bad'?'<img class="ring" src="circle.png" alt="">':''}</button><div class="keyop"><span class="up">往前挪 ›</span><span class="del">删掉 ›</span></div></div>`).join('');
  const ms=c.m.map(j=>{const[a,b]=M[j].split(':');return`<div class="ln"><span>${a}</span><span class="v">${b}</span></div>`}).join('');
  return `<div class="shade"><div class="rc"><button class="lift">挂回去 ›</button><input class="nmI ed" maxlength="6" value="${c.n}" aria-label="渠道名字"><input class="hostI ed" value="${c.h}" aria-label="地址" inputmode="url" autocapitalize="off" spellcheck="false"><div class="cut"></div>
-<div class="ln"><span>格式</span><span class="v">${c.f}</span></div><button class="ln rt"><span>失败重试</span><span class="lk"><span class="v">×${c.r}</span> ›</span></button><div class="cut"></div>
+<button class="ln dd" data-k="f"><span>格式</span><span class="lk"><span class="v">${c.f}</span> ›</span></button><div class="pk"></div><button class="ln dd" data-k="r"><span>失败重试</span><span class="lk"><span class="v">×${c.r}</span> ›</span></button><div class="pk"></div><div class="cut"></div>
 <div class="sec">密 钥<b class="kn">${c.k.length}</b></div>${ks}<label class="ln newk"><input class="keyI" placeholder="粘贴新密钥" aria-label="新密钥" autocomplete="off" spellcheck="false"><span class="st"><i class="cool"></i>待填</span></label><button class="lk addk">+ 加一把 ›</button><div class="cut"></div>
 <button class="ln mo"><span class="sec" style="margin:0">模 型<b style="margin-left:8px">${c.m.length}</b></span><span class="lk">打出来 ›</span></button><div class="more">${ms}</div><div class="cut"></div>
 <div class="foot">2026-11-12 20:40<br>NO.${String(i+1).padStart(4,'0')}</div><div class="bar"></div></div></div>`}
 function wire(){
- $$('#open .rt').forEach(b=>b.onclick=()=>{const v=b.querySelector('.v');let n=+v.textContent.slice(1);n=n%3+1;v.textContent='×'+n;CH[cur].r=n;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')});
+ ddw(CH[cur]);
  $$('#open .keyl').forEach(b=>b.onclick=()=>{const o=!b.classList.contains('ex');$$('.keyl').forEach(x=>x.classList.remove('ex'));if(o)b.classList.add('ex')});
  const kn=()=>{$('#open .kn').textContent=$$('#open .kw:not(.gone)').length};
  $$('#open .kw').forEach(w=>{const b=w.querySelector('.keyl'),d=w.querySelector('.del'),u=w.querySelector('.up');
@@ -252,7 +256,7 @@ function wire(){
  const c=CH[cur],t=$$('.tk')[cur];
  op.querySelector('.nmI').oninput=e=>{const v=e.target.value.trim();if(!v)return;c.n=v;t.querySelector('.nm').textContent=v;t.querySelector('.rt b').textContent=v};
  op.querySelector('.hostI').oninput=e=>{c.h=e.target.value.trim()};
- $$('#open .newk .keyI').forEach(k=>k.oninput=()=>{const st=k.nextElementSibling;st.innerHTML=k.value.trim()?'<i></i>···'+k.value.trim().slice(-4):'<i class="cool"></i>待填'})}
+ $$('#open .newk .keyI').forEach(k=>k.oninput=()=>{const st=k.nextElementSibling;st.innerHTML=k.value.trim()?'<i></i>已填':'<i class="cool"></i>待填'})}
 function snap(){if(RM)return;setTimeout(()=>{const h=$('#hold');h.classList.remove('snap');void h.offsetWidth;h.classList.add('snap')},380)}
 function fitH(){const h=cur==-1?0:op.offsetHeight;$('#sp').style.top=Math.max(900,444+h+130)+'px'}
 function pick(i){const tks=$$('.tk');$('.nt')&&$('.nt').classList.remove('lit');
@@ -262,23 +266,27 @@ function pick(i){const tks=$$('.tk');$('.nt')&&$('.nt').classList.remove('lit');
  setTimeout(()=>{op.classList.add('on');snap();fitH()},RM?0:120);
  const tr=$('#track'),x=X0+i*STEP;if(x<tr.scrollLeft+10||x>tr.scrollLeft+tr.clientWidth-80)tr.scrollTo({left:x-60,behavior:'smooth'})}
 
-const FM=['OpenAI','Anthropic','Gemini'];
+const FM=['OpenAI','Anthropic','Gemini'],RT=[1,2,3,4,5];let NWC;
+function ddw(c){op.querySelectorAll('.dd').forEach(b=>{const k=b.dataset.k,pk=b.nextElementSibling,opts=k=='f'?FM:RT;
+ const paint=()=>{pk.innerHTML=opts.map(o=>`<button class="${o==c[k]?'on':''}">${k=='r'?'×'+o:o}</button>`).join('');
+  pk.querySelectorAll('button').forEach((x,j)=>x.onclick=()=>{c[k]=opts[j];b.querySelector('.v').textContent=k=='r'?'×'+opts[j]:opts[j];paint();pk.classList.remove('on');setTimeout(fitH,320)})};
+ paint();b.onclick=()=>{const o=!pk.classList.contains('on');op.querySelectorAll('.pk').forEach(x=>x.classList.remove('on'));if(o)pk.classList.add('on');setTimeout(fitH,320)}})}
 function newT(){if(cur===-2){cur=-1;$('.nt').classList.remove('lit');op.classList.remove('on');setTimeout(()=>{if(cur==-1){op.innerHTML='';fitH()}},RM?0:500);$('#idle').classList.remove('hide');return}
  if(cur>=0)$$('.tk')[cur].classList.remove('out');
  cur=-2;$('.nt').classList.add('lit');$('#idle').classList.add('hide');op.classList.remove('on');
  const no=String(CH.length+1).padStart(4,'0');
  op.innerHTML=`<div class="shade"><div class="rc nw"><button class="lift hang">挂上去 ›</button><input class="nmI" maxlength="6" placeholder="给它起个名字" aria-label="渠道名字"><input class="hostI" placeholder="api.example.com" aria-label="地址" inputmode="url" autocapitalize="off" spellcheck="false"><div class="cut"></div>
-<button class="ln fm"><span>格式</span><span class="lk"><span class="v">OpenAI</span> ›</span></button><div class="ln"><span>失败重试</span><span class="v">×2</span></div><div class="cut"></div>
+<button class="ln dd" data-k="f"><span>格式</span><span class="lk"><span class="v">OpenAI</span> ›</span></button><div class="pk"></div><button class="ln dd" data-k="r"><span>失败重试</span><span class="lk"><span class="v">×2</span> ›</span></button><div class="pk"></div><div class="cut"></div>
 <div class="sec">密 钥<b>1</b></div><label class="ln"><input class="keyI" placeholder="粘贴第一把密钥" aria-label="密钥" autocomplete="off" spellcheck="false"><span class="st"><i class="cool"></i>待填</span></label><div class="cut"></div>
 <div class="foot">2026-11-12 ${new Date().toLocaleTimeString('zh-CN',{timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit',hour12:false})}<br>NO.${no} · 空白单</div><div class="bar"></div></div></div>`;
- const fm=op.querySelector('.fm');fm.onclick=()=>{const v=fm.querySelector('.v');v.textContent=FM[(FM.indexOf(v.textContent)+1)%3];fm.classList.remove('pop');void fm.offsetWidth;fm.classList.add('pop')};
- const kI=op.querySelector('.keyI');kI.oninput=()=>{const st=kI.nextElementSibling;st.innerHTML=kI.value.trim()?'<i></i>···'+kI.value.trim().slice(-4):'<i class="cool"></i>待填'};
+ NWC={f:'OpenAI',r:2};ddw(NWC);
+ const kI=op.querySelector('.keyI');kI.oninput=()=>{const st=kI.nextElementSibling;st.innerHTML=kI.value.trim()?'<i></i>已填':'<i class="cool"></i>待填'};
  op.querySelector('.hang').onclick=hang;op.querySelectorAll('input').forEach(x=>x.addEventListener('input',()=>x.classList.remove('miss')));
  void op.offsetWidth;setTimeout(()=>{op.classList.add('on');snap();fitH();setTimeout(()=>op.querySelector('.nmI').focus({preventScroll:true}),RM?0:1300)},RM?0:120);
  const tr=$('#track');tr.scrollTo({left:0,behavior:'smooth'})}
 function hang(){const nI=op.querySelector('.nmI'),hI=op.querySelector('.hostI'),kI=op.querySelector('.keyI');let bad=0;
  [nI,hI].forEach(x=>{if(!x.value.trim()){bad=1;x.classList.remove('miss');void x.offsetWidth;x.classList.add('miss')}});if(bad)return;
- const k=kI.value.trim();const nc={n:nI.value.trim(),h:hI.value.trim(),f:op.querySelector('.fm .v').textContent,r:2,k:k?[[k.slice(-4),'','正常']]:[],m:[0]};let at=CH.findIndex(c=>c.off);if(at<0)at=CH.length;CH.splice(at,0,nc);
+ const k=kI.value.trim();const nc={n:nI.value.trim(),h:hI.value.trim(),f:NWC.f,r:NWC.r,k:k?[[k.slice(-4),'','正常']]:[],m:[0]};let at=CH.findIndex(c=>c.off);if(at<0)at=CH.length;CH.splice(at,0,nc);
  op.querySelector('.rc').classList.add('up');
  setTimeout(()=>{cur=-1;op.classList.remove('on');op.innerHTML='';build();const t=$$('.tk')[at];t.classList.add('fresh');$('#idle').classList.remove('hide');fitH();
   const tr=$('#track');tr.scrollTo({left:X0+at*STEP-150,behavior:'smooth'})},RM?0:650)}
@@ -288,4 +296,4 @@ fitH();
  tr.addEventListener('scroll',()=>{const t=performance.now(),v=(tr.scrollLeft-lx)/Math.max(8,t-lt);lx=tr.scrollLeft;lt=t;
   $$('.tk').forEach((k,i)=>{if(k.classList.contains('out'))return;k.classList.add('drag');const a=Math.max(-7,Math.min(7,-v*4.2*(.75+((i*37)%10)/22)));k.style.rotate=a.toFixed(2)+'deg'});
   clearTimeout(tm);tm=setTimeout(()=>$$('.tk').forEach((k,i)=>{k.classList.remove('drag');setTimeout(()=>k.style.rotate='0deg',(i*53)%90)}),70)},{passive:true})})();
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=43"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=44"></script></body></html>
