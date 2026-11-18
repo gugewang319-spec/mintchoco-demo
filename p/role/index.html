@@ -196,7 +196,8 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .tag .tx u{display:inline-block;margin-top:5px;font:12.5px/1 ZK;color:#2f6e58;text-decoration:none;border-bottom:1.2px dashed #2f6e58;padding-bottom:2px}
 
 /* 小票页：吸管从左上角伸进来，穿着小票 */
-.rc{position:absolute;inset:0;z-index:8;pointer-events:none;overflow:hidden}
+.rc{position:absolute;inset:0;z-index:8;pointer-events:none;overflow:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.rc.on{overflow-y:auto}.rc::-webkit-scrollbar{display:none}.rc .veil{position:fixed}
 .rc.on{pointer-events:auto}
 .rc .veil{position:absolute;inset:0;z-index:0;background:rgba(232,244,238,0);transition:background .4s}
 .rc.on .veil{background:rgba(232,244,238,.55);backdrop-filter:blur(3px)}
@@ -206,16 +207,18 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .rc .st .rt{position:absolute;inset:0;transition:transform .6s cubic-bezier(.3,1.15,.5,1)}
 .rc .st img{height:100%;width:100%;display:block}
 .rc .st.bk{z-index:1}
-.rc .hang{position:absolute;z-index:2;width:274px;transform-origin:50% 0;transform:translateY(-110%);transition:transform .5s .2s cubic-bezier(.3,1.1,.5,1)}
+.rc .st::after{content:'';position:absolute;inset:-16px}.rc.on #rin{cursor:pointer}
+.rc .hang{position:absolute;z-index:2;width:274px;padding-bottom:140px;transform-origin:50% 0;transform:translateY(calc(-100% - 160px));visibility:hidden;transition:transform .5s .2s cubic-bezier(.3,1.1,.5,1),visibility 0s .7s}
+.rc.on .hang{visibility:visible;transition:transform .5s .2s cubic-bezier(.3,1.1,.5,1),visibility 0s 0s}
 .rc.on .hang{transform:translateY(0);animation:thunk .5s .78s ease-out both}
 .rc .st.fr{display:none}
 .rc.on .st.bk .rt{animation:snap .55s .4s cubic-bezier(.2,1.4,.4,1) both}
 @keyframes snap{0%{translate:-90px -120px;opacity:0}30%{opacity:1}100%{translate:0 0;opacity:1}}
 @keyframes thunk{0%{translate:0 0}30%{translate:3px 4px}60%{translate:-1px -1px}100%{translate:0 0}}
-.rc.off .hang{transition-delay:0s;transform:translateY(-120%)}
+.rc.off .hang{transition:transform .45s cubic-bezier(.5,0,.8,.3),visibility 0s .45s;transform:translateY(calc(-100% - 160px))}
 @keyframes swing{0%{rotate:7deg}22%{rotate:-5deg}44%{rotate:3deg}66%{rotate:-1.5deg}85%{rotate:.6deg}100%{rotate:0deg}}
 /* 真实热敏小票：锯齿边、打孔、灰黑印字 */
-.pp2{position:relative;margin-top:-32px;padding:56px 26px 74px;border-style:solid;border-image:url(receipt3.png) 70 22 104 22 fill / 59px 19px 88px 19px stretch;color:#4a4440;font:13.5px/1.55 WK;max-height:min(690px,calc(100dvh - 174px - env(safe-area-inset-bottom,0px)));overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none;filter:drop-shadow(0 6px 10px rgba(80,50,35,.12))}
+.pp2{position:relative;margin-top:-32px;padding:56px 26px 74px;border-style:solid;border-image:url(receipt3.png) 70 22 104 22 fill / 59px 19px 88px 19px stretch;color:#4a4440;font:13.5px/1.55 WK;filter:drop-shadow(0 6px 10px rgba(80,50,35,.12))}
 .pp2 h3{margin:0;font:400 20px/1.2 ZK;letter-spacing:.18em;text-align:center;color:#2f2b29}
 .pp2 .sub{display:block;text-align:center;margin-top:3px;font:11.5px/1.4 WK;color:#6b6560;letter-spacing:.08em}
 .pp2 .cut{margin:9px 0;border-top:1.3px dashed #8d8680}
@@ -392,7 +395,7 @@ const sp=()=>({x:0,v:0});const D={e:$('.drink'),s:sp()};
 const floats=[...$$('.stw')].map(e=>({e,per:2.6+Math.random()*2.2,ph:Math.random()*6.28,a:1.6,s:sp()}));
 let open=-1;
 const SW=v=>`<i class="ck${v?' on':''}" role="checkbox" aria-checked="${!!v}"></i>`;
-function tag(i){if(i<0||open===i){if(open<0)return;RC.classList.add('off');RC.classList.remove('on');const k=open;open=-1;setTimeout(()=>{$$('.sx')[k].classList.remove('gone');RC.classList.remove('off');D.s.v+=30},700);return}
+function tag(i){if(i<0||open===i){if(open<0)return;RC.classList.add('off');RC.classList.remove('on');const k=open;open=-1;setTimeout(()=>{$$('.sx')[k].classList.remove('gone');RC.classList.remove('off');RC.scrollTop=0;D.s.v+=30},700);return}
  const e=EN[i];open=i;const sx=$$('.sx')[i];
  sx.animate([{translate:'0 0'},{translate:'0 -70px',opacity:1},{translate:'-40px -160px',opacity:0}],{duration:220,easing:'cubic-bezier(.23,1,.32,1)'});setTimeout(()=>sx.classList.add('gone'),400);
  const ar=$('#app').getBoundingClientRect();const hx=ar.width/2,hy=96;
@@ -411,7 +414,7 @@ function tag(i){if(i<0||open===i){if(open<0)return;RC.classList.add('off');RC.cl
  $$('#rin .ck').forEach(s=>{const row=s.closest('.row');(row.classList.contains('m')?row:s).addEventListener('click',()=>{const o=s.classList.toggle('on');s.setAttribute('aria-checked',o);if(row.classList.contains('m')){row.classList.toggle('on',o);$('#rin .tot b').textContent=$$('#rin .row.m.on').length+' 个模型'}})});
  $('#rin .bye').addEventListener('click',()=>tag(-1));
  RC.classList.remove('on');void RC.offsetWidth;setTimeout(()=>RC.classList.add('on'),260)}
-RC.querySelector('.veil').addEventListener('click',()=>tag(-1));RC.querySelectorAll('.st').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();tag(-1)}));
+RC.querySelector('.veil').addEventListener('click',()=>tag(-1));$('#rin').addEventListener('click',ev=>{if(ev.target.closest('.ck,.row.m,button'))return;tag(-1)});RC.querySelectorAll('.st').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();tag(-1)}));
 {const hg=RC.querySelector('.hang');RC.querySelectorAll('.st').forEach(st=>{let y0=null,dy=0;st.style.touchAction='none';
  st.addEventListener('pointerdown',e=>{if(open<0)return;y0=e.clientY;dy=0;hg.style.transition='';st.setPointerCapture(e.pointerId)});
  st.addEventListener('pointermove',e=>{if(y0==null)return;dy=Math.max(0,e.clientY-y0);hg.style.translate=`0 ${dy*.85}px`});
@@ -512,4 +515,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=27"></script></body></html>
+</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=28"></script></body></html>
