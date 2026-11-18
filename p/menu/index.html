@@ -1,0 +1,97 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>模型 · 菜单样张</title>
+<style>
+@font-face{font-family:ZK;src:url(zk.ttf)}@font-face{font-family:WK;src:url(wk.ttf)}@font-face{font-family:Script;src:url(script.ttf)}
+:root{--ink:#5e4c43;--ink2:#8a7a70;--ol:#6b4a3b;--mint:#2f6e58;--mintl:#9fd3bf}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;color:var(--ink)}
+img{display:block;user-select:none;-webkit-user-drag:none}
+svg{display:block;overflow:visible}
+.vp{position:fixed;inset:0;background:#e4f3ed url(bg-b.jpg) center top/cover no-repeat}
+.app{position:absolute;inset:0;margin:0 auto;width:min(100%,412px);overflow-y:auto;overflow-x:hidden;scrollbar-width:none;overflow-anchor:none;font-family:WK,serif}
+.app::-webkit-scrollbar{display:none}
+.in{position:relative;padding:0 0 60px}
+.drip{position:absolute;left:-5%;top:-38px;width:110%;max-width:none;pointer-events:none}
+.hd{position:relative;padding:104px 22px 0 26px;min-height:262px}
+.hd h1{font:400 50px/1 ZK,WK;color:#5b3a2c;letter-spacing:2px}
+.hd p{margin-top:12px;font:16px/1.4 WK;color:var(--ink2)}
+.hd p b{font-weight:400;color:var(--ink)}
+.cake{position:absolute;right:6px;top:100px;width:138px}
+.drink{position:absolute;right:18px;bottom:-6px;width:70px;transform:rotate(4deg)}
+.cookie{position:absolute;right:18px;top:208px;width:92px}
+.sheets{position:relative;margin-top:-6px}
+.sh{position:relative;margin:0 16px 22px;padding:22px 22px 18px}
+.sh>svg.fr{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.sh h2{position:relative;display:inline-block;font:400 25px/1.1 ZK,WK;color:#5b3a2c;padding-bottom:6px}
+.sh h2 svg{position:absolute;left:-2px;right:-6px;bottom:0;height:6px;width:calc(100% + 8px)}
+.sh h2 small{font:13px WK;color:var(--ink2);margin-left:8px;letter-spacing:0}
+.rows{margin-top:10px}
+.r{position:relative;display:flex;align-items:baseline;gap:6px;padding:9px 2px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.r .n{font:16px/1.3 WK;color:var(--ink);white-space:nowrap}
+.r .t{font:12px WK;color:var(--mint);white-space:nowrap}
+.r .ld{flex:1;min-width:14px;border-bottom:1.5px dotted rgba(107,74,59,.38);transform:translateY(-4px)}
+.r .w{font:15px WK;color:var(--ink);white-space:nowrap}
+.r .det{display:none}
+.r.op{flex-wrap:wrap}
+.r.op .det{display:block;flex-basis:100%;font:13px/1.6 WK;color:var(--ink2);padding:2px 0 2px 2px}
+.cloud{position:relative;isolation:isolate;display:inline-block;margin-left:2px;padding:1px 10px 2px;font:12px WK;color:var(--ink);white-space:nowrap}
+.cloud svg{position:absolute;z-index:-1;inset:-3px -4px;width:calc(100% + 8px);height:calc(100% + 6px)}
+.chain .r .i{font:15px WK;color:var(--ink2);width:22px}
+.foot{position:relative;height:118px;margin-top:6px}.ft{position:absolute;left:26px;bottom:30px;font:min(28px,6vw) Script;white-space:nowrap;color:#6b4a3b}
+</style></head><body>
+<div class="vp"><div class="app" id="app"><div class="in">
+<img class="drip" src="drip.png" alt="">
+<header class="hd">
+ <h1>模型</h1>
+ <p><b>3</b> 个中转站 × <b>6</b> 款</p>
+ <img class="cake" src="cake.png" alt="">
+ <img class="cookie" src="cookie.png" alt="">
+</header>
+<div class="sheets">
+ <section class="sh"><h2>小鲸鱼中转<small>2 款</small></h2><div class="rows">
+  <div class="r"><span class="n">gpt-4o</span><span class="cloud">先用</span><span class="t">看图</span><span class="ld"></span><span class="w">128K</span><span class="det">没回应就按备用链换下一个。</span></div>
+  <div class="r"><span class="n">gpt-4.1-mini</span><span class="ld"></span><span class="w">1M</span><span class="det">长文用它，便宜。</span></div>
+ </div></section>
+ <section class="sh"><h2>Anthropic 官方<small>2 款</small></h2><div class="rows">
+  <div class="r"><span class="n">claude-sonnet-4</span><span class="t">看图</span><span class="ld"></span><span class="w">200K</span><span class="det">备用链第二个。</span></div>
+  <div class="r"><span class="n">claude-haiku-4</span><span class="ld"></span><span class="w">200K</span><span class="det">快，适合小事。</span></div>
+ </div></section>
+ <section class="sh"><h2>夜猫小站<small>2 款</small></h2><div class="rows">
+  <div class="r"><span class="n">deepseek-v3</span><span class="t">流式</span><span class="ld"></span><span class="w">64K</span><span class="det">备用链第三个。</span></div>
+  <div class="r"><span class="n">qwen-max</span><span class="ld"></span><span class="w">32K</span><span class="det">晚上便宜一点。</span></div>
+ </div></section>
+ <section class="sh chain"><h2>备用链</h2><div class="rows">
+  <div class="r"><span class="i">①</span><span class="n">gpt-4o</span><span class="ld"></span><span class="w">小鲸鱼</span></div>
+  <div class="r"><span class="i">②</span><span class="n">claude-sonnet-4</span><span class="ld"></span><span class="w">官方</span></div>
+  <div class="r"><span class="i">③</span><span class="n">deepseek-v3</span><span class="ld"></span><span class="w">夜猫</span></div>
+ </div></section>
+</div>
+<div class="foot"><p class="ft">Mint Chocolate Models</p><img class="drink" src="drink.png" alt=""></div>
+</div></div></div>
+<script>
+// seeded wobble
+function rng(s){return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}}
+function wob(w,h,r,amp,seed){const R=rng(seed),pts=[],n=Math.max(8,Math.round((w+h)/38));
+ const side=(x0,y0,x1,y1,k)=>{for(let i=0;i<k;i++){const t=i/k;pts.push([x0+(x1-x0)*t+(R()-.5)*amp,y0+(y1-y0)*t+(R()-.5)*amp])}};
+ const kw=Math.max(3,Math.round(w/60)),kh=Math.max(2,Math.round(h/60));
+ side(r,0,w-r,0,kw);pts.push([w-r*.3,r*.3]);side(w,r,w,h-r,kh);pts.push([w-r*.3,h-r*.3]);side(w-r,h,r,h,kw);pts.push([r*.3,h-r*.3]);side(0,h-r,0,r,kh);pts.push([r*.3,r*.3]);
+ // catmull-rom closed
+ let d='';const P=i=>pts[(i+pts.length)%pts.length];
+ for(let i=0;i<pts.length;i++){const p0=P(i-1),p1=P(i),p2=P(i+1),p3=P(i+2);if(!i)d+=`M${p1[0].toFixed(1)} ${p1[1].toFixed(1)}`;
+  d+=`C${(p1[0]+(p2[0]-p0[0])/6).toFixed(1)} ${(p1[1]+(p2[1]-p0[1])/6).toFixed(1)} ${(p2[0]-(p3[0]-p1[0])/6).toFixed(1)} ${(p2[1]-(p3[1]-p1[1])/6).toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`}
+ return d+'Z'}
+function frame(sh,i){let s=sh.querySelector('svg.fr');if(!s){s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('class','fr');sh.prepend(s)}
+ const w=sh.offsetWidth,h=sh.offsetHeight;s.setAttribute('viewBox',`0 0 ${w} ${h}`);
+ s.innerHTML=`<path d="${wob(w,h,22,5,11+i*7)}" transform="translate(5 6)" fill="none" stroke="#8fcab3" stroke-width="1.8" stroke-linejoin="round"/>
+ <path d="${wob(w,h,22,5,31+i*13)}" fill="rgba(255,253,247,.5)" stroke="#6b4a3b" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>`}
+function under(h,i){const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 100 6');s.setAttribute('preserveAspectRatio','none');
+ const R=rng(5+i);s.innerHTML=`<path d="M1 ${3+R()} Q30 ${2+R()*2} 55 ${3+R()} T99 ${2.5+R()}" fill="none" stroke="#8fcab3" stroke-width="2.4" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;h.appendChild(s)}
+function cloud(c,i){const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 60 24');s.setAttribute('preserveAspectRatio','none');
+ s.innerHTML='<path d="M8 19Q2 18 3 12.5Q4 7 9.5 8Q11 3 17 3.5Q22 1 27 4Q32 1.5 37 4.5Q43 2 47 6.5Q55 5.5 56 11.5Q59 17 52 19.5Q47 22.5 41 20.5Q35 23 29 20.8Q22 23 17 20.5Q12 22 8 19Z" fill="rgba(220,239,229,.7)" stroke="#6b4a3b" stroke-width="1.3" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>';c.prepend(s)}
+const shs=[...document.querySelectorAll('.sh')];
+document.querySelectorAll('.sh h2').forEach(under);document.querySelectorAll('.cloud').forEach(cloud);
+const draw=()=>shs.forEach(frame);draw();addEventListener('resize',draw);
+document.fonts&&document.fonts.ready.then(draw);
+// tap a row: expand in place, keep the page still
+document.querySelectorAll('.sh:not(.chain) .r').forEach(r=>r.onclick=()=>{const app=document.getElementById('app'),y=app.scrollTop;r.classList.toggle('op');frame(r.closest('.sh'),shs.indexOf(r.closest('.sh')));app.scrollTop=y});
+</script>
+</body></html>
