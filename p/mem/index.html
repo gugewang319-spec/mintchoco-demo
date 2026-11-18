@@ -332,7 +332,7 @@ $$('.mi.long').forEach(e=>e.addEventListener('click',()=>{const o=e.classList.to
 /* 右侧小滑轨：棕线包着薄荷小圆，一颗记忆一个点，当前那颗变大 */
 const RL=document.createElement('div');RL.className='mrail';RL.setAttribute('aria-hidden','true');$('#app').appendChild(RL);
 function mrail(){const sc=$('.scroller'),its=$$('.mems .mi').filter(e=>!e.hidden);
- RL.innerHTML='<i class="ln"></i>'+its.map((e,i)=>`<b data-i="${i}"></b>`).join('');RL._its=its;mpos()}
+ RL.innerHTML=its.map((e,i)=>`<b data-i="${i}"></b>`).join('');RL._its=its;mpos()}
 function mpos(){const sc=$('.scroller'),its=RL._its||[];if(!its.length)return;const r0=sc.getBoundingClientRect(),mid=r0.top+r0.height*.4;
  const fr=its[0].getBoundingClientRect(),la=its[its.length-1].getBoundingClientRect();
  RL.classList.toggle('on',fr.top<r0.bottom-120&&la.bottom>r0.top+80);
