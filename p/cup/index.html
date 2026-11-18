@@ -89,7 +89,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
 .tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
 .tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
 @media (prefers-reduced-motion:reduce){.dk .tb.on .ic svg{animation:none}}
-.rb .rbb{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 1px var(--ol)}.rb .rbb.m{background:radial-gradient(circle at 36% 30%,#f4fffa,#c4e8da 70%)}.rb .rbb.c{background:radial-gradient(circle at 36% 30%,#8a5c46,#5b3a2c 70%)}
+.rb .rbb{position:absolute;inset:0;border-radius:50%;box-shadow:none}.rb .rbb.m{background:#c4e8da}.rb .rbb.c{background:#5b3a2c}
 
 /* 展开：饮品卡（液面会动） */
 .dk2{position:relative;overflow:hidden;isolation:isolate;padding-bottom:30px!important}
@@ -123,12 +123,28 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
 .hd,.cup{position:relative;z-index:1}
 /* 量杯周围：杯口插一根威化，挂一片薄荷叶，杯脚落着巧克力 */
 .gn{position:absolute;z-index:4;filter:drop-shadow(0 2px 2px rgba(74,48,39,.25))}
-.gn.wf{width:74px;right:62px;top:-14px;transform:rotate(-66deg)}
-.gn.lf{width:28px;right:-2px;top:-14px;transform:rotate(28deg)}
-.gn.cv{width:30px;right:14px;top:-20px;transform:rotate(-12deg)}
+.gn.wf{width:70px;right:14px;top:-20px;transform:rotate(-66deg)}
+.gn.lf{width:26px;right:-8px;top:2px;transform:rotate(38deg)}
+.gn.cv{width:28px;right:64px;top:-16px;transform:rotate(-12deg)}
 .gn.ch{width:24px;right:-8px;bottom:-12px;transform:rotate(-8deg)}
 .gn.ch2{width:22px;right:18px;bottom:-14px;transform:rotate(14deg)}
 @media (prefers-reduced-motion:reduce){.bgd img{animation:none}}
+
+/* 杯身印花：杯口品牌字、杯底店章，像印在玻璃上的油墨 */
+.ly.foam{padding-top:52px}
+.prt{position:absolute;left:0;right:0;top:20px;z-index:3;text-align:center;color:rgba(91,58,44,.5);pointer-events:none;line-height:1}
+.prt b{display:block;font:700 22px/1 Sofia,cursive;-webkit-text-stroke:.3px currentColor}
+.prt small{display:block;margin-top:4px;font:600 8px/1 DMS,serif;letter-spacing:.32em}
+.prt::before,.prt::after{content:"";position:absolute;top:10px;width:22%;height:1px;background:currentColor;opacity:.6}
+.prt::before{left:9%}.prt::after{right:9%}
+.ly.tea{padding-bottom:104px}
+.seal{position:absolute;left:50%;bottom:16px;width:80px;height:80px;margin-left:-40px;color:rgba(255,250,240,.85);pointer-events:none;z-index:2;animation:sl 40s linear infinite}
+.seal svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.seal b{position:absolute;left:0;right:0;top:27px;text-align:center;font:700 19px/1 Sofia,cursive}
+.seal small{position:absolute;left:0;right:0;top:49px;text-align:center;font:600 8px/1 DMS,serif;letter-spacing:.2em;animation:sl 40s linear infinite reverse}
+.seal b{animation:sl 40s linear infinite reverse}
+@keyframes sl{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.seal,.seal b,.seal small{animation:none}}
 </style></head><body>
 <div class="vp"><div class="app" id="app"><div class="in">
 <img class="drip" src="drizzle.png" alt="">
@@ -136,7 +152,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
  <div class="hb"><button class="rb" aria-label="搜索"><i class="rbb m"></i><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4.5 4.5"/></svg></button><button class="rb" aria-label="新聊天"><i class="rbb c"></i><svg viewBox="0 0 24 24" fill="none" stroke="#fffaf0" stroke-width="2.4" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></button></div></header>
 
 <div class="bgd" aria-hidden="true"><img src="bit4.png" alt="" style="width:46px;left:40%;top:12%;--r:-12deg;opacity:.7;animation-delay:-0.0s"><img src="bit1.png" alt="" style="width:44px;left:56%;top:27%;--r:22deg;opacity:.6;animation-delay:-2.1s"><img src="bit6.png" alt="" style="width:42px;left:34%;top:42%;--r:8deg;opacity:.6;animation-delay:-4.2s"><img src="bit2.png" alt="" style="width:46px;left:60%;top:58%;--r:-20deg;opacity:.65;animation-delay:-6.3s"><img src="bit1.png" alt="" style="width:40px;left:40%;top:68%;--r:-34deg;opacity:.6;animation-delay:-8.4s"><img src="bit4.png" alt="" style="width:40px;left:66%;top:74%;--r:10deg;opacity:.65;animation-delay:-10.5s"><img src="bit1.png" alt="" style="width:38px;left:4%;top:3%;--r:-18deg;opacity:.7;animation-delay:-0.0s"><img src="bit4.png" alt="" style="width:30px;left:88%;top:14%;--r:12deg;opacity:.65;animation-delay:-1.3s"><img src="bit6.png" alt="" style="width:34px;left:30%;top:22%;--r:-10deg;opacity:.55;animation-delay:-2.6s"><img src="bit2.png" alt="" style="width:40px;left:70%;top:34%;--r:20deg;opacity:.6;animation-delay:-3.9s"><img src="bit1.png" alt="" style="width:30px;left:-2%;top:46%;--r:30deg;opacity:.7;animation-delay:-5.2s"><img src="bit3.png" alt="" style="width:26px;left:52%;top:52%;--r:0deg;opacity:.55;animation-delay:-6.5s"><img src="bit4.png" alt="" style="width:34px;left:88%;top:62%;--r:-14deg;opacity:.65;animation-delay:-7.8s"><img src="bit2.png" alt="" style="width:36px;left:18%;top:71%;--r:-8deg;opacity:.6;animation-delay:-9.1s"><img src="bit6.png" alt="" style="width:28px;left:62%;top:80%;--r:16deg;opacity:.55;animation-delay:-10.4s"><img src="bit1.png" alt="" style="width:34px;left:90%;top:86%;--r:-30deg;opacity:.65;animation-delay:-11.7s"><img src="bit3.png" alt="" style="width:22px;left:2%;top:90%;--r:10deg;opacity:.65;animation-delay:-13.0s"></div>
-<div class="cup" id="cup"><i class="gl"></i><img class="gn wf" src="wafer.png" alt=""><img class="gn lf" src="bit1.png" alt=""><img class="gn cv" src="bit2.png" alt=""><img class="gn ch" src="bit4.png" alt=""><img class="gn ch2" src="bit6.png" alt="">
+<div class="cup" id="cup"><i class="gl"></i><div class="prt" aria-hidden="true"><b>Mint &amp; Choco</b><small>TEA ATELIER · EST. 2025</small></div><img class="gn wf" src="wafer.png" alt=""><img class="gn lf" src="bit1.png" alt=""><img class="gn cv" src="bit2.png" alt=""><img class="gn ch" src="bit4.png" alt=""><img class="gn ch2" src="bit6.png" alt="">
  <section class="ly foam"><span class="tk"><i></i><b>今<br>天<small>01</small></b></span>
   <div class="lh"><span>奶盖层<s>today</s></span><em>6 轮</em></div>
   <button class="it dk2 foamd" id="today"><i class="lq"></i><i class="bub" style="left:62%;--d:3.8s"></i><i class="bub" style="left:76%;--d:4.6s;animation-delay:1.5s"></i><i class="bub" style="left:88%;--d:3.3s;animation-delay:.7s"></i><span class="k">11/11 周三 · 19:42<em>NEW</em></span><p>下班啦，好冷，想喝一杯热可可</p></button>
@@ -150,7 +166,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
   <div class="lh"><span>杯底珍珠<s>earlier</s></span><em>4 周</em></div>
   <div class="pls" id="pls"></div>
   <div class="ex" id="pex"><div><div class="bx dk2 tead"><i class="lq"></i><i class="pr" style="right:40px"></i><i class="pr" style="right:26px;bottom:7px"></i><i class="pr" style="right:12px"></i><span class="k"><b id="pd"></b><span id="pn"></span></span><p id="pt"></p><a href="#" onclick="return false">看这一周 ›</a></div></div></div>
- </section>
+ <div class="seal" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><path id="sr" d="M50 50 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0"/></defs><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="50" cy="50" r="29" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="1 2.4"/><text font-size="8.6" letter-spacing="2.2" fill="currentColor"><textPath href="#sr">MINT CHOCO · TEA ATELIER · HAND SHAKEN ·</textPath></text></svg><b>M&amp;C</b><small>No.10</small></div></section>
 </div>
 </div></div></div>
 <div class="navfade" aria-hidden="true"></div>
