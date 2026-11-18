@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>聊天 · 量杯样张</title>
 <style>
-@font-face{font-family:ZK;src:url(zk.ttf)}@font-face{font-family:WK;src:url(wk.ttf)}@font-face{font-family:Script;src:url(script.ttf)}@font-face{font-family:BalooX;src:url(baloo800.ttf)}
+@font-face{font-family:ZK;src:url(zk.ttf)}@font-face{font-family:WK;src:url(wk.ttf)}@font-face{font-family:Script;src:url(script.ttf)}@font-face{font-family:Sofia;src:url(sofia.ttf)}@font-face{font-family:BalooX;src:url(baloo800.ttf)}
 :root{--ink:#5e4c43;--ink2:#8a7a70;--choc:#5b3a2c;--ol:#6b4a3b;--cocoa:#8a5c46;--mint:#2f6e58;--mintl:#9fd3bf;--cream:#fffaf0}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;color:var(--ink)}
@@ -11,56 +11,56 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
 .app::-webkit-scrollbar{display:none}
 .in{position:relative;padding:0 0 130px}
 .drip{width:100%}
-.hd{position:relative;display:flex;align-items:flex-end;justify-content:space-between;margin:-8px 18px 20px 24px}
-.ttl{position:relative}
-.ttl h1{font:400 50px/1 ZK;color:var(--choc);letter-spacing:3px;text-shadow:2px 0 var(--cream),-2px 0 var(--cream),0 2px var(--cream),0 -2px var(--cream),5px 5px 0 var(--mintl)}
-.ttl .en{position:absolute;left:96px;top:28px;font:30px/1 Script;color:#5fa98d;transform:rotate(-8deg);text-shadow:1.5px 0 var(--cream),-1.5px 0 var(--cream),0 1.5px var(--cream),0 -1.5px var(--cream),2px 2px 0 var(--ol)}
+.hd{position:relative;display:flex;align-items:flex-end;justify-content:space-between;margin:-4px 18px 26px 22px}
+.ttl{position:relative;min-width:0}
+.ttl h1{display:flex;align-items:baseline;gap:10px;white-space:nowrap;font:400 33px/1 Sofia;color:var(--choc);text-shadow:2px 2px 0 var(--mintl)}.ttl h1 small{flex:none;font:400 18px/1 ZK;letter-spacing:4px;color:var(--choc);text-shadow:none}.ttl .sub{display:flex;align-items:center;gap:8px;margin-top:8px;font:11px/1 WK;color:var(--ink2);letter-spacing:.12em}.ttl .sub i{width:22px;border-top:1px solid var(--ol)}
+
 .hb{display:flex;gap:10px;padding-bottom:4px}
-.rb{position:relative;width:42px;height:42px;flex:none;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.rb{position:relative;width:36px;height:36px;flex:none;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
 .rb img{position:absolute;inset:0;width:100%;height:100%}
 .rb svg{position:absolute;left:25%;top:25%;width:50%;height:50%}
-.rb:active{transform:scale(.88) rotate(-12deg)}
+.rb:active{transform:scale(.92)}
 
 /* 量杯：杯身 + 左侧刻度，每一层一个刻度牌 */
-.cup{position:relative;margin:0 14px 0 46px;border:1px solid rgba(255,255,255,.95);border-top:0;border-radius:0 0 38px 38px;background:linear-gradient(160deg,rgba(255,255,255,.5),rgba(255,255,255,.22));-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 14px 30px -18px rgba(74,48,39,.5);overflow:visible}
-.cup::before{content:"";position:absolute;left:-7px;right:-7px;top:-6px;height:10px;border-radius:6px;background:rgba(255,255,255,.75);border:1px solid #fff;box-shadow:0 4px 10px -6px rgba(74,48,39,.4)}
-.cup .gl{position:absolute;left:12px;top:24px;bottom:40px;width:7px;border-radius:4px;background:rgba(255,255,255,.75);pointer-events:none;z-index:4}
+.cup{position:relative;margin:0 14px 0 46px;border:1px solid rgba(255,255,255,.95);border-top:0;border-radius:0 0 14px 14px;background:linear-gradient(160deg,rgba(255,255,255,.5),rgba(255,255,255,.22));-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 14px 30px -18px rgba(74,48,39,.5);overflow:visible}
+.cup::before{content:"";position:absolute;left:-5px;right:-5px;top:-4px;height:6px;border-radius:2px;background:rgba(255,255,255,.75);border:1px solid #fff;box-shadow:0 4px 10px -6px rgba(74,48,39,.4)}
+.cup .gl{position:absolute;left:10px;top:24px;bottom:30px;width:3px;border-radius:2px;background:rgba(255,255,255,.85);pointer-events:none;z-index:4}
 .ly{position:relative;padding:22px 16px 18px 22px}
 .ly+.ly{border-top:1px solid rgba(255,255,255,.9)}
 .ly.foam{background:linear-gradient(rgba(255,253,246,.7),rgba(251,243,228,.55));border-radius:0;padding-top:26px}
 .ly.milk{background:linear-gradient(rgba(214,240,229,.5),rgba(196,232,218,.6))}
-.ly.tea{background:linear-gradient(rgba(226,196,166,.4),rgba(205,168,134,.55));border-radius:0 0 36px 36px;padding-bottom:26px}
-.ly.milk::before,.ly.tea::before{content:"";position:absolute;left:0;right:0;top:-9px;height:9px;background:var(--wv) repeat-x 0 0/48px 9px}
+.ly.tea{background:linear-gradient(rgba(226,196,166,.4),rgba(205,168,134,.55));border-radius:0 0 13px 13px;padding-bottom:22px}
+
 .ly.milk{--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='9'%3E%3Cpath d='M0 9V5Q12 0 24 5T48 5V9Z' fill='%23e6f5ee' fill-opacity='.7'/%3E%3C/svg%3E")}
 .ly.tea{--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='9'%3E%3Cpath d='M0 9V5Q12 0 24 5T48 5V9Z' fill='%23efdcc8' fill-opacity='.7'/%3E%3C/svg%3E")}
 /* 刻度：伸出杯外的线 + 名牌 */
-.tk{position:absolute;left:-40px;top:-1px;width:50px;height:0;border-top:1.6px solid var(--ol)}
-.ly:first-child .tk{top:20px}
-.tk b{position:absolute;left:2px;top:5px;width:26px;padding:7px 0;display:block;text-align:center;font-size:14px;font-family:ZK;color:var(--cream);background:var(--choc);border-radius:6px 6px 8px 8px;box-shadow:0 0 0 1.5px var(--cream),0 0 0 2.8px var(--ol);line-height:1.15;padding:6px 0}
-.tk i{position:absolute;left:4px;top:-1px;width:6px;height:0;border-top:1.6px solid var(--ol)}
+.tk{position:absolute;left:-40px;top:-1px;width:48px;height:0;border-top:1px solid var(--ol)}
+.ly:first-child .tk{position:absolute;left:-40px;top:-1px;width:48px;height:0;border-top:1px solid var(--ol)}
+.tk b{position:absolute;left:0;top:6px;width:22px;text-align:center;font:400 13px/1.2 ZK;color:var(--choc);letter-spacing:0}.tk b small{display:block;margin-top:4px;font:400 9px/1 BalooX;color:var(--mint);letter-spacing:.08em}
+.tk i{display:none}.cup::after{content:"";position:absolute;left:-1px;top:8px;bottom:20px;width:8px;background:repeating-linear-gradient(180deg,rgba(107,74,59,.55) 0 1px,transparent 1px 22px);pointer-events:none;z-index:4}
 .ly .tick2{position:absolute;left:-52px;width:10px;border-top:1.4px solid var(--ol);opacity:.6}
-.lh{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
-.lh span{font:12px WK;color:var(--ink2)}
-.lh em{margin-left:auto;font:400 13px BalooX;font-style:normal;color:var(--mint)}
+.lh{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}.lh::after{content:"";order:2;flex:1;border-bottom:1px dotted rgba(107,74,59,.5);transform:translateY(-3px)}
+.lh span{order:1;font:400 14px ZK;color:var(--choc);letter-spacing:.06em}.lh span s{text-decoration:none;margin-left:6px;font:400 15px Sofia;color:var(--mint);letter-spacing:0}
+.lh em{order:3;font:400 13px BalooX;font-style:normal;color:var(--choc)}
 
 /* 一条聊天：名字时间 + 一句话，点开就地展开 */
-.it{position:relative;display:block;width:100%;padding:10px 12px 11px;border-radius:14px;background:var(--cream);box-shadow:0 0 0 1.5px var(--ol)}
+.it{position:relative;display:block;width:100%;padding:10px 12px 11px;border-radius:6px;background:rgba(255,250,240,.92);box-shadow:0 0 0 1px var(--ol)}
 .it .k{display:flex;justify-content:space-between;font:12px/1 ZK;color:var(--cocoa);letter-spacing:.1em}
-.it .k em{font:400 12px BalooX;font-style:normal;color:var(--mint);letter-spacing:0}
+.it .k em{font:400 10px BalooX;font-style:normal;color:var(--cream);background:var(--mint);padding:2px 5px 1px;border-radius:2px;letter-spacing:.1em}
 .it p{margin-top:6px;font:14.5px/1.45 WK;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .it .new{position:absolute;right:-4px;top:-4px;width:11px;height:11px;border-radius:50%;background:var(--choc);box-shadow:0 0 0 2px var(--cream)}
 .mm{position:absolute;bottom:-6px;width:14px;height:12px;border-radius:4px;background:#fffdf7;box-shadow:0 0 0 1.2px var(--ol)}
 .ex{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s}
 .ex>div{overflow:hidden;min-height:0}
 .ex.op{grid-template-rows:1fr}
-.ex .bx{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--cream);box-shadow:0 0 0 1.5px var(--ol)}
+.ex .bx{margin-top:10px;padding:10px 12px;border-radius:6px;background:rgba(255,250,240,.92);box-shadow:0 0 0 1px var(--ol)}
 .ex .bx .k{display:flex;justify-content:space-between;font:12px ZK;color:var(--cocoa)}
 .ex .bx p{margin-top:5px;font:14px/1.55 WK}
-.ex .bx a{display:inline-block;margin-top:6px;font:13px ZK;color:var(--mint);border-bottom:1.5px dashed var(--mintl);text-decoration:none}
+.ex .bx a{display:inline-block;margin-top:6px;font:12px ZK;letter-spacing:.08em;color:var(--mint);border-bottom:1px solid var(--mintl);text-decoration:none}
 
 /* 制冰格：一周七格，有聊天的格子里放一块冰 */
-.tray{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:6px;border-radius:14px;background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 #fff}
-.sl{position:relative;aspect-ratio:1/1.3;border-radius:9px;background:rgba(255,255,255,.35);box-shadow:inset 0 1px 3px rgba(74,48,39,.15);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3px}
+.tray{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:5px;border-radius:6px;background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 #fff}
+.sl{position:relative;aspect-ratio:1/1.3;border-radius:3px;background:rgba(255,255,255,.35);box-shadow:inset 0 1px 3px rgba(74,48,39,.15);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3px}
 .sl small{position:relative;z-index:2;font:10px/1 ZK;color:var(--ink2)}
 .sl.on small{color:var(--choc)}
 .ice{position:absolute;left:8%;top:6%;width:84%;height:auto;transition:transform .35s cubic-bezier(.3,1.6,.5,1);filter:drop-shadow(0 3px 3px rgba(74,48,39,.18))}
@@ -89,25 +89,25 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webki
 .tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
 .tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
 @media (prefers-reduced-motion:reduce){.dk .tb.on .ic svg{animation:none}}
-.rb .rbb{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 1.5px var(--ol),inset 0 0 0 3px #fffaf0,inset 0 0 0 4.2px var(--ol),inset 0 -3px 0 4.2px rgba(0,0,0,.08)}.rb .rbb.m{background:radial-gradient(circle at 36% 30%,#f4fffa,#c4e8da 70%)}.rb .rbb.c{background:radial-gradient(circle at 36% 30%,#8a5c46,#5b3a2c 70%)}
+.rb .rbb{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 1px var(--ol)}.rb .rbb.m{background:radial-gradient(circle at 36% 30%,#f4fffa,#c4e8da 70%)}.rb .rbb.c{background:radial-gradient(circle at 36% 30%,#8a5c46,#5b3a2c 70%)}
 </style></head><body>
 <div class="vp"><div class="app" id="app"><div class="in">
 <img class="drip" src="drizzle.png" alt="">
-<header class="hd"><div class="ttl"><h1>聊天</h1><span class="en">Chats</span></div>
+<header class="hd"><div class="ttl"><h1>Chat Menu<small>聊天</small></h1><div class="sub"><i></i>本店 · 共 10 杯 · since 10/08</div></div>
  <div class="hb"><button class="rb" aria-label="搜索"><i class="rbb m"></i><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4.5 4.5"/></svg></button><button class="rb" aria-label="新聊天"><i class="rbb c"></i><svg viewBox="0 0 24 24" fill="none" stroke="#fffaf0" stroke-width="2.4" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></button></div></header>
 
 <div class="cup" id="cup"><i class="gl"></i>
- <section class="ly foam"><span class="tk"><i></i><b>今<br>天</b></span>
-  <div class="lh"><span>奶盖层 · 11/11 周三</span><em>6 轮</em></div>
-  <button class="it" id="today"><span class="k">今天 19:42<em>NEW</em></span><p>下班啦，好冷，想喝一杯热可可</p><i class="new"></i><i class="mm" style="right:40px"></i><i class="mm" style="right:24px;transform:rotate(16deg)"></i></button>
+ <section class="ly foam"><span class="tk"><i></i><b>今<br>天<small>01</small></b></span>
+  <div class="lh"><span>奶盖层<s>today</s></span><em>6 轮</em></div>
+  <button class="it" id="today"><span class="k">11/11 周三 · 19:42<em>NEW</em></span><p>下班啦，好冷，想喝一杯热可可</p></button>
  </section>
- <section class="ly milk"><span class="tk"><i></i><b>本<br>周</b></span>
-  <div class="lh"><span>制冰格 · 11/4 – 11/10</span><em>5 天</em></div>
+ <section class="ly milk"><span class="tk"><i></i><b>本<br>周<small>02</small></b></span>
+  <div class="lh"><span>制冰格<s>this week</s></span><em>5 天</em></div>
   <div class="tray" id="tray"></div>
   <div class="ex" id="wex"><div><div class="bx"><span class="k"><b id="wd"></b><span id="wn"></span></span><p id="wt"></p><a href="#" onclick="return false">接着这天聊 ›</a></div></div></div>
  </section>
- <section class="ly tea"><span class="tk"><i></i><b>更<br>早</b></span>
-  <div class="lh"><span>沉到杯底的珍珠 · 一周一颗</span><em>4 周</em></div>
+ <section class="ly tea"><span class="tk"><i></i><b>更<br>早<small>03</small></b></span>
+  <div class="lh"><span>杯底珍珠<s>earlier</s></span><em>4 周</em></div>
   <div class="pls" id="pls"></div>
   <div class="ex" id="pex"><div><div class="bx"><span class="k"><b id="pd"></b><span id="pn"></span></span><p id="pt"></p><a href="#" onclick="return false">看这一周 ›</a></div></div></div>
  </section>
