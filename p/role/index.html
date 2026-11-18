@@ -157,7 +157,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 
 /* ===== 聊天列表 ===== */
 .lhead{position:sticky;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 10px;isolation:isolate}
-.lhead::before{content:"";position:absolute;left:0;right:0;top:0;bottom:-16px;z-index:-1;pointer-events:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(232,246,240,.9),rgba(232,246,240,.5) 75%,rgba(232,246,240,0));-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+.lhead::before{content:"";position:absolute;left:0;right:0;top:0;bottom:-16px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(232,246,240,.94),rgba(232,246,240,.5) 75%,rgba(232,246,240,0));-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
 .ttl{position:relative}
 .ttl h1{font:32px/1 ZK;color:var(--ch);letter-spacing:.06em;position:relative;z-index:1}
 .ttl .sc{position:absolute;left:52px;top:-14px;font:22px/1 Script;color:rgba(63,154,128,.55);transform:rotate(-8deg);white-space:nowrap}
@@ -280,7 +280,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .c4 li{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
 .c4 li img{width:26px;height:26px;object-fit:contain;flex:none;margin-top:2px}
 .c4 li .ed{flex:1;font:16px/1.75 WK;color:var(--ink)}
-.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
+.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
 .pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
 .pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
 .tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
@@ -303,11 +303,11 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .lyh{position:absolute;z-index:2;width:124px;height:60px;padding:0;border:0;background:none;border-radius:30px;cursor:pointer}
 .dia .sx,.dia .stw{z-index:4}
 /* 人设纸页 + 右侧索引签 */
-.sheet{position:relative;margin:-54px 30px 0 2px;min-height:calc(100vh - 345px);padding:82px 18px 16px 22px;border-radius:22px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
+.sheet{position:relative;margin:-54px 30px 0 2px;min-height:calc(100vh - 345px);padding:82px 18px 16px 22px;border-radius:22px;background:linear-gradient(170deg,rgba(253,252,248,.88),rgba(250,247,240,.8));border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
 .sheet .pp .kk{display:none}
 /* 索引便签也是毛玻璃，颜色淡淡透出来 */
-.sheet .tb{backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px) saturate(120%);border:1px solid rgba(255,255,255,.7);border-left:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
-.sheet .tb.m{background:rgba(201,235,220,.72)}.sheet .tb.c{background:rgba(252,246,236,.7)}.sheet .tb.k{background:rgba(169,133,114,.72)}
+.sheet .tb{border:1px solid rgba(255,255,255,.7);border-left:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.sheet .tb.m{background:linear-gradient(170deg,rgba(214,241,229,.92),rgba(196,232,216,.82))}.sheet .tb.c{background:linear-gradient(170deg,rgba(254,250,242,.92),rgba(248,240,226,.84))}.sheet .tb.k{background:linear-gradient(170deg,rgba(186,153,135,.85),rgba(166,128,108,.78))}
 .sheet .tb.on{box-shadow:inset 0 1px 0 rgba(255,255,255,.8),2px 3px 8px rgba(74,48,39,.14)}
 .sheet .pp .ed{font-size:17.5px;line-height:1.9}
 .sft small,.sft .savep{white-space:nowrap;flex-shrink:0}.sft .savep{margin-left:auto}
@@ -550,4 +550,4 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=33"></script></body></html>
+</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=34"></script></body></html>
