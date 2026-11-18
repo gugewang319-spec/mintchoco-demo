@@ -292,6 +292,14 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 /* 到底部：底栏同款毛玻璃小圆钮 */
 .tobot{position:fixed;z-index:39;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));width:42px;height:42px;margin-left:-21px;border-radius:50%;display:grid;place-items:center;background:rgba(252,250,244,.62);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 6px 16px rgba(74,48,39,.14);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .25s,transform .25s}
 .tobot.on{opacity:1;transform:none;pointer-events:auto}
+.tab .dot[hidden]{display:none}
+/* 翻页 */
+.pgr{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px auto 18px;width:max-content;padding:5px;border-radius:24px;background:rgba(252,250,244,.62);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 6px 16px rgba(74,48,39,.1)}
+.pgr[hidden]{display:none}
+.pgr button{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:22px/1 Baloo;color:#5b3a2c;background:#c9ebdc}
+.pgr button:disabled{background:transparent;opacity:.3}
+.pgr span{font:600 14px/1 Baloo;color:#8a6a5a;min-width:54px;text-align:center}
+.pgr b{font:700 17px/1 Baloo;color:var(--ch)}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
  <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
@@ -326,6 +334,8 @@ const MEMS=[
 ['事实','茶茶','窗台上的薄荷','宿舍窗台上养了一盆薄荷，叶子长得很快。','10.12',1,0,0],
 ['经历','关系','万圣节的故事','给她讲了一个吓人的故事，她假装不怕，其实把被子拉到了下巴。','10.29',3,0,0]];
 let total=128;
+/* 演示数据：用 7 条样例按日子往前排满 128 颗（假数据） */
+{const S=MEMS.slice();for(let i=S.length;i<total;i++){const s=S[i%S.length],d=new Date(2026,10,8-Math.round(i*1.6));MEMS.push([s[0],s[1],s[2],s[3],String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0'),s[5],0,s[7]])}}
 const L=$('#list');
 let h=`<div class="hero"><div class="stat"><div class="big"><b id="cnt">${total}</b><span>颗记忆</span></div><div class="mix">经历<em>46</em><i></i>认识<em>82</em></div></div><button class="jar" aria-label="糖罐，共 ${total} 颗记忆"><img class="jbody" src="jar.png" alt=""><img class="jlid" src="jar.png" alt=""></button></div>`;
 const OK='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',NO='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a5c46" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
@@ -338,7 +348,7 @@ L.innerHTML=h;
 const CY={'茶茶':'cy-mint.png','叶铎':'cy-cream.png','关系':'cy-cocoa.png'};const RT=[-10,8,-6,12,-8,6,-12];
 MEMS.sort((a,b)=>b[4].localeCompare(a[4]));MEMS.forEach((m,i)=>{const e=document.createElement('article');e.className='mi'+(m[7]?' imp':'')+(m[3].length>34?' long':'');e.tabIndex=0;e.setAttribute('aria-expanded','false');
  const ttl=m[7]?`<i class="q l">「</i>${m[2]}<i class="q r">」</i>`:m[2];
- e.innerHTML=`<div class="mg"><b>${m[4]}</b><span>${m[0]}</span><img class="cy" src="${CY[m[1]]}" alt="" style="transform:rotate(${RT[i]}deg)"></div><div class="rd"><h3>${ttl}</h3><p>${m[3]}</p><div class="ft">证据 ${m[5]}<i>·</i>${m[1]}${m[6]?'<em class="rv">待复核</em>':''}</div></div>`;
+ e.innerHTML=`<div class="mg"><b>${m[4]}</b><span>${m[0]}</span><img class="cy" src="${CY[m[1]]}" alt="" style="transform:rotate(${RT[i%7]}deg)"></div><div class="rd"><h3>${ttl}</h3><p>${m[3]}</p><div class="ft">证据 ${m[5]}<i>·</i>${m[1]}${m[6]?'<em class="rv">待复核</em>':''}</div></div>`;
  const mo=+m[4].split('.')[0];if(mo!==MEMS._mo){MEMS._mo=mo;const d=document.createElement('div');d.className='mon';d.dataset.m=mo;d.innerHTML=`<b>${mo}</b><span>月</span><i></i>`;$('.mems').appendChild(d)}
  e.dataset.t=m[0];e.dataset.m=mo;e.dataset.k=m[4].split('.').map(x=>x.padStart(2,'0')).join('.');$('.mems').appendChild(e)});
 /* 按类型 + 按月份筛：只亮字，原地换，不滚动 */
@@ -356,14 +366,20 @@ MEMS.sort((a,b)=>b[4].localeCompare(a[4]));MEMS.forEach((m,i)=>{const e=document
  C.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b||b.disabled)return;const pi=mons.indexOf(cmo);
   if(b.classList.contains('pv')){cmo=mons[pi+1];drawCal();return}if(b.classList.contains('nx')){cmo=mons[pi-1];drawCal();return}
   const key=`${String(cmo).padStart(2,'0')}.${String(b.dataset.d).padStart(2,'0')}`;
-  if(ft!=='全部'){ft='全部';$$('button',F).forEach((x,i)=>x.classList.toggle('on',i===0));apply()}
-  const e=$$('.mems .mi').find(x=>x.dataset.k===key);if(!e)return;C.hidden=true;CB.classList.remove('on');CB.setAttribute('aria-expanded','false');
+  if(ft!=='全部'){ft='全部';$$('button',F).forEach((x,i)=>x.classList.toggle('on',i===0))}
+  const e=$$('.mems .mi').find(x=>x.dataset.k===key);if(!e)return;window._goMem(e);C.hidden=true;CB.classList.remove('on');CB.setAttribute('aria-expanded','false');
   const sc=$('.scroller');requestAnimationFrame(()=>{sc.scrollTo({top:sc.scrollTop+e.getBoundingClientRect().top-sc.getBoundingClientRect().top-120,behavior:'smooth'});e.classList.remove('hit');void e.offsetWidth;e.classList.add('hit')})});
- function apply(){const ap=$('.scroller'),y=ap.scrollTop;
-  $$('.mems .mi').forEach(e=>e.hidden=!((ft==='全部'||e.dataset.t===ft)));
-  $$('.mems .mon').forEach(d=>d.hidden=!$$(`.mems .mi[data-m="${d.dataset.m}"]`).some(e=>!e.hidden));
-  requestAnimationFrame(()=>{ap.scrollTop=y;mrail()})}
- F.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;$$('button',F).forEach(x=>x.classList.toggle('on',x===b));ft=b.dataset.t;apply()});
+ /* 分页：一页 8 颗，底下「‹ 1/16 ›」 */
+ const PER=8;let pg=0;const PG=document.createElement('div');PG.className='pgr';$('.mems').after(PG);
+ function apply(keep,top){const ap=$('.scroller'),y=ap.scrollTop,its=$$('.mems .mi').filter(e=>ft==='全部'||e.dataset.t===ft),n=Math.max(1,Math.ceil(its.length/PER));pg=Math.min(pg,n-1);
+  $$('.mems .mi').forEach(e=>e.hidden=true);its.slice(pg*PER,pg*PER+PER).forEach(e=>e.hidden=false);
+  $$('.mems .mon').forEach(d=>d.hidden=true);
+  {let last=null;$$('.mems > *').forEach(x=>{if(x.classList.contains('mon'))last=x;else if(!x.hidden&&last){last.hidden=false;last=null}})}
+  PG.innerHTML=`<button class="pv" ${pg?'':'disabled'} aria-label="上一页">‹</button><span><b>${pg+1}</b> / ${n}</span><button class="nx" ${pg<n-1?'':'disabled'} aria-label="下一页">›</button>`;PG.hidden=n<2;
+  requestAnimationFrame(()=>{if(top){const s=$('.sec',L)||$('.flt');ap.scrollTo({top:ap.scrollTop+$('.flt').getBoundingClientRect().top-ap.getBoundingClientRect().top-90})}else ap.scrollTop=y;mrail()})}
+ PG.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b||b.disabled)return;pg+=b.classList.contains('nx')?1:-1;apply(0,1)});
+ window._goMem=e=>{const its=$$('.mems .mi').filter(x=>ft==='全部'||x.dataset.t===ft);pg=Math.floor(its.indexOf(e)/PER);apply()};
+ F.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;$$('button',F).forEach(x=>x.classList.toggle('on',x===b));ft=b.dataset.t;pg=0;apply()});apply();
 }
 $$('.mi.long').forEach(e=>e.addEventListener('click',()=>{const o=e.classList.toggle('open');e.setAttribute('aria-expanded',o)}));
 
@@ -400,7 +416,7 @@ $('.acts .ok').addEventListener('click',()=>{const c=cur();if(!c)return;const r=
  setTimeout(()=>{const f=document.createElement('img');f.src='cy-mint.png';f.className='fly';document.body.appendChild(f);const x0=r.left+r.width/2,y0=r.top+r.height/2,x1=jr.left+jr.width*.5,y1=jr.top+jr.height*.25;const t0=performance.now();const LID=J.e.querySelector('.jlid'),RMx=matchMedia('(prefers-reduced-motion: reduce)').matches;if(LID&&!RMx)LID.animate([{transform:'none'},{transform:'translateY(-9%) rotate(-12deg)'}],{duration:220,delay:300,easing:'cubic-bezier(.23,1,.32,1)',fill:'forwards'});
   (function go(n){const k=Math.min(1,(n-t0)/650),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const x=x0+(x1-x0)*e,y=y0+(y1-y0)*e-Math.sin(k*Math.PI)*110;f.style.left=x-32+'px';f.style.top=y-15+'px';f.style.transform=`rotate(${k*360}deg) scale(${1-k*.45})`;if(k<1)requestAnimationFrame(go);else{f.remove();if(LID&&!RMx){LID.getAnimations().forEach(q=>q.cancel());LID.animate([{transform:'translateY(-9%) rotate(-12deg)'},{transform:'none'}],{duration:160,easing:'cubic-bezier(.23,1,.32,1)'})}setTimeout(shake,120);total++;$('#cnt').textContent=total}})(t0);c.classList.add('gone');bump()},330)});
 $('.acts .no').addEventListener('click',()=>{const c=cur();if(!c)return;c.classList.add('melt');setTimeout(()=>{c.classList.add('gone');bump()},900)});
-function bump(){const live=$$('.cand:not(.gone):not(.melt):not(.pack)');$('#cc').textContent=live.length;const ds=$$('.dots i');ds.forEach((d,i)=>{d.style.display=i<live.length?'':'none';d.classList.toggle('on',i===0)});wave(ds.filter(d=>d.style.display!=='none'),0,9,3.5)}
+function bump(){const live=$$('.cand:not(.gone):not(.melt):not(.pack)');$('#cc').textContent=live.length;{const d=$('.tab.on .dot');if(d){d.hidden=!live.length;d.closest('.tab').setAttribute('aria-label',live.length?`记忆，包装台还有 ${live.length} 条待处理`:'记忆')}}const ds=$$('.dots i');ds.forEach((d,i)=>{d.style.display=i<live.length?'':'none';d.classList.toggle('on',i===0)});wave(ds.filter(d=>d.style.display!=='none'),0,9,3.5)}
 (function loop(n){const s=n/1000,on=!matchMedia('(prefers-reduced-motion: reduce)').matches;for(const q of floats){q.s.v+=(-140*q.s.x-7*q.s.v)/60;q.s.x+=q.s.v/60;const y=on?Math.sin(s*6.283/q.per+q.ph)*q.a:0,r=(q.rot||0)+(on?Math.sin(s*6.283/(q.per*1.4)+q.ph)*q.ra:0);if(!q.e.classList.contains('melt')&&!q.e.classList.contains('pack'))q.e.style.transform=`translateY(${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${(1-q.s.x*.03).toFixed(3)},${(1+q.s.x*.03).toFixed(3)})`}
  J.s.v+=(-90*J.s.x-6*J.s.v)/60;J.s.x+=J.s.v/60;const jr=(on?Math.sin(s*6.283/6.5)*1.2:0)+J.s.x*.12;J.e.style.transform=`rotate(${jr.toFixed(2)}deg)`;requestAnimationFrame(loop)})(0);
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
