@@ -1,0 +1,162 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>模型 · 极繁样张</title>
+<style>
+@font-face{font-family:ZK;src:url(zk.ttf)}@font-face{font-family:WK;src:url(wk.ttf)}@font-face{font-family:Script;src:url(script.ttf)}@font-face{font-family:BalooX;src:url(baloo800.ttf)}
+:root{--ink:#5e4c43;--ink2:#8a7a70;--choc:#5b3a2c;--ol:#6b4a3b;--mint:#2f6e58;--mintl:#9fd3bf;--cream:#fffaf0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;color:var(--ink)}
+img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.vp{position:fixed;inset:0;background-color:#e4f3ed;background-image:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+.app{position:absolute;inset:0;margin:0 auto;width:min(100%,412px);overflow-y:auto;overflow-x:hidden;scrollbar-width:none;overflow-anchor:none;font-family:WK,serif;-webkit-tap-highlight-color:transparent}
+.app::-webkit-scrollbar{display:none}
+.in{position:relative;padding-bottom:20px;overflow:hidden}
+.abs{position:absolute}
+
+/* ---------- 封面 ---------- */
+.drip{position:absolute;left:0;top:0;width:100%;z-index:5}
+.cover{position:relative;height:350px}
+.issue{position:absolute;left:14px;top:62px;writing-mode:vertical-rl;font:12px/1 WK;letter-spacing:5px;color:var(--ol);padding:8px 3px;border-left:1px solid rgba(107,74,59,.5);border-right:1px solid rgba(107,74,59,.5)}
+.issue b{font-weight:400;color:var(--mint)}
+.ttl{position:absolute;left:44px;top:84px;z-index:3}
+.ttl h1{font:400 82px/1 ZK;color:var(--choc);letter-spacing:4px;
+ text-shadow:2.5px 0 var(--cream),-2.5px 0 var(--cream),0 2.5px var(--cream),0 -2.5px var(--cream),2px 2px var(--cream),-2px -2px var(--cream),2px -2px var(--cream),-2px 2px var(--cream),6px 7px 0 var(--mintl)}
+.ttl .en{position:absolute;left:96px;top:62px;font:44px/1 Script;color:#5fa98d;transform:rotate(-9deg);white-space:nowrap;
+ text-shadow:1.5px 0 var(--cream),-1.5px 0 var(--cream),0 1.5px var(--cream),0 -1.5px var(--cream),2px 3px 0 var(--ol)}
+.ttl .star{position:absolute;left:-6px;top:-10px;font:18px ZK;color:var(--mint)}
+.stand{position:absolute;right:-14px;top:58px;width:min(172px,43vw);z-index:2}
+.cone{position:absolute;right:146px;top:30px;width:52px;transform:rotate(-14deg);z-index:1}
+.meta{position:absolute;left:44px;top:212px;display:flex;align-items:center;gap:12px;z-index:3}
+.no{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;text-align:center;font:10px/1.1 WK;color:var(--ol);
+ background:radial-gradient(circle at 38% 32%,#fffdf6,#f3ead6 70%);box-shadow:inset 1.5px 1.5px 0 #fff,inset -2px -2px 3px rgba(107,74,59,.18),0 0 0 1.5px var(--ol),0 0 0 4px var(--cream),0 0 0 5.5px var(--mintl)}
+.no b{display:block;font:400 20px/1 BalooX;color:var(--choc)}
+.fig{display:flex;align-items:baseline;gap:4px;padding:0 10px;border-left:1px solid rgba(107,74,59,.45)}
+.fig b{font:400 34px/1 BalooX,ZK;color:var(--choc)}
+.fig span{font:13px ZK;color:var(--ink2)}
+.curls{position:absolute;left:24px;top:270px;width:230px;z-index:1;transform:rotate(-3deg)}
+
+/* ---------- 视觉小说对话框 ---------- */
+.vn{position:relative;margin:0 18px 34px;padding:26px 18px 16px;background:var(--cream);border:2px solid var(--ol);border-radius:16px;
+ box-shadow:inset 0 0 0 4px var(--cream),inset 0 0 0 5.5px var(--mintl)}
+.vn .np{position:absolute;left:14px;top:-19px;width:128px;height:36px;display:grid;place-items:center}
+.vn .np img{position:absolute;inset:0;width:100%;height:100%}
+.vn .np span{position:relative;font:15px ZK;color:var(--cream);letter-spacing:2px}
+.vn p{font:15px/1.7 WK;color:var(--ink);min-height:51px}
+.vn p em{font-style:normal;color:var(--mint)}
+.vn .nx{position:absolute;right:16px;bottom:10px;width:0;height:0;border:6px solid transparent;border-top:8px solid var(--ol);border-bottom:0;animation:bob 1s ease-in-out infinite}
+.vn .leaf{position:absolute;right:-14px;top:-22px;width:52px;transform:rotate(14deg)}
+@keyframes bob{50%{transform:translateY(3px)}}
+
+/* ---------- 中转站 ---------- */
+.ch{position:relative;margin-bottom:26px}
+.ph{position:relative;width:300px;height:84px;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transform:rotate(var(--r,-1.5deg));transform-origin:50% 0}
+.ph>img{position:absolute;inset:0;width:100%;height:100%}
+.ph h2{position:relative;font:400 23px/1 ZK;color:var(--cream);letter-spacing:1px}
+.ph small{position:relative;font:12px ZK;color:#d8efe5}
+.ph .idx{position:absolute;left:-22px;top:22px;font:400 30px/1 BalooX;color:var(--mintl);text-shadow:1.5px 0 var(--ol),-1.5px 0 var(--ol),0 1.5px var(--ol),0 -1.5px var(--ol)}
+.ph.sw{animation:swing .7s ease-out}
+@keyframes swing{20%{transform:rotate(4deg)}45%{transform:rotate(-5deg)}70%{transform:rotate(2deg)}100%{transform:rotate(var(--r,-1.5deg))}}
+.row{position:relative;display:flex;align-items:center;margin:0 10px;cursor:pointer}
+.row.rv{flex-direction:row-reverse}
+.wr{position:relative;flex:0 0 230px;height:104px;transform:rotate(var(--t,-2deg));transition:transform .25s}
+.row.rv .wr{--t:2.5deg}
+.row:active .wr{transform:rotate(var(--t,-2deg)) scale(.96)}
+.wr>img{position:absolute;inset:0;width:100%;height:100%}
+.wr .lb{position:absolute;left:24%;right:24%;top:24%;bottom:22%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.wr .n{font:14px/1.15 WK;color:var(--choc);white-space:nowrap}
+.wr .t{margin-top:3px;font:11px ZK;color:var(--mint);letter-spacing:1px}
+.num{flex:1;text-align:center}
+.num b{display:block;font:400 30px/1 BalooX;color:var(--choc);letter-spacing:.5px}
+.num i{display:block;margin-top:3px;font:11px/1 WK;font-style:normal;color:var(--ink2);letter-spacing:3px}
+.mac{position:absolute;z-index:8;width:50px;transition:left .45s cubic-bezier(.3,1.4,.5,1),top .45s cubic-bezier(.3,1.4,.5,1)}
+.mac.hop{animation:hop .45s}
+@keyframes hop{40%{transform:translateY(-16px) rotate(-12deg)}}
+.dc{position:absolute;z-index:0}
+
+/* ---------- 备用链 ---------- */
+.chain{position:relative;margin:8px 0 0;height:236px}
+.chain .ph{--r:1.2deg}
+.rope{position:absolute;left:0;top:96px;width:100%;height:60px}
+.cd{position:absolute;top:0;width:112px;text-align:center;cursor:pointer;transition:left .45s cubic-bezier(.3,1.3,.5,1)}
+.cd img{width:112px;margin:0 auto}
+.cd .o{display:block;margin-top:4px;font:400 18px/1 BalooX;color:var(--choc)}
+.cd .m{display:block;margin-top:3px;font:12px WK;color:var(--ink);white-space:nowrap}
+.cd .s{display:block;font:10px ZK;color:var(--mint);letter-spacing:1px}
+
+.foot{position:relative;height:150px}
+.ft{position:absolute;left:24px;bottom:42px;font:min(30px,7vw) Script;white-space:nowrap;color:var(--ol);transform:rotate(-4deg)}
+.drink{position:absolute;right:16px;bottom:8px;width:76px;transform:rotate(5deg)}
+.cookie{position:absolute;right:86px;bottom:2px;width:70px;transform:rotate(-8deg)}
+</style></head><body>
+<div class="vp"><div class="app" id="app"><div class="in" id="in">
+<img class="drip" src="drizzle.png" alt="">
+
+<header class="cover">
+ <p class="issue">薄荷巧克力<b>·</b>本日供应</p>
+ <img class="cone" src="m_cone.png" alt="">
+ <img class="stand" src="m_stand.png" alt="">
+ <div class="ttl"><span class="star">✦</span><h1>模型</h1><span class="en">Models</span></div>
+ <img class="curls" src="m_curls.png" alt="">
+ <div class="meta">
+  <div class="no"><span><b>03</b>本期</span></div>
+  <div class="fig"><b>3</b><span>中转站</span></div>
+  <div class="fig"><b>6</b><span>款</span></div>
+ </div>
+</header>
+
+<section class="vn" aria-live="polite">
+ <div class="np"><img src="m_plaque.png" alt=""><span>薄荷店长</span></div>
+ <img class="leaf" src="k_mint.png" alt="">
+ <p id="say">今天先用 <em>gpt-4o</em>，没回应就按备用链换下一个。点哪颗糖，就换哪个先用。</p>
+ <i class="nx"></i>
+</section>
+
+<section class="ch" id="c1">
+ <img class="dc" src="k_bean.png" alt="" style="right:20px;top:-6px;width:34px;transform:rotate(20deg)">
+ <div class="ph" style="--r:-1.5deg"><img src="m_plaque.png" alt=""><span class="idx">01</span><h2>小鲸鱼中转</h2><small>2 款</small></div>
+ <div class="row" data-m="gpt-4o"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">gpt-4o</span><span class="t">看图</span></div></div><div class="num"><b>128K</b><i>上下文</i></div></div>
+ <div class="row rv" data-m="gpt-4.1-mini"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">gpt-4.1-mini</span><span class="t">长文</span></div></div><div class="num"><b>1M</b><i>上下文</i></div></div>
+</section>
+
+<section class="ch" id="c2">
+ <img class="dc" src="m_cone.png" alt="" style="left:-18px;top:96px;width:46px;transform:rotate(18deg)">
+ <div class="ph" style="--r:1.5deg"><img src="m_plaque.png" alt=""><span class="idx">02</span><h2>Anthropic 官方</h2><small>2 款</small></div>
+ <div class="row rv" data-m="claude-sonnet-4"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">claude-sonnet-4</span><span class="t">看图</span></div></div><div class="num"><b>200K</b><i>上下文</i></div></div>
+ <div class="row" data-m="claude-haiku-4"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">claude-haiku-4</span><span class="t">快</span></div></div><div class="num"><b>200K</b><i>上下文</i></div></div>
+</section>
+
+<section class="ch" id="c3">
+ <img class="dc" src="m_curls.png" alt="" style="right:-40px;top:200px;width:160px;transform:rotate(-12deg)">
+ <div class="ph" style="--r:-1deg"><img src="m_plaque.png" alt=""><span class="idx">03</span><h2>夜猫小站</h2><small>2 款</small></div>
+ <div class="row" data-m="deepseek-v3"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">deepseek-v3</span><span class="t">流式</span></div></div><div class="num"><b>64K</b><i>上下文</i></div></div>
+ <div class="row rv" data-m="qwen-max"><div class="wr"><img src="wrapper.png" alt=""><div class="lb"><span class="n">qwen-max</span><span class="t">夜里便宜</span></div></div><div class="num"><b>32K</b><i>上下文</i></div></div>
+</section>
+
+<section class="ch chain" id="chain">
+ <div class="ph"><img src="m_plaque.png" alt=""><span class="idx">04</span><h2>备用链</h2></div>
+ <svg class="rope" viewBox="0 0 412 60" preserveAspectRatio="none"><path d="M-4 14 Q103 52 206 22 T416 18" fill="none" stroke="#6b4a3b" stroke-width="1.6" stroke-linecap="round"/><path d="M-4 18 Q103 56 206 26 T416 22" fill="none" stroke="#9fd3bf" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round"/></svg>
+</section>
+
+<div class="foot"><p class="ft">Mint Chocolate Models</p><img class="cookie" src="cookie.png" alt=""><img class="drink" src="drink.png" alt=""></div>
+<img class="mac" id="mac" src="m_macaron.png" alt="先用">
+</div></div></div>
+<script>
+const app=document.getElementById('app'),inn=document.getElementById('in'),mac=document.getElementById('mac'),say=document.getElementById('say');
+let cur='gpt-4o',typing;
+function talk(html){clearInterval(typing);const tmp=document.createElement('div');tmp.innerHTML=html;const full=tmp.textContent;let i=0;say.textContent='';
+ typing=setInterval(()=>{i++;if(i>=full.length){clearInterval(typing);say.innerHTML=html;return}say.textContent=full.slice(0,i)},28)}
+function place(hop){const r=document.querySelector(`.row[data-m="${cur}"]`);if(!r)return;const w=r.querySelector('.wr'),b=inn.getBoundingClientRect(),q=w.getBoundingClientRect();
+ const rv=r.classList.contains('rv');mac.style.left=(rv?q.left-b.left-8:q.right-b.left-46)+'px';mac.style.top=(q.top-b.top-14)+'px';
+ if(hop){mac.classList.remove('hop');void mac.offsetWidth;mac.classList.add('hop')}}
+document.querySelectorAll('.row').forEach(r=>r.onclick=()=>{const y=app.scrollTop;if(r.dataset.m===cur){talk(`<em>${cur}</em> 已经在用啦。`);return}
+ cur=r.dataset.m;place(true);talk(`好，换成 <em>${cur}</em> 先用。`);app.scrollTop=y});
+document.querySelectorAll('.ch:not(.chain) .ph').forEach(p=>p.onclick=()=>{p.classList.remove('sw');void p.offsetWidth;p.classList.add('sw')});
+// 备用链：点一颗糖，往前挪一位
+const chain=document.getElementById('chain');let order=[['gpt-4o','小鲸鱼'],['claude-sonnet-4','官方'],['deepseek-v3','夜猫']];const ORD='①②③';
+const cds=order.map(([m,s])=>{const d=document.createElement('div');d.className='cd';d.dataset.m=m;d.innerHTML=`<img src="candy.png" alt=""><span class="o"></span><span class="m">${m}</span><span class="s">${s}</span>`;chain.appendChild(d);return d});
+const tilt=[-6,4,-3],tops=[98,112,96];
+function lay(){const W=inn.offsetWidth,gap=(W-3*112)/4;order.forEach(([m],k)=>{const d=cds.find(c=>c.dataset.m===m);d.style.left=(gap+k*(112+gap))+'px';d.style.top=tops[k]+'px';d.querySelector('img').style.transform=`rotate(${tilt[k]}deg)`;d.querySelector('.o').textContent=ORD[k]})}
+cds.forEach(d=>d.onclick=()=>{const k=order.findIndex(o=>o[0]===d.dataset.m);if(k===0){talk(`<em>${d.dataset.m}</em> 已经排第一啦。`);return}
+ [order[k-1],order[k]]=[order[k],order[k-1]];lay();talk(`<em>${d.dataset.m}</em> 往前挪到第 ${k} 个。`)});
+const all=()=>{lay();place(false)};all();addEventListener('resize',all);document.fonts&&document.fonts.ready.then(all);
+window.addEventListener('load',all);
+</script>
+</body></html>
