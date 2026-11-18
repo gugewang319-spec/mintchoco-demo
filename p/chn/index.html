@@ -81,6 +81,25 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .pk.on{max-height:110px;padding:2px 0 8px}
 .pk button{min-height:32px;padding:0 12px;border-radius:16px;font:600 12.5px/1 Baloo,ZK;color:#6f5446;border:1.1px solid rgba(138,92,70,.35);background:rgba(252,250,244,.5)}
 .pk button.on{background:#a6d9c4;border-color:#3f9a80;color:#2f4a3e}
+.tst{font:12.5px/1.2 WK;color:var(--cocoa);border-bottom:1.1px dashed var(--cocoa);padding-bottom:1px;margin-left:10px}
+.more .ln{gap:6px}.more .ln .mn{flex:1}
+.tmask{position:fixed;inset:0;z-index:60;background:rgba(74,48,39,.18);opacity:0;pointer-events:none;transition:opacity .3s}
+.tmask.on{opacity:1;pointer-events:auto}
+.taste{position:fixed;left:0;right:0;margin:0 auto;bottom:0;width:min(100%,412px);height:min(72vh,520px);z-index:61;display:flex;flex-direction:column;padding:18px 18px calc(16px + env(safe-area-inset-bottom,0px));border-radius:26px 26px 0 0;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.85);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 -10px 30px -16px rgba(74,48,39,.45);transform:translateY(105%);transition:transform .45s cubic-bezier(.3,1.15,.5,1)}
+.taste.on{transform:none}
+.taste .hd{display:flex;align-items:baseline;gap:8px}
+.taste .hd h3{font:22px/1 ZK;color:var(--ch);font-weight:400}
+.taste .hd .md{flex:1;font:600 12.5px/1.3 Baloo,ZK;color:#8a6a5a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.taste .hd button{font:13px/1.2 WK;color:var(--cocoa);border-bottom:1.1px dashed var(--cocoa);min-height:32px}
+.taste .log{flex:1;overflow-y:auto;margin:12px -4px 10px;padding:4px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none}
+.taste .b{max-width:82%;padding:9px 13px;font:14px/1.6 WK;color:var(--ink);border-radius:16px}
+.taste .u{align-self:flex-end;background:#c4e8da;border-bottom-right-radius:5px}
+.taste .a{align-self:flex-start;background:#fffcf4;border:1.1px solid rgba(138,92,70,.3);border-bottom-left-radius:5px}
+.taste .a small{display:block;margin-top:4px;font:500 10.5px/1.2 Baloo,ZK;color:#9a7c6c}
+.taste .row{display:flex;gap:8px;align-items:center}
+.taste input{flex:1;min-width:0;min-height:44px;border-radius:22px;border:1.1px solid rgba(138,92,70,.35);background:rgba(255,252,244,.8);padding:0 16px;font:14px WK;color:var(--ch);outline:0}
+.taste .go{flex:none;white-space:nowrap;min-height:44px;padding:0 18px;border-radius:14px;background:#a6d9c4;color:#2f4a3e;font:15px/1 ZK;box-shadow:inset 0 -2px 0 rgba(47,110,88,.25)}
+.ep{display:block;margin-top:5px;font:500 11.5px/1.3 Baloo,ZK;color:#3f9a80;letter-spacing:.02em;word-break:break-all}
 .more{max-height:0;overflow:hidden;transition:max-height .7s steps(6,end)}
 .more .ln{font-size:12.5px}
 .more .ln .v{font-weight:500;font-size:12px}
@@ -202,6 +221,8 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 <button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
 </nav>
 </div></div>
+<div class="tmask" id="tmask"></div>
+<section class="taste" id="taste" aria-label="尝一口"><div class="hd"><h3>尝一口</h3><span class="md" id="tmd"></span><button id="tx">收起 ›</button></div><div class="log" id="tlog"></div><div class="row"><input id="tin2" placeholder="说点什么" aria-label="试一句"><button class="go" id="tgo">送出</button></div></section>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -237,8 +258,8 @@ CH.forEach((c,i)=>{const w=worst(c),t=document.createElement('button');t.classNa
  $('.counter').innerHTML=String(CH.length).split('').map(d=>`<span>${d}</span>`).join('')+'<b>条</b>';$('.top .k').innerHTML='<i></i>'+String(CH.length).split('').join(' ')+' 条'}
 let cur=-1;const op=$('#open');build();
 function rc(c,i){const ks=c.k.map(([s,cl,tx])=>`<div class="kw"><button class="ln keyl"><span class="k">···${s}</span><span class="st"><i class="${cl=='off'?'cool':cl}"></i>${tx}</span>${cl=='bad'?'<img class="ring" src="circle.png" alt="">':''}</button><div class="keyop"><span class="up">往前挪 ›</span><span class="del">删掉 ›</span></div></div>`).join('');
- const ms=c.m.map(j=>{const[a,b]=M[j].split(':');return`<div class="ln"><span>${a}</span><span class="v">${b}</span></div>`}).join('');
- return `<div class="shade"><div class="rc"><button class="lift">挂回去 ›</button><input class="nmI ed" maxlength="6" value="${c.n}" aria-label="渠道名字"><input class="hostI ed" value="${c.h}" aria-label="地址" inputmode="url" autocapitalize="off" spellcheck="false"><div class="cut"></div>
+ const ms=c.m.map(j=>{const[a,b]=M[j].split(':');return`<div class="ln"><span class="mn">${a}</span><span class="v">${b}</span><button class="tst" data-m="${a}">尝一口 ›</button></div>`}).join('');
+ return `<div class="shade"><div class="rc"><button class="lift">挂回去 ›</button><input class="nmI ed" maxlength="6" value="${c.n}" aria-label="渠道名字"><input class="hostI ed" value="${c.h}" aria-label="地址" inputmode="url" autocapitalize="off" spellcheck="false"><span class="ep">${EP[c.f]}</span><div class="cut"></div>
 <button class="ln dd" data-k="f"><span>格式</span><span class="lk"><span class="v">${c.f}</span> ›</span></button><div class="pk"></div><button class="ln dd" data-k="r"><span>失败重试</span><span class="lk"><span class="v">×${c.r}</span> ›</span></button><div class="pk"></div><div class="cut"></div>
 <div class="sec">密 钥<b class="kn">${c.k.length}</b></div>${ks}<label class="ln newk"><input class="keyI" placeholder="粘贴新密钥" aria-label="新密钥" autocomplete="off" spellcheck="false"><span class="st"><i class="cool"></i>待填</span></label><button class="lk addk">+ 加一把 ›</button><div class="cut"></div>
 <button class="ln mo"><span class="sec" style="margin:0">模 型<b style="margin-left:8px">${c.m.length}</b></span><span class="lk">打出来 ›</span></button><div class="more">${ms}</div><div class="cut"></div>
@@ -253,6 +274,7 @@ function wire(){
  $$('#open .addk').forEach(b=>b.onclick=()=>b.previousElementSibling.classList.toggle('on'));
  $$('#open .mo').forEach(b=>b.onclick=()=>{const m=b.nextElementSibling,o=m.style.maxHeight&&m.style.maxHeight!='0px';m.style.maxHeight=o?'0px':(m.scrollHeight+4)+'px';b.querySelector('.lk').textContent=o?'打出来 ›':'收起 ›';setTimeout(fitH,750)});
  $('#open .lift').onclick=()=>pick(cur);
+ $$('#open .tst').forEach(b=>b.onclick=()=>taste(b.dataset.m,CH[cur].n));
  const c=CH[cur],t=$$('.tk')[cur];
  op.querySelector('.nmI').oninput=e=>{const v=e.target.value.trim();if(!v)return;c.n=v;t.querySelector('.nm').textContent=v;t.querySelector('.rt b').textContent=v};
  op.querySelector('.hostI').oninput=e=>{c.h=e.target.value.trim()};
@@ -266,16 +288,17 @@ function pick(i){const tks=$$('.tk');$('.nt')&&$('.nt').classList.remove('lit');
  setTimeout(()=>{op.classList.add('on');snap();fitH()},RM?0:120);
  const tr=$('#track'),x=X0+i*STEP;if(x<tr.scrollLeft+10||x>tr.scrollLeft+tr.clientWidth-80)tr.scrollTo({left:x-60,behavior:'smooth'})}
 
+const EP={OpenAI:'/v1/chat/completions',Anthropic:'/v1/messages',Gemini:'/v1beta/models/{模型}:generateContent'};
 const FM=['OpenAI','Anthropic','Gemini'],RT=[1,2,3,4,5];let NWC;
 function ddw(c){op.querySelectorAll('.dd').forEach(b=>{const k=b.dataset.k,pk=b.nextElementSibling,opts=k=='f'?FM:RT;
  const paint=()=>{pk.innerHTML=opts.map(o=>`<button class="${o==c[k]?'on':''}">${k=='r'?'×'+o:o}</button>`).join('');
-  pk.querySelectorAll('button').forEach((x,j)=>x.onclick=()=>{c[k]=opts[j];b.querySelector('.v').textContent=k=='r'?'×'+opts[j]:opts[j];paint();pk.classList.remove('on');setTimeout(fitH,320)})};
+  pk.querySelectorAll('button').forEach((x,j)=>x.onclick=()=>{c[k]=opts[j];b.querySelector('.v').textContent=k=='r'?'×'+opts[j]:opts[j];if(k=='f'){const e=op.querySelector('.ep');if(e)e.textContent=EP[opts[j]]}paint();pk.classList.remove('on');setTimeout(fitH,320)})};
  paint();b.onclick=()=>{const o=!pk.classList.contains('on');op.querySelectorAll('.pk').forEach(x=>x.classList.remove('on'));if(o)pk.classList.add('on');setTimeout(fitH,320)}})}
 function newT(){if(cur===-2){cur=-1;$('.nt').classList.remove('lit');op.classList.remove('on');setTimeout(()=>{if(cur==-1){op.innerHTML='';fitH()}},RM?0:500);$('#idle').classList.remove('hide');return}
  if(cur>=0)$$('.tk')[cur].classList.remove('out');
  cur=-2;$('.nt').classList.add('lit');$('#idle').classList.add('hide');op.classList.remove('on');
  const no=String(CH.length+1).padStart(4,'0');
- op.innerHTML=`<div class="shade"><div class="rc nw"><button class="lift hang">挂上去 ›</button><input class="nmI" maxlength="6" placeholder="给它起个名字" aria-label="渠道名字"><input class="hostI" placeholder="api.example.com" aria-label="地址" inputmode="url" autocapitalize="off" spellcheck="false"><div class="cut"></div>
+ op.innerHTML=`<div class="shade"><div class="rc nw"><button class="lift hang">挂上去 ›</button><input class="nmI" maxlength="6" placeholder="给它起个名字" aria-label="渠道名字"><input class="hostI" placeholder="api.example.com" aria-label="地址" inputmode="url" autocapitalize="off" spellcheck="false"><span class="ep">${EP.OpenAI}</span><div class="cut"></div>
 <button class="ln dd" data-k="f"><span>格式</span><span class="lk"><span class="v">OpenAI</span> ›</span></button><div class="pk"></div><button class="ln dd" data-k="r"><span>失败重试</span><span class="lk"><span class="v">×2</span> ›</span></button><div class="pk"></div><div class="cut"></div>
 <div class="sec">密 钥<b>1</b></div><label class="ln"><input class="keyI" placeholder="粘贴第一把密钥" aria-label="密钥" autocomplete="off" spellcheck="false"><span class="st"><i class="cool"></i>待填</span></label><div class="cut"></div>
 <div class="foot">2026-11-12 ${new Date().toLocaleTimeString('zh-CN',{timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit',hour12:false})}<br>NO.${no} · 空白单</div><div class="bar"></div></div></div>`;
@@ -291,9 +314,19 @@ function hang(){const nI=op.querySelector('.nmI'),hI=op.querySelector('.hostI'),
  setTimeout(()=>{cur=-1;op.classList.remove('on');op.innerHTML='';build();const t=$$('.tk')[at];t.classList.add('fresh');$('#idle').classList.remove('hide');fitH();
   const tr=$('#track');tr.scrollTo({left:X0+at*STEP-150,behavior:'smooth'})},RM?0:650)}
 
+function taste(m,ch){$('#tmd').textContent=m+' @ '+ch;$('#tlog').innerHTML='';$('#tin2').value='';$('#taste').dataset.m=m;$('#taste').dataset.c=ch;$('#tmask').classList.add('on');$('#taste').classList.add('on')}
+function untaste(){$('#tmask').classList.remove('on');$('#taste').classList.remove('on')}
+$('#tmask').onclick=untaste;$('#tx').onclick=untaste;
+function tsend(){const i=$('#tin2'),v=i.value.trim()||'你好';i.value='';const L=$('#tlog'),T=$('#taste');
+ const u=document.createElement('div');u.className='b u';u.textContent=v;L.appendChild(u);
+ const a=document.createElement('div');a.className='b a';a.textContent='···';L.appendChild(a);L.scrollTop=L.scrollHeight;
+ const txt='你好，我是 '+T.dataset.m+'，在「'+T.dataset.c+'」这条渠道上回答你。';let k=0;const t0=performance.now();
+ setTimeout(()=>{const ft=((performance.now()-t0)/1000).toFixed(1);const tick=()=>{k++;a.textContent=txt.slice(0,k);L.scrollTop=L.scrollHeight;if(k<txt.length)setTimeout(tick,RM?0:38);else{const sm=document.createElement('small');sm.textContent='首字 '+ft+' 秒 · '+txt.length+' 字';a.appendChild(sm)}};tick()},RM?0:700)}
+$('#tgo').onclick=tsend;$('#tin2').onkeydown=e=>{if(e.key=='Enter')tsend()};
+
 fitH();
 (()=>{if(RM)return;const tr=$('#track');let lx=tr.scrollLeft,lt=performance.now(),tm;
  tr.addEventListener('scroll',()=>{const t=performance.now(),v=(tr.scrollLeft-lx)/Math.max(8,t-lt);lx=tr.scrollLeft;lt=t;
   $$('.tk').forEach((k,i)=>{if(k.classList.contains('out'))return;k.classList.add('drag');const a=Math.max(-7,Math.min(7,-v*4.2*(.75+((i*37)%10)/22)));k.style.rotate=a.toFixed(2)+'deg'});
   clearTimeout(tm);tm=setTimeout(()=>$$('.tk').forEach((k,i)=>{k.classList.remove('drag');setTimeout(()=>k.style.rotate='0deg',(i*53)%90)}),70)},{passive:true})})();
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=44"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=45"></script></body></html>
