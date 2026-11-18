@@ -161,7 +161,7 @@ const STS=[
 const sts=document.getElementById('sts');let curSt=0;
 document.getElementById('nst').textContent=STS.length;document.getElementById('nmd').textContent=STS.reduce((a,s)=>a+s.m.length,0);
 function renderSt(){sts.innerHTML=STS.map((s,i)=>`<div class="st${i===0?' op':''}" data-i="${i}"><div class="sp" style="--r:${i%2?1:-1}deg"><img src="m_plaque.png" alt=""><h2>${s.n}</h2><small>${s.m.length} 款</small><i class="ar"></i>${i===curSt?'<span class="use">在用</span>':''}</div>
- <div class="bd"><div><div class="ls">${s.m.map(([m,tg,k])=>`<div class="br" data-m="${m}" data-s="${i}"><img src="m_bar.png" alt=""><div class="tx"><span class="n">${m}</span>${tg?`<span class="tg">${tg}</span>`:''}<span class="k">${k}</span></div>${m===cur?'<img class="mc" src="m_macaron.png" alt="先用">':''}</div>`).join('')}</div></div></div></div>`).join('');}
+ <div class="bd"><div><div class="ls">${s.m.map(([m,tg,k])=>`<div class="br" data-m="${m}" data-s="${i}"><img src="m_barm.png" alt=""><div class="tx"><span class="n">${m}</span>${tg?`<span class="tg">${tg}</span>`:''}<span class="k">${k}</span></div>${m===cur?'<img class="mc" src="m_macaron.png" alt="先用">':''}</div>`).join('')}</div></div></div></div>`).join('');}
 renderSt();
 sts.addEventListener('click',ev=>{const y=app.scrollTop;const sp=ev.target.closest('.sp');
  if(sp){sp.parentNode.classList.toggle('op');requestAnimationFrame(()=>app.scrollTop=y);return}
