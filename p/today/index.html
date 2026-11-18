@@ -133,10 +133,10 @@ canvas#fx{position:absolute;left:0;top:0;width:412px;height:915px;z-index:9;poin
 
  <div class="abs drip"><img src="today-bg.png" alt=""></div>
 
- <div class="abs big" aria-label="11月11日 周三">
+ <div class="abs big" id="bigd" aria-label="11月11日 周三">
   <div class="gm">Good Morning ♡</div>
-  <div class="num">11.11</div>
-  <div class="sub">周三<b>NOV 2026</b></div>
+  <div class="num" id="dnum">11.11</div>
+  <div class="sub" id="dsub">周三<b>NOV 2026</b></div>
  </div>
 
  <div class="abs ribbon mv" id="ribbon"><img src="ribbon.png" alt=""></div>
@@ -307,4 +307,8 @@ function mv(b){pill.style.width=b.offsetWidth+'px';pill.style.transform=`transla
 tabs.forEach(b=>b.onclick=()=>mv(b));mv(tabs[0]);
 requestAnimationFrame(frame);
 </script>
-<script src="lq.js"></script><script>window.__DEMO_MAP=[["[data-k=chat]", "push:room", 1, 380], ["[data-k=cand]", "tab:mem", 1, 380]]</script><script src="../../bridge.js"></script><script>(function(){const v=document.querySelector('.vp'),t=document.querySelector('.topveil');const f=()=>{t.style.opacity=Math.min(1,v.scrollTop/80)};v.addEventListener('scroll',f,{passive:true});f()})()</script></body></html>
+<script src="lq.js"></script><script>window.__DEMO_MAP=[["[data-k=chat]", "push:room", 1, 380], ["[data-k=cand]", "tab:mem", 1, 380]]</script><script src="../../bridge.js"></script><script>(function(){const v=document.querySelector('.vp'),t=document.querySelector('.topveil');const f=()=>{t.style.opacity=Math.min(1,v.scrollTop/80)};v.addEventListener('scroll',f,{passive:true});f()})()</script><script>/* 日期跟着手机日历走；跨过零点也会换 */(()=>{const M=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'],W='日一二三四五六';
+const f=()=>{const d=new Date(),m=d.getMonth(),dd=d.getDate(),w=W[d.getDay()],p=n=>String(n).padStart(2,'0');
+document.getElementById('dnum').textContent=p(m+1)+'.'+p(dd);document.getElementById('dsub').innerHTML='周'+w+'<b>'+M[m]+' '+d.getFullYear()+'</b>';
+document.getElementById('bigd').setAttribute('aria-label',(m+1)+'月'+dd+'日 周'+w);
+const n=new Date(d);n.setHours(24,0,2,0);setTimeout(f,n-d)};f()})()</script></body></html>
