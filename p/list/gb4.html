@@ -11,6 +11,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .bg .tea{position:absolute;left:0;right:0;bottom:0;height:62%;background:linear-gradient(180deg,rgba(205,205,205,0) 0%,rgba(205,205,205,.75) 38%,#c4c4c4 70%,#b8b8b8 100%)}
 .bg .foam{position:absolute;left:0;right:0;top:0;height:22%;background:linear-gradient(180deg,rgba(250,250,250,.9),rgba(250,250,250,0))}
 .bg svg.pearls{position:absolute;left:0;bottom:0;width:100%;height:120px}
+.bg.sink::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(180deg,rgba(196,196,196,.85) 0%,rgba(190,190,190,.45) 55%,rgba(184,184,184,0) 100%)}
 .far{position:absolute;will-change:transform;opacity:.5}
 .far.lf{animation:drift var(--d) ease-in-out infinite;animation-delay:var(--dl)}
 .far.oil{width:var(--s);height:var(--s);border-radius:50%;box-shadow:inset 0 0 0 1.2px #a9a9a9;animation:bob var(--d) ease-in-out infinite;animation-delay:var(--dl)}
@@ -153,10 +154,14 @@ document.querySelectorAll('.day').forEach(el=>el.addEventListener('click',()=>{
  if(sel)(veinMap.get(sel)||[]).forEach(p=>p.setAttribute('opacity',0));
  sel=el;document.querySelectorAll('.day').forEach(o=>o.classList.toggle('dim',o!==el));flow(el)}));
 $('#cat').addEventListener('click',e=>{e.stopPropagation();$('#cat').animate([{transform:'scale(1)'},{transform:'scale(.97,.94)'},{transform:'scale(1)'}],{duration:260,easing:'cubic-bezier(.23,1,.32,1)'});setTimeout(()=>alert('进今天的聊天'),280)});
-/* 杯底珍珠：平涂，一圈细边，不做 3D */
-(function(){const sv=$('#pearls'),W=440,H=120;sv.setAttribute('viewBox',`0 0 ${W} ${H}`);let r=7,g='';
- for(let row=0;row<3;row++){for(let x=-6;x<W+10;x+=20+((x*7+row*13)%9)){const y=H-10-row*15-((x*3)%7),rr=8+((x+row*5)%5);g+=`<circle cx="${x}" cy="${y}" r="${rr}" fill="${row?'#8f8f8f':'#7d7d7d'}" stroke="#6b6b6b" stroke-width="1"/><circle cx="${x-rr*.35}" cy="${y-rr*.35}" r="${rr*.18}" fill="#bdbdbd"/>`}}
- sv.innerHTML=g})();
+/* 杯底珍珠：平涂，一圈细边，不做 3D。?p=a 满铺三排（原样）/ b 一排半埋进奶茶 / c 零散几颗沉底 */
+(function(){const v=new URLSearchParams(location.search).get('p')||'a',sv=$('#pearls'),W=440,H=120;sv.setAttribute('viewBox',`0 0 ${W} ${H}`);let g='';
+ const P=(x,y,rr,f,st)=>`<circle cx="${x}" cy="${y}" r="${rr}" fill="${f}" stroke="${st}" stroke-width="1"/><circle cx="${(x-rr*.35).toFixed(1)}" cy="${(y-rr*.35).toFixed(1)}" r="${(rr*.18).toFixed(1)}" fill="#c9c9c9"/>`;
+ if(v==='a'){for(let row=0;row<3;row++){for(let x=-6;x<W+10;x+=20+((x*7+row*13)%9)){const y=H-10-row*15-((x*3)%7),rr=8+((x+row*5)%5);g+=P(x,y,rr,row?'#8f8f8f':'#7d7d7d','#6b6b6b')}}}
+ else if(v==='b'){for(let x=-4;x<W+10;x+=19+((x*7)%8)){const y=H-6-((x*3)%6),rr=8+((x*5)%4);g+=P(x,y,rr,'#9c9c9c','#858585')}
+  for(let x=6;x<W;x+=46+((x*11)%17)){g+=P(x,H-22-((x*3)%5),7+((x*7)%3),'#a8a8a8','#929292')}}
+ else{[[34,H-10,10],[58,H-6,7],[120,H-12,9],[205,H-7,11],[232,H-16,7],[300,H-9,8],[372,H-11,10],[398,H-5,7]].forEach(([x,y,r])=>g+=P(x,y,r,'#9a9a9a','#848484'))}
+ sv.innerHTML=g;if(v!=='a')document.querySelector('.bg').classList.add('sink')})();
 /* 远处小料：几片小叶子、几颗油点，固定层里各自慢慢漂 */
 (function(){const f=$('#far'),leaf=s=>`<svg width="${s}" height="${s*1.5}" viewBox="0 0 20 30"><path d="M10 1C17 8 18 19 10 29 2 19 3 8 10 1Z" fill="rgba(255,255,255,.5)" stroke="#a6a6a6" stroke-width="1.3"/><path d="M10 4V27" stroke="#a6a6a6" stroke-width="1"/></svg>`;
  [[16,8,30,-20],[12,84,24,35],[18,78,52,-50],[11,12,62,15],[14,90,74,60]].forEach(([s,x,y,r],i)=>{const e=document.createElement('div');e.className='far lf';e.innerHTML=leaf(s);e.style.cssText=`left:${x}%;top:${y}%;--r:${r}deg;--d:${8+i*1.7}s;--dl:-${i*2.1}s`;f.appendChild(e)});
