@@ -20,10 +20,10 @@ transform:scale(.86);transition:transform .38s cubic-bezier(.3,1.5,.5,1)}
 .mc-dlg h4{font:21px/1.2 ZK,WK,sans-serif;font-weight:400;color:#5b3a2c;letter-spacing:.04em}
 .mc-dlg p{margin:10px 0 0;font:14px/1.7 WK,ZK,sans-serif;color:#6f5446}
 .mc-dlg p b{font-weight:400;color:#b8573c;background:linear-gradient(transparent 62%,rgba(194,102,74,.22) 62% 92%,transparent 92%)}
-.mc-dlg .ok{position:relative;display:grid;place-items:center;margin:18px auto 0;width:min(180px,64%);aspect-ratio:560/197;border:0;background:none;cursor:pointer;transition:scale .16s}
+/*V=53 弹窗主按钮：位图巧克力大牌换成代码画的细巧克力条（矮一半、两端各一道分格槽、可可描边）*/.mc-dlg .ok{position:relative;display:grid;place-items:center;margin:20px auto 0;width:min(168px,60%);height:44px;border:1.2px solid #8a5c46;border-radius:10px;cursor:pointer;transition:scale .16s;background:linear-gradient(90deg,transparent calc(17% - 1px),rgba(38,20,13,.4) calc(17% - 1px) 17%,rgba(255,232,210,.16) 17% calc(17% + 1px),transparent calc(17% + 1px) calc(83% - 1px),rgba(38,20,13,.4) calc(83% - 1px) 83%,rgba(255,232,210,.16) 83% calc(83% + 1px),transparent calc(83% + 1px)),linear-gradient(#7d503c,#5f3b2c);box-shadow:inset 0 1px 0 rgba(255,232,210,.3),inset 0 -2px 0 rgba(38,20,13,.28),0 8px 14px -10px rgba(74,48,39,.5)}
 .mc-dlg .ok:active{scale:.95}
-.mc-dlg .ok img{position:absolute;inset:0;width:100%;height:100%}
-.mc-dlg .ok span{position:relative;font:18px/1 ZK,WK,sans-serif;color:#fdf6e8;letter-spacing:.12em}
+
+.mc-dlg .ok span{position:relative;font:17px/1 ZK,WK,sans-serif;color:#fdf6e8;letter-spacing:.12em;text-shadow:0 1px 0 rgba(38,20,13,.35)}
 .mc-dlg .no{display:block;margin:8px auto 0;min-height:40px;padding:0 14px;border:0;background:none;font:14px/1 WK,ZK,sans-serif;color:#8a5c46;text-decoration:underline dashed 1.1px;text-underline-offset:4px;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.mc-bell,.mc-dlg,.mc-mask{transition:none}.mc-bell.on svg{animation:none}}
 `;
@@ -39,7 +39,7 @@ function toast(text,o={}){
  requestAnimationFrame(()=>bell.classList.add('on'));tm=setTimeout(()=>bell.classList.remove('on'),o.ms||3200)}
 function confirm(o){return new Promise(res=>{
  const m=document.createElement('div');m.className='mc-mask';
- m.innerHTML=`<div class="mc-dlg" role="alertdialog" aria-modal="true">${WARN}<h4></h4><p></p><button class="ok"><img src="${o.plaque||'../conn/plaque.png'}" alt=""><span></span></button><button class="no"></button></div>`;
+ m.innerHTML=`<div class="mc-dlg" role="alertdialog" aria-modal="true">${WARN}<h4></h4><p></p><button class="ok"><span></span></button><button class="no"></button></div>`;
  m.querySelector('h4').textContent=o.title||'确定吗？';m.querySelector('p').innerHTML=o.body||'';
  m.querySelector('.ok span').textContent=o.ok||'确定';m.querySelector('.no').textContent=o.cancel||'再想想';
  document.body.appendChild(m);requestAnimationFrame(()=>m.classList.add('on'));
