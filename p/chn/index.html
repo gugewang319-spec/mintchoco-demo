@@ -93,13 +93,32 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .pk button{min-height:32px;padding:0 12px;border-radius:16px;font:600 12.5px/1 Baloo,ZK;color:#6f5446;border:1.1px solid rgba(138,92,70,.35);background:rgba(252,250,244,.5)}
 .pk button.on{background:#a6d9c4;border-color:#3f9a80;color:#2f4a3e}
 .tst{font:12.5px/1.2 WK;color:var(--cocoa);border-bottom:1.1px dashed var(--cocoa);padding-bottom:1px;margin-left:10px}
-.more .ln{gap:6px}.more .ln .mn{flex:1}
+.more .ln{gap:6px}
+.mr .mh{flex:1;display:flex;align-items:center;gap:6px;min-width:0;text-align:left;font:inherit;color:inherit}
+.mr .mn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cp{display:inline-flex;gap:3px}.cp i{font:11px/16px WK;font-style:normal;width:16px;text-align:center;border-radius:50%;background:rgba(166,217,196,.55);color:#2f4a3e}
+.xin{font:11px/1 WK;font-style:normal;color:#b0583e;border:1.2px solid #b0583e;border-radius:50% 46% 52% 44%;padding:3px 3px 2px;rotate:-6deg}
+.mop{max-height:0;overflow:hidden;transition:max-height .35s;padding-left:10px;border-left:1.4px dotted rgba(138,92,70,.45);margin-left:2px}
+.mw.ex .mop{max-height:320px;padding-bottom:6px}
+.mw.ex .mh .mn{color:var(--cocoa)}
+.mck{justify-content:flex-start;gap:18px}.ck{font:13px/1.9 WK;color:var(--ch)}.ck b{display:inline-block;width:12px;text-align:center;font:600 13px/1 Baloo;color:#3f9a80}
+.ovf{display:none;font:12.5px/1.5 WK;color:#b0583e}.mw.of .ovf{display:block}.mw.of .md[data-k="o"] .v{color:#b0583e}
+.mw{position:relative}.mw .mr::after{content:"";position:absolute;left:-2px;top:52%;height:2px;width:calc(100% + 4px);border-radius:2px;background:#8a5c46;opacity:.75;transform:scaleX(0) rotate(-1.2deg);transform-origin:left;transition:transform .35s steps(6,end);pointer-events:none}
+.mw.gone .mr::after{transform:scaleX(1) rotate(-1.2deg)}.mw.gone .mh,.mw.gone .tst{opacity:.38}
+.pullb{display:inline-block;margin:8px 0 2px}
+.pull{display:none;margin-top:6px;padding:8px 10px 10px;border-radius:12px;background:rgba(166,217,196,.16);border:1.1px dashed rgba(63,154,128,.55)}.pull.on{display:block}
+.pul{max-height:200px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.pul .ck{display:block;width:100%;text-align:left;font:500 13px/2 Baloo,ZK}.pul .ck.has{color:#b49c8c}
+.pul .ck mark{background:linear-gradient(transparent 52%,rgba(122,214,189,.7) 52% 92%,transparent 92%);color:inherit}
+.puf{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.pug{min-height:34px;padding:0 16px;border-radius:9px;font:13.5px/1 ZK;color:#2f4a3e;background:#a6d9c4;border:1.1px solid #3f9a80;box-shadow:inset 0 -2px 0 rgba(63,154,128,.35)}.pug:disabled{opacity:.45}
+.pug b{font:600 14px/1 Baloo}
 .ms{display:flex;align-items:center;gap:8px;margin:8px 0 4px}
 .ms svg{flex:none;width:15px;height:15px}
 .rc .ms input{flex:1;font:500 13px/1.6 Baloo,ZK;letter-spacing:.03em}
 .ms b{flex:none;font:600 11.5px/1 Baloo;color:#9a7c6a;letter-spacing:.04em}
 .more .ln.hd{display:none}
-.more .mn mark{background:linear-gradient(transparent 52%,rgba(122,214,189,.7) 52% 92%,transparent 92%);color:inherit}
+.more .mh .mn mark{background:linear-gradient(transparent 52%,rgba(122,214,189,.7) 52% 92%,transparent 92%);color:inherit}
 .mz{display:none;padding:10px 0 4px;font:13px/1.4 WK;color:#9a7c6a;text-align:center}.mz.on{display:block}
 .tmask{position:fixed;inset:0;z-index:60;background:rgba(74,48,39,.18);opacity:0;pointer-events:none;transition:opacity .3s}
 .tmask.on{opacity:1;pointer-events:auto}
@@ -266,6 +285,9 @@ const CH=[
  {n:'月亮站',h:'moon.example',f:'OpenAI',r:2,k:[['29bd','','正常']],m:[0,6]},
  {n:'旧站',h:'old.example',f:'OpenAI',r:1,off:1,k:[['00a3','off','停用']],m:[0]}
 ];
+CH.forEach(c=>c.m=c.m.map(j=>{const[a,b]=M[j].split(':');return{n:a,w:b,o:/1M/.test(b)?'64K':/claude|o3/.test(a)?'32K':'16K',v:/gpt-5|claude|gemini|4o|o3|qwen3/.test(a)?1:0,s:/o3/.test(a)?0:1}}));
+const UP=['gpt-5.1','gpt-5.1-mini','gpt-5.1-nano','gpt-4o','gpt-4o-mini','o3','o4-mini','claude-opus-4.1','claude-sonnet-4.5','claude-haiku-4.5','gemini-2.5-pro','gemini-2.5-flash','gemini-2.5-flash-lite','deepseek-v3.2','deepseek-r1','qwen3-max','qwen3-coder','kimi-k2','glm-4.6','grok-4'];
+const WO=['32K','128K','200K','256K','1M'],OO=['4K','8K','16K','32K','64K'];
 const worst=c=>c.off?'off':c.k.some(x=>x[1]=='bad')?'bad':c.k.some(x=>x[1]=='cool')?'cool':'';
 const tin=$('#tin'),STEP=52,NTW=58,X0=22+NTW+14;
 function fsGo(){const q=$('#fsI').value.trim().toLowerCase(),tks=$$('.tk');let first=-1,n=0;
@@ -286,16 +308,20 @@ CH.forEach((c,i)=>{const w=worst(c),t=document.createElement('button');t.classNa
  $('.counter').innerHTML=String(CH.length).split('').map(d=>`<span>${d}</span>`).join('')+'<b>条</b>';$('.top .k').innerHTML='<i></i>'+String(CH.length).split('').join(' ')+' 条'}
 let cur=-1;const op=$('#open');build();
 $('#fsb').onclick=()=>fsOn(!$('#fs').classList.contains('on'));$('#fsx').onclick=()=>fsOn(false);$('#fsI').oninput=fsGo;$('#fsI').onkeydown=e=>{if(e.key=='Enter'){const h=$('.tk.hit');if(h){e.preventDefault();pick($$('.tk').indexOf(h));$('#fsI').blur()}}};
+function mrow(m,j){return`<div class="mw${m.nw?' nw':''}" data-j="${j}"><div class="ln mr"><button class="mh"><span class="mn">${m.n}</span>${m.nw?'<i class="xin">新</i>':''}<span class="v">${m.w}</span></button><button class="tst" data-m="${m.n}">尝一口 ›</button></div>
+<div class="mop"><button class="ln md" data-k="w"><span>窗口</span><span class="lk"><span class="v">${m.w}</span> ›</span></button><div class="pk"></div><button class="ln md" data-k="o"><span>输出</span><span class="lk"><span class="v">${m.o}</span> ›</span></button><div class="pk"></div>
+<div class="ln mck"><button class="ck${m.v?' on':''}" data-k="v">[<b>${m.v?'✓':' '}</b>] 能看图</button><button class="ck${m.s?' on':''}" data-k="s">[<b>${m.s?'✓':' '}</b>] 流式</button></div><div class="ovf">输出比窗口还大，杯子要溢了</div><div class="keyop" style="max-height:none"><span class="mdel">删掉 ›</span></div></div></div>`}
 function rc(c,i){const ks=c.k.map(([s,cl,tx])=>`<div class="kw"><button class="ln keyl"><span class="k">···${s}</span><span class="st"><i class="${cl=='off'?'cool':cl}"></i>${tx}</span>${cl=='bad'?'<img class="ring" src="circle.png" alt="">':''}</button><div class="keyop"><span class="up">往前挪 ›</span><span class="del">删掉 ›</span></div></div>`).join('');
- const ms=c.m.map(j=>{const[a,b]=M[j].split(':');return`<div class="ln"><span class="mn">${a}</span><span class="v">${b}</span><button class="tst" data-m="${a}">尝一口 ›</button></div>`}).join('');
+ const ms=c.m.map(mrow).join('');
  return `<div class="shade"><div class="rc"><button class="lift">挂回去 ›</button><input class="nmI ed" maxlength="6" value="${c.n}" aria-label="渠道名字"><input class="hostI ed" value="${c.h}" aria-label="地址" inputmode="url" autocapitalize="off" spellcheck="false"><input class="epI" value="${c.p||EP[c.f]}" aria-label="API 路径" autocapitalize="off" spellcheck="false"><div class="cut"></div>
 <button class="ln dd" data-k="f"><span>格式</span><span class="lk"><span class="v">${c.f}</span> ›</span></button><div class="pk"></div><button class="ln dd" data-k="r"><span>失败重试</span><span class="lk"><span class="v">×${c.r}</span> ›</span></button><div class="pk"></div><div class="cut"></div>
 <div class="sec">密 钥<b class="kn">${c.k.length}</b></div>${ks}<label class="ln newk"><input class="keyI" placeholder="粘贴新密钥" aria-label="新密钥" autocomplete="off" spellcheck="false"><span class="st"><i class="cool"></i>待填</span></label><button class="lk addk">+ 加一把 ›</button><div class="cut"></div>
-<button class="ln mo"><span class="sec" style="margin:0">模 型<b style="margin-left:8px">${c.m.length}</b></span><span class="lk">打出来 ›</span></button><div class="more"><label class="ms"><svg viewBox="0 0 16 16" fill="none" stroke="#8a5c46" stroke-width="1.5" stroke-linecap="round"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3l3.6 3.6"/></svg><input class="msI" placeholder="搜模型名" aria-label="搜模型名" autocapitalize="off" spellcheck="false"><b>${c.m.length}</b></label>${ms}<div class="mz">没有叫这个的</div></div><button class="sv mute"><img src="../conn/plaque.png" alt=""><span>保存</span></button><button class="rip">撕掉这张单 ›</button><div class="cut"></div>
+<button class="ln mo"><span class="sec" style="margin:0">模 型<b style="margin-left:8px">${c.m.length}</b></span><span class="lk">打出来 ›</span></button><div class="more"><label class="ms"><svg viewBox="0 0 16 16" fill="none" stroke="#8a5c46" stroke-width="1.5" stroke-linecap="round"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3l3.6 3.6"/></svg><input class="msI" placeholder="搜模型名" aria-label="搜模型名" autocapitalize="off" spellcheck="false"><b>${c.m.length}</b></label>${ms}<div class="mz">没有叫这个的</div><button class="lk pullb">+ 拉新的 ›</button><div class="pull"><label class="ms"><svg viewBox="0 0 16 16" fill="none" stroke="#8a5c46" stroke-width="1.5" stroke-linecap="round"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3l3.6 3.6"/></svg><input class="puI" placeholder="在上游里找" aria-label="在上游里找" autocapitalize="off" spellcheck="false"><b class="pun"></b></label><div class="pul"></div><div class="puf"><button class="lk pux">算了 ›</button><button class="pug">加进来 <b>0</b> 个</button></div></div></div><button class="sv mute"><img src="../conn/plaque.png" alt=""><span>保存</span></button><button class="rip">撕掉这张单 ›</button><div class="cut"></div>
 <div class="foot">2026-11-12 20:40<br>NO.${String(i+1).padStart(4,'0')}</div><div class="bar"></div></div></div>`}
 function wire(){
- const C0=CH[cur],D={n:C0.n,h:C0.h,f:C0.f,r:C0.r,p:C0.p||EP[C0.f]},sv=op.querySelector('.sv');
- const dirty=()=>['n','h','f','r','p'].some(k=>D[k]!=(k=='p'?(C0.p||EP[C0.f]):C0[k]))||!!op.querySelector('.newk .keyI').value.trim();
+ const C0=CH[cur],D={n:C0.n,h:C0.h,f:C0.f,r:C0.r,p:C0.p||EP[C0.f],m:C0.m.map(x=>({...x}))},sv=op.querySelector('.sv');
+ const mj=m=>JSON.stringify(m.filter(x=>!x.gone).map(({n,w,o,v,s})=>({n,w,o,v,s})));
+ const dirty=()=>['n','h','f','r','p'].some(k=>D[k]!=(k=='p'?(C0.p||EP[C0.f]):C0[k]))||mj(D.m)!=mj(C0.m)||!!op.querySelector('.newk .keyI').value.trim();
  const ck=()=>sv.classList.toggle("mute",!dirty());
  ddw(D,ck);
  $$('#open .keyl').forEach(b=>b.onclick=()=>{const o=!b.classList.contains('ex');$$('.keyl').forEach(x=>x.classList.remove('ex'));if(o)b.classList.add('ex')});
@@ -308,21 +334,49 @@ function wire(){
    setG(true);MC.toast(`删掉了 ${tail}`,{undo:()=>setG(false)})};
   u.onclick=()=>{const f=$('#open .kw');if(f!==w){f.before(w)}b.classList.remove('ex');w.classList.remove('flash');void w.offsetWidth;w.classList.add('flash')}});
  $$('#open .addk').forEach(b=>b.onclick=()=>b.previousElementSibling.classList.toggle('on'));
- $$('#open .mo').forEach(b=>b.onclick=()=>{const m=b.nextElementSibling,o=m.style.maxHeight&&m.style.maxHeight!='0px';m.style.maxHeight=o?'0px':(m.scrollHeight+4)+'px';b.querySelector('.lk').textContent=o?'打出来 ›':'收起 ›';setTimeout(fitH,750)});
- {const mI=op.querySelector('.msI'),mr=op.querySelector('.more');if(mI)mI.oninput=()=>{const q=mI.value.trim().toLowerCase();let n=0;
-  mr.querySelectorAll('.ln').forEach(l=>{const e=l.querySelector('.mn'),t=e.dataset.t||(e.dataset.t=e.textContent),i=t.toLowerCase().indexOf(q),hit=!q||i>=0;l.classList.toggle('hd',!hit);if(hit)n++;
+ $$('#open .mo').forEach(b=>b.onclick=()=>{const m=b.nextElementSibling,o=m.classList.contains('op');m.classList.toggle('op',!o);
+  if(o){m.style.maxHeight=m.scrollHeight+'px';void m.offsetHeight;m.style.maxHeight='0px'}else{m.style.maxHeight=(m.scrollHeight+4)+'px';setTimeout(()=>{if(m.classList.contains('op'))m.style.maxHeight='none'},RM?0:720)}
+  b.querySelector('.lk').textContent=o?'打出来 ›':'收起 ›';setTimeout(fitH,750)});
+ const mr=op.querySelector('.more'),mcount=()=>{const n=D.m.filter(x=>!x.gone).length;op.querySelector('.mo .sec b').textContent=n;mr.querySelector('.ms b').textContent=n};
+ const relax=()=>{if(mr.classList.contains('op'))mr.style.maxHeight='none';setTimeout(fitH,360)};
+ const wireM=w=>{const j=+w.dataset.j,m=D.m[j];
+  w.querySelector('.mh').onclick=()=>{const o=!w.classList.contains('ex');mr.querySelectorAll('.mw').forEach(x=>x.classList.remove('ex'));if(o)w.classList.add('ex');relax()};
+  const ofc=()=>{const n=x=>parseInt(x)*(/M/.test(x)?1024:1);w.classList.toggle('of',n(m.o)>=n(m.w))};
+  w.querySelectorAll('.md').forEach(b=>{const k=b.dataset.k,pk=b.nextElementSibling,opts=k=='w'?WO:OO;
+   const paint=()=>{pk.innerHTML=opts.map(o=>`<button class="${o==m[k]?'on':''}">${o}</button>`).join('');pk.querySelectorAll('button').forEach((x,i)=>x.onclick=()=>{m[k]=opts[i];b.querySelector('.v').textContent=m[k];if(k=='w')w.querySelector('.mh .v').textContent=m[k];ofc();paint();pk.classList.remove('on');ck();relax()})};
+   paint();b.onclick=()=>{const o=!pk.classList.contains('on');w.querySelectorAll('.pk').forEach(x=>x.classList.remove('on'));if(o)pk.classList.add('on');relax()}});
+  w.querySelectorAll('.mck .ck').forEach(c=>c.onclick=()=>{const k=c.dataset.k;m[k]=m[k]?0:1;c.classList.toggle('on',!!m[k]);c.querySelector('b').textContent=m[k]?'✓':' ';
+   ck()});
+  const dl=w.querySelector('.mdel');dl.onclick=()=>{m.gone=!m.gone;w.classList.toggle('gone',!!m.gone);dl.textContent=m.gone?'放回去 ›':'删掉 ›';if(m.gone)w.classList.remove('ex');mcount();ck();relax()};
+  ofc()};
+ mr.querySelectorAll('.mw').forEach(wireM);
+ {const pb=mr.querySelector('.pullb'),pl=mr.querySelector('.pull'),pI=pl.querySelector('.puI'),pg=pl.querySelector('.pug');let sel=new Set();
+  const paint=()=>{const q=pI.value.trim().toLowerCase(),has=new Set(D.m.filter(x=>!x.gone).map(x=>x.n));let n=0;
+   pl.querySelector('.pul').innerHTML=UP.filter(u=>!q||u.toLowerCase().includes(q)).map(u=>{n++;const h=has.has(u),i=u.toLowerCase().indexOf(q),t=q?u.slice(0,i)+'<mark>'+u.slice(i,i+q.length)+'</mark>'+u.slice(i+q.length):u;
+    return`<button class="ck${sel.has(u)?' on':''}${h?' has':''}" data-u="${u}" ${h?'disabled':''}>[<b>${h?'·':sel.has(u)?'✓':' '}</b>] ${t}${h?' · 已有':''}</button>`}).join('')||'<div class="mz on">上游没有这个</div>';
+   pl.querySelector('.pun').textContent=q?n+'/'+UP.length:UP.length;pg.querySelector('b').textContent=sel.size;pg.disabled=!sel.size;
+   pl.querySelectorAll('.pul .ck:not(.has)').forEach(c=>c.onclick=()=>{const u=c.dataset.u;sel.has(u)?sel.delete(u):sel.add(u);paint()})};
+  pb.onclick=()=>{const o=!pl.classList.contains('on');pl.classList.toggle('on',o);if(o){sel=new Set();pI.value='';paint()}relax()};
+  pI.oninput=paint;pl.querySelector('.pux').onclick=()=>{pl.classList.remove('on');relax()};
+  pg.onclick=()=>{const add=[...sel];add.forEach(u=>{const m={n:u,w:/gemini/.test(u)?'1M':/claude|o3|o4|glm/.test(u)?'200K':/qwen|kimi|grok/.test(u)?'256K':'128K',o:'16K',v:/gpt|claude|gemini|o3|o4|grok/.test(u)?1:0,s:1,nw:1};D.m.push(m);
+    const t=document.createElement('div');t.innerHTML=mrow(m,D.m.length-1);const w=t.firstElementChild;mr.querySelector('.mz').before(w);wireM(w);w.querySelectorAll('.tst').forEach(b=>b.onclick=()=>taste(b.dataset.m,CH[cur].n))});
+   pl.classList.remove('on');mcount();ck();relax();MC.toast(`拉进来 ${add.length} 个，记得保存`)}}
+ {const mI=op.querySelector('.msI');if(mI)mI.oninput=()=>{const q=mI.value.trim().toLowerCase();let n=0;
+  mr.querySelectorAll('.mw').forEach(l=>{const e=l.querySelector('.mh .mn'),t=e.dataset.t||(e.dataset.t=e.textContent),i=t.toLowerCase().indexOf(q),hit=!q||i>=0;l.classList.toggle('hd',!hit);if(hit)n++;
    e.innerHTML=q&&i>=0?t.slice(0,i)+'<mark>'+t.slice(i,i+q.length)+'</mark>'+t.slice(i+q.length):t});
-  mr.querySelector('.ms b').textContent=q?n+'/'+mr.querySelectorAll('.ln').length:mr.querySelectorAll('.ln').length;mr.querySelector('.mz').classList.toggle('on',!n);
-  mr.style.maxHeight=mr.scrollHeight+4+'px';fitH()}}
+  const tot=mr.querySelectorAll('.mw').length;mr.querySelector('.ms b').textContent=q?n+'/'+tot:tot;mr.querySelector('.mz').classList.toggle('on',!n);
+  relax()}}
  op.querySelector('.rip').onclick=async()=>{const c=CH[cur],at=cur;
   if(!await MC.confirm({title:`撕掉「${c.n}」？`,body:`这条渠道和它的 ${c.k.length} 把钥匙、${c.m.length} 个模型会一起拿掉，<b>正在用它的入口会断</b>。`,ok:'撕掉'}))return;
   CH.splice(at,1);cur=-1;op.classList.remove('on');op.innerHTML='';build();fsGo();$('#idle').classList.remove('hide');fitH();
   MC.toast(`撕掉了「${c.n}」`,{undo:()=>{CH.splice(at,0,c);build();fsGo();fitH()}})};
  $('#open .lift').onclick=async()=>{if(dirty()&&!await MC.confirm({title:'改的还没存',body:'现在挂回去，<b>这次的改动就不要了</b>。',ok:'不存了',cancel:'回去存'}))return;pick(cur)};
  sv.onclick=()=>{if(!dirty())return;if(!D.n.trim()){const x=op.querySelector('.nmI');x.classList.remove('miss');void x.offsetWidth;x.classList.add('miss');return}
-  Object.assign(C0,D);const nk=op.querySelector('.newk .keyI'),v=nk.value.trim();
-  if(v){C0.k.push([v.slice(-4),'','正常']);const i=cur;op.innerHTML=rc(C0,i);wire();op.classList.add('on');}
+  const mch=mj(D.m)!=mj(C0.m)||D.m.some(x=>x.nw||x.gone);Object.assign(C0,D);C0.m=D.m.filter(x=>!x.gone).map(({n,w,o,v,s})=>({n,w,o,v,s}));const nk=op.querySelector('.newk .keyI'),v=nk.value.trim();
+  if(v)C0.k.push([v.slice(-4),'','正常']);
   const t=$$('.tk')[cur];t.querySelector('.nm').textContent=C0.n;t.querySelector('.rt b').textContent=C0.n;t.querySelector('.kc').innerHTML=C0.k.length+'<small>把钥</small>';
+  if(v||mch){const mo=op.querySelector('.more').classList.contains('op'),y=op.querySelector('.sv').getBoundingClientRect().top;op.innerHTML=rc(C0,cur);wire();op.classList.add('on');
+   if(mo){const m=op.querySelector('.more');m.classList.add('op');m.style.maxHeight='none';op.querySelector('.mo .lk').textContent='收起 ›'}fitH();const sc=document.scrollingElement,d=op.querySelector('.sv').getBoundingClientRect().top-y;if(d)sc.scrollTop+=d;return MC.toast(`「${C0.n}」存好了`)}
   ck();MC.toast(`「${C0.n}」存好了`)};
  $$('#open .tst').forEach(b=>b.onclick=()=>taste(b.dataset.m,CH[cur].n));
  op.querySelector('.nmI').oninput=e=>{D.n=e.target.value.trim();ck()};
@@ -359,7 +413,7 @@ function newT(){if(cur===-2){cur=-1;$('.nt').classList.remove('lit');op.classLis
  const tr=$('#track');tr.scrollTo({left:0,behavior:'smooth'})}
 function hang(){const nI=op.querySelector('.nmI'),hI=op.querySelector('.hostI'),kI=op.querySelector('.keyI');let bad=0;
  [nI,hI].forEach(x=>{if(!x.value.trim()){bad=1;x.classList.remove('miss');void x.offsetWidth;x.classList.add('miss')}});if(bad)return;
- const k=kI.value.trim();const nc={n:nI.value.trim(),h:hI.value.trim(),f:NWC.f,r:NWC.r,p:op.querySelector('.epI').value.trim(),k:k?[[k.slice(-4),'','正常']]:[],m:[0]};let at=CH.findIndex(c=>c.off);if(at<0)at=CH.length;CH.splice(at,0,nc);
+ const k=kI.value.trim();const nc={n:nI.value.trim(),h:hI.value.trim(),f:NWC.f,r:NWC.r,p:op.querySelector('.epI').value.trim(),k:k?[[k.slice(-4),'','正常']]:[],m:[]};let at=CH.findIndex(c=>c.off);if(at<0)at=CH.length;CH.splice(at,0,nc);
  op.querySelector('.rc').classList.add('up');
  MC.toast(`「${nc.n}」挂上去了`,{undo:()=>{const j=CH.indexOf(nc);if(j>=0){CH.splice(j,1);if(cur>=0)cur=-1;op.classList.remove('on');op.innerHTML='';build();$('#idle').classList.remove('hide');fitH()}}});
  setTimeout(()=>{cur=-1;op.classList.remove('on');op.innerHTML='';build();const t=$$('.tk')[at];t.classList.add('fresh');$('#idle').classList.remove('hide');fitH();
@@ -380,4 +434,4 @@ fitH();
  tr.addEventListener('scroll',()=>{const t=performance.now(),v=(tr.scrollLeft-lx)/Math.max(8,t-lt);lx=tr.scrollLeft;lt=t;
   $$('.tk').forEach((k,i)=>{if(k.classList.contains('out'))return;k.classList.add('drag');const a=Math.max(-7,Math.min(7,-v*4.2*(.75+((i*37)%10)/22)));k.style.rotate=a.toFixed(2)+'deg'});
   clearTimeout(tm);tm=setTimeout(()=>$$('.tk').forEach((k,i)=>{k.classList.remove('drag');setTimeout(()=>k.style.rotate='0deg',(i*53)%90)}),70)},{passive:true})})();
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../ui.js?v=48"></script><script src="../pfix.js?v=48"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../ui.js?v=49"></script><script src="../pfix.js?v=49"></script></body></html>
