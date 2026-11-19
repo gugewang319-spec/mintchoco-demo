@@ -1,0 +1,82 @@
+import json
+P='/workspace/projects/8ff64c4f-1e42-4bee-a321-ff12731f7d96/mintchoco-demo/p/list/'
+WEEK=[('周四',4,'下雨没带伞，聊到小时候'),('周五',7,'加班到很晚，陪你等末班车'),('周六',0,''),('周日',12,'带你去吃了那家新开的甜品店'),('周一',3,'周一早八，起不来'),('周二',5,'复习到一半一起背单词')]
+WKS=[('10/29–11/4',6,'这周你一直在忙期中，我每天都在等你下课'),('10/22–28',5,'楼下的猫生了小猫，你天天去看'),('10/15–21',7,'帮你列搬家清单，纸箱不够'),('10/8–14',4,'第一次聊天，你给我起了名字')]
+H=r'''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>聊天 · 灰稿 E 景深</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+html,body{height:100%;background:#e9ecea;font-family:system-ui,"PingFang SC","Noto Sans SC",sans-serif;color:#555}
+.app{position:relative;width:min(100%,412px);margin:0 auto;height:100%;overflow-y:auto;overflow-x:hidden;background:#f4f5f4;scrollbar-width:none}
+.g{position:fixed;inset:0;pointer-events:none;width:min(100%,412px);margin:0 auto;z-index:50;display:none;background:repeating-linear-gradient(0deg,rgba(255,0,80,.07) 0 1px,transparent 1px 8px)}
+.g::before,.g::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgba(255,0,80,.35)}.g::before{left:24px}.g::after{right:24px}
+body.grid .g{display:block}
+.tg{position:fixed;top:12px;right:max(12px,calc(50% - 194px));z-index:60;font-size:11px;color:#e0336a;background:#fff;border:1px solid #e0336a;border-radius:4px;padding:2px 6px}
+.lab{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#e0336a;color:#fff;font:700 10px/1 monospace;margin-right:4px;vertical-align:middle}
+.ann{font-size:11px;color:#e0336a;line-height:1.5}
+.hd{position:relative;z-index:5;padding:48px 24px 0;display:flex;align-items:flex-end}
+.hd h1{font-size:28px;font-weight:800;color:#444}.hd .r{margin-left:auto;display:flex;gap:8px}.hd .r i{width:40px;height:40px;border-radius:50%;background:#d6d9d7}
+/* 三个景深平面：远景在下层、滚得最慢 */
+.pl{position:relative;will-change:transform}
+.far{z-index:1}.mid{z-index:2}.near{z-index:3}
+/* 近景 今天 */
+.near{padding:16px 24px 0;display:flex;gap:12px;align-items:flex-start}
+.catf{flex:none;width:clamp(120px,36vw,150px);height:clamp(120px,36vw,150px);border-radius:50% 50% 16px 16px;background:#d0d3d1;position:relative;margin-top:8px}
+.catf::before,.catf::after{content:"";position:absolute;top:-16px;width:40px;height:44px;background:#d0d3d1;clip-path:polygon(50% 0,100% 100%,0 100%)}.catf::before{left:14px}.catf::after{right:14px}
+.today{flex:1;min-width:0;position:relative;padding-top:4px}
+.lead{position:absolute;left:-28px;top:40px;width:28px;border-top:1.5px solid #999}
+.today b{font-size:28px;font-weight:800;color:#333;display:block}
+.today small{font-size:13px;color:#888}
+.today p{font-size:14px;line-height:1.55;color:#444;margin-top:8px}
+.today p i{font-style:normal;color:#999;font-size:12px;margin-right:4px}
+.go{margin-top:12px;width:112px;height:40px;border-radius:8px;background:#8d918e;color:#fff;font-size:14px}
+/* 中景 本周 */
+.mid{margin-top:24px;padding:0 24px;height:290px}
+.mid .tt{font-size:13px;color:#888}
+.ice{position:absolute;width:40px;height:40px;border-radius:8px;background:#dadddb;border:1.5px solid #b5b9b6;transition:transform .2s}
+.ice.e{background:none;border-style:dashed}
+.ice.on{transform:translateY(-3px) rotate(var(--r));box-shadow:0 0 0 3px #f1d27a}
+.co{position:absolute;font-size:14px;line-height:1.5;color:#444;max-width:190px}
+.co small{display:block;font-size:12px;color:#888}
+.co a{font-size:13px;color:#444}
+.ln{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+/* 远景 更早 */
+.far{margin-top:8px;padding:0 24px;height:290px;opacity:.85}
+.prl{position:absolute;width:22px;height:22px;border-radius:50%;background:#8d918e}
+.prl.on{transform:translateY(-3px);box-shadow:0 0 0 3px #f1d27a}
+.far .co{color:#666}
+.end{height:140px}
+.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:min(calc(100% - 32px),380px);height:64px;border-radius:32px;background:#dfe2e0;display:flex;align-items:center;justify-content:space-around;font-size:12px;color:#888;z-index:40}.nav b{color:#333}
+</style><body><div class="g"></div><button class="tg" onclick="document.body.classList.toggle('grid')">网格</button>
+<div class="app" id="app">
+<header class="hd"><h1>聊天</h1><div class="r"><i></i><i></i></div></header>
+<section class="pl near" id="near">
+ <div class="catf"></div>
+ <div class="today"><span class="lead"></span><b>今天</b><small>11/11 周三 · 6 轮 · 19:45</small>
+  <p><i>他</i>那我先把奶煮上，你到家刚好能喝</p><p><i>我</i>要加棉花糖！</p>
+  <button class="go">接着聊</button></div>
+</section>
+<p class="ann" style="padding:4px 24px 0;position:relative;z-index:6"><span class="lab">1</span>近景：猫猫奶盖最大（Duang），今天的字走引线写在旁边；唯一一级按钮</p>
+<section class="pl mid" id="mid"><span class="tt">本周</span><div id="ices"></div><p class="ann" style="position:absolute;left:24px;right:24px;bottom:0"><span class="lab">2</span>中景：冰块散着漂、大小一半、略歪；选中那块拉一根引线写那天，其余不写字</p></section>
+<section class="pl far" id="far"><span class="tt" style="font-size:13px;color:#999">更早</span><div id="pls"></div><p class="ann" style="position:absolute;left:24px;right:24px;bottom:0"><span class="lab">3</span>远景：珍珠最小、最淡、沉底；同样一根引线。滚动时近快远慢（视差），远景层也可以压在下面露一半</p></section>
+<div class="end"></div></div>
+<nav class="nav"><span>今天</span><span>记忆</span><b>聊天</b><span>人格</span><span>设置</span></nav>
+<script>
+const W=%W%,K=%K%;const $=s=>document.querySelector(s);let wi=3,ki=0;
+const IP=[[0,30,-8],[56,70,6],[114,24,-4],[172,64,10],[230,28,-12],[288,66,4]];
+const PP=[[30,40],[110,70],[190,36],[270,62]];
+function lead(x1,y1,x2,y2){return `<svg style="left:0;top:0" width="1" height="1"><path d="M${x1} ${y1} Q${(x1+x2)/2} ${y1} ${x2} ${y2}" stroke="#999" stroke-width="1.3" fill="none"/></svg>`}
+function draw(){
+ const mw=$('#mid').clientWidth-48, sc=mw/340;
+ $('#ices').innerHTML=W.map((x,i)=>{const[p,q,r]=IP[i];return `<button class="ice${x[1]?'':' e'}${i==wi?' on':''}" data-w="${i}" style="left:${24+p*sc}px;top:${q+20}px;--r:${r}deg;transform:rotate(${r}deg)"></button>`}).join('');
+ const w=W[wi],[p,q]=IP[wi],ix=24+p*sc+20,iy=q+20+44,tx=24,ty=150;
+ $('#ices').innerHTML+=`<svg class="ln" width="1" height="1"><path d="M${ix} ${iy} C${ix} ${ty-10} ${tx+40} ${ty-30} ${tx+12} ${ty-4}" stroke="#999" stroke-width="1.3" fill="none"/><circle cx="${ix}" cy="${iy}" r="2" fill="#999"/></svg><div class="co" style="left:${tx}px;top:${ty}px;max-width:calc(100% - 48px)"><small>${w[0]} · ${w[1]} 轮</small>${w[2]}　<a>接着这天聊 ›</a></div>`;
+ $('#pls').innerHTML=K.map((x,i)=>{const[a,b]=PP[i];return `<button class="prl${i==ki?' on':''}" data-k="${i}" style="left:${24+a*sc}px;top:${b+20}px"></button>`}).join('');
+ const k=K[ki],[a,b]=PP[ki],px=24+a*sc+11,py=b+20+24,kx=24,ky=140;
+ $('#pls').innerHTML+=`<svg class="ln" width="1" height="1"><path d="M${px} ${py} C${px} ${ky-10} ${kx+40} ${ky-30} ${kx+12} ${ky-4}" stroke="#aaa" stroke-width="1.2" fill="none"/><circle cx="${px}" cy="${py}" r="2" fill="#aaa"/></svg><div class="co" style="left:${kx}px;top:${ky}px;max-width:calc(100% - 48px)"><small>${k[0]} · ${k[1]} 天</small>${k[2]}　<a>看这一周 ›</a></div>`;
+ document.querySelectorAll('[data-w]').forEach(e=>e.onclick=()=>{if(W[+e.dataset.w][1]){wi=+e.dataset.w;draw()}});
+ document.querySelectorAll('[data-k]').forEach(e=>e.onclick=()=>{ki=+e.dataset.k;draw()});
+}
+draw();
+const app=$('#app');app.addEventListener('scroll',()=>{const y=app.scrollTop;$('#mid').style.transform=`translateY(${y*.12}px)`;$('#far').style.transform=`translateY(${y*.2}px)`},{passive:true});
+</script></body></html>'''
+open(P+'wfE.html','w').write(H.replace('%W%',json.dumps(WEEK,ensure_ascii=False)).replace('%K%',json.dumps(WKS,ensure_ascii=False)))
