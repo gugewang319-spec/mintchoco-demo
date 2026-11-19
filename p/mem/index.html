@@ -35,7 +35,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .glass{background:linear-gradient(160deg,rgba(255,255,255,.72),rgba(255,255,255,.44));-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);border:1px solid rgba(255,255,255,.92);box-shadow:inset 0 1px 0 #fff,0 10px 22px -16px rgba(74,48,39,.5)}
 .iconbtn{flex:none;width:44px;height:44px;border-radius:22px;display:grid;place-items:center}
 .iconbtn:active{transform:scale(.92)}
-.sleeve{flex:1;position:relative;height:56px;border-radius:14px 14px 18px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;overflow:hidden;background:linear-gradient(180deg,rgba(255,250,242,.82),rgba(255,250,242,.6));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid #fff;box-shadow:inset 0 1px 0 #fff,0 10px 20px -14px rgba(74,48,39,.55)}
+.sleeve{flex:1;position:relative;height:56px;border-radius:14px 14px 18px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;overflow:hidden;background:linear-gradient(180deg,rgba(255,250,242,.82),rgba(255,250,242,.6));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid #fff;box-shadow:inset 0 1px 0 #fff,0 10px 20px -14px rgba(74,48,39,.55)}
 .sleeve::before,.sleeve::after{content:"";position:absolute;left:0;right:0;height:5px;background:repeating-linear-gradient(90deg,#8a5c46 0 7px,#c9a58c 7px 10px);opacity:.55}
 .sleeve::before{top:0}.sleeve::after{bottom:0}
 .sleeve h1{font:400 18px/1 ZK;color:var(--ch);letter-spacing:.06em}
@@ -332,6 +332,13 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .fchip[hidden]{display:none}
 .fchip i{font-style:normal;margin-left:5px;color:#2f6e58}
 @media (prefers-reduced-motion:reduce){.dcal{animation:none}}
+/*nav-blend 11-20：珍珠融进奶茶底；底栏下方渐进模糊加强（三层叠）*/
+#pearls{z-index:37!important;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18%);mask-image:linear-gradient(to bottom,transparent 0,#000 18%)}
+.navfade{height:150px!important;background:linear-gradient(to top,rgba(207,177,147,.22),rgba(221,198,173,.12) 55%,rgba(221,198,173,0))!important;-webkit-backdrop-filter:blur(3px)!important;backdrop-filter:blur(3px)!important;-webkit-mask-image:linear-gradient(to top,#000 30%,transparent)!important;mask-image:linear-gradient(to top,#000 30%,transparent)!important}
+.navfade::before,.navfade::after{content:"";position:absolute;inset:0;pointer-events:none}
+.navfade::before{-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);-webkit-mask-image:linear-gradient(to top,transparent 12%,#000 30%,transparent 75%);mask-image:linear-gradient(to top,transparent 12%,#000 30%,transparent 75%)}
+.navfade::after{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);-webkit-mask-image:linear-gradient(to top,transparent 14%,#000 26%,transparent 50%);mask-image:linear-gradient(to top,transparent 14%,#000 26%,transparent 50%)}
+.fade{background:linear-gradient(to top,rgba(221,198,173,.5),rgba(221,198,173,0))!important}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
  <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
