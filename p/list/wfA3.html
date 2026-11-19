@@ -1,0 +1,124 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>聊天 · 灰稿 A3</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+html,body{height:100%;background:#e9ecea;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#555}
+.app{position:relative;width:min(100%,412px);margin:0 auto;height:100%;overflow-y:auto;background:#f4f5f4;scrollbar-width:none}
+.g{position:fixed;inset:0;pointer-events:none;width:min(100%,412px);margin:0 auto;z-index:50;display:none;background:repeating-linear-gradient(0deg,rgba(255,0,80,.07) 0 1px,transparent 1px 8px)}
+.g::before,.g::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgba(255,0,80,.35)}.g::before{left:24px}.g::after{right:24px}
+body.grid .g{display:block}
+.tg{position:fixed;top:12px;right:max(12px,calc(50% - 194px));z-index:60;font-size:11px;color:#e0336a;background:#fff;border:1px solid #e0336a;border-radius:4px;padding:2px 6px}
+.ab{position:fixed;top:12px;left:max(12px,calc(50% - 194px));z-index:60;display:flex;gap:4px}.ab a{font-size:11px;color:#888;background:#fff;border:1px solid #ccc;border-radius:4px;padding:2px 6px;text-decoration:none}.ab a.on{color:#fff;background:#666;border-color:#666}
+.hd{padding:56px 24px 0;display:flex;align-items:flex-end;gap:8px}
+.hd h1{font-size:28px;font-weight:800;color:#444}.hd small{font-size:13px;color:#999;margin-bottom:4px}
+.hd .r{margin-left:auto;display:flex;gap:8px}.hd .r i{width:40px;height:40px;border-radius:50%;background:#d6d9d7}.hd .r i.p{background:#8d918e}
+.sub{padding:8px 24px 0;font-size:13px;color:#999}
+.lab{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#e0336a;color:#fff;font:700 10px/1 monospace;margin-right:4px;vertical-align:middle}
+.ann{font-size:11px;color:#e0336a;line-height:1.5}
+.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:min(calc(100% - 32px),380px);height:64px;border-radius:32px;background:#dfe2e0;display:flex;align-items:center;justify-content:space-around;font-size:12px;color:#888;z-index:40}
+.nav b{color:#333}
+.end{height:200px}
+.src{padding:24px;font-size:12px;color:#999;line-height:1.7}
+
+.x-cup{position:relative;margin:24px 24px 0 48px;border:2px dashed #bbb;border-top:0;border-radius:0 0 40px 32px}
+.x-rul{position:absolute;left:-40px;top:0;bottom:0;width:32px;border-right:1px solid #ccc}
+.x-rs{position:absolute;left:0;font-size:12px;color:#888;writing-mode:vertical-rl;letter-spacing:.3em}
+.x-ly{position:relative;padding:24px 16px}
+.ly+.x-ly{border-top:2px dashed #c9ccca}
+.ly h3{font-size:13px;color:#888;font-weight:400;display:flex;gap:8px}.ly h3 b{margin-left:auto;color:#444}
+.foam .bb{display:block;max-width:86%;margin-top:8px;padding:8px 12px;border-radius:16px;background:#e3e5e4;font-size:14px;color:#444}
+.foam .bb.me{margin-left:auto;background:#d0d3d1}.foam .bb small{display:block;font-size:11px;color:#999}
+.go{display:block;margin:16px auto 0;width:160px;height:40px;border-radius:8px;background:#8d918e;color:#fff;font-size:14px}
+.cubes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:16px}
+.cb{aspect-ratio:1/1.25;border-radius:8px;background:#dcdfdd;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;color:#666}
+.cb b{font-size:11px;color:#333;white-space:nowrap}.cb.e{background:none;border:1.5px dashed #ccc;color:#bbb}.cb.on{background:#9a9e9b;color:#fff}.cb.on b{color:#fff}
+.ln{margin-top:16px;font-size:14px;color:#444;line-height:1.6}.ln small{display:block;font-size:12px;color:#999}.ln a{font-size:13px;color:#444;text-decoration:none}
+.prl{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;text-align:center}
+.pr{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:#888}
+.pr i{width:56px;height:56px;border-radius:50%;background:#8d918e;display:grid;place-items:center;font:700 12px system-ui;color:#fff;font-style:normal}
+.pr.on i{outline:3px solid #e0336a;outline-offset:2px}
+
+.bands{position:relative;margin-top:24px}
+.rul{position:absolute;left:8px;top:0;bottom:0;width:24px}
+.rul span{position:sticky;top:24px;display:block;font-size:12px;color:#888;writing-mode:vertical-rl;letter-spacing:.3em}
+.ly{position:relative;padding:32px 24px 40px 48px}
+.ly .rl{position:absolute;left:12px;top:32px;font-size:12px;color:#888;writing-mode:vertical-rl;letter-spacing:.3em}
+.bands{background:linear-gradient(#f2f3f2 0,#f2f3f2 30%,#e6e8e7 45%,#e6e8e7 68%,#d8dbd9 82%,#d3d6d4)}.ly{padding-top:24px;padding-bottom:24px}
+.ly.ice .cubes{grid-template-columns:repeat(7,minmax(0,1fr));gap:0}
+.ly.ice .cb{aspect-ratio:auto;background:none;gap:4px;font-size:11px;color:#666}
+.ly.ice .cb::before{content:"";width:28px;height:28px;border-radius:6px;background:#c4c7c5}
+.ly.ice .cb.on::before{background:#8d918e}.ly.ice .cb.on{background:none;color:#333}.ly.ice .cb.on b{color:#333}
+.ly.ice .cb.e::before{background:none;border:1.5px dashed #c4c7c5}.ly.ice .cb.e{border:0}
+.ly.ice .cb b{font-size:11px;font-weight:600}
+.ly.prl0 .prl{grid-template-columns:repeat(2,1fr);gap:8px 16px;text-align:left}
+.ly.prl0 .pr{flex-direction:row;gap:8px;font-size:11px}.ly.prl0 .pr i{width:24px;height:24px;flex:none;font-size:0}
+.ly.prl0 .pr span b{display:block}.ly.prl0 .pr span{display:flex;flex-direction:column;align-items:flex-start;font-size:11px;color:#888}.ly.prl0 .pr span b{font-size:13px;color:#444}
+.ly.prl0 .pr.on i{outline-width:2px}
+
+
+.dk{position:relative;overflow:hidden;margin-top:16px;min-height:144px;padding:16px 16px 56px;border-radius:20px;background:#fafafa;border:1.5px solid #bbb;font-size:14px;color:#444;line-height:1.6}
+.dk small{display:block;font-size:12px;color:#999}.dk a{font-size:13px;color:#333;text-decoration:none;font-weight:600}
+.dk>*:not(.lq):not(.tp){position:relative;z-index:3}
+.lq{position:absolute;left:0;right:0;bottom:0;height:0;background:#d4d7d5;transition:height .9s cubic-bezier(.3,1.3,.5,1);z-index:1}
+.lq::before{content:"";position:absolute;left:0;right:0;top:-6px;height:7px;background:radial-gradient(10px 6px at 10px 7px,#d4d7d5 98%,#0000) 0 0/20px 7px}
+.tp{position:absolute;z-index:2;transition:bottom .9s cubic-bezier(.3,1.3,.5,1),opacity .4s}
+.tp.p{width:12px;height:12px;border-radius:50%;background:#6f7370;bottom:6px}
+.tp.m{width:14px;height:12px;border-radius:4px;background:#fff;border:1px solid #999}
+.tp.l{width:18px;height:10px;border-radius:10px 0;background:#a9aeab}
+.tp.b{width:6px;height:6px;border-radius:50%;border:1px solid #fff;background:none}
+.fall{position:absolute;z-index:30;width:28px;height:28px;border-radius:6px;background:#8d918e;pointer-events:none}
+.fall.pe{border-radius:50%;width:24px;height:24px;background:#6f7370}
+.kd{position:absolute;right:12px;top:12px;z-index:3;font-size:10px;color:#e0336a;text-align:right;line-height:1.5}
+</style><body><div class="g"></div><button class="tg" onclick="document.body.classList.toggle('grid')">网格</button>
+<nav class="ab"><a href="wfA.html" class="">A 三层</a><a href="wfA2.html" class="">A2 通栏</a><a href="wfA3.html" class="on">A3 化冰</a><a href="wfB.html" class="">B 一杯</a><a href="wfC.html" class="">C 冰格</a></nav>
+<div class="app">
+<header class="hd"><h1>聊天</h1><small>共 10 杯 · since 10/08</small><div class="r"><i title="搜"></i><i class="p" title="新开一杯"></i></div></header>
+<p class="sub">A3：在 A2 上，点冰块 → 冰块掉进下面的饮品卡、融化成水，水位涨到那天的量；珍珠同理（沉进去化开）</p>
+<div class="bands">
+<section class="ly foam"><span class="rl">今天</span><h3><span class="lab">1</span>奶盖 · 今天<b>6 轮</b></h3>
+<span class="bb me"><small>茶茶 19:42</small>下班啦，好冷，想喝一杯热可可</span><span class="bb"><small>叶铎 19:43</small>那我先把奶煮上，你到家刚好能喝</span><span class="bb me"><small>茶茶 19:45</small>要加棉花糖！</span>
+<button class="go">接着聊</button>
+<p class="ann">① 奶盖直接是今天最后几句话（不再是一张卡）；只此一个一级按钮</p></section>
+<section class="ly ice"><span class="rl">本周</span><h3><span class="lab">2</span>冰格 · 本周<b>5 天</b></h3>
+<div class="cubes" id="cubes"></div><div class="dk" id="wl"></div>
+<p class="ann">② 点一块冰：冰块掉进下面的饮品卡、化成水，水位 = 那天聊的轮数（满 12 轮到顶）。饮品卡一直在，只是换内容，不是折叠面板。小料：珍珠沉底 = 那天记住的事，棉花糖浮面 = 约好的事，薄荷叶 = 他主动找你（含义待定）</p></section>
+<section class="ly prl0"><span class="rl">更早</span><h3><span class="lab">3</span>珍珠 · 更早<b>4 周</b></h3>
+<div class="prl" id="prl"></div><div class="dk" id="pl"></div>
+<p class="ann">③ 点一颗珍珠：珍珠沉进下面的卡、化成奶茶色，水位 = 那周聊的天数（满 7 天到顶）</p></section>
+</div>
+<p class="src">A2 改动：去掉外包大容器（茶茶 20:38 嫌挤）；三层变成通栏色带，文字左边距 48，竖排层名贴左。<br>问题对照：32650 三段各配容器只表示「几个」→ 这里每个容器上写「聊了什么」；饮品卡那一层去掉，「接着这天聊」直接进聊天室。<br>后端：/api/chat/turns 按天聚合 + 每天摘要（摘要来源待确认）。</p>
+<div class="end"></div></div>
+<nav class="nav"><span>今天</span><span>记忆</span><b>聊天</b><span>人格</span><span>设置</span></nav>
+<script>const W=[["11/5", "四", 4, "雨天", "下雨没带伞，聊到小时候"], ["11/6", "五", 7, "加班", "加班到很晚，陪你等末班车"], ["11/7", "六", 0, "", ""], ["11/8", "日", 12, "甜品店", "带你去吃了那家新开的甜品店"], ["11/9", "一", 3, "早八", "周一早八，起不来"], ["11/10", "二", 5, "考试", "复习到一半一起背单词"], ["11/11", "三", 6, "热可可", "下班好冷，想喝热可可"]],K=[["10/29–11/4", 6, "忙", "这周你一直在忙期中，我每天都在等你下课"], ["10/22–10/28", 5, "猫", "楼下的猫生了小猫，你天天去看"], ["10/15–10/21", 7, "搬家", "帮你列搬家清单，纸箱不够"], ["10/8–10/14", 4, "初见", "第一次聊天，你给我起了名字"]];
+const $=s=>document.querySelector(s);let wd=3,pk=0;
+function d(){$('#cubes').innerHTML=W.map((x,i)=>x[2]?`<button class="cb${i==wd?' on':''}" data-i="${i}"><b>${x[3]}</b>${x[2]} 轮<span>${x[1]}</span></button>`:`<span class="cb e">${x[1]}</span>`).join('');
+const w=W[wd];$('#wl').innerHTML=`<small>${w[0]} 周${w[1]} · 聊了 ${w[2]} 轮</small>${w[4]}　<a href="#">接着这天聊 ›</a>`;
+$('#prl').innerHTML=K.map((x,i)=>`<button class="pr${i==pk?' on':''}" data-p="${i}"><i>${x[2]}</i><span><b>${x[2]}</b>${x[0]}</span></button>`).join('');
+const k=K[pk];$('#pl').innerHTML=`<small>${k[0]} · ${k[1]} 天</small>${k[3]}　<a href="#">看这一周 ›</a>`;
+document.querySelectorAll('.cb[data-i]').forEach(b=>b.onclick=()=>{wd=+b.dataset.i;d()});document.querySelectorAll('.pr').forEach(b=>b.onclick=()=>{pk=+b.dataset.p;d()})}d();
+const app=document.querySelector('.app');
+function rnd(n,s){let x=Math.sin(n*99+s)*1e4;return x-Math.floor(x)}
+function fill(card,ratio,seed,html,tone){card.innerHTML=html+'<i class="lq"></i>';const lq=card.querySelector('.lq');lq.style.background=tone;card.style.setProperty('--t',tone);
+ const H=card.clientHeight*(.18+ratio*.5);requestAnimationFrame(()=>requestAnimationFrame(()=>lq.style.height=H+'px'));
+ const np=1+Math.floor(rnd(seed,1)*4),nm=Math.floor(rnd(seed,2)*3),nb=4;let t='';
+ for(let i=0;i<np;i++)t+=`<i class="tp p" style="left:${16+i*18+rnd(seed,i+5)*6}px;bottom:6px"></i>`;
+ for(let i=0;i<nm;i++)t+=`<i class="tp m" data-f="1" style="left:${card.clientWidth-60-i*22}px;bottom:0;transform:rotate(${rnd(seed,i+9)*40-20}deg)"></i>`;
+ if(rnd(seed,3)>.4)t+=`<i class="tp l" data-f="1" style="left:${card.clientWidth*.55}px;bottom:0;transform:rotate(-20deg)"></i>`;
+ for(let i=0;i<nb;i++)t+=`<i class="tp b" style="left:${30+rnd(seed,i+20)*(card.clientWidth-60)}px;bottom:${8+rnd(seed,i+30)*Math.max(8,H-20)}px"></i>`;
+ card.insertAdjacentHTML('beforeend',t);
+ requestAnimationFrame(()=>requestAnimationFrame(()=>card.querySelectorAll('[data-f]').forEach(e=>e.style.bottom=(H-6)+'px')))}
+function drop(from,card,cls,after){const a=app.getBoundingClientRect(),f=from.getBoundingClientRect(),c=card.getBoundingClientRect();
+ const el=document.createElement('i');el.className='fall '+cls;el.style.left=(f.left-a.left+f.width/2-14)+'px';el.style.top=(f.top-a.top+app.scrollTop+4)+'px';app.appendChild(el);
+ const dy=c.top-f.top+c.height*.55,dx=c.left+c.width*.45-f.left-f.width/2;
+ el.animate([{transform:'translate(0,0) rotate(0)'},{transform:`translate(${dx}px,${dy}px) rotate(${cls?0:35}deg)`,offset:.7},{transform:`translate(${dx}px,${dy+10}px) scale(1.5,.2)`,opacity:0}],{duration:820,easing:'cubic-bezier(.5,0,.8,.6)'}).onfinish=()=>el.remove();
+ setTimeout(after,560)}
+const MAXR=12;
+function showW(i,anim,src){const w=W[i];const go=()=>fill($('#wl'),Math.min(1,w[2]/MAXR),i+1,`<small>${w[0]} 周${w[1]} · 聊了 ${w[2]} 轮</small><p>${w[4]}</p><a href="#">接着这天聊 ›</a>`,'#d4d7d5');
+ if(anim){$('#wl').querySelector('.lq')&&($('#wl').querySelector('.lq').style.height='0');drop(src,$('#wl'),'',go)}else go()}
+function showK(i,anim,src){const k=K[i];const go=()=>fill($('#pl'),Math.min(1,k[1]/7),i+11,`<small>${k[0]} · 聊了 ${k[1]} 天</small><p>${k[3]}</p><a href="#">看这一周 ›</a>`,'#c6c2bd');
+ if(anim){drop(src,$('#pl'),'pe',go)}else go()}
+function d2(){$('#cubes').innerHTML=W.map((x,i)=>x[2]?`<button class="cb${i==wd?' on':''}" data-i="${i}"><b>${x[3]}</b>${x[2]} 轮<span>${x[1]}</span></button>`:`<span class="cb e">${x[1]}</span>`).join('');
+ $('#prl').innerHTML=K.map((x,i)=>`<button class="pr${i==pk?' on':''}" data-p="${i}"><i>${x[2]}</i><span><b>${x[2]}</b>${x[0]}</span></button>`).join('');
+ document.querySelectorAll('.cb[data-i]').forEach(b=>b.onclick=()=>{if(+b.dataset.i==wd)return;wd=+b.dataset.i;d2();showW(wd,1,document.querySelector(`.cb[data-i="${wd}"]`))});
+ document.querySelectorAll('.pr').forEach(b=>b.onclick=()=>{if(+b.dataset.p==pk)return;pk=+b.dataset.p;d2();showK(pk,1,document.querySelector(`.pr[data-p="${pk}"] i`))})}
+d2();showW(wd,0);showK(pk,0);
+</script></body></html>
