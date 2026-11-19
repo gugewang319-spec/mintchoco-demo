@@ -54,7 +54,19 @@ body.grid .g{display:block}
 .cc .bx div{flex:1;height:72px;border-radius:6px;background:#dfe2e0;padding:8px;font-size:11px;color:#777}
 .cc .bx b{display:block;font-size:20px;color:#444;margin-top:8px}
 .ro{margin:8px 24px 0;min-height:72px;font-size:13px;line-height:24px;color:#666}.ro .h{display:flex;gap:8px;align-items:baseline;white-space:nowrap}.ro .h b{font-size:20px;color:#333;margin-left:auto}.ro .t{color:#999}.ro .ty{font-weight:700;color:#444}.ro .s{font-size:11px;color:#999;line-height:16px}
-.lc{margin:0 24px}.note{padding:24px 24px 160px;font-size:12px;color:#aaa;line-height:1.8}
+.lc{margin:0 24px}
+.dy{position:relative;margin:0 24px 8px 72px}
+.dy>button{height:32px;padding:0 12px;border:1.5px solid #bbb;border-radius:6px;background:#fff;font:13px system-ui;color:#555}
+.cal{position:absolute;left:0;top:40px;z-index:30;width:264px;background:#fff;border:1.5px solid #bbb;border-radius:6px;padding:8px;display:none}
+.dy.on .cal{display:block}
+.cal .mh{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#444;font-weight:700;height:32px}
+.cal .mh button{width:32px;height:32px;border:0;background:none;font:700 16px system-ui;color:#777}
+.cal .gr{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+.cal .wk{font-size:10px;color:#aaa;line-height:24px}
+.cal .d{height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;color:#555;border-radius:4px;cursor:pointer}
+.cal .d i{display:block;border-radius:50%;background:#9a9e9b}
+.cal .d.x{color:#ccc;cursor:default}.cal .d.cur{background:#e8ebe9;font-weight:700;color:#222}.cal .d.td{outline:1.5px solid #bbb}
+.note{padding:24px 24px 160px;font-size:12px;color:#aaa;line-height:1.8}
 .hint{color:#e0336a}
 </style>
 <body>
@@ -65,7 +77,8 @@ body.grid .g{display:block}
 <div class="rg" id="rg"><button id="rb" aria-haspopup="listbox">近 7 天 ▾</button><ul role="listbox"><li>今天</li><li class="cur">近 7 天</li><li>近 30 天</li></ul></div></header>
 <div class="tot"><div class="k" id="tk">近 7 天 用 量</div><div class="n" id="tn">128.4</div><div class="u">万 tokens · 调用 <b id="tc">947</b> 次</div><p class="cs" id="cs"></p></div>
 <svg class="fig" viewBox="0 0 364 492" id="fig"></svg><svg width="0" height="0" style="position:absolute"><defs><pattern id="hp2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#9a9e9b"/><line x1="0" y1="0" x2="0" y2="5" stroke="#6f7370" stroke-width="2"/></pattern></defs></svg>
-<section class="lc" style="margin-top:0"><ul id="cl"></ul><button class="mr" style="margin-left:48px">再看昨天</button></section>
+<div class="dy" id="dy"><button id="db">11月19日 周四 · 今天 ▾</button><div class="cal" id="cal"></div></div>
+<section class="lc" style="margin-top:0"><ul id="cl"></ul><button class="mr" id="pv" style="margin-left:48px">看前一天</button></section>
 <p class="note">灰稿 · 用量二级页（设置页点大字进来，设置页不再放秤）。母题：糖浆泵架，A 构图：聊天一大瓶当主角，另三瓶站右边阶梯架，注解直接写在图上；吧台前沿就是今天的时间轴，每次调用是从台沿滴下的一滴。字号三级 72 / 28 / 13，8 点网格，边距 24。范围就地小选单。数据为演示。</p>
 </div>
 <script>
@@ -83,7 +96,29 @@ const CL=[
 ['09:48','聊天','claude-sonnet-4.5',1980,220,1500,480,0],
 ['03:12','记忆整理','deepseek-chat',4100,610,null,null,null],
 ['01:20','聊天','claude-sonnet-4.5',2400,180,1900,500,0]];
-let pick=0;
+let pick=0;const TODAY=new Date(2026,10,19);let day=new Date(TODAY),calM=new Date(2026,10,1);const CL0=CL.slice();
+const WD='日一二三四五六';
+function rnd(seed){let x=seed%2147483647;return()=>(x=x*16807%2147483647)/2147483647}
+function genDay(dt){if(+dt==+TODAY)return CL0.slice();const r=rnd(dt.getFullYear()*400+dt.getMonth()*32+dt.getDate()),n=3+Math.floor(r()*10),out=[];
+ const M=[['聊天','claude-sonnet-4.5'],['聊天','deepseek-chat'],['记忆整理','deepseek-chat'],['检索','claude-haiku-4.5'],['检索','text-embedding-3-small'],['向量索引','text-embedding-3-small']];
+ for(let i=0;i<n;i++){const m=M[Math.floor(r()*M.length)],t=Math.floor(r()*1440),tm=String(t/60|0).padStart(2,'0')+':'+String(t%60).padStart(2,'0');
+  if(r()<.08){out.push([tm,m[0],m[1],null,null,null,null,null]);continue}
+  const inp=300+Math.floor(r()*5000),o=m[1].includes('embedding')?0:Math.floor(r()*600);
+  if(m[0]=='聊天'&&m[1].startsWith('claude')||m[1].includes('haiku')){const h=Math.floor(inp*r()*.8);out.push([tm,m[0],m[1],inp,o,h,inp-h,r()<.2?inp-h:0])}else out.push([tm,m[0],m[1],inp,o,null,null,null])}
+ return out.sort((a,b)=>b[0].localeCompare(a[0]))}
+function dayLabel(d){return `${d.getMonth()+1}月${d.getDate()}日 周${WD[d.getDay()]}`+(+d==+TODAY?' · 今天':'')}
+function dayTotal(d){if(d>TODAY)return -1;return genDay(d).reduce((a,c)=>a+(c[3]==null?0:c[3]+c[4]),0)}
+function cal(){const y=calM.getFullYear(),m=calM.getMonth(),first=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
+ let h=`<div class="mh"><button id="cp">‹</button><span>${y}年${m+1}月</span><button id="cn">›</button></div><div class="gr">`+[...WD].map(w=>`<div class="wk">${w}</div>`).join('');
+ for(let i=0;i<first;i++)h+='<div></div>';
+ for(let d=1;d<=n;d++){const dt=new Date(y,m,d),t=dayTotal(dt),x=t<0,sz=x?0:Math.max(3,Math.min(10,Math.sqrt(t)/14));
+  h+=`<div class="d${x?' x':''}${+dt==+day?' cur':''}${+dt==+TODAY?' td':''}" data-d="${d}">${d}${x?'':`<i style="width:${sz}px;height:${sz}px"></i>`}</div>`}
+ h+='</div>';$('#cal').innerHTML=h;
+ $('#cp').onclick=e=>{e.stopPropagation();calM=new Date(y,m-1,1);cal()};
+ $('#cn').onclick=e=>{e.stopPropagation();if(new Date(y,m+1,1)<=TODAY){calM=new Date(y,m+1,1);cal()}};
+ $('#cal').querySelectorAll('.d:not(.x)').forEach(el=>el.onclick=e=>{e.stopPropagation();setDay(new Date(y,m,+el.dataset.d));$('#dy').classList.remove('on')});}
+function setDay(d){day=d;CL.length=0;genDay(d).forEach(c=>CL.push(c));pick=0;$('#db').textContent=dayLabel(d)+' ▾';calM=new Date(d.getFullYear(),d.getMonth(),1);draw()}
+
 let ex=-1,more=0;
 function fmt(n){return n==null?'未知':n.toLocaleString('en-US')}
 const mins=t=>{const[h,m]=t.split(':');return h*60+ +m};
@@ -99,7 +134,7 @@ function drops(){const Y=382,X0=48,X1=352;let h='';
    h+=`<clipPath id="dc${k}"><path d="${d}"/></clipPath><path d="${d}" fill="#cfd2d0"/>`+(f>0?`<rect clip-path="url(#dc${k})" x="${cx-r}" y="${cy+r-H*f}" width="${2*r}" height="${H*f}" fill="url(#hp)"/>`:'')+`<path d="${d}" fill="none" stroke="${on?'#333':'#888'}" stroke-width="${on?2:1.2}" ${c[5]==null?'stroke-dasharray="2 2"':''}/>`}
   if(on)h+=`<text x="${cx}" y="${Y+52}" class="lt" style="font:700 10px system-ui;fill:#333">${c[0]}</text>`;
   h+='</g>'});
- h+=`<text x="48" y="${Y+92}" class="an">每一滴 = 今天一次调用 · 滴越大 tokens 越多</text><text x="48" y="${Y+106}" class="an">斜线 = 缓存命中 · 虚线边 = 没报缓存 · 虚线空滴 = 用量未知</text>`;
+ h+=`<text x="48" y="${Y+92}" class="an">每一滴 = 这一天一次调用 · 滴越大 tokens 越多</text><text x="48" y="${Y+106}" class="an">斜线 = 缓存命中 · 虚线边 = 没报缓存 · 虚线空滴 = 用量未知</text>`;
  return h}
 function drop(c,on){const unk=c[3]==null,t=unk?0:c[3]+c[4],r=unk?8:3+Math.sqrt(t)*.11,S=40,cx=S/2,cy=S-2-r;
  const d=`M${cx} ${cy-r*1.9} C${cx+r*.35} ${cy-r*1.2} ${cx+r} ${cy-r*.6} ${cx+r} ${cy} A${r} ${r} 0 1 1 ${cx-r} ${cy} C${cx-r} ${cy-r*.6} ${cx-r*.35} ${cy-r*1.2} ${cx} ${cy-r*1.9}Z`,sw=on?2:1.3,sc=on?'#333':'#777';
@@ -110,7 +145,7 @@ function list(){let h='',prev=null;
  CL.forEach((c,k)=>{if(sel>=0&&c[1]!=NM[sel])return;const unk=c[3]==null,tot=unk?'未知':fmt(c[3]+c[4]);
   const gap=prev==null?0:Math.min(32,Math.max(0,(mins(prev)-mins(c[0]))/6-4));prev=c[0];
   h+=`<li data-k="${k}" class="${k==pick?'on':''}" style="margin-top:${gap}px">${drop(c,k==pick)}<div class="tx"><div class="a"><span class="tm">${c[0]}</span><span class="ty">${c[1]}</span><b class="${unk?'uk':''}">${tot}</b></div><div class="md">${c[2]}</div><div class="b">`+(unk?'用量未知（上游没报）':`入 ${fmt(c[3])} · 出 ${fmt(c[4])}<br>`+(c[5]==null?'缓存：上游没报':`缓存命中 ${fmt(c[5])} · 未命中 ${fmt(c[6])} · 写入 ${fmt(c[7])}`))+`</div></div></li>`});
- if(!h)h='<li class="em">今天这一类没有调用</li>';
+ if(!h)h='<li class="em">这一天这一类没有调用</li>';
  $('#cl').innerHTML=h;$('#cl').querySelectorAll('li[data-k]').forEach(li=>li.onclick=()=>{pick=+li.dataset.k;draw()});}
 function bottle(x,bot,w,H,c,i,big){let h='';const top=bot-H,lv=Math.max(8,(H-6)*c[0]/R[cur].mx),ly=bot-3-lv;
   h+=`<g class="bt${sel==i?' sel':''}" data-i="${i}">`;
@@ -148,7 +183,9 @@ function draw(){const d=R[cur],f=$('#fig');d.mx=d.c[0][0];let h='<defs><pattern 
 }
 $('#rb').onclick=e=>{e.stopPropagation();$('#rg').classList.toggle('on')};
 document.querySelectorAll('.rg li').forEach(li=>li.onclick=()=>{cur=li.textContent;document.querySelectorAll('.rg li').forEach(x=>x.classList.toggle('cur',x==li));$('#rb').textContent=cur+' ▾';$('#rg').classList.remove('on');draw()});
-addEventListener('click',()=>$('#rg').classList.remove('on'));
+addEventListener('click',()=>{$('#rg').classList.remove('on');$('#dy').classList.remove('on')});
+$('#db').onclick=e=>{e.stopPropagation();cal();$('#dy').classList.toggle('on')};$('#cal').onclick=e=>e.stopPropagation();
+$('#pv').onclick=()=>setDay(new Date(day.getFullYear(),day.getMonth(),day.getDate()-1));
 if(location.hash=='#sel')sel=0;
 draw();addEventListener('resize',draw);
 </script>
