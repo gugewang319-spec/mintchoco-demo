@@ -1,0 +1,107 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>聊天页 灰稿 gb2 · 字漂在茶里</title>
+<style>
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#d9d9d9;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#333}
+/* 茶底固定不动，只是一层渐变 */
+.app{position:relative;max-width:430px;height:100%;margin:0 auto;overflow:hidden;background:linear-gradient(180deg,#f3f3f3 0%,#ececec 30%,#dedede 62%,#cbcbcb 100%)}
+.sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;z-index:2}.sc::-webkit-scrollbar{display:none}
+.page{position:relative;padding:0 0 150px}
+/* 页头跟着内容滚走，不浮在上面 */
+.top{display:flex;align-items:center;gap:10px;padding:42px 20px 0 24px}
+.top h1{font-size:28px;font-weight:800;flex:1}.top h1 small{font:italic 14px serif;color:#999;margin-left:4px}
+.rb{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.7);box-shadow:0 0 0 1px #fff inset,0 2px 6px rgba(0,0,0,.08)}
+.sec{position:relative;padding:0 24px}
+.sh{display:flex;align-items:baseline;gap:8px;margin:44px 0 14px}
+.sh b{font-size:17px;color:#444}.sh span{font-size:12px;color:#888;letter-spacing:.04em}
+.sh .n{margin-left:auto;font-weight:800;font-size:34px;color:#555;line-height:1}.sh .n i{font:400 12px system-ui;color:#888;font-style:normal;margin-left:3px}
+/* 今天：猫猫浮在液面，两句话直接写在茶里 */
+.today{position:relative;margin-top:26px;min-height:200px}
+.surf{position:absolute;left:-24px;right:-24px;top:74px;height:24px;pointer-events:none}
+.cat{position:relative;width:118px;height:92px;border-radius:50% 50% 44% 44%/62% 62% 38% 38%;background:#fff;box-shadow:0 0 0 2px #bbb inset;display:grid;place-items:center;font-size:11px;color:#999;cursor:pointer;transform-origin:50% 100%;z-index:1}
+.cat:before,.cat:after{content:"";position:absolute;top:-11px;width:24px;height:24px;background:#fff;border:2px solid #bbb;border-bottom:0;border-right:0;transform:rotate(45deg)}.cat:before{left:20px}.cat:after{right:20px}
+.tmeta{position:absolute;left:136px;top:8px;font-size:12px;color:#888}.tmeta b{font-size:17px;color:#444;margin-right:6px}
+.tmeta strong{display:block;font-size:34px;color:#555;margin-top:6px;line-height:1}.tmeta strong i{font:400 12px system-ui;color:#888;font-style:normal;margin-left:3px}
+.say{position:relative;margin-top:22px;cursor:pointer}
+.ln{position:relative;font-size:17px;line-height:1.6;color:#333;max-width:86%;will-change:transform}
+.ln+.ln{margin:10px 0 0 auto;text-align:right}
+.ln em{font-style:normal;font-size:12px;color:#888;margin-right:8px}
+.ln.mine em{margin:0 0 0 8px}
+/* 一行 = 一天：珍珠（大小=轮数）＋日期＋一句，没有框 */
+.day{position:relative;display:grid;grid-template-columns:44px 1fr;align-items:center;column-gap:10px;padding:12px 0;cursor:pointer;will-change:transform}
+.pl{justify-self:center;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff 0 10%,#9a9a9a 26%,#555 80%);box-shadow:0 2px 4px rgba(0,0,0,.18)}
+.dd{font-size:12px;color:#888;letter-spacing:.03em}.dd em{font-style:normal;font-weight:700;color:#555;margin-left:6px}
+.tx{font-size:15.5px;line-height:1.55;color:#333;margin-top:2px}
+.day.r{grid-template-columns:1fr 44px;text-align:right}.day.r .pl{grid-column:2;grid-row:1/3}.day.r>div{grid-column:1;grid-row:1/3}
+.day.l .pl{grid-row:1/3}
+/* 没聊的那天：一颗小气泡往上冒，旁边淡淡一个日期 */
+.gap{display:flex;align-items:center;gap:8px;padding:2px 0 2px 16px;font-size:11px;color:#aaa}
+.gap i{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1px #aaa;animation:up 2.6s ease-in-out infinite}
+.day.r+.gap{justify-content:flex-end;padding:2px 16px 2px 0}
+@keyframes up{0%,100%{transform:translateY(2px)}50%{transform:translateY(-4px)}}
+/* 更早：沉底的一周，几颗珍珠叠在一起（颗数=聊过的天数） */
+.wk .pl{width:16px;height:16px}
+.cl{position:relative;width:44px;height:30px;justify-self:center;grid-row:1/3}
+.cl .pl{position:absolute}
+.rp{position:absolute;border-radius:50%;border:1.5px solid rgba(120,120,120,.55);pointer-events:none;transform:translate(-50%,-50%)}
+.note{margin:40px 24px 0;font-size:11px;color:#999;line-height:1.7}
+.nav{position:absolute;left:16px;right:16px;bottom:20px;height:62px;border-radius:31px;background:rgba(255,255,255,.7);box-shadow:0 0 0 1px #fff inset,0 8px 20px -10px rgba(0,0,0,.3);z-index:5;display:grid;grid-template-columns:repeat(5,1fr);place-items:center;font-size:11px;color:#777}
+.nav .on{background:#ddd;border-radius:24px;padding:16px 14px}
+@media (prefers-reduced-motion:reduce){.gap i{animation:none}}
+</style></head><body>
+<div class="app">
+<div class="sc" id="sc"><div class="page" id="pg">
+ <div class="top"><h1>聊天<small>chats</small></h1><span class="rb"></span><span class="rb"></span></div>
+
+ <div class="sec">
+  <div class="today">
+   <svg class="surf" viewBox="0 0 412 24" preserveAspectRatio="none"><path id="sp" fill="none" stroke="#bbb" stroke-width="1.5"/></svg>
+   <div class="cat" id="cat">猫猫奶盖</div>
+   <div class="tmeta"><b>今天</b>11/11 周三<strong>6<i>轮 · 19:45</i></strong></div>
+   <div class="say" id="say">
+    <div class="ln"><em>他</em>那我先把奶煮上，你到家刚好能喝</div>
+    <div class="ln mine">要加棉花糖！<em>我</em></div>
+   </div>
+  </div>
+
+  <div class="sh"><b>本周</b><span>11/5 – 11/10</span><span class="n">31<i>轮</i></span></div>
+  <div id="wk"></div>
+
+  <div class="sh" style="margin-top:56px"><b>更早</b><span>10/8 – 11/4</span><span class="n">4<i>周</i></span></div>
+  <div id="ea"></div>
+ </div>
+ <p class="note">灰稿 gb2：没有任何框——不用泡泡、不用冰块装字。字直接漂在茶里，小料只当「标点」：一颗珍珠站在每一天前面，大小＝轮数；更早的一周是一小撮沉底珍珠，颗数＝那周聊过几天。茶底渐变固定不动。点一行：珍珠 Duang＋涟漪推开上下两行，再点一下进去（演示为 alert）。点猫猫直接进今天。</p>
+</div></div>
+<div class="nav"><span>今天</span><span>记忆</span><span class="on">聊天</span><span>人格</span><span>设置</span></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const wk=[['11/10 周二',12,'你说明天会不会下雪呀'],['11/9 周一',8,'今天的会开了三个小时，脑袋好空'],['11/8 周日',9,'带你去吃了那家新开的甜品店'],['11/7',0],['11/6 周五',2,'晚安'],['11/5',0]];
+let side=0,H='';
+wk.forEach(([d,n,t])=>{if(!n){H+=`<div class="gap"><i></i>${d}</div>`;return}const s=Math.round(12+n*1.6);
+ H+=`<div class="day ${side?'r':'l'}" data-go="${d}"><span class="pl" style="width:${s}px;height:${s}px"></span><div><div class="dd">${d}<em>${n} 轮</em></div><div class="tx">${t}</div></div></div>`;side^=1});
+$('#wk').innerHTML=H;
+const ea=[['10/29 – 11/4',5,'万圣节那天你给我讲了一个超吓人的故事'],['10/22 – 10/28',3,'这周你一直在忙期中'],['10/15 – 10/21',4,'第一次一起看的那部电影'],['10/8 – 10/14',2,'你说秋天最适合喝热可可']];
+const P=[[14,16],[2,8],[24,6],[10,0],[22,18]];
+$('#ea').innerHTML=ea.map(([d,n,t],i)=>`<div class="day wk ${i%2?'r':'l'}" data-go="${d}"><span class="cl">${P.slice(0,n).map(([x,y])=>`<span class="pl" style="left:${x}px;top:${y}px"></span>`).join('')}</span><div><div class="dd">${d}<em>${n} 天</em></div><div class="tx">${t}</div></div></div>`).join('');
+/* 弹簧 */
+const items=[...document.querySelectorAll('.day,.ln')].map(e=>({e,x:0,v:0,q:0,qv:0}));
+const cat={e:$('#cat'),x:0,v:0,q:0,qv:0};items.push(cat);
+const pg=$('#pg');let sel=null;
+function ripple(x,y){const r=document.createElement('i');r.className='rp';r.style.left=x+'px';r.style.top=y+'px';pg.appendChild(r);r.animate([{width:'0px',height:'0px',opacity:1},{width:'240px',height:'240px',opacity:0}],{duration:650,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>r.remove()}
+function hit(o){const pr=pg.getBoundingClientRect(),dot=o.e.querySelector('.pl,.cl')||o.e,r=dot.getBoundingClientRect(),cx=r.left-pr.left+r.width/2,cy=r.top-pr.top+r.height/2;ripple(cx,cy);
+ items.forEach(n=>{if(n===o)return;const q=n.e.getBoundingClientRect(),dy=q.top-pr.top+q.height/2-cy,dd=Math.abs(dy);if(dd<200)n.v+=Math.sign(dy||1)*(200-dd)*.5})}
+items.forEach(o=>o.e.addEventListener('click',()=>{o.qv-=9;
+ if(o===cat){hit(o);setTimeout(()=>alert('进今天的聊天'),300);return}
+ const k=o.e.dataset.go||'今天';if(sel===o){alert('进 '+k);return}
+ if(sel)sel.e.style.opacity='';sel=o;items.forEach(n=>n.e.style.opacity=(n===o||n===cat)?'':'.55');hit(o)}));
+const sc=$('#sc');let ly=0;sc.addEventListener('scroll',()=>{const v=Math.max(-30,Math.min(30,sc.scrollTop-ly));ly=sc.scrollTop;items.forEach(o=>o.v-=v*.35)},{passive:true});
+let last=performance.now();
+(function f(now){const dt=Math.min(.033,(now-last)/1000),t=now/1000;last=now;
+ let d='M0 12';for(let x=0;x<=412;x+=12)d+=` L${x} ${(12+Math.sin(x/38+t*1.4)*3+Math.sin(x/17-t*.9)*1.3).toFixed(1)}`;$('#sp').setAttribute('d',d);
+ items.forEach((o,i)=>{o.v+=(-110*o.x-9*o.v)*dt;o.x+=o.v*dt;o.qv+=(-300*o.q-7*o.qv)*dt;o.q+=o.qv*dt;
+  const by=Math.sin(t*1.3+i)*1.6,sq=o.q*.05;
+  if(o===cat)o.e.style.transform=`translateY(${(by+o.x).toFixed(1)}px) scale(${1+sq},${1-sq})`;
+  else{o.e.style.transform=`translateY(${(by+o.x).toFixed(1)}px)`;const p=o.e.querySelector('.pl,.cl');if(p)p.style.transform=`scale(${(1+sq*3).toFixed(3)},${(1-sq*3).toFixed(3)})`}});
+ requestAnimationFrame(f)})(last);
+</script></body></html>
