@@ -196,5 +196,7 @@ s=s.replace('</style>',CSS8+'</style>',1)
 s=s.replace('</style>','main .gl,main .duo .his,main .duo .mine,main .ice,main .tod{border:0!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.75),inset 0 1.5px 0 #fff,inset 0 -14px 22px -14px rgba(138,92,70,.22),inset 10px 0 18px -14px rgba(255,255,255,.9),0 14px 26px -16px rgba(74,48,39,.42)!important}\n</style>',1)
 # 05:43 茶茶：上半屏太空 → 大卡整体上移 60px（后面内容跟着上移）
 s=s.replace('</style>','main.v9{margin-top:-16px!important}main .tod{margin-top:0!important}\n</style>',1)
+# 05:46 茶茶：试试今天页饮品卡那圈白边（1px 白边+顶部白高光+柔投影；不加实时模糊，滚动性能）
+s=s.replace('</style>','main .gl,main .duo .his,main .duo .mine,main .ice,main .tod{border:1px solid rgba(255,255,255,.9)!important;box-shadow:inset 0 1px 0 #fff,0 10px 22px -16px rgba(74,48,39,.5)!important}\n</style>',1)
 open(R+'vb12.html','w').write(s)
 print(s.count('class="lqw"'),s.count(' dk '))

@@ -17,7 +17,7 @@ css='''
 .ego svg{width:14px;height:14px}
 .ehint{position:relative;padding:4px 0 2px;font:14px/1.6 WK;color:var(--ink)}
 .ehint b{display:block;font:16px/1.3 ZK;color:var(--ch);margin-bottom:4px}
-.ok.no i{background:#c9a48c!important}\n@media (prefers-reduced-motion:reduce){.etag{animation:none}}
+.ok.no i{background:#d9705f!important}.wbk .bd{background:#d9705f!important}\n@media (prefers-reduced-motion:reduce){.etag{animation:none}}
 '''
 s=s.replace('</style>',css+'</style>',1)
 # 页顶翻牌钟：没同步过
