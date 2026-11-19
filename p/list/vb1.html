@@ -240,9 +240,9 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .ic small{font:600 11px/1 Baloo;color:var(--cocoa)}.ic i{font:11px/1 ZK;font-style:normal;color:rgba(138,92,70,.7)}
 .ic.e .cb img{opacity:0}.ic.e .cb .gh{opacity:1;border-color:rgba(138,92,70,.25)}.ic.e{cursor:default}
 .ic.on .cb img{opacity:0;transition:opacity .2s}.ic.on .cb .gh{opacity:1}
-.ic.on b{background:linear-gradient(transparent 55%,rgba(63,154,128,.3) 55%)}
+
 /* 饮品卡：照今天页 */
-.dk{position:relative;overflow:hidden;isolation:isolate;margin:14px 4px 0;min-height:168px;padding:16px 18px 64px;border-radius:22px 22px 26px 26px;background:linear-gradient(170deg,rgba(255,253,248,.78),rgba(255,250,242,.52));border:1.2px solid var(--ol);box-shadow:inset 0 1.5px 0 #fff,0 12px 22px -16px rgba(74,48,39,.5)}
+.dk{position:relative;overflow:hidden;isolation:isolate;margin:14px 4px 0;min-height:190px;padding:16px 18px 22px;border-radius:22px 22px 26px 26px;background:linear-gradient(170deg,rgba(255,253,248,.78),rgba(255,250,242,.52));border:1.2px solid var(--ol);box-shadow:inset 0 1.5px 0 #fff,0 12px 22px -16px rgba(74,48,39,.5)}
 .dk .t{position:relative;z-index:4;display:flex;align-items:baseline;gap:8px}
 .dk .t b{font:700 20px/1 Baloo;color:var(--ch)}.dk .t i{font:12px/1 ZK;font-style:normal;color:#2f6e58;letter-spacing:.06em}.dk .t span{margin-left:auto;font:12px/1 ZK;color:var(--cocoa)}
 .dk p{position:relative;z-index:4;margin:10px 0 0;font:16px/1.6 WK;color:var(--ink)}
@@ -250,12 +250,13 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .dk .ft a{margin-left:auto;font:14px/1 ZK;color:var(--ch);text-decoration:none;letter-spacing:.06em;padding:8px 0}
 .dk .ft em{font-style:normal;white-space:nowrap;display:inline-flex;align-items:center;gap:3px}
 .dk .ft em s{display:inline-block;width:9px;height:9px;border-radius:50%;text-decoration:none}
-.lq{position:absolute;left:0;right:0;bottom:0;height:0;z-index:1;pointer-events:none;transition:height 1s cubic-bezier(.3,1.25,.5,1);background:linear-gradient(180deg,var(--l1),var(--l2))}
+.lqc{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.lq{display:none;position:absolute;left:0;right:0;bottom:0;height:0;z-index:1;pointer-events:none;transition:height 1s cubic-bezier(.3,1.25,.5,1);background:linear-gradient(180deg,var(--l1),var(--l2))}
 .lq::before{content:"";position:absolute;left:0;right:0;top:-7px;height:8px;background:var(--wave) repeat-x 0 0/56px 8px;animation:wv 5.6s linear infinite}
 @keyframes wv{to{background-position:56px 0}}
 .dk.mint{--l1:rgba(166,217,196,.42);--l2:rgba(120,196,168,.55);--wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='rgba(166,217,196,.42)'/%3E%3C/svg%3E")}
 .dk.tea{--l1:rgba(214,170,128,.38);--l2:rgba(190,140,100,.5);--wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='rgba(214,170,128,.38)'/%3E%3C/svg%3E")}
-.tp{position:absolute;z-index:2;pointer-events:none;transition:bottom 1s cubic-bezier(.3,1.25,.5,1),opacity .4s}
+.tp{position:absolute;z-index:2;pointer-events:none;transition:opacity .4s}
 .tp.pe{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%);box-shadow:0 0 0 .6px rgba(60,35,25,.5)}
 .tp.mm{width:14px;height:12px;border-radius:4px;background:linear-gradient(160deg,#fffdf7,#f1e6d6);box-shadow:inset -1px -1px 0 rgba(138,92,70,.25),0 0 0 .7px rgba(138,92,70,.4)}
 .tp.lf{width:24px}.tp.lf img{width:100%}
@@ -268,7 +269,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .pp .pb{flex:none;width:34px;height:34px;transform-origin:50% 80%}.pp .pb img{width:100%;height:100%}
 .pp span{display:flex;flex-direction:column;gap:4px}.pp b{font:15px/1.2 WK;font-weight:400;color:var(--ink)}.pp small{font:600 11px/1 Baloo;color:var(--cocoa)}
 .pp.on .pb img{opacity:0}.pp.on .pb{border-radius:50%;box-shadow:inset 0 0 0 1.3px rgba(138,92,70,.45)}
-.pp.on b{background:linear-gradient(transparent 55%,rgba(63,154,128,.3) 55%)}
+
 /* 水里的小装饰（固定层，不随滚动） */
 .wd{position:absolute;z-index:1;pointer-events:none;will-change:transform}
 .wd img{width:100%}
@@ -313,21 +314,26 @@ $('#pls').innerHTML=PW.map((p,i)=>`<button class="pp${i==pk?' on':''}" data-p="$
 const walls=[];
 const app=$('#app');
 function rnd(n,k){const x=Math.sin(n*91.7+k*13.3)*1e4;return x-Math.floor(x)}
-function fill(card,ratio,seed,head,txt,link,np,nm,nl){
- card.innerHTML=`<div class="t">${head}</div><p>${txt}</p><div class="ft"><em><s style="background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%)"></s>记住 ${np}</em><em><s style="border-radius:3px;background:#fbf3e6;box-shadow:0 0 0 .7px rgba(138,92,70,.5)"></s>约好 ${nm}</em><em><img src="bit1.png" alt="" style="width:12px">他找你 ${nl}</em><a href="#">${link} ›</a></div><i class="lq"></i>`;
- const lq=card.querySelector('.lq'),W=card.clientWidth,ft=card.querySelector('.ft'),room=card.clientHeight-ft.offsetTop-ft.offsetHeight-10,H=Math.round(Math.max(22,room*(.35+ratio*.65)));
- let t='';for(let i=0;i<np;i++)t+=`<i class="tp pe" style="left:${14+i*17+rnd(seed,i)*5}px;bottom:-14px" data-b="${4+rnd(seed,i+3)*5}"></i>`;
- for(let i=0;i<nm;i++)t+=`<i class="tp mm" data-f="1" style="left:${W-48-i*24-rnd(seed,i+7)*6}px;bottom:-14px;transform:rotate(${(rnd(seed,i+9)*44-22).toFixed(0)}deg)"></i>`;
- for(let i=0;i<nl;i++)t+=`<i class="tp lf" data-f="1" style="left:${W*.42+i*30}px;bottom:-24px;transform:rotate(${(-28+i*40)}deg)"><img src="${i%2?'bit5.png':'bit1.png'}" alt=""></i>`;
- for(let i=0;i<6;i++){const z=4+rnd(seed,i+20)*5;t+=`<i class="tp bb" style="width:${z}px;height:${z}px;left:${20+rnd(seed,i+30)*(W-40)}px;bottom:-12px" data-b="${8+rnd(seed,i+40)*Math.max(8,H-24)}"></i>`}
- card.insertAdjacentHTML('beforeend',t);
- requestAnimationFrame(()=>requestAnimationFrame(()=>{lq.style.height=H+'px';card.querySelectorAll('.tp').forEach(e=>{e.style.bottom=(e.dataset.f?H-5+rnd(seed,e.offsetLeft)*3:+e.dataset.b)+'px'})}))}
+const TP=[];
+function fill(card,ratio,seed,head,txt,link,np,nm,nl){const k=card.id=='dw'?'mint':'tea';
+ card.querySelectorAll(':scope>:not(.lqc)').forEach(e=>e.remove());TP.splice(0,TP.length,...TP.filter(q=>q.k!=k));
+ card.insertAdjacentHTML('beforeend',`<div class="t">${head}</div><p>${txt}</p><div class="ft"><em><s style="background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%)"></s>记住 ${np}</em><em><s style="border-radius:3px;background:#fbf3e6;box-shadow:0 0 0 .7px rgba(138,92,70,.5)"></s>约好 ${nm}</em><em><img src="bit1.png" alt="" style="width:12px">他找你 ${nl}</em><a href="#">${link} ›</a></div>`);
+ const W=card.clientWidth;(window._lv=window._lv||{})[k]=.5+.3*ratio;window.LQlv&&window.LQlv(k,.5+.3*ratio);
+ const add=(cls,x,html,o)=>{const e=document.createElement('i');e.className='tp '+cls;if(html)e.innerHTML=html;card.appendChild(e);TP.push(Object.assign({k,e,x},o))};
+ for(let i=0;i<np;i++)add('pe',14+i*17+rnd(seed,i)*5,'',{sink:1,p:2.4+rnd(seed,i)*1.5});
+ for(let i=0;i<nm;i++)add('mm',W-48-i*26-rnd(seed,i+7)*6,'',{fl:-5,r:rnd(seed,i+9)*44-22,p:3+rnd(seed,i)*1.4});
+ for(let i=0;i<nl;i++)add('lf',W*.38+i*34,`<img src="${i%2?'bit5.png':'bit1.png'}" alt="">`,{fl:-9,r:-28+i*40,p:3.6+i*.7});
+ for(let i=0;i<7;i++){const z=4+rnd(seed,i+20)*5;add('bb',20+rnd(seed,i+30)*(W-40),'',{bub:1,z,y:rnd(seed,i+40),v:.06+rnd(seed,i+50)*.08});TP[TP.length-1].e.style.cssText=`width:${z}px;height:${z}px`}}
+(function tpl(n){const T=n/1000;for(const q of TP){const lh=window.LQh?window.LQh(q.k):0,s=window.LQ?window.LQ(q.k,q.x):0;
+ if(q.sink){const u=window.LQu?window.LQu(q.k,q.x):0;q.e.style.left=(q.x+u*.6).toFixed(1)+'px';q.e.style.bottom=(4+Math.max(0,Math.sin(T*6.283/q.p+q.x))*3).toFixed(1)+'px'}
+ else if(q.bub){q.y=(q.y+q.v/60)%1;q.e.style.left=(q.x+Math.sin(T*2+q.x)*2).toFixed(1)+'px';q.e.style.bottom=(6+q.y*(lh-14)).toFixed(1)+'px';q.e.style.opacity=q.y>.9?(1-q.y)*10:1}
+ else{q.e.style.left=q.x+'px';q.e.style.bottom=(lh+s+q.fl+Math.sin(T*6.283/q.p+q.x)*1.5).toFixed(1)+'px';q.e.style.transform=`rotate(${(q.r+Math.sin(T*6.283/(q.p*1.3))*10+s*1.5).toFixed(1)}deg)`}}requestAnimationFrame(tpl)})(0);
 function drop(src,card,img,go){const A=app.getBoundingClientRect(),f=src.getBoundingClientRect(),c=card.getBoundingClientRect();
  const el=document.createElement('span');el.className='fall';el.innerHTML=`<img src="${img}" alt="">`;el.style.cssText=`left:${f.left-A.left}px;top:${f.top-A.top}px;width:${f.width}px;height:${f.height}px`;app.appendChild(el);
- const lq=card.querySelector('.lq');if(lq)lq.style.height=Math.round(card.clientHeight*.12)+'px';card.querySelectorAll('.tp').forEach(e=>e.style.opacity=0);
+ card.querySelectorAll('.tp').forEach(e=>e.style.opacity=0);
  const dx=c.left+c.width*.5-f.left-f.width/2,dy=c.bottom-c.height*.28-f.top-f.height/2;
  el.animate([{transform:'translate(0,0) rotate(0) scale(1)'},{transform:`translate(${dx*.5}px,${dy*.35}px) rotate(18deg) scale(1.05)`,offset:.35},{transform:`translate(${dx}px,${dy}px) rotate(40deg) scale(1)`,offset:.68},{transform:`translate(${dx}px,${dy+10}px) rotate(48deg) scale(1.5,.25)`,opacity:0}],{duration:900,easing:'cubic-bezier(.45,0,.75,.55)'}).onfinish=()=>el.remove();
- setTimeout(go,600)}
+ setTimeout(()=>{const k=card.id=='dw'?'mint':'tea';window.LQlv&&window.LQlv(k,.4,1);go();window.LQpoke&&window.LQpoke(k,.5)},600)}
 function showW(anim){const d=WK[wd];const go=()=>fill($('#dw'),Math.min(1,d[2]/12),wd+1,`<b>${d[0]}</b><i>周${d[1]}</i><span>聊了 ${d[2]} 轮</span>`,d[4],'接着这天聊',d[5],d[6],d[7]);anim?drop(anim,$('#dw'),'ice.png',go):go()}
 function showP(anim){const p=PW[pk];const go=()=>fill($('#dp'),Math.min(1,p[2]/7),pk+20,`<b>${p[0]} – ${p[1]}</b><span>聊了 ${p[2]} 天</span>`,p[4],'看这一周',p[5],p[6],p[7]);anim?drop(anim,$('#dp'),'pearl.png',go):go()}
 $$('.ic[data-i]').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(i==wd)return;const old=$('.ic.on');old&&old.classList.remove('on');const cb=b.querySelector('.cb');wd=i;b.classList.add('on');showW(cb)});
@@ -437,4 +443,4 @@ function frame(now){const raw=(now-last)/1000,dt=Math.min(.05,raw);last=now;cons
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[[".cap", "push:room", 1, 300], ["[aria-label=\"\u641c\u7d22\u804a\u5929\"]", "push:srch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=56"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".cap", "push:room", 1, 300], ["[aria-label=\"\u641c\u7d22\u804a\u5929\"]", "push:srch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=56"></script><script src="lq.js"></script><script>for(const k in window._lv)LQlv(k,_lv[k],1)</script></body></html>
