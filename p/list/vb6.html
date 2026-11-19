@@ -1,0 +1,220 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>vb4 · 茶茶的薄荷巧克力茶会 · 聊天</title>
+<style>
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:Script;src:url(script.ttf)}
+@font-face{font-family:WK;src:url(wenkai.ttf)}
+:root{--ch:#5b3a2c;--ink:#4a3027;--cocoa:#8a5c46;--mint3:#2f6e58;--mintb:#3f9a80;--mintl:#a6d9c4}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;color:var(--ink);font-family:system-ui,sans-serif}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+img{display:block;user-select:none;-webkit-user-drag:none}
+
+/* L1 底：薄荷竖条纹（杯壁上方）+ 杯底暖色，固定 */
+.vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+.app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,440px);overflow:hidden}
+.vp::after{content:"";position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(180deg,rgba(221,198,173,0),#ddc6ad 40%,#cfb193)}
+.btm{position:absolute;left:-4%;right:-4%;bottom:-8px;z-index:1;pointer-events:none}
+.btm img{width:100%}
+/* L2 远景：杯里远处慢慢漂的小料（固定，不随滚动） */
+#far2{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+#drift{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+#far2 .fz{position:absolute;will-change:transform}
+#far2 .fz img{width:100%;height:100%;object-fit:contain}
+.bub{position:absolute;z-index:2;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.95) 0 20%,rgba(255,255,255,.12) 46%);border:1px solid rgba(255,255,255,.75);animation:rise linear infinite;pointer-events:none}
+@keyframes rise{from{transform:translate(0,0);opacity:0}12%{opacity:1}50%{transform:translate(6px,-50vh)}88%{opacity:.9}to{transform:translate(-4px,-100vh);opacity:0}}
+
+/* 滚动区 */
+.scroller{position:absolute;inset:0;z-index:5;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+.content{position:relative;min-height:100%}
+.drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
+
+/* 页顶 */
+.lhead{position:sticky;top:0;z-index:20;transition:transform .38s cubic-bezier(.3,1.1,.5,1),opacity .3s;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 10px;isolation:isolate}
+.lhead::before{content:"";position:absolute;left:0;right:0;top:0;bottom:-16px;z-index:-1;pointer-events:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(232,246,240,.9),rgba(232,246,240,.5) 75%,rgba(232,246,240,0));-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+.ttl{position:relative}
+.ttl h1{font:32px/1 ZK;color:var(--ch);letter-spacing:.06em;position:relative;z-index:1}
+.ttl .sc{position:absolute;left:52px;top:-14px;font:22px/1 Script;color:rgba(63,154,128,.55);transform:rotate(-8deg);white-space:nowrap}
+.lbtns{display:flex;gap:10px}
+.lhead.hide{transform:translateY(-105%);opacity:0;pointer-events:none}
+.pearlbtn{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.85);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 8px 18px -12px rgba(74,48,39,.45)}
+.pearlbtn svg{stroke:#5b3a2c!important}
+.pearlbtn:active{transform:scale(.92)}
+
+/* ===== 场景 ===== */
+#scene{position:relative;z-index:3}
+#liq{position:absolute;left:0;top:0;width:100%;z-index:0;pointer-events:none;overflow:visible}
+#milk{position:absolute;left:0;top:0;width:100%;z-index:1;pointer-events:none}
+/* 字：不加框，直接写在奶茶里，只靠一圈同色柔光托住 */
+.ink{text-shadow:0 0 1px rgba(255,251,243,.9),0 0 8px rgba(255,249,238,.95),0 0 16px rgba(255,249,238,.6)}
+
+/* L3 近景：今天 */
+.near{position:relative;height:300px;z-index:3}
+.catw{position:absolute;left:4%;top:60px;width:clamp(134px,40vw,168px);aspect-ratio:560/407;transform-origin:50% 82%;cursor:pointer;will-change:transform}
+.catw img{width:100%}
+.catw .sub{position:absolute;left:3%;right:3%;height:31%;bottom:-1px;pointer-events:none;background:linear-gradient(180deg,rgba(210,180,148,0) 0,rgba(210,180,148,.42) 26%,rgba(200,166,132,.72) 100%);-webkit-mask:radial-gradient(52% 100% at 50% 100%,#000 58%,transparent 100%);mask:radial-gradient(52% 100% at 50% 100%,#000 58%,transparent 100%)}
+.catw .wl{position:absolute;left:-3%;right:-3%;height:16px;bottom:24%;border-radius:50%;border:1.6px solid rgba(255,252,244,.85);border-top-color:rgba(255,252,244,.25);pointer-events:none}
+.td{position:absolute;right:14px;top:6px;width:calc(100% - clamp(134px,40vw,168px) - 34px);z-index:4}
+.td .k{display:flex;align-items:baseline;gap:8px}
+.td .k b{font:26px/1 ZK;color:var(--ch);letter-spacing:.04em}
+.td .k span{font:700 14px/1 Baloo;color:var(--cocoa)}
+.td .big{display:flex;align-items:flex-end;gap:6px;margin-top:6px}
+.td .big strong{font:800 58px/.86 Baloo;color:var(--ch);letter-spacing:-1px;text-shadow:4px 4px 0 var(--mintl)}
+.td .big i{font:13px/1.4 WK;font-style:normal;color:var(--mint3);padding-bottom:4px}
+.td .ln{display:flex;gap:7px;margin-top:9px;font:15px/1.55 WK;color:var(--ink)}
+.td .ln em{flex:none;width:14px;font:12px/1.95 WK;font-style:normal;color:var(--mint3)}
+.td .ln.mine em{color:var(--cocoa)}
+.go{position:relative;margin-top:12px;padding:8px 0 6px;font:16px/1.2 WK;color:var(--ch);letter-spacing:.1em;text-decoration:underline dashed 1.2px var(--cocoa);text-underline-offset:6px;transform-origin:0 50%}
+.go i{font-style:normal;margin-left:4px;display:inline-block}
+.go:active{translate:0 1px}
+
+/* 段落：本周 / 更早 */
+.sec{position:relative;z-index:3}
+.sh{display:flex;align-items:flex-end;gap:10px;padding:0 20px}
+.sh b{font:20px/1 ZK;color:var(--ch);letter-spacing:.06em}
+.sh span{font:600 13px/1.2 Baloo;color:var(--cocoa)}
+.sh .ct{margin-left:auto;display:flex;align-items:flex-end;gap:4px}
+.sh .ct strong{font:800 36px/.8 Baloo;color:var(--ch);text-shadow:3px 3px 0 var(--mintl)}
+.sh .ct i{font:12px/1 WK;font-style:normal;color:var(--mint3)}
+.field{position:relative;margin-top:14px}
+.lead{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+.lead path{fill:none;stroke:rgba(138,92,70,.55);stroke-width:1.1;stroke-dasharray:1.5 3.2;stroke-linecap:round}
+.lead circle{fill:#fffaf1;stroke:rgba(138,92,70,.7);stroke-width:1.1}
+.lead .on path{stroke:var(--mint3);stroke-dasharray:none;stroke-width:1.3}
+.lead .on circle{fill:var(--mintl);stroke:var(--mint3)}
+.obj{position:absolute;padding:0;z-index:3;will-change:transform}
+.obj img{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.obj .gl{position:absolute;inset:-14px;border-radius:50%;z-index:-1;opacity:0;transition:opacity .35s;background:radial-gradient(closest-side,rgba(255,226,150,.6),rgba(255,226,150,0))}
+.obj.on .gl{opacity:1}
+.note{position:absolute;display:block;padding:4px 0 6px;z-index:4}
+.note .d{display:inline-flex;align-items:center;gap:6px;position:relative;font:700 13px/1 Baloo;color:var(--cocoa);letter-spacing:.02em}
+.note .d small{font:12px/1 WK;color:var(--mint3);letter-spacing:.04em}
+.note .d::before{content:"";position:absolute;left:-4px;right:-6px;bottom:-2px;height:9px;border-radius:4px 7px 5px 6px;background:rgba(166,217,196,.85);transform:scaleX(0) rotate(-1.5deg);transform-origin:0 50%;transition:transform .4s cubic-bezier(.3,1.2,.5,1);z-index:-1}
+.note .q{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:5px;font:14.5px/1.5 WK;color:var(--ink)}
+.note .row{display:flex;align-items:center;flex-wrap:wrap;gap:2px 10px}
+.note .gt{display:inline-block;text-decoration:underline dashed 1px var(--cocoa);text-underline-offset:4px;padding-bottom:3px;max-width:0;overflow:hidden;white-space:nowrap;opacity:0;font:12.5px/1 WK;color:var(--ch);letter-spacing:.04em;transition:max-width .35s,opacity .3s}
+.note.on .d::before{transform:scaleX(1) rotate(-1.5deg)}
+.note.on .gt{max-width:7em;opacity:1}
+.mid{margin-top:8px}
+.mid .field{height:372px}
+.far{margin-top:34px}
+.far .field{height:330px}
+
+/* L5 前景：漂在奶茶里的小料，各绕自己支点晃 */
+.fl{position:absolute;z-index:6;padding:0;will-change:transform}
+.fl img{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.tail{height:170px}
+
+/* 底栏 */
+.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,213,192,.7),rgba(228,213,192,0))}
+.pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
+.pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
+.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
+.tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
+.lowtier .lhead::before{-webkit-backdrop-filter:none;backdrop-filter:none}
+@media (prefers-reduced-motion:reduce){.bub{animation:none;display:none}#milk{display:none}}
+
+/* ===== vb6 气泡即对话框 ===== */
+.scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;z-index:3}
+.content{background:linear-gradient(180deg,#e8f4ee 0,#ece7d8 150px,#e9ecdf 330px,#eadfcf 640px,#ddc6ad 1050px,#d2b597 1400px,#c9aa8b 100%)}
+#bub{position:relative;height:1500px}
+.surf{position:absolute;left:0;width:100%;top:182px;height:40px;pointer-events:none}
+.flt{position:absolute;pointer-events:none;opacity:.9;animation:flt var(--p,6s) ease-in-out infinite alternate}
+@keyframes flt{from{transform:translateY(-5px) rotate(calc(var(--r,0deg) - 6deg))}to{transform:translateY(5px) rotate(calc(var(--r,0deg) + 6deg))}}
+.lb{position:absolute;display:flex;align-items:baseline;gap:7px;font:13px/1 WK;color:#7a5a4c}
+.lb b{font:21px/1 ZK;color:var(--ink);letter-spacing:.04em}
+.ct{position:absolute;font:800 40px/1 Baloo;color:var(--ch)}.ct i{font:400 13px WK;color:#7a5a4c;font-style:normal;margin-left:3px}
+.catw2{position:absolute;left:10px;top:118px;width:min(168px,41vw);aspect-ratio:560/407;transform-origin:50% 85%;cursor:pointer}
+.catw2 img{width:100%;display:block}
+.tdm{position:absolute;left:24px;top:252px;font:13px/1.4 WK;color:#7a5a4c}.tdm strong{font:800 40px/1 Baloo;color:var(--ch);margin-right:4px}
+.b{position:absolute;border-radius:50%;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+ background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.98) 0 5%,rgba(255,255,255,.0) 12%),radial-gradient(circle at 50% 46%,rgba(255,253,247,.78) 0 50%,rgba(250,244,232,.6) 78%,rgba(214,236,226,.62) 100%);
+ box-shadow:inset 0 0 0 1.3px rgba(255,255,255,.95),inset -8px -12px 18px rgba(138,92,70,.10),inset 6px 8px 14px rgba(255,255,255,.7),0 6px 14px -6px rgba(74,48,39,.22)}
+.b:before{content:"";position:absolute;right:16%;bottom:12%;width:22%;height:9%;border-radius:50%;background:rgba(255,255,255,.55);rotate:-35deg}
+.b.w{background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.98) 0 5%,rgba(255,255,255,0) 12%),radial-gradient(circle at 50% 46%,rgba(250,253,250,.76) 0 50%,rgba(226,243,235,.6) 80%,rgba(176,222,204,.6) 100%)}
+.b.e{background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.95) 0 5%,rgba(255,255,255,0) 12%),radial-gradient(circle at 50% 42%,rgba(255,250,242,.76) 0 48%,rgba(240,226,206,.62) 80%,rgba(205,176,146,.6) 100%)}
+.b .d{white-space:nowrap;font:12px/1.2 WK;color:#8a6a5a}.b .d em{font:700 13px Baloo;font-style:normal;color:var(--mint3);margin-left:5px}
+.b p{font:15px/1.55 WK;color:var(--ink);margin-top:4px}
+.b .who{font:12px WK;color:var(--mintb);margin-right:5px}
+.b.sel{box-shadow:inset 0 0 0 2px rgba(63,154,128,.85),inset -8px -12px 18px rgba(138,92,70,.10),inset 6px 8px 14px rgba(255,255,255,.7),0 8px 18px -6px rgba(47,110,88,.35)}
+.b .go{position:absolute;bottom:-22px;white-space:nowrap;font:12px WK;color:var(--mint3);opacity:0;transition:opacity .25s}
+.b.sel .go{opacity:1}
+.ice2{position:absolute;pointer-events:none;filter:drop-shadow(0 3px 3px rgba(74,48,39,.15))}
+.prl{position:absolute;pointer-events:none}
+.mn{position:absolute;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:10px Baloo;color:#8a6a5a;background:radial-gradient(circle at 32% 26%,#fff 0 9%,rgba(255,255,255,0) 18%),rgba(255,253,247,.42);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9)}
+.rp{position:absolute;border-radius:50%;pointer-events:none;border:1.6px solid rgba(255,252,244,.95);box-shadow:0 0 0 1px rgba(63,154,128,.18)}
+</style></head>
+<body>
+<div class="vp"><div class="app" id="app">
+ <div class="scroller" id="sc"><div class="content" id="content">
+  <img class="drizzle" src="today-bg.png" alt="">
+  <header class="lhead"><div class="ttl"><span class="sc" aria-hidden="true">chats</span><h1>聊天</h1></div><div class="lbtns"><button class="pearlbtn" aria-label="搜索聊天"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button><button class="pearlbtn" aria-label="筛选"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M7 12h10M10 17h4"/></svg></button></div></header>
+  <div id="bub"></div>
+ </div></div>
+ <div class="navfade" aria-hidden="true"></div>
+<nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
+<button class="tab"><span style="position:relative;display:inline-flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="16.5" rx="2.6" fill="#c4e8da"/><path d="M8.2 3v16.5"/><path d="M13.7 13.4c-1.9-1.3-2.9-2.3-2.9-3.4a1.45 1.45 0 0 1 2.9-.5 1.45 1.45 0 0 1 2.9.5c0 1.1-1 2.1-2.9 3.4Z" fill="#5b3a2c" stroke="none"/><path d="M14.6 19.5v3l1.3-1 1.3 1v-3" fill="#fbf6ea"/></svg><span class="dot"></span></span><span>记忆</span></button>
+<button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1 0-1.9-.1-2.8-.4L4.8 19.6l1.3-3.5C4.6 14.8 3.5 13.1 3.5 11.2c0-3.9 3.8-7 8.5-7Z" fill="#c4e8da"/><circle cx="8.6" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="15.4" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/></svg><span>聊天</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 21c.5-3.8 3.6-6.3 7.5-6.3s7 2.5 7.5 6.3Z" fill="#c4e8da"/><circle cx="12" cy="8.6" r="4.6" fill="#c4e8da"/><circle cx="10.3" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><circle cx="13.7" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><ellipse cx="9.4" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/><ellipse cx="14.6" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/></svg><span>人格</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
+</nav>
+</div></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const pg=$('#bub'),sc=$('#sc');
+const el=(tag,c,h,s)=>{const e=document.createElement(tag);if(c)e.className=c;if(h)e.innerHTML=h;Object.assign(e.style,s||{});pg.appendChild(e);return e};
+const W=Math.min(innerWidth,440),K=Math.min(1,W/412);
+/* 背景里漂着的小料（被半透明泡泡透出来） */
+const BITS=['bit1.png','bit2.png','bit4.png','bit5.png','bit6.png','bit3.png','bit9.png','bit12.png'];
+[[.84,60],[.06,330],[.9,470],[.48,560],[.04,760],[.86,880],[.42,1010],[.08,1150],[.88,1260],[.55,1360],[.25,420],[.66,700],[.3,220],[.62,1180],[.18,600],[.74,1100]].forEach(([x,y],i)=>{el('img','flt','',{left:(x*W)+'px',top:y+'px',width:(16+(i*7)%14)+'px','--p':(4.5+(i%4))+'s','--r':((i*47)%60-30)+'deg'}).src=BITS[i%BITS.length]});
+/* 液面 */
+const sf=el('div','surf');sf.innerHTML=`<svg width="100%" height="40" viewBox="0 0 412 40" preserveAspectRatio="none"><path id="sp" fill="rgba(255,252,244,.28)"/><path id="sl" fill="none" stroke="rgba(255,253,246,.95)" stroke-width="1.8"/></svg>`;
+/* 今天 */
+el('div','lb','<b>今天</b>11/11 周三',{left:'26px',top:'96px'});
+const cat=el('div','catw2','<img src="catfoam.png" alt="今天的猫猫奶盖">');
+el('div','tdm','<strong>6</strong>轮 · 19:45',{});
+const B=[];
+function bub(cls,x,y,d,html){const e=el('div','b '+cls,html+'<span class="go">再点一下 去聊</span>',{left:x+'px',top:y+'px',width:d+'px',height:d+'px',padding:Math.round(d*.15)+'px'});const o={e,s:{x:0,v:0},q:{x:0,v:0},ph:Math.random()*6.28,per:3+Math.random()*2};B.push(o);return o}
+bub('t',W-Math.round(170*K)-28,96,Math.round(170*K),'<p><span class="who">他</span>那我先把奶煮上，你到家刚好能喝</p>');
+bub('t',W-Math.round(112*K)-30,262,Math.round(112*K),'<p><span class="who">我</span>要加棉花糖！</p>');
+/* 本周 */
+el('div','lb','<b>本周</b>11/5 – 11/10',{left:'24px',top:'392px'});el('div','ct','31<i>轮</i>',{right:'24px',top:'378px'});
+const wk=[['11/10 周二',12,'你说明天会不会下雪呀'],['11/9 周一',8,'今天的会开了三个小时，脑袋好空'],['11/8 周日',9,'带你去吃了那家新开的甜品店'],['11/7',0],['11/6 周五',2,'晚安'],['11/5',0]];
+let y=440,side=0;
+wk.forEach(([d,n,t],i)=>{if(!n){const m=el('div','mn',d,{left:(side?W-96:84)+'px',top:(y+4)+'px'});B.push({e:m,s:{x:0,v:0},q:{x:0,v:0},ph:i,per:4});y+=44;return}
+ const D=Math.round((112+n*5.5)*K),x=side?W-D-22:22;bub('w',x,y,D,`<span class="d">${d}<em>${n} 轮</em></span><p>${t}</p>`);
+ const iw=Math.round(34+n*1.6);const ic=el('img','ice2','',{width:iw+'px',left:(side?x-iw*.35:x+D-iw*.65)+'px',top:(y+D*.6)+'px',rotate:(side?14:-12)+'deg'});ic.src='ice.png';
+ side^=1;y+=D*.8});
+/* 更早 */
+y+=70;el('div','lb','<b>更早</b>10/8 – 11/4',{left:'24px',top:y+'px'});el('div','ct','4<i>周</i>',{right:'24px',top:(y-14)+'px'});y+=46;
+const ea=[['10/29 – 11/4','万圣节那天你给我讲了一个超吓人的故事'],['10/22 – 10/28','这周你一直在忙期中'],['10/15 – 10/21','第一次一起看的那部电影'],['10/8 – 10/14','你说秋天最适合喝热可可']];
+ea.forEach(([d,t],i)=>{const D=Math.round(138*K),x=i%2?W-D-30:30;bub('e',x,y,D,`<span class="d">${d}</span><p style="font-size:13px">${t}</p>`);const p=el('img','prl','',{width:'24px',left:(x+D/2-12)+'px',top:(y+D-14)+'px'});p.src='pearl.png';y+=104});
+pg.style.height=(y+150)+'px';
+/* 液面波动 */
+function surf(t){let d='M0 20',e='M0 20';for(let x=0;x<=412;x+=12){const v=20+Math.sin(x/38+t*1.4)*3+Math.sin(x/17-t*.9)*1.4;d+=` L${x} ${v.toFixed(1)}`;e+=` L${x} ${v.toFixed(1)}`}$('#sp').setAttribute('d',d+' L412 40 L0 40Z');$('#sl').setAttribute('d',e)}
+/* Duang */
+const CAT={e:cat,s:{x:0,v:0},q:{x:0,v:0},ph:0,per:5,cat:1};B.push(CAT);
+let sel=null;
+function ripple(cx,cy,R){const r=el('div','rp','',{left:cx+'px',top:cy+'px',width:'0',height:'0'});r.animate([{width:'0px',height:'0px',translate:'0 0',opacity:1},{width:R*2+'px',height:R*2+'px',translate:`-${R}px -${R}px`,opacity:0}],{duration:700,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>r.remove()}
+function push(o){const pr=pg.getBoundingClientRect(),r=o.e.getBoundingClientRect(),cx=r.left-pr.left+r.width/2,cy=r.top-pr.top+r.height/2;ripple(cx,cy,130);
+ B.forEach(n=>{if(n===o)return;const q=n.e.getBoundingClientRect(),dx=q.left-pr.left+q.width/2-cx,dy=q.top-pr.top+q.height/2-cy,dd=Math.hypot(dx,dy);if(dd<280)n.s.v+=(dy>=0?1:-1)*(280-dd)*.4})}
+function enter(o){o.e.animate([{scale:1},{scale:'1.18 .78'},{scale:1.35,opacity:0}],{duration:360,easing:'ease-in'}).onfinish=()=>{o.e.style.opacity=1;o.e.classList.remove('sel');sel=null}}
+B.forEach(o=>o.e.addEventListener('click',ev=>{ev.stopPropagation();o.q.v-=o.cat?11:10;
+ if(o.cat){push(o);setTimeout(()=>enter(o),260);return}
+ if(sel===o){enter(o);return}
+ if(sel)sel.e.classList.remove('sel');sel=o;o.e.classList.add('sel');push(o)}));
+let ly=sc.scrollTop;sc.addEventListener('scroll',()=>{const v=Math.max(-30,Math.min(30,sc.scrollTop-ly));ly=sc.scrollTop;B.forEach(o=>{o.q.v+=v*.05;o.s.v-=v*.5})},{passive:true});
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let last=performance.now();
+(function f(now){const dt=Math.min(.033,(now-last)/1000);last=now;const t=now/1000;
+ if(!RM)surf(t);
+ for(const o of B){o.s.v+=(-120*o.s.x-9*o.s.v)*dt;o.s.x+=o.s.v*dt;o.q.v+=(-280*o.q.x-6*o.q.v)*dt;o.q.x+=o.q.v*dt;
+  const by=RM?0:Math.sin(t*6.283/o.per+o.ph)*(o.cat?2:3.5),br=RM?0:Math.sin(t*6.283/(o.per*1.3)+o.ph)*.014,sq=o.q.x*.07;
+  o.e.style.transform=`translateY(${(by+o.s.x).toFixed(1)}px) scale(${(1+sq+br).toFixed(3)},${(1-sq-br).toFixed(3)})`}
+ requestAnimationFrame(f)})(last);
+surf(0);
+const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
+</script></body></html>
