@@ -45,7 +45,7 @@ main .tod.dk .in{padding-top:54px!important}
 .tod .key{font-weight:700!important}
 '''
 s=s.replace('</style>',CSS+'</style>',1)
-JS=r'''<script src="lq2.js"></script><script>(function(){const T='.key,.sub,p,b,small';function cut(){document.querySelectorAll('.dk').forEach(el=>{const lv=window.LQlv?LQlv(el.dataset.lq):0;if(!lv)return;const r=el.getBoundingClientRect(),y=r.top+r.height*(1-lv);el.querySelectorAll(T).forEach(t=>{{t.style.top='';const cs=getComputedStyle(t),lh=parseFloat(cs.lineHeight)||20,pt=parseFloat(cs.paddingTop)||0,tr=t.getBoundingClientRect(),c=y-tr.top-pt;let cut=c;if(c>2&&c<tr.height-pt-2){const m=c%lh,d=m<lh/2?m:m-lh;t.style.position='relative';t.style.top=d+'px';cut=c-d}t.style.setProperty('--cut',(pt+cut)+'px')}})})}addEventListener('load',cut);addEventListener('resize',cut);setTimeout(cut,300)})()</script><script>
+JS=r'''<script src="lq2.js"></script><script>
 /* 饮品卡里的小料：照今天页，各自周期、错开；减少动效时静止 */
 (()=>{const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,$$=(q,r=document)=>[...r.querySelectorAll(q)],D=[];
 const V=new Set(),io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?V.add(e.target):V.delete(e.target)),{rootMargin:'60px'});
@@ -151,8 +151,8 @@ s=re.sub(r'<img class="bgi bre (?:ic|lf|cu|pe)"[^>]*>',wan,s)
 # 液面只占卡底那一条（字下面），按卡高换算
 s=s.replace('<script src="lq2.js">','<script>document.querySelectorAll(".dk").forEach(e=>{e.dataset.lv=Math.min(.3,30/Math.max(60,e.offsetHeight)).toFixed(3)})</script><script src="lq2.js">',1)
 # —— 05:18 茶茶改选 B：字全泡进奶茶液面，奶白字；玻璃只留杯口一窄条放小料热气。字体换系统无衬线（她不喜欢文楷那种怪字）
-LQS='window.LQSPEC={cocoa:{top:"rgba(128,84,62,.86)",bot:"rgba(104,66,48,.92)"},boba:{top:"rgba(176,124,88,.86)",bot:"rgba(150,102,70,.92)"},latte:{top:"rgba(166,120,90,.84)",bot:"rgba(140,98,72,.9)"},soda:{top:"rgba(78,150,124,.84)",bot:"rgba(58,128,104,.9)"}};'
-s=s.replace('<script>document.querySelectorAll(".dk").forEach(e=>{e.dataset.lv=Math.min(.3,30/Math.max(60,e.offsetHeight)).toFixed(3)})</script>','<script>'+LQS+'</script>',1)
+LQS0='window.LQSPEC={cocoa:{top:"rgba(128,84,62,.86)",bot:"rgba(104,66,48,.92)"},boba:{top:"rgba(176,124,88,.86)",bot:"rgba(150,102,70,.92)"},latte:{top:"rgba(166,120,90,.84)",bot:"rgba(140,98,72,.9)"},soda:{top:"rgba(78,150,124,.84)",bot:"rgba(58,128,104,.9)"}};'
+s=s.replace('<script>document.querySelectorAll(".dk").forEach(e=>{e.dataset.lv=Math.min(.3,30/Math.max(60,e.offsetHeight)).toFixed(3)})</script>','<script>window.LQSPEC={cocoa:{lv:.5},boba:{lv:.5}}</script>',1)
 CSS5="""main .tod .key,main .tod .sub,main .duo p,main .ice p,main .ice b{font-family:-apple-system,"PingFang SC","HarmonyOS Sans SC","MiSans","Noto Sans SC","Source Han Sans SC",sans-serif!important}
 main .tod .key{font-weight:600!important;font-size:19px!important}
 /* 水位还原（各杯原液面）；字跟着液面换色：液面上是巧克力色，泡进奶茶的部分是奶白 */
@@ -161,5 +161,6 @@ main .tod .sub,main .ice small,main .tod .side small{--tc:#7a5a4a;--tw:rgba(255,
 main .tod i.k,main .duo p i{color:transparent!important;-webkit-text-fill-color:transparent;opacity:.6}
 """
 s=s.replace('</style>',CSS5+'</style>',1)
+s=s.replace('</style>','/* 05:24 茶茶：照 vb1（07c06ef）的饮品卡做——可可细描边、上圆下更圆、奶白渐变玻璃、浅色液面过半、字是墨色文楷直接写在杯里，不换色不加特效 */\nmain .gl,main .duo .his,main .duo .mine,main .ice,main .tod{border:1.2px solid #8a5c46!important;border-radius:22px 22px 26px 26px!important;background:linear-gradient(170deg,rgba(255,253,248,.78),rgba(255,250,242,.52))!important;box-shadow:inset 0 1.5px 0 #fff,0 12px 22px -16px rgba(74,48,39,.5)!important}\nmain .tod .key,main .tod .sub,main .duo p,main .ice p,main .ice b,main .ice small,main .tod .side small{color:#4a3027!important;-webkit-text-fill-color:currentColor!important;background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;top:0!important}\nmain .duo p,main .ice p{font:16px/1.6 WK!important;letter-spacing:0!important}\nmain .tod .key{font:18px/1.6 WK!important;font-weight:400!important}\nmain .tod .sub{font:15px/1.6 WK!important;color:#7a5a4a!important}\nmain .ice b,main .rds b{font-family:Baloo,sans-serif!important}\nmain .ice small,main .tod .side small{font:12px/1.2 ZK!important;color:#8a5c46!important}\nmain .tod i.k,main .duo p i{-webkit-text-fill-color:currentColor!important;color:#2f6e58!important;opacity:1!important;font:12px/1.2 ZK!important;letter-spacing:.06em}\n'+'</style>',1)
 open(R+'vb12.html','w').write(s)
 print(s.count('class="lqw"'),s.count(' dk '))
