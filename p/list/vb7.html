@@ -1,0 +1,233 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>vb7 · 茶茶的薄荷巧克力茶会 · 聊天</title>
+<style>
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:Script;src:url(script.ttf)}
+@font-face{font-family:WK;src:url(wenkai.ttf)}
+:root{--ch:#5b3a2c;--ink:#4a3027;--cocoa:#8a5c46;--mint3:#2f6e58;--mintb:#3f9a80;--mintl:#a6d9c4}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;color:var(--ink);font-family:system-ui,sans-serif}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+img{display:block;user-select:none;-webkit-user-drag:none}
+
+/* L1 底：薄荷竖条纹（杯壁上方）+ 杯底暖色，固定 */
+.vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+.app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,440px);overflow:hidden}
+.vp::after{content:"";position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(180deg,rgba(221,198,173,0),#ddc6ad 40%,#cfb193)}
+.btm{position:absolute;left:-4%;right:-4%;bottom:-8px;z-index:1;pointer-events:none}
+.btm img{width:100%}
+/* L2 远景：杯里远处慢慢漂的小料（固定，不随滚动） */
+#far2{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+#drift{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+#far2 .fz{position:absolute;will-change:transform}
+#far2 .fz img{width:100%;height:100%;object-fit:contain}
+.bub{position:absolute;z-index:2;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.95) 0 20%,rgba(255,255,255,.12) 46%);border:1px solid rgba(255,255,255,.75);animation:rise linear infinite;pointer-events:none}
+@keyframes rise{from{transform:translate(0,0);opacity:0}12%{opacity:1}50%{transform:translate(6px,-50vh)}88%{opacity:.9}to{transform:translate(-4px,-100vh);opacity:0}}
+
+/* 滚动区 */
+.scroller{position:absolute;inset:0;z-index:5;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+.content{position:relative;min-height:100%}
+.drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
+
+/* 页顶 */
+.lhead{position:sticky;top:0;z-index:20;transition:transform .38s cubic-bezier(.3,1.1,.5,1),opacity .3s;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 10px;isolation:isolate}
+.lhead::before{content:"";position:absolute;left:0;right:0;top:0;bottom:-16px;z-index:-1;pointer-events:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(232,246,240,.9),rgba(232,246,240,.5) 75%,rgba(232,246,240,0));-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+.ttl{position:relative}
+.ttl h1{font:32px/1 ZK;color:var(--ch);letter-spacing:.06em;position:relative;z-index:1}
+.ttl .sc{position:absolute;left:52px;top:-14px;font:22px/1 Script;color:rgba(63,154,128,.55);transform:rotate(-8deg);white-space:nowrap}
+.lbtns{display:flex;gap:10px}
+.lhead.hide{transform:translateY(-105%);opacity:0;pointer-events:none}
+.pearlbtn{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.85);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 8px 18px -12px rgba(74,48,39,.45)}
+.pearlbtn svg{stroke:#5b3a2c!important}
+.pearlbtn:active{transform:scale(.92)}
+
+/* ===== 场景 ===== */
+#scene{position:relative;z-index:3}
+#liq{position:absolute;left:0;top:0;width:100%;z-index:0;pointer-events:none;overflow:visible}
+#milk{position:absolute;left:0;top:0;width:100%;z-index:1;pointer-events:none}
+/* 字：不加框，直接写在奶茶里，只靠一圈同色柔光托住 */
+.ink{text-shadow:0 0 1px rgba(255,251,243,.9),0 0 8px rgba(255,249,238,.95),0 0 16px rgba(255,249,238,.6)}
+
+/* L3 近景：今天 */
+.near{position:relative;height:300px;z-index:3}
+.catw{position:absolute;left:4%;top:60px;width:clamp(134px,40vw,168px);aspect-ratio:560/407;transform-origin:50% 82%;cursor:pointer;will-change:transform}
+.catw img{width:100%}
+.catw .sub{position:absolute;left:3%;right:3%;height:31%;bottom:-1px;pointer-events:none;background:linear-gradient(180deg,rgba(210,180,148,0) 0,rgba(210,180,148,.42) 26%,rgba(200,166,132,.72) 100%);-webkit-mask:radial-gradient(52% 100% at 50% 100%,#000 58%,transparent 100%);mask:radial-gradient(52% 100% at 50% 100%,#000 58%,transparent 100%)}
+.catw .wl{position:absolute;left:-3%;right:-3%;height:16px;bottom:24%;border-radius:50%;border:1.6px solid rgba(255,252,244,.85);border-top-color:rgba(255,252,244,.25);pointer-events:none}
+.td{position:absolute;right:14px;top:6px;width:calc(100% - clamp(134px,40vw,168px) - 34px);z-index:4}
+.td .k{display:flex;align-items:baseline;gap:8px}
+.td .k b{font:26px/1 ZK;color:var(--ch);letter-spacing:.04em}
+.td .k span{font:700 14px/1 Baloo;color:var(--cocoa)}
+.td .big{display:flex;align-items:flex-end;gap:6px;margin-top:6px}
+.td .big strong{font:800 58px/.86 Baloo;color:var(--ch);letter-spacing:-1px;text-shadow:4px 4px 0 var(--mintl)}
+.td .big i{font:13px/1.4 WK;font-style:normal;color:var(--mint3);padding-bottom:4px}
+.td .ln{display:flex;gap:7px;margin-top:9px;font:15px/1.55 WK;color:var(--ink)}
+.td .ln em{flex:none;width:14px;font:12px/1.95 WK;font-style:normal;color:var(--mint3)}
+.td .ln.mine em{color:var(--cocoa)}
+.go{position:relative;margin-top:12px;padding:8px 0 6px;font:16px/1.2 WK;color:var(--ch);letter-spacing:.1em;text-decoration:underline dashed 1.2px var(--cocoa);text-underline-offset:6px;transform-origin:0 50%}
+.go i{font-style:normal;margin-left:4px;display:inline-block}
+.go:active{translate:0 1px}
+
+/* 段落：本周 / 更早 */
+.sec{position:relative;z-index:3}
+.sh{display:flex;align-items:flex-end;gap:10px;padding:0 20px}
+.sh b{font:20px/1 ZK;color:var(--ch);letter-spacing:.06em}
+.sh span{font:600 13px/1.2 Baloo;color:var(--cocoa)}
+.sh .ct{margin-left:auto;display:flex;align-items:flex-end;gap:4px}
+.sh .ct strong{font:800 36px/.8 Baloo;color:var(--ch);text-shadow:3px 3px 0 var(--mintl)}
+.sh .ct i{font:12px/1 WK;font-style:normal;color:var(--mint3)}
+.field{position:relative;margin-top:14px}
+.lead{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+.lead path{fill:none;stroke:rgba(138,92,70,.55);stroke-width:1.1;stroke-dasharray:1.5 3.2;stroke-linecap:round}
+.lead circle{fill:#fffaf1;stroke:rgba(138,92,70,.7);stroke-width:1.1}
+.lead .on path{stroke:var(--mint3);stroke-dasharray:none;stroke-width:1.3}
+.lead .on circle{fill:var(--mintl);stroke:var(--mint3)}
+.obj{position:absolute;padding:0;z-index:3;will-change:transform}
+.obj img{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.obj .gl{position:absolute;inset:-14px;border-radius:50%;z-index:-1;opacity:0;transition:opacity .35s;background:radial-gradient(closest-side,rgba(255,226,150,.6),rgba(255,226,150,0))}
+.obj.on .gl{opacity:1}
+.note{position:absolute;display:block;padding:4px 0 6px;z-index:4}
+.note .d{display:inline-flex;align-items:center;gap:6px;position:relative;font:700 13px/1 Baloo;color:var(--cocoa);letter-spacing:.02em}
+.note .d small{font:12px/1 WK;color:var(--mint3);letter-spacing:.04em}
+.note .d::before{content:"";position:absolute;left:-4px;right:-6px;bottom:-2px;height:9px;border-radius:4px 7px 5px 6px;background:rgba(166,217,196,.85);transform:scaleX(0) rotate(-1.5deg);transform-origin:0 50%;transition:transform .4s cubic-bezier(.3,1.2,.5,1);z-index:-1}
+.note .q{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:5px;font:14.5px/1.5 WK;color:var(--ink)}
+.note .row{display:flex;align-items:center;flex-wrap:wrap;gap:2px 10px}
+.note .gt{display:inline-block;text-decoration:underline dashed 1px var(--cocoa);text-underline-offset:4px;padding-bottom:3px;max-width:0;overflow:hidden;white-space:nowrap;opacity:0;font:12.5px/1 WK;color:var(--ch);letter-spacing:.04em;transition:max-width .35s,opacity .3s}
+.note.on .d::before{transform:scaleX(1) rotate(-1.5deg)}
+.note.on .gt{max-width:7em;opacity:1}
+.mid{margin-top:8px}
+.mid .field{height:372px}
+.far{margin-top:34px}
+.far .field{height:330px}
+
+/* L5 前景：漂在奶茶里的小料，各绕自己支点晃 */
+.fl{position:absolute;z-index:6;padding:0;will-change:transform}
+.fl img{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.tail{height:170px}
+
+/* 底栏 */
+.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,213,192,.7),rgba(228,213,192,0))}
+.pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
+.pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
+.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
+.tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
+.lowtier .lhead::before{-webkit-backdrop-filter:none;backdrop-filter:none}
+@media (prefers-reduced-motion:reduce){.bub{animation:none;display:none}#milk{display:none}}
+
+/* ===== vb7 字漂在茶里（gb2 穿衣服） ===== */
+/* 底：固定不动，薄荷条纹往下化进奶茶 */
+.vp::after{display:none}
+.tea{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(236,231,216,0) 0%,rgba(236,231,216,0) 26%,rgba(234,223,207,.75) 48%,#e2cfb8 66%,#d6bb9f 84%,#cfb193 100%)}
+.btm{position:absolute;left:-4%;right:-4%;bottom:-8px;z-index:1;pointer-events:none}.btm img{width:100%;display:block}
+#far{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#far img{position:absolute;animation:fz ease-in-out infinite alternate}
+@keyframes fz{from{transform:translate(-4px,-6px) rotate(-8deg)}to{transform:translate(4px,6px) rotate(8deg)}}
+.rz{position:absolute;bottom:-12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.95) 0 20%,rgba(255,255,255,.12) 46%);border:1px solid rgba(255,255,255,.75);animation:rz linear infinite}
+@keyframes rz{0%{transform:translateY(0);opacity:0}10%{opacity:1}90%{opacity:.9}100%{transform:translateY(-105vh);opacity:0}}
+.scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;z-index:3}
+.content{background:none!important}
+/* 页头不吸顶，跟内容一起滚走 */
+.lhead{position:relative!important;transform:none!important;opacity:1!important}
+.lhead::before{display:none!important}
+.pg{position:relative;padding:0 24px 190px}
+.today{position:relative;margin-top:14px;min-height:150px}
+.surf{position:absolute;left:-24px;right:-24px;top:96px;height:24px;pointer-events:none;overflow:visible}
+.cat{position:relative;width:min(150px,38vw);transform-origin:50% 88%;cursor:pointer;z-index:1}
+.cat img{width:100%;display:block}
+.tmeta{position:absolute;left:calc(min(150px,38vw) + 14px);top:14px;font:13px WK;color:#7a5a4c}
+.tmeta b{font:21px ZK;color:var(--ink);letter-spacing:.04em;margin-right:6px}
+.tmeta strong{display:block;font:800 40px/1 Baloo;color:var(--ch);margin-top:8px}.tmeta strong i{font:400 13px WK;color:#7a5a4c;font-style:normal;margin-left:4px}
+.say{margin-top:20px}
+.ln{position:relative;font:17px/1.65 WK;color:var(--ink);max-width:88%;cursor:pointer}
+.ln+.ln{margin:8px 0 0 auto;text-align:right}
+.ln em{font:13px WK;font-style:normal;color:var(--mintb);margin-right:8px}.ln.mine em{margin:0 0 0 8px}
+.sh{display:flex;align-items:baseline;gap:8px;margin:48px 0 12px}
+.sh b{font:21px ZK;color:var(--ink);letter-spacing:.04em}.sh span{font:13px WK;color:#7a5a4c}
+.sh .n{margin-left:auto;font:800 40px/1 Baloo;color:var(--ch)}.sh .n i{font:400 13px WK;color:#7a5a4c;font-style:normal;margin-left:3px}
+.day{position:relative;display:grid;grid-template-columns:46px 1fr;align-items:center;column-gap:10px;padding:12px 0;cursor:pointer;transition:opacity .25s}
+.day.r{grid-template-columns:1fr 46px;text-align:right}
+.day .mk{grid-row:1/3;justify-self:center;position:relative}
+.day.r .mk{grid-column:2}.day.r>div{grid-column:1;grid-row:1/3}
+.day.l>div{grid-row:1/3}
+.dd{font:12.5px WK;color:#8a6a5a}.dd em{font:700 14px Baloo;font-style:normal;color:var(--mint3);margin-left:6px}
+.tx{font:16px/1.55 WK;color:var(--ink);margin-top:2px}
+.day.dim,.ln.dim{opacity:.45}
+/* 平涂手绘珍珠：可可描边 + 一颗小高光 */
+.pl{display:block;border-radius:50%;background:#6a4333;border:1.6px solid #8a5c46;position:relative}
+.pl::after{content:"";position:absolute;left:22%;top:18%;width:24%;height:24%;border-radius:50%;background:#fff6ea}
+.cl{position:relative;width:46px;height:34px}.cl .pl{position:absolute;width:17px;height:17px}
+/* 没聊的那天：一颗往上冒的小气泡 + 淡日期 */
+.gap{display:flex;align-items:center;gap:8px;padding:2px 0 2px 18px;font:12px Baloo;color:#9a7f70}
+.day.r+.gap{justify-content:flex-end;padding:2px 18px 2px 0}
+.gap i{width:10px;height:10px;border-radius:50%;border:1.3px solid rgba(138,92,70,.55);background:rgba(255,255,255,.5);animation:up 2.6s ease-in-out infinite}
+@keyframes up{0%,100%{transform:translateY(2px)}50%{transform:translateY(-4px)}}
+.rp{position:absolute;border-radius:50%;border:1.6px solid rgba(255,252,244,.95);pointer-events:none;transform:translate(-50%,-50%)}
+.btop{margin-top:56px}
+@media (prefers-reduced-motion:reduce){#far img,.rz,.gap i{animation:none}}
+</style></head><body>
+<div class="vp"><div class="app" id="app">
+ <div class="tea"></div><div id="far" aria-hidden="true"></div><div class="btm" aria-hidden="true"><img src="pearls.png" alt=""></div><div id="rzw" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+ <div class="scroller" id="sc"><div class="content" id="content">
+  <img class="drizzle" src="today-bg.png" alt="">
+  <header class="lhead"><div class="ttl"><span class="sc" aria-hidden="true">chats</span><h1>聊天</h1></div><div class="lbtns"><button class="pearlbtn" aria-label="搜索聊天"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button><button class="pearlbtn" aria-label="筛选"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M7 12h10M10 17h4"/></svg></button></div></header>
+  <div class="pg" id="pg">
+   <div class="today">
+    <svg class="surf" viewBox="0 0 412 24" preserveAspectRatio="none"><path id="sp" fill="none" stroke="rgba(255,253,246,.95)" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <div class="cat" id="cat"><img src="catfoam.png" alt="今天的猫猫奶盖"></div>
+    <div class="tmeta"><b>今天</b>11/11 周三<strong>6<i>轮 · 19:45</i></strong></div>
+   </div>
+   <div class="say">
+    <div class="ln" data-go="今天"><em>他</em>那我先把奶煮上，你到家刚好能喝</div>
+    <div class="ln mine" data-go="今天">要加棉花糖！<em>我</em></div>
+   </div>
+   <div class="sh"><b>本周</b><span>11/5 – 11/10</span><span class="n">31<i>轮</i></span></div>
+   <div id="wk"></div>
+   <div class="sh btop"><b>更早</b><span>10/8 – 11/4</span><span class="n">4<i>周</i></span></div>
+   <div id="ea"></div>
+  </div>
+ </div></div>
+ <div class="navfade" aria-hidden="true"></div>
+<nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
+<button class="tab"><span style="position:relative;display:inline-flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="16.5" rx="2.6" fill="#c4e8da"/><path d="M8.2 3v16.5"/><path d="M13.7 13.4c-1.9-1.3-2.9-2.3-2.9-3.4a1.45 1.45 0 0 1 2.9-.5 1.45 1.45 0 0 1 2.9.5c0 1.1-1 2.1-2.9 3.4Z" fill="#5b3a2c" stroke="none"/><path d="M14.6 19.5v3l1.3-1 1.3 1v-3" fill="#fbf6ea"/></svg><span class="dot"></span></span><span>记忆</span></button>
+<button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1 0-1.9-.1-2.8-.4L4.8 19.6l1.3-3.5C4.6 14.8 3.5 13.1 3.5 11.2c0-3.9 3.8-7 8.5-7Z" fill="#c4e8da"/><circle cx="8.6" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="15.4" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/></svg><span>聊天</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 21c.5-3.8 3.6-6.3 7.5-6.3s7 2.5 7.5 6.3Z" fill="#c4e8da"/><circle cx="12" cy="8.6" r="4.6" fill="#c4e8da"/><circle cx="10.3" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><circle cx="13.7" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><ellipse cx="9.4" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/><ellipse cx="14.6" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/></svg><span>人格</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
+</nav>
+</div></div>
+<script>
+const $=s=>document.querySelector(s);
+[['ice.png',30,8,58,.22],['pearl.png',16,70,64,.28],['ice.png',24,82,40,.18],['bit17.png',12,60,30,.3],['ice.png',20,40,70,.16],['bit1.png',14,88,22,.3],['bit5.png',13,14,36,.28],['pearl.png',12,30,84,.3]].forEach((z,i)=>{const e=document.createElement('img');e.src=z[0];e.alt='';e.style.cssText=`width:${z[1]}px;left:${z[2]}%;top:${z[3]}%;opacity:${z[4]};animation-duration:${7+i%4*2}s;animation-delay:-${i*1.3}s`;$('#far').appendChild(e)});
+for(let i=0;i<10;i++){const b=document.createElement('i');b.className='rz';const s=3+Math.random()*7;b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*96}%;animation-duration:${9+Math.random()*9}s;animation-delay:-${Math.random()*16}s`;$('#rzw').appendChild(b)}
+const wk=[['11/10 周二',12,'你说明天会不会下雪呀'],['11/9 周一',8,'今天的会开了三个小时，脑袋好空'],['11/8 周日',9,'带你去吃了那家新开的甜品店'],['11/7',0],['11/6 周五',2,'晚安'],['11/5',0]];
+let side=0,H='';
+wk.forEach(([d,n,t])=>{if(!n){H+=`<div class="gap"><i></i>${d}</div>`;return}const s=Math.round(13+n*1.5);
+ H+=`<div class="day ${side?'r':'l'}" data-go="${d}"><span class="mk"><span class="pl" style="width:${s}px;height:${s}px"></span></span><div><div class="dd">${d}<em>${n} 轮</em></div><div class="tx">${t}</div></div></div>`;side^=1});
+$('#wk').innerHTML=H;
+const ea=[['10/29 – 11/4',5,'万圣节那天你给我讲了一个超吓人的故事'],['10/22 – 10/28',3,'这周你一直在忙期中'],['10/15 – 10/21',4,'第一次一起看的那部电影'],['10/8 – 10/14',2,'你说秋天最适合喝热可可']];
+const P=[[14,16],[1,9],[26,8],[11,1],[24,0]];
+$('#ea').innerHTML=ea.map(([d,n,t],i)=>`<div class="day ${i%2?'r':'l'}" data-go="${d}"><span class="mk cl">${P.slice(0,n).map(([x,y])=>`<span class="pl" style="left:${x}px;top:${y}px"></span>`).join('')}</span><div><div class="dd">${d}<em>${n} 天</em></div><div class="tx">${t}</div></div></div>`).join('');
+const items=[...document.querySelectorAll('.day,.ln')].map(e=>({e,x:0,v:0,q:0,qv:0}));
+const cat={e:$('#cat'),x:0,v:0,q:0,qv:0,c:1};items.push(cat);
+const pg=$('#pg');let sel=null;
+function ripple(x,y){const r=document.createElement('i');r.className='rp';r.style.left=x+'px';r.style.top=y+'px';pg.appendChild(r);r.animate([{width:'0px',height:'0px',opacity:1},{width:'240px',height:'240px',opacity:0}],{duration:650,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>r.remove()}
+function hit(o){const pr=pg.getBoundingClientRect(),dot=o.e.querySelector('.mk')||o.e,r=dot.getBoundingClientRect(),cx=r.left-pr.left+r.width/2,cy=r.top-pr.top+r.height/2;ripple(cx,cy);
+ items.forEach(n=>{if(n===o)return;const q=n.e.getBoundingClientRect(),dy=q.top-pr.top+q.height/2-cy,dd=Math.abs(dy);if(dd<200)n.v+=Math.sign(dy||1)*(200-dd)*.5})}
+items.forEach(o=>o.e.addEventListener('click',()=>{o.qv-=9;
+ if(o.c){hit(o);setTimeout(()=>alert('进今天的聊天'),320);return}
+ if(sel===o){alert('进 '+o.e.dataset.go);return}
+ sel=o;items.forEach(n=>n.e.classList.toggle('dim',!(n===o||n.c)));hit(o)}));
+const sc=$('#sc');let ly=0;sc.addEventListener('scroll',()=>{const v=Math.max(-30,Math.min(30,sc.scrollTop-ly));ly=sc.scrollTop;items.forEach(o=>o.v-=v*.35)},{passive:true});
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let last=performance.now();
+(function f(now){const dt=Math.min(.033,(now-last)/1000),t=now/1000;last=now;
+ let d='M0 12';for(let x=0;x<=412;x+=12)d+=` L${x} ${(12+Math.sin(x/38+t*1.4)*3+Math.sin(x/17-t*.9)*1.3).toFixed(1)}`;$('#sp').setAttribute('d',d);
+ items.forEach((o,i)=>{o.v+=(-110*o.x-9*o.v)*dt;o.x+=o.v*dt;o.qv+=(-300*o.q-7*o.qv)*dt;o.q+=o.qv*dt;
+  const by=RM?0:Math.sin(t*1.3+i)*1.6,sq=o.q*.05;
+  if(o.c)o.e.style.transform=`translateY(${(by+o.x).toFixed(1)}px) scale(${(1+sq).toFixed(3)},${(1-sq).toFixed(3)})`;
+  else{o.e.style.transform=`translateY(${(by+o.x).toFixed(1)}px)`;const p=o.e.querySelector('.mk');if(p)p.style.transform=`scale(${(1+sq*3).toFixed(3)},${(1-sq*3).toFixed(3)})`}});
+ requestAnimationFrame(f)})(last);
+const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
+</script></body></html>
