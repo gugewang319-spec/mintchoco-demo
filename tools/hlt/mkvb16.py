@@ -37,3 +37,21 @@ t=open(R+'index.html').read()
 t=t.replace('</style>','.pp u:not(.e){background:radial-gradient(circle at 35% 30%,#b88566 0 9%,#8a5a40 20%,#4b2c1f 58%,#33201a 100%)!important;box-shadow:0 0 0 .8px rgba(60,35,25,.55),inset -2px -3px 4px rgba(30,18,12,.35)!important}\n</style>',1)
 open(R+'vb16b.html','w').write(t)
 print('ok b')
+
+# 05:51 茶茶：加手势退出手表 → 手表抬起后往下拖，跟手下移、微转、渐淡，松手超过 90px 就放回去，不够就弹回
+SW=r'''<script>
+(()=>{const up=document.getElementById('wup'),big=document.getElementById('wbig'),put=document.getElementById('wput');let y0=0,x0=0,dy=0,on=false,lock=0,id=null;
+big.addEventListener('pointerdown',e=>{if(!up.classList.contains('on'))return;x0=e.clientX;y0=e.clientY;dy=0;lock=0;on=true;id=e.pointerId});
+addEventListener('pointermove',e=>{if(!on||e.pointerId!==id)return;const dx=e.clientX-x0,d=e.clientY-y0;
+ if(!lock){if(Math.abs(dx)<6&&Math.abs(d)<6)return;lock=Math.abs(d)>Math.abs(dx)&&d>0?1:-1;if(lock>0)try{big.setPointerCapture(id)}catch(_){}}
+ if(lock<0)return;dy=Math.max(0,d);big.style.translate=`0 ${dy}px`;big.style.rotate=`${(dy*.03).toFixed(2)}deg`;up.style.setProperty('--wd',Math.max(0,1-dy/260).toFixed(3))},{passive:true});
+function end(){if(!on)return;on=false;if(lock<=0)return;const t=big.style.translate||'0 0',r=big.style.rotate||'0deg';big.style.translate='';big.style.rotate='';up.style.removeProperty('--wd');
+ if(dy>90){big.animate({translate:[t,'0 0'],rotate:[r,'0deg']},{duration:420,easing:'cubic-bezier(.5,0,.7,.4)'});put.click()}
+ else big.animate({translate:[t,'0 0'],rotate:[r,'0deg']},{duration:380,easing:'cubic-bezier(.3,1.4,.5,1)'});
+ big.addEventListener('click',ev=>{ev.stopPropagation()},{capture:true,once:true});}
+addEventListener('pointerup',end);addEventListener('pointercancel',end);
+})();</script>
+<style>.wbig{touch-action:pan-x;-webkit-user-select:none;user-select:none}.wup.on .wbig{opacity:var(--wd,1)}</style>'''
+for f in ['vb16.html','vb16b.html']:
+  t=open(R+f).read();t=t.replace('</body>',SW+'</body>',1);open(R+f,'w').write(t)
+print('ok swipe')

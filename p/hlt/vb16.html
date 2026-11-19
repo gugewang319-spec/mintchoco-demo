@@ -272,7 +272,7 @@ function draw(now){const dt=Math.min(50,now-last);last=now;const W=cv.width/DPR,
  for(let i=drops.length-1;i>=0;i--)if(drops[i].a<=0||drops[i].x<-10)drops.splice(i,1);
  if(!RM)requestAnimationFrame(draw)}
 requestAnimationFrame(draw);
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=57"></script><div class="wup" id="wup" aria-hidden="true"><div class="wbig" id="wbig"><svg class="wsv" viewBox="0 0 260 524" aria-hidden="true">
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=58"></script><div class="wup" id="wup" aria-hidden="true"><div class="wbig" id="wbig"><svg class="wsv" viewBox="0 0 260 524" aria-hidden="true">
 <path d="M84 150L90 22Q92 6 108 6H152Q168 6 170 22L176 150Z" fill="#c4e8da" stroke="#8a5c46" stroke-width="1.3"/>
 <path d="M96 146L101 26Q102 16 112 16H148Q158 16 159 26L164 146" fill="none" stroke="rgba(138,92,70,.45)" stroke-width="1" stroke-dasharray="3 3"/>
 <rect x="100" y="34" width="60" height="14" rx="7" fill="#e9d6c2" stroke="#8a5c46" stroke-width="1.2"/>
@@ -310,4 +310,16 @@ up.addEventListener('click',e=>{if(!e.target.closest('.wdial,.crown')&&!e.target
 sc.addEventListener('scroll',()=>{const n=Math.round(sc.scrollLeft/sc.clientWidth);dt.forEach((d,i)=>d.classList.toggle('on',i===n))},{passive:true});
 let ct=0;const cp=$('wcp');cp.onclick=()=>{try{navigator.clipboard.writeText($('wurl').textContent).catch(()=>{})}catch(e){}cp.classList.add('ok');cp.textContent='已复制';clearTimeout(ct);ct=setTimeout(()=>{cp.classList.remove('ok');cp.textContent='复制'},1600)};
 const ky=$('wkey'),sv=$('wsv');ky.oninput=()=>sv.disabled=!ky.value;sv.onclick=()=>{ky.value='';sv.disabled=true;window.MC&&MC.toast('密钥存好了')};
-})();</script></body></html>
+})();</script><script>
+(()=>{const up=document.getElementById('wup'),big=document.getElementById('wbig'),put=document.getElementById('wput');let y0=0,x0=0,dy=0,on=false,lock=0,id=null;
+big.addEventListener('pointerdown',e=>{if(!up.classList.contains('on'))return;x0=e.clientX;y0=e.clientY;dy=0;lock=0;on=true;id=e.pointerId});
+addEventListener('pointermove',e=>{if(!on||e.pointerId!==id)return;const dx=e.clientX-x0,d=e.clientY-y0;
+ if(!lock){if(Math.abs(dx)<6&&Math.abs(d)<6)return;lock=Math.abs(d)>Math.abs(dx)&&d>0?1:-1;if(lock>0)try{big.setPointerCapture(id)}catch(_){}}
+ if(lock<0)return;dy=Math.max(0,d);big.style.translate=`0 ${dy}px`;big.style.rotate=`${(dy*.03).toFixed(2)}deg`;up.style.setProperty('--wd',Math.max(0,1-dy/260).toFixed(3))},{passive:true});
+function end(){if(!on)return;on=false;if(lock<=0)return;const t=big.style.translate||'0 0',r=big.style.rotate||'0deg';big.style.translate='';big.style.rotate='';up.style.removeProperty('--wd');
+ if(dy>90){big.animate({translate:[t,'0 0'],rotate:[r,'0deg']},{duration:420,easing:'cubic-bezier(.5,0,.7,.4)'});put.click()}
+ else big.animate({translate:[t,'0 0'],rotate:[r,'0deg']},{duration:380,easing:'cubic-bezier(.3,1.4,.5,1)'});
+ big.addEventListener('click',ev=>{ev.stopPropagation()},{capture:true,once:true});}
+addEventListener('pointerup',end);addEventListener('pointercancel',end);
+})();</script>
+<style>.wbig{touch-action:pan-x;-webkit-user-select:none;user-select:none}.wup.on .wbig{opacity:var(--wd,1)}</style></body></html>
