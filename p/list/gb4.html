@@ -43,8 +43,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* 一天一对侧脉：左边他说的，右边你说的；聊得越多，两句坐得越近 */
 .pair{position:relative;display:flex;padding-top:22px;cursor:pointer}
 .pair .s{width:50%;font-size:14.5px;line-height:1.6;color:#333;transition:color .2s,opacity .2s}
-.pair .s.his{text-align:right;padding:0 var(--g) 0 34px}
-.pair .s.mine{padding:0 34px 0 var(--g)}
+.pair .s.his{text-align:right;padding:0 var(--g) 0 26px}
+.pair .s.mine{padding:0 26px 0 var(--g)}
 .pair .s em{display:block;font-style:normal;font-size:11px;color:#999;margin-bottom:2px}
 .today .pair .s{font-size:16.5px}
 /* 没聊的那天：主脉上一颗油腺小点 */
@@ -117,16 +117,14 @@ function draw(){
  const cat=$('#cat').getBoundingClientRect(),top=cat.bottom-pr.top-4;
  const last=[...document.querySelectorAll('.day.wk')].pop().getBoundingClientRect(),tip=last.bottom-pr.top+170;
  /* 外形：叶柄连着猫猫，往下张开再收成叶尖；边上细细的锯齿 */
- const Wm=mid-8,L=tip-top,pts=[],SH=y=>{const a=Math.min(1,Math.max(0,(y-18)/300));return Math.sqrt(1-(1-a)*(1-a))},WF=y=>{const t=Math.max(0,Math.min(1,y/L));return Wm*SH(y)*Math.pow(Math.sin(Math.PI*Math.pow(t,.4)),.45)};
- /* 叶柄：一小段细茎从猫猫下面伸出来 */
- og.appendChild(mk('path',{d:`M${mid} ${top-2} L${mid} ${top+22}`,stroke:'#bdbdbd','stroke-width':3,'stroke-linecap':'round'}));
- for(let y=0;y<=L;y+=11){const w=WF(y),z=(Math.round(y/11)%2?-2.6:0)*Math.min(1,w/30);pts.push([y,Math.max(0,w+z)])}
- let d=`M${mid} ${top+18}`;pts.forEach(([y,w])=>d+=` L${(mid-w).toFixed(1)} ${(top+y).toFixed(1)}`);d+=` L${mid} ${tip}`;
+ const Wm=mid-8,L=tip-top,pts=[];
+ for(let y=0;y<=L;y+=11){const t=y/L,w=Wm*Math.pow(Math.sin(Math.PI*Math.pow(t,.4)),.45),z=(Math.round(y/11)%2?-2.6:0)*Math.min(1,w/30);pts.push([y,Math.max(0,w+z)])}
+ let d=`M${mid} ${top}`;pts.forEach(([y,w])=>d+=` L${(mid-w).toFixed(1)} ${(top+y).toFixed(1)}`);d+=` L${mid} ${tip}`;
  [...pts].reverse().forEach(([y,w])=>d+=` L${(mid+w).toFixed(1)} ${(top+y).toFixed(1)}`);d+='Z';
  og.appendChild(mk('path',{d,fill:'rgba(255,255,255,.3)',stroke:'#bdbdbd','stroke-width':1.4,'stroke-linejoin':'round'}));
  /* 主脉：在日期、标题、细脉那句话处断开 */
  const holes=[...document.querySelectorAll('.node,.sh,.gland,.wk .one')].map(e=>{const r=e.getBoundingClientRect(),pad=e.classList.contains('gland')?-2:6;return[r.top-pr.top-pad,r.bottom-pr.top+pad]}).sort((a,b)=>a[0]-b[0]);
- let y0=top+18;holes.forEach(([a,b])=>{if(a>y0)vg.appendChild(mk('line',{x1:mid,y1:y0,x2:mid,y2:a,stroke:'#a8a8a8','stroke-width':2,'stroke-linecap':'round'}));y0=Math.max(y0,b)});
+ let y0=top;holes.forEach(([a,b])=>{if(a>y0)vg.appendChild(mk('line',{x1:mid,y1:y0,x2:mid,y2:a,stroke:'#a8a8a8','stroke-width':2,'stroke-linecap':'round'}));y0=Math.max(y0,b)});
  if(tip-10>y0)vg.appendChild(mk('line',{x1:mid,y1:y0,x2:mid,y2:tip-10,stroke:'#a8a8a8','stroke-width':1.4,'stroke-linecap':'round'}));
  /* 侧脉：从节点下方分出去，弯到两句话的里侧；继续淡淡延到叶缘 */
  document.querySelectorAll('.day').forEach(el=>{
@@ -138,7 +136,7 @@ function draw(){
    if(s){const g=parseFloat(getComputedStyle(el.querySelector('.pair')).getPropertyValue('--g')),em=s.querySelector('em').getBoundingClientRect();ex=mid+sg*(g-4);ey=em.top-pr.top+em.height/2}
    else{ex=mid+sg*58;ey=ny+5}
    const p=`M${mid} ${ny} C${mid} ${ny+8} ${mid+sg*(Math.abs(ex-mid)*.25)} ${ey} ${ex} ${ey}`;
-   const yy=ey-pr.top+pr.top, wAt=y=>WF(y-top);
+   const yy=ey-pr.top+pr.top, wAt=y=>{const t=Math.max(0,Math.min(1,(y-top)/L));return Wm*Math.pow(Math.sin(Math.PI*Math.pow(t,.4)),.45)};
    const edge=mid+sg*(wAt(ey-20)-6);
    if(!wk){vg.appendChild(mk('path',{d:`M${ex} ${ey} Q${(ex+edge)/2} ${ey-6} ${edge} ${ey-22}`,fill:'none',stroke:'#cfcfcf','stroke-width':1,'stroke-dasharray':'2 4','stroke-linecap':'round'}))}
    vg.appendChild(mk('path',{d:p,fill:'none',stroke:'#a8a8a8','stroke-width':wk?1:1.6,'stroke-linecap':'round'}));
