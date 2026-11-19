@@ -31,3 +31,9 @@ s=s.replace('<section><small>最近收到</small><b class="tt">10:52</b><span cl
 s=s.replace('onclick="document.getElementById(\'wbk\').click()"','onclick="document.getElementById(\'wbk\').click();setTimeout(()=>{const c=document.getElementById(\'scr\');c.scrollTo({left:c.clientWidth,behavior:\'smooth\'})},700)"',1)
 open(R+'vb16.html','w').write(s)
 print('ok')
+
+# 05:47 茶茶：装进杯里的珍珠要和聊天/今天页代码画的珍珠一样有体积，不能纯平 → vb16b = 连上手环状态
+t=open(R+'index.html').read()
+t=t.replace('</style>','.pp u:not(.e){background:radial-gradient(circle at 35% 30%,#b88566 0 9%,#8a5a40 20%,#4b2c1f 58%,#33201a 100%)!important;box-shadow:0 0 0 .8px rgba(60,35,25,.55),inset -2px -3px 4px rgba(30,18,12,.35)!important}\n</style>',1)
+open(R+'vb16b.html','w').write(t)
+print('ok b')
