@@ -396,4 +396,4 @@ $$('.tg',tabs).forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(i==tc)return;tc
  const l=b.offsetLeft-12,r=b.offsetLeft+b.offsetWidth-tabs.clientWidth+40;if(tabs.scrollLeft>l)tabs.scrollTo({left:l,behavior:'smooth'});else if(tabs.scrollLeft<r)tabs.scrollTo({left:r,behavior:'smooth'});
  tp.classList.add('out');setTimeout(()=>{tp.innerHTML=tpH(i);tp.classList.remove('out')},90)});
 const edge=()=>{tabs.classList.toggle('ml',tabs.scrollLeft>2);tabs.classList.toggle('mr',tabs.scrollLeft+tabs.clientWidth<tabs.scrollWidth-2)};tabs.addEventListener('scroll',edge,{passive:true});addEventListener('resize',edge);edge();
-</script><script>window.__DEMO_MAP=[[".lhead .back", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=59"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".lhead .back", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=60"></script></body></html>

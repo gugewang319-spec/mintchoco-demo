@@ -183,6 +183,8 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .idx button.on span{opacity:1}
 .tobot{position:fixed;z-index:39;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));width:42px;height:42px;margin-left:-21px;border-radius:50%;display:grid;place-items:center;background:rgba(252,250,244,.62);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 6px 16px rgba(74,48,39,.14);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .25s,transform .25s}
 .tobot.on{opacity:1;transform:none;pointer-events:auto}
+.tm small.hr{font:600 10px/1 Baloo,ZK;color:rgba(138,92,70,.6);margin-left:2px}
+/* 侧边黏糊小球 */.idx button.on::before{opacity:0}.idx .goo{position:absolute;left:0;top:0;width:22px;pointer-events:none;overflow:visible}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
 <img class="drizzle" src="today-bg.png" alt=""><div class="scn" aria-hidden="true"><img class="far" src="f-street.svg" style="left:-70px;bottom:70px;width:580px;opacity:.11;-webkit-mask-image:linear-gradient(transparent,#000 40%);mask-image:linear-gradient(transparent,#000 40%)" alt=""><img class="far" src="../set/f-sprig.svg" style="right:-120px;top:170px;width:270px;rotate:-70deg" alt=""><img class="" src="hb-moon.png" style="right:18px;top:62px;width:40px;rotate:-10deg" alt=""><img class="" src="hb-cat.png" style="right:-10px;bottom:92px;width:72px" alt=""><img class="" src="hb-milk.png" style="left:-10px;bottom:96px;width:56px" alt=""></div>
@@ -219,7 +221,7 @@ for(let n=0;n<30;n++){const L=[];
  L.push(['rest','08:10','静息心率',String(55+Math.floor(rnd()*7)),'次/分']);
  if(n>0||true){L.push(['steps','09:00','步数','+'+(1200+Math.floor(rnd()*2400)).toLocaleString('en'),'']);L.push(['heart','09:55',
  '心率',String(70+Math.floor(rnd()*25)),'次/分']);}
- L.push(['steps','12:30','步数','+'+(600+Math.floor(rnd()*1800)).toLocaleString('en'),'']);
+ L.push(['steps','12:30','步数','+'+(600+Math.floor(rnd()*1800)).toLocaleString('en'),'']);if(n%2===0)L.push(['steps','12:52','步数','+'+(200+Math.floor(rnd()*600)).toLocaleString('en'),'']);
  if(n>0){L.push(['heart','18:20','心率',String(68+Math.floor(rnd()*30)),'次/分']);L.push(['steps','20:40','步数','+'+(900+Math.floor(rnd()*3000)).toLocaleString('en'),''])}
  D.push(L.reverse())}
 const NM={'':'全部',steps:'步数',heart:'心率',rest:'静息心率',sleep:'睡眠'};
@@ -227,6 +229,10 @@ const RING=['M30 5C58 0 96 6 97 20C98 34 62 39 40 37C14 35 2 28 3 18C4 9 18 4 46
 const ring=i=>`<svg viewBox="0 0 100 40" preserveAspectRatio="none"><path pathLength="1" d="${RING[i%3]}" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
 
 const IC={steps:'<i class="ik ks"></i>',heart:'<i class="ik kh"></i>',rest:'<i class="ik kr"></i>',sleep:'<i class="ik km"></i>'};
+/* 06:20 茶茶同意：步数按小时合成一行（都是增量），心率/睡眠每条照写；不折叠 */
+function merge(L){const o=[],by={};L.forEach(r=>{if(r[0]!=='steps'){o.push(r);return}const h=r[1].slice(0,2),v=+r[3].replace(/[+,]/g,'');
+ if(by[h]){by[h].sum+=v;by[h].n++;by[h].r[3]='+'+by[h].sum.toLocaleString('en');by[h].r[1]=h+':00';by[h].r[5]=`<small class="hr">–${String(+h+1).padStart(2,'0')}:00 · ${by[h].n} 笔</small>`}
+ else{const c=r.slice();by[h]={sum:v,n:1,r:c};o.push(c)}});return o}
 const hx=t=>{const[h,m]=t.split(':').map(Number);return ((h*60+m)/1440*100).toFixed(1)};
 let kd='',rng='7',days=3;
 $('#flb').onclick=()=>{const o=$('#fl').classList.toggle('open');$('#flb').setAttribute('aria-expanded',o)};
@@ -235,12 +241,12 @@ function draw(){opts($('#kds'),Object.entries(NM),kd,v=>{kd=v;days=3;draw()});
  opts($('#dts'),[['7','最近 7 天'],['30','最近 30 天']],rng,v=>{rng=v;days=3;draw()});
  $('#sum').textContent=`${NM[kd]} · 最近 ${rng} 天`;render()}
 function render(){const N=+rng;const g=[];let tot=0;
- for(let n=0;n<N;n++){const h=D[n].filter(r=>!kd||r[0]===kd);if(h.length){g.push({n,h});tot+=h.length}}
+ for(let n=0;n<N;n++){const h=merge(D[n].filter(r=>!kd||r[0]===kd));if(h.length){g.push({n,h});tot+=h.length}}
  $('#cnt').innerHTML=`<b>${tot}</b> 条健康记录`;
  const show=g.slice(0,days);$('#more').hidden=g.length<=days;
  $('#res').innerHTML=show.map((x,k)=>{const d=ago(x.n);const lab=`${d.getMonth()+1}/${d.getDate()}`;return `<section class="tray day" data-l="${lab}">${k===0?'<img class="stk" src="st-star.png" alt="" style="right:20px;top:-16px;width:34px;rotate:12deg;--a:5deg">':''}<div class="dh"><span class="num">${lab}</span><small>周${WK[d.getDay()]}${x.n===0?' · 今天':x.n===1?' · 昨天':''}</small><b class="cnt">${x.h.length}<small>条</small></b></div>
  <div class="strip">${x.h.map(r=>`<i class="pn p-${r[0]}" style="left:${hx(r[1])}%"></i>`).join('')}</div><div class="sax"><span>0</span><span>6</span><span>12</span><span>18</span><span>24</span></div>${
-  x.h.map(r=>`<div class="r" aria-label="${r[1]} ${r[2]} ${r[3].replace(/<[^>]+>/g,'')}${r[4]}">${IC[r[0]]}<span class="tm">${r[1]}</span><span class="ld"></span><span class="vl">${r[3]}<small>${r[4]}</small></span></div>`).join('')}</section>`}).join('');
+  x.h.map(r=>`<div class="r" aria-label="${r[1]} ${r[2]} ${r[3].replace(/<[^>]+>/g,'')}${r[4]}">${IC[r[0]]}<span class="tm">${r[1]}${r[5]||''}</span><span class="ld"></span><span class="vl">${r[3]}<small>${r[4]}</small></span></div>`).join('')}</section>`}).join('');
  rail();
  $('#empty').hidden=!!g.length}
 $('#more').onclick=()=>{days+=3;render()};
@@ -248,10 +254,28 @@ $('#more').onclick=()=>{days+=3;render()};
 /* 侧边小球：每天一颗，当前那天变大薄荷球带日期 */
 const IDX=document.createElement('nav');IDX.className='idx';IDX.setAttribute('aria-label','按天跳');$('#app').appendChild(IDX);
 const sc=$('#page');let ht=0;
-function rail(){const ds=$$('#res .day');IDX.innerHTML=ds.map((d,i)=>`<button type="button" data-i="${i}"><span>${d.dataset.l}</span></button>`).join('');
+function rail(){const ds=$$('#res .day');IDX.innerHTML=ds.map((d,i)=>`<button type="button" data-i="${i}"><span>${d.dataset.l}</span></button>`).join('');gooInit(ds.length);
  IDX.querySelectorAll('button').forEach(b=>b.onclick=()=>{const t=ds[+b.dataset.i];sc.scrollTo({top:sc.scrollTop+t.getBoundingClientRect().top-sc.getBoundingClientRect().top-120,behavior:'smooth'})});pos()}
+/* 06:22 茶茶：切换时像一滴奶茶——拉出细腰滑到下一颗，远了就断开再合上（metaball 连接路径用 JS 算，不挂 filter；思路同 Hiroyuki Sato metaballs） */
+const GS='http://www.w3.org/2000/svg';let G=null,gk=-1,LY=0,TY=0,LV=0,TV=0,goY=0,gRaf=0;const R0=4.8;
+function gooInit(n){G=document.createElementNS(GS,'svg');G.setAttribute('class','goo');G.setAttribute('height',n*22);G.setAttribute('viewBox',`0 0 22 ${n*22}`);
+ G.innerHTML='<g fill="none" stroke="#8a5c46" stroke-width="2.4" id="gs"></g><g fill="#a6d9c4" id="gf"></g>';IDX.appendChild(G);gk=-1}
+const yOf=i=>i*22+10;
+function mb(r1,r2,y1,y2){const d=Math.abs(y2-y1);if(d<.5||d>(r1+r2)*2.2)return '';const sg=y2>y1?1:-1,c1={x:11,y:y1},c2={x:11,y:y2};
+ const u1=d<r1+r2?Math.acos((r1*r1+d*d-r2*r2)/(2*r1*d)):0,u2=d<r1+r2?Math.acos((r2*r2+d*d-r1*r1)/(2*r2*d)):0;
+ const ab=sg>0?Math.PI/2:-Math.PI/2,ms=Math.acos(Math.max(-1,Math.min(1,(r1-r2)/d))),v=.55;
+ const a1=ab+u1+(ms-u1)*v,a2=ab-u1-(ms-u1)*v,a3=ab+Math.PI-u2-(Math.PI-u2-ms)*v,a4=ab-Math.PI+u2+(Math.PI-u2-ms)*v;
+ const P=(c,r,a)=>({x:c.x+r*Math.cos(a),y:c.y+r*Math.sin(a)}),p1=P(c1,r1,a1),p2=P(c1,r1,a2),p3=P(c2,r2,a3),p4=P(c2,r2,a4);
+ const dd=Math.hypot(p1.x-p3.x,p1.y-p3.y),k=Math.min(v*2.4,dd/(r1+r2))*Math.min(1,d*2/(r1+r2));
+ const h1=P(p1,r1*k,a1-Math.PI/2),h2=P(p2,r1*k,a2+Math.PI/2),h3=P(p3,r2*k,a3+Math.PI/2),h4=P(p4,r2*k,a4-Math.PI/2),f=n=>n.toFixed(2);
+ return `M${f(p1.x)} ${f(p1.y)}C${f(h1.x)} ${f(h1.y)} ${f(h3.x)} ${f(h3.y)} ${f(p3.x)} ${f(p3.y)}L${f(p4.x)} ${f(p4.y)}C${f(h4.x)} ${f(h4.y)} ${f(h2.x)} ${f(h2.y)} ${f(p2.x)} ${f(p2.y)}Z`}
+function gooDraw(){const d=Math.abs(LY-TY),rl=R0*(1+.08*Math.min(1,d/20)),rt=R0*(1-.45*Math.min(1,d/26));const c=`<circle cx="11" cy="${LY.toFixed(2)}" r="${rl.toFixed(2)}"/>`+(rt>.6?`<circle cx="11" cy="${TY.toFixed(2)}" r="${rt.toFixed(2)}"/>`:'');
+ const n=mb(rl,Math.max(rt,.6),LY,TY);const sh=c+(n?`<path d="${n}"/>`:'');G.querySelector('#gs').innerHTML=sh;G.querySelector('#gf').innerHTML=sh}
+function gooTick(){LV=LV*.68+(goY-LY)*.2;LY+=LV;TV=TV*.76+(goY-TY)*.06;TY+=TV;gooDraw();
+ if(Math.abs(goY-LY)+Math.abs(goY-TY)+Math.abs(LV)+Math.abs(TV)>.05)gRaf=requestAnimationFrame(gooTick);else{LY=TY=goY;gooDraw();gRaf=0}}
+function gooTo(k){if(!G)return;goY=yOf(k);if(gk<0){LY=TY=goY;gooDraw()}else if(!gRaf&&!document.hidden)gRaf=requestAnimationFrame(gooTick);gk=k}
 function pos(){const ds=$$('#res .day');if(!ds.length)return;const mid=sc.getBoundingClientRect().top+sc.clientHeight*.4;let k=0;ds.forEach((d,i)=>{if(d.getBoundingClientRect().top<mid)k=i});
- IDX.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===k))}
+ IDX.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===k));if(k!==gk)gooTo(k)}
 sc.addEventListener('scroll',()=>{requestAnimationFrame(pos);IDX.classList.add('show');clearTimeout(ht);ht=setTimeout(()=>IDX.classList.remove('show'),1400)},{passive:true});
 /* 底栏上方毛玻璃小圆钮：滑动时藏，停下 0.45 秒出来，点了到底 */
 {const DB=document.createElement('button');DB.className='tobot';DB.setAttribute('aria-label','到底部');DB.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg>';$('#app').appendChild(DB);
@@ -264,4 +288,4 @@ sc.addEventListener('scroll',()=>{requestAnimationFrame(pos);IDX.classList.add('
  DB.addEventListener('click',()=>sc.scrollTo({top:sc.scrollHeight,behavior:'smooth'}))}
 draw();
 $('.back').onclick=()=>{const f=new URLSearchParams(location.search).get('from');location.href=/^(index|vb\d+[a-z]?|wf\d?)$/.test(f||'')?f+'.html':'index.html'};
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=59"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=60"></script></body></html>
