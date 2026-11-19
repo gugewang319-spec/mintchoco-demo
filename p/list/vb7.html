@@ -120,7 +120,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 /* ===== vb7 字漂在茶里（gb2 穿衣服） ===== */
 /* 底：固定不动，薄荷条纹往下化进奶茶 */
 .vp::after{display:none}
-.tea{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(236,231,216,0) 0%,rgba(236,231,216,0) 26%,rgba(234,223,207,.75) 48%,#e2cfb8 66%,#d6bb9f 84%,#cfb193 100%)}
+.tea{position:fixed;left:0;right:0;bottom:0;height:62vh;height:62lvh;pointer-events:none;background:linear-gradient(180deg,rgba(236,231,216,0) 0%,rgba(234,223,207,.75) 30%,#e2cfb8 55%,#d6bb9f 80%,#cfb193 100%)}
 .btm{position:absolute;left:-4%;right:-4%;bottom:-8px;z-index:1;pointer-events:none}.btm img{width:100%;display:block}
 #far{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 #far img{position:absolute;animation:fz ease-in-out infinite alternate}
@@ -129,9 +129,6 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 @keyframes rz{0%{transform:translateY(0);opacity:0}10%{opacity:1}90%{opacity:.9}100%{transform:translateY(-105vh);opacity:0}}
 .scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;z-index:3}
 .content{background:none!important}
-/* 页头不吸顶，跟内容一起滚走 */
-.lhead{position:relative!important;transform:none!important;opacity:1!important}
-.lhead::before{display:none!important}
 .pg{position:relative;padding:0 24px 190px}
 .today{position:relative;margin-top:14px;min-height:150px}
 .surf{position:absolute;left:-24px;right:-24px;top:96px;height:24px;pointer-events:none;overflow:visible}
@@ -230,4 +227,4 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let last=perform
   else{o.e.style.transform=`translateY(${(by+o.x).toFixed(1)}px)`;const p=o.e.querySelector('.mk');if(p)p.style.transform=`scale(${(1+sq*3).toFixed(3)},${(1-sq*3).toFixed(3)})`}});
  requestAnimationFrame(f)})(last);
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
-</script></body></html>
+</script><script src="../pfix.js?v=57"></script></body></html>
