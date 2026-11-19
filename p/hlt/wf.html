@@ -1,0 +1,58 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>健康 · 线框</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#e9ecea;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#555}
+.app{position:relative;width:min(100%,412px);margin:0 auto;height:100%;overflow-y:auto;background:#f4f5f4;scrollbar-width:none}
+.g{position:fixed;inset:0;pointer-events:none;width:min(100%,412px);margin:0 auto;z-index:50;display:none;background:repeating-linear-gradient(0deg,rgba(255,0,80,.07) 0 1px,transparent 1px 8px)}
+.g::before,.g::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgba(255,0,80,.35)}.g::before{left:24px}.g::after{right:24px}
+.g i{position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(255,0,80,.2)}
+body.grid .g{display:block}
+.hd{height:96px;padding:48px 24px 0;display:flex;align-items:center;gap:16px}
+.ci{width:36px;height:36px;border-radius:50%;background:#d6d9d7}
+.hd h1{font-size:20px;font-weight:700;color:#444}
+.hd .sp{margin-left:auto;font-size:12px;color:#999}
+.tag{font-size:13px;color:#888;letter-spacing:.15em}
+.hero{position:relative;height:284px;padding:24px 24px 0}
+.hero .big{font-size:clamp(56px,17vw,72px);font-weight:800;line-height:1;color:#333;margin-top:16px;letter-spacing:-.02em}
+.hero .u{font-size:13px;color:#888;margin-left:8px}
+.hero .note{font-size:13px;color:#888;margin-top:16px;line-height:1.6;max-width:56%}
+.hero .note b{color:#444}
+.cup{position:absolute;right:24px;top:40px;width:88px;height:216px;border:2px dashed #bbb;border-radius:8px 8px 32px 24px;display:grid;grid-template-columns:24px 24px;align-content:end;gap:8px;padding:16px}
+.cup span{width:24px;height:24px;border-radius:50%;background:#9a9e9b}.cup span.e{background:none;border:1.5px dashed #c4c7c5}
+.cup em{position:absolute;right:0;top:-24px;white-space:nowrap;text-align:right;font:12px/1 system-ui;color:#aaa;font-style:normal}
+.gap{height:40px}
+.pair{display:grid;grid-template-columns:1fr 1fr;padding:0 24px;column-gap:24px;height:120px}
+.rd .n{font-size:28px;font-weight:800;color:#444;margin-top:8px}.rd .n small{font-size:13px;font-weight:400;color:#888;margin-left:4px}
+.rd .s{font-size:13px;color:#999;margin-top:8px}
+.vis{height:24px;margin-top:8px;background:#dcdfdd;border-radius:4px}
+.moon{width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 70% 40%,#f4f5f4 0 9px,#9a9e9b 10px);margin-top:8px}
+.rec{padding:24px 24px 0}
+.rec .row{display:flex;gap:16px;align-items:center;height:48px;border-bottom:1px solid #e1e3e2;font-size:13px}
+.rec .t{width:40px;color:#999}.rec .k{flex:1;color:#555}.rec .v{font-weight:700;color:#444}
+.dot{width:8px;height:8px;border-radius:50%;background:#9a9e9b}
+.more{display:block;text-align:right;font-size:13px;color:#444;padding:16px 0 0;text-decoration:underline;text-underline-offset:4px}
+.src{padding:32px 24px 160px;font-size:12px;color:#aaa}
+.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:min(calc(100% - 32px),380px);height:64px;border-radius:32px;background:#dfe2e0;display:flex;align-items:center;justify-content:space-around;font-size:12px;color:#888;z-index:40}
+.lab{position:absolute;font-size:10px;color:#e0336a;font-family:monospace;letter-spacing:0}
+.tg{position:fixed;top:12px;left:max(24px,calc(50% - 182px));z-index:60;font-size:11px;color:#e0336a;background:#fff;border:1px solid #e0336a;border-radius:4px;padding:4px 8px}
+</style>
+<body>
+<div class="app">
+<div class="hd"><span class="ci"></span><h1>健康</h1><span class="sp">10:52 同步过</span></div>
+<section class="hero"><div class="tag">今天走了</div><div class="big">6,284<span class="u">步</span></div>
+<p class="note">比昨天多 <b>812</b> 步<br>目标 8,000，还差 <b>1,716</b></p>
+<div class="cup" aria-label="每颗珍珠 1000 步"><em>1 颗珍珠 = 1000 步</em><span class="e"></span><span class="e"></span><span></span><span></span><span></span><span></span><span></span><span></span></div></section>
+<div class="gap"></div>
+<section class="pair"><div class="rd"><div class="tag">心率</div><div class="n">72<small>次/分</small></div><div class="vis"></div><div class="s">静息 58</div></div>
+<div class="rd"><div class="tag">睡眠</div><div class="n">7<small>时</small>20<small>分</small></div><div class="moon"></div><div class="s">00:20–07:40</div></div></section>
+<section class="rec"><div class="tag">最近</div>
+<div class="row"><span class="t">10:48</span><span class="dot"></span><span class="k">心率</span><span class="v">72</span></div>
+<div class="row"><span class="t">10:30</span><span class="dot"></span><span class="k">步数</span><span class="v">+812</span></div>
+<div class="row"><span class="t">09:55</span><span class="dot"></span><span class="k">心率</span><span class="v">88</span></div>
+<a class="more" href="rec.html?from=wf">全部记录 ›</a></section>
+<div class="src">数据来自 Life Dashboard Companion · 接手环 ›</div>
+</div>
+<nav class="nav"><span>今天</span><span>记忆</span><span>聊天</span><span>人格</span><span>设置</span></nav>
+<div class="g"><i></i></div>
+<button class="tg" onclick="document.body.classList.toggle('grid')">网格</button>
+</body></html>
