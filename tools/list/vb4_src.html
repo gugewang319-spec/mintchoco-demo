@@ -20,6 +20,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .btm img{width:100%}
 /* L2 远景：杯里远处慢慢漂的小料（固定，不随滚动） */
 #far2{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+#drift{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
 #far2 .fz{position:absolute;will-change:transform}
 #far2 .fz img{width:100%;height:100%;object-fit:contain}
 .bub{position:absolute;z-index:2;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.95) 0 20%,rgba(255,255,255,.12) 46%);border:1px solid rgba(255,255,255,.75);animation:rise linear infinite;pointer-events:none}
@@ -117,7 +118,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 @media (prefers-reduced-motion:reduce){.bub{animation:none;display:none}#milk{display:none}}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
- <div id="far2" aria-hidden="true"></div>
+ <div id="far2" aria-hidden="true"></div><canvas id="drift" aria-hidden="true"></canvas>
  <div class="btm" aria-hidden="true"><img src="pearls.png" alt=""></div>
  <div class="scroller" id="sc"><div class="content" id="content">
   <img class="drizzle" src="today-bg.png" alt="">
@@ -134,7 +135,6 @@ img{display:block;user-select:none;-webkit-user-drag:none}
      <div class="big"><strong id="rn">6</strong><i>轮 · 周三 19:45</i></div>
      <div class="ln"><em>他</em><span>那我先把奶煮上，你到家刚好能喝</span></div>
      <div class="ln mine"><em>我</em><span>要加棉花糖！</span></div>
-     <button class="go" id="go">接着聊<i>›</i></button>
     </div>
    </section>
 
@@ -167,11 +167,11 @@ function build(){
  const fw=$('#fw'),fp=$('#fp');
  WK.forEach((d,i)=>{const p=IP[i];
   const o=document.createElement('button');o.className='obj ice';o.setAttribute('aria-label',d[0]+d[1]);o.style.cssText=`left:${p[0]}%;top:${p[1]}%;width:${p[2]}px;height:${p[2]*583/546}px`;o.innerHTML='<i class="gl"></i><img src="ice.png" alt="">';fw.appendChild(o);
-  const n=document.createElement('button');n.className='note ink';n.style.cssText=`left:56%;right:16px;top:${2+i*19.4}%`;n.innerHTML=`<span class="row"><span class="d">${d[0]}<small>${d[1]}</small></span><span class="gt">接着这天聊 ›</span></span><span class="q">${d[2]}</span>`;fw.appendChild(n);
+  const n=document.createElement('button');n.className='note ink';n.style.cssText=`left:56%;right:16px;top:${2+i*19.4}%`;n.innerHTML=`<span class="row"><span class="d">${d[0]}<small>${d[1]}</small></span></span><span class="q">${d[2]}</span>`;fw.appendChild(n);
   F.push({e:o,note:n,g:'w',i,rot:p[3],per:3.2+Math.random()*2.4,ph:Math.random()*6.28,a:4,ra:2.2,sq:{x:0,v:0},sp:{x:0,v:0}})});
  PW.forEach((d,i)=>{const p=PP[i];
   const o=document.createElement('button');o.className='obj prl';o.setAttribute('aria-label',d[0]+'–'+d[1]);o.style.cssText=`left:${p[0]}%;top:${p[1]}%;width:${p[2]}px;height:${p[2]}px`;o.innerHTML='<i class="gl"></i><img src="pearl.png" alt="">';fp.appendChild(o);
-  const n=document.createElement('button');n.className='note ink';n.style.cssText=`left:20px;right:47%;top:${2+i*24.5}%`;n.innerHTML=`<span class="row"><span class="d">${d[0]} – ${d[1]}<small>${d[3]} 天</small></span><span class="gt">看这周 ›</span></span><span class="q">${d[2]}</span>`;fp.appendChild(n);
+  const n=document.createElement('button');n.className='note ink';n.style.cssText=`left:20px;right:47%;top:${2+i*24.5}%`;n.innerHTML=`<span class="row"><span class="d">${d[0]} – ${d[1]}<small>${d[3]} 天</small></span></span><span class="q">${d[2]}</span>`;fp.appendChild(n);
   F.push({e:o,note:n,g:'p',i,rot:0,per:4+Math.random()*3,ph:Math.random()*6.28,a:2.2,ra:5,sq:{x:0,v:0},sp:{x:0,v:0}})});
  /* L5 前景小料：薄荷叶、巧克力卷、薄荷糖球 */
  [['bit1.png','near',30,'left:52%;top:250px',-20],['bit11.png','fw',16,'left:44%;top:62%',0],['bit0.png','fw',34,'left:42%;top:86%',18],['bit19.png','fp',30,'left:30%;top:94%',-30],['bit15.png','fp',18,'left:47%;top:92%',0]].forEach(g=>{
@@ -188,11 +188,10 @@ build();
 /* 猫猫 */
 const cat=$('#catw'),CAT={sq:{x:0,v:0},sp:{x:0,v:0}};
 /* 选中：物件和注释联动 */
-function pick(q){const was=q.e.classList.contains('on');F.forEach(o=>{if(o.g===q.g){o.e.classList.remove('on');o.note.classList.remove('on')}});if(!was){q.e.classList.add('on');q.note.classList.add('on')}q.sq.v+=-11;q.sp.v+=(Math.random()<.5?-1:1)*60;milkPuff(q.e,26)}
+function pick(q){const was=q.e.classList.contains('on');if(was){q.sq.v+=-14;return}F.forEach(o=>{if(o.g===q.g){o.e.classList.remove('on');o.note.classList.remove('on')}});if(!was){q.e.classList.add('on');q.note.classList.add('on')}q.sq.v+=-11;q.sp.v+=(Math.random()<.5?-1:1)*60}
 F.forEach(q=>{if(q.note){q.e.onclick=()=>pick(q);q.note.onclick=()=>pick(q)}else if(q.g==='fl'){q.e.onclick=()=>{q.sp.v+=(Math.random()<.5?-1:1)*260;q.sq.v-=6}}});
 const CJ={x:0,v:0};cat.onclick=()=>{CAT.sq.v-=34;CJ.v-=260;CAT.sp.v+=(Math.random()<.5?-1:1)*70;milkBurst(40)};
-$('#go').onclick=e=>{e.currentTarget.querySelector('i').animate([{translate:'0 0'},{translate:'5px 0'},{translate:'0 0'}],{duration:380,easing:'cubic-bezier(.3,1.5,.5,1)'})};
-setInterval(()=>{if(!RM.matches)$('#go i').animate([{translate:'0 0'},{translate:'3px 0'},{translate:'0 0'}],{duration:900,easing:'ease-in-out'})},3400);
+
 
 /* ===== 液面：略俯视的椭圆液面，水位 = 今天轮数 ===== */
 const scene=$('#scene'),liq=$('#liq'),near=$('#near');
@@ -226,24 +225,35 @@ function noise(x,y){const X=Math.floor(x)&255,Y=Math.floor(y)&255;x-=Math.floor(
 function curl(x,y,t){const s=.0085,e=.6,z=t*.07;const n1=noise(x*s,(y+e)*s+z),n2=noise(x*s,(y-e)*s+z),n3=noise((x+e)*s+z,y*s),n4=noise((x-e)*s+z,y*s);return[(n1-n2)/(2*e*s),-(n3-n4)/(2*e*s)]}
 const MAXP=tier?220:480;
 function emit(x,y,vx,vy,life,r0){if(P.length>=MAXP)return;P.push({x,y,vx,vy,age:0,life,r0,a:.9})}
-function milkBurst(n){const cx=cat.offsetLeft+cat.offsetWidth/2;for(let i=0;i<n;i++)emit(cx+(Math.random()-.5)*cat.offsetWidth*.5,catBase+6,(Math.random()-.5)*.6,.6+Math.random()*1.1,7+Math.random()*5,2+Math.random()*2)}
+function milkBurst(n){const cx=cat.offsetLeft+cat.offsetWidth/2;for(let i=0;i<n;i++)emit(cx+(Math.random()-.5)*cat.offsetWidth*.7,catBase+6,(Math.random()-.5)*.5,.4+Math.random()*.6,3.5+Math.random()*2.5,5+Math.random()*3)}
 function milkPuff(el,n){const r=el.getBoundingClientRect(),s=scene.getBoundingClientRect();const cx=r.left-s.left+r.width/2,cy=r.top-s.top+r.height/2;for(let i=0;i<n;i++){const a=Math.random()*6.28,v=.5+Math.random()*.9;emit(cx+Math.cos(a)*r.width*.3,cy+Math.sin(a)*r.height*.3,Math.cos(a)*v,Math.sin(a)*v,4+Math.random()*3,1.5+Math.random()*1.5)}}
 let lastT=0,emitAcc=0;
 function milkStep(t,dt){
  /* 慢慢褪：留下奶云的尾巴 */
- mx.globalCompositeOperation='destination-out';mx.fillStyle='rgba(0,0,0,.035)';mx.fillRect(0,0,MW,MH);mx.globalCompositeOperation='source-over';
+ mx.globalCompositeOperation='destination-out';mx.fillStyle='rgba(0,0,0,.06)';mx.fillRect(0,0,MW,MH);mx.globalCompositeOperation='source-over';
  /* 猫猫下沿一直细细地往下渗 */
  emitAcc+=dt*(tier?9:16);const cx=cat.offsetLeft+cat.offsetWidth/2,cw=cat.offsetWidth;
- while(emitAcc>1){emitAcc--;const off=(Math.sin(t*.7)*.18+(Math.random()-.5)*.22)*cw;emit(cx+off,catBase+8+Math.random()*4,(Math.random()-.5)*.3,.35+Math.random()*.5,8+Math.random()*6,1.4+Math.random()*1.4)}
+ while(emitAcc>1){emitAcc--;const off=(Math.random()-.5)*.62*cw;emit(cx+off,catBase+6+Math.random()*6,(Math.random()-.5)*.12,.18+Math.random()*.25,3.2+Math.random()*2.2,4+Math.random()*3)}
  const top=sc.scrollTop-scene.offsetTop-40,bot=top+sc.clientHeight+80;
- for(let i=P.length-1;i>=0;i--){const p=P[i];p.age+=dt;if(p.age>p.life||p.y>MH-4){P.splice(i,1);continue}
+ for(let i=P.length-1;i>=0;i--){const p=P[i];p.age+=dt;if(p.age>p.life||p.y>MH-4||p.y>catBase+200){P.splice(i,1);continue}
   const [cxv,cyv]=curl(p.x,p.y,t);const k=Math.min(1,p.age/1.4);
-  p.vx+=cxv*.045*k*dt*60;p.vy+=(cyv*.045*k+.004)*dt*60;p.vx*=.965;p.vy*=.965;
+  p.vx+=(cxv*.01*k+(cx-p.x)*.0006)*dt*60;p.vy+=(cyv*.008*k+.0012)*dt*60;p.vx*=.95;p.vy*=.95;if(p.y>catBase+160)p.age+=dt*3;
   p.x+=p.vx*dt*60;p.y+=p.vy*dt*60;if(p.y<catBase+2){p.y=catBase+2;p.vy=Math.abs(p.vy)}
   if(p.y<top||p.y>bot)continue;
-  const u=p.age/p.life,r=p.r0+u*14,al=.1*Math.sin(Math.min(1,u*4)*1.5708)*(1-u);
+  const u=p.age/p.life,r=p.r0+u*20,al=.07*Math.sin(Math.min(1,u*4)*1.5708)*(1-u);
   mx.globalAlpha=al;mx.drawImage(spr,p.x-r,p.y-r,r*2,r*2)}
  mx.globalAlpha=1}
+
+/* ===== 漂浮小料（极繁：杯里到处有东西在动） ===== */
+const dv=$('#drift'),dx=dv.getContext('2d');let DW=0,DH=0,ddpr=1;
+const BITS=['bit1','bit5','bit19','bit0','bit12','bit13','bit24','bit2','bit9','bit11','bit15','bit17','bit8','bit26'].map(n=>{const im=new Image();im.src=n+'.png';return im});
+const D=[];function dseed(){D.length=0;const n=tier?16:30;for(let i=0;i<n;i++){const far=i%3!==0;D.push({x:Math.random(),y:Math.random()*1.4,im:BITS[i%BITS.length],s:far?12+Math.random()*8:20+Math.random()*12,a:far?.5:.95,pz:far?.25:.6,vy:(far?.004:.007)*(Math.random()<.3?-1:1),r:Math.random()*6.28,vr:(Math.random()-.5)*.5,sw:Math.random()*6.28,sa:6+Math.random()*10})}}
+function dfit(){ddpr=Math.min(devicePixelRatio||1,tier?1.5:2);DW=dv.clientWidth;DH=dv.clientHeight;dv.width=DW*ddpr;dv.height=DH*ddpr}
+addEventListener('resize',dfit);dfit();dseed();
+function drift(t,dt){dx.setTransform(ddpr,0,0,ddpr,0,0);dx.clearRect(0,0,DW,DH);const st=sc.scrollTop;
+ for(const b of D){b.y+=b.vy*dt;b.r+=b.vr*dt;const H2=DH*1.4;let y=((b.y*DH-st*b.pz)%H2+H2)%H2-DH*.2;const x=b.x*DW+Math.sin(t*.5+b.sw)*b.sa;
+  if(!b.im.complete||!b.im.naturalWidth)continue;dx.globalAlpha=b.a;dx.save();dx.translate(x,y);dx.rotate(b.r+Math.sin(t*.8+b.sw)*.3);const w=b.s,h=w*b.im.naturalHeight/b.im.naturalWidth;dx.drawImage(b.im,-w/2,-h/2,w,h);dx.restore()}
+ dx.globalAlpha=1}
 
 /* ===== 引线：注释 ↔ 物件，跟着物件呼吸 ===== */
 function leads(){[['#fw','#lw','w'],['#fp','#lp','p']].forEach(([f,s,g])=>{const fr=$(f).getBoundingClientRect(),svg=$(s);let h='';
@@ -267,9 +277,9 @@ function loop(n){const t=n/1000,dt=Math.min(.05,lastT?t-lastT:.016);lastT=t;cons
  spring(CAT.sq,dt,120,3.6);spring(CAT.sp,dt,55,3.4);spring(CJ,dt,90,7);
  const cb=on?Math.sin(t*6.283/4.2)*.028:0,ct=on?Math.sin(t*6.283/6.1)*1.2:0;
  const sq=Math.max(-.35,Math.min(.35,CAT.sq.x*.11));cat.style.transform=`translateY(${((on?Math.sin(t*6.283/5.3)*1.6:0)+Math.min(0,CJ.x)).toFixed(1)}px) rotate(${(ct+CAT.sp.x).toFixed(2)}deg) scale(${(1-cb*.5-sq*.8).toFixed(3)},${(1+cb+sq).toFixed(3)})`;
- surface(on?t:0);if(on)milkStep(t,dt);leads();
+ surface(on?t:0);if(on){milkStep(t,dt);drift(t,dt)}leads();
  requestAnimationFrame(loop)}
-function init(){layout();surface(0);if(!RM.matches)milkBurst(30);requestAnimationFrame(loop)}
+function init(){layout();surface(0);drift(0,0);if(!RM.matches)milkBurst(30);requestAnimationFrame(loop)}
 addEventListener('resize',layout);
 init();cat.querySelector('img').addEventListener('load',layout);document.fonts&&document.fonts.ready.then(layout);
 const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
