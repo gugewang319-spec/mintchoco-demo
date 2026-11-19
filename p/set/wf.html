@@ -1,0 +1,79 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>设置 · 用量原地展开（制料秤）线框</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#e9ecea;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#555}
+.app{position:relative;width:min(100%,412px);margin:0 auto;height:100%;overflow-y:auto;background:#f4f5f4;scrollbar-width:none}
+.app::-webkit-scrollbar{display:none}
+.g{position:fixed;inset:0;pointer-events:none;width:min(100%,412px);margin:0 auto;z-index:50;display:none;background:repeating-linear-gradient(0deg,rgba(255,0,80,.07) 0 1px,transparent 1px 8px)}
+.g::before,.g::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgba(255,0,80,.35)}.g::before{left:24px}.g::after{right:24px}
+body.grid .g{display:block}
+.tg{position:fixed;top:12px;right:max(24px,calc(50% - 182px));z-index:60;font-size:11px;color:#e0336a;background:#fff;border:1px solid #e0336a;border-radius:4px;padding:4px 8px}
+.hd{height:96px;padding:48px 24px 0;display:flex;align-items:center;gap:16px}
+.hd h1{font-size:28px;font-weight:800;color:#444}
+.hd .sp{margin-left:auto;width:56px;height:28px;border-radius:4px;background:#bfc3c0;font:700 13px/28px system-ui;color:#fff;text-align:center}
+.big{display:block;width:calc(100% - 48px);margin:16px 24px 0;text-align:left;background:none;border:0;color:#333;cursor:pointer;font-family:inherit}
+.big .k{font-size:13px;color:#888;letter-spacing:.3em;display:flex;align-items:center;gap:8px}
+.big .k i{width:8px;height:8px;border-radius:50%;background:#9a9e9b}
+.big .n{font-size:clamp(56px,18vw,72px);font-weight:800;line-height:1;letter-spacing:-.02em;margin-top:8px}
+.big .u{font-size:13px;color:#888;margin-top:8px}
+.big .hint{float:right;margin-top:-30px;font-size:11px;color:#e0336a}
+.cmp{margin:16px 24px 0;font-size:13px;color:#777;line-height:1.6}
+.cmp b{color:#444}
+.sc{overflow:hidden;height:0;margin:0 24px}
+body.open .sc{height:auto;margin-top:16px}
+.fig{display:block;width:100%;height:auto}
+.fig .bn{font:700 13px system-ui;fill:#fff;text-anchor:middle}
+.fig .bl{font:11px system-ui;fill:#777;text-anchor:middle}
+.fig .tk{font:10px system-ui;fill:#999;text-anchor:middle}
+.fig .no{font:700 10px system-ui;fill:#fff;text-anchor:middle}
+.fig .bag{cursor:pointer}
+.lg{margin-top:16px;display:grid;grid-template-columns:16px 1fr;gap:8px 8px;font-size:13px;color:#666;line-height:16px}
+.lg i{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#777;color:#fff;font:700 10px/1 system-ui;font-style:normal}
+.shelf{margin:32px 0 0;position:relative}
+.shelf .h{padding:0 24px;font-size:28px;font-weight:800;color:#444;height:40px}
+.wall{height:136px;margin:8px 0 0;background:repeating-linear-gradient(0deg,#e6e8e7 0 1px,transparent 1px 22px),#eceeed;position:relative}
+.wall .bd{position:absolute;left:24px;top:24px;width:88px;height:64px;background:#9a9e9b;border-radius:4px}
+.wall .ob{position:absolute;bottom:0;width:48px;background:#cfd2d0;border-radius:4px 4px 0 0}
+.bar{height:12px;margin:0 16px;background:#9a9e9b;border-radius:3px}
+.it{margin:16px 24px 0;height:56px;border:1.5px solid #bbb;border-radius:6px;display:flex;align-items:center;padding:0 16px;gap:16px;font-size:13px;color:#555;background:#fff}
+.it b{font-size:20px;color:#444}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 24px 0}.row2 .it{margin:0}
+.ingr{margin:32px 24px 0;font-size:13px;color:#888}
+.ingr p{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.ingr p span{height:40px;padding:0 16px;border:1.5px solid #bbb;border-radius:6px;display:grid;place-items:center;color:#555;background:#fff}
+.note{padding:24px 24px 160px;font-size:12px;color:#aaa;line-height:1.8}
+.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:min(calc(100% - 32px),380px);height:64px;border-radius:32px;background:#dfe2e0;display:flex;align-items:center;justify-content:space-around;font-size:12px;color:#888;z-index:40}
+</style>
+<body class="open">
+<button class="tg" onclick="document.body.classList.toggle('grid')">网格</button>
+<div class="app">
+<div class="g"></div>
+<header class="hd"><h1>设置</h1><span class="sp">46 周</span></header>
+<button class="big" id="big" aria-expanded="true" aria-label="本周用量，点一下展开或收起"><div class="k"><i></i>本 周 用 量</div><div class="n">128.4</div><div class="u">万 tokens</div><span class="hint">点大字 收 / 放</span></button>
+<p class="cmp">比上周同一时候，到了<b>七成</b> · 聊天 <b>96.1</b> 万 · 记忆 <b>32.3</b> 万</p>
+<section class="sc" aria-label="本周用量明细">
+<svg viewBox="0 32 364 396" class="fig"><g class="bag" data-i="0"><path d="M66 132Q62 56 70 50L95.0 44Q101.0 36 107.0 44L132 50Q140 56 136 132Z" fill="#8d918e" stroke="#888" stroke-width="1.2"/><text x="101.0" y="88.0" class="bn">58.2</text><text x="101.0" y="102.0" class="bl" style="fill:#fff">渠道 A</text></g><g class="bag" data-i="1"><path d="M148 132Q144 78 152 72L170.0 66Q176.0 58 182.0 66L200 72Q208 78 204 132Z" fill="#a3a7a4" stroke="#888" stroke-width="1.2"/><text x="176.0" y="99.0" class="bn">38.5</text><text x="176.0" y="113.0" class="bl" style="fill:#fff">渠道 B</text></g><g class="bag" data-i="2"><path d="M216 132Q212 96 220 90L232.0 84Q238.0 76 244.0 84L256 90Q264 96 260 132Z" fill="#b9bdba" stroke="#888" stroke-width="1.2"/><text x="238.0" y="108.0" class="bn">21.4</text><text x="238.0" y="122.0" class="bl" style="fill:#fff">渠道 C</text></g><g class="bag" data-i="3"><path d="M272 132Q268 109 276 103L279.0 97Q285.0 89 291.0 97L294 103Q302 109 298 132Z" fill="#ccd0cd" stroke="#888" stroke-width="1.2"/><text x="285.0" y="126" class="bl" style="font-size:9px">10.3</text></g><rect x="52" y="132" width="260" height="8" rx="3" fill="#bfc3c0"/><rect x="170" y="140" width="24" height="16" fill="#cfd2d0"/><rect x="40" y="156" width="284" height="172" rx="18" fill="#dfe2e0" stroke="#bbb" stroke-width="1.5"/><rect x="60" y="328" width="28" height="8" rx="2" fill="#bfc3c0"/><rect x="276" y="328" width="28" height="8" rx="2" fill="#bfc3c0"/><circle cx="182" cy="246" r="62" fill="#f4f5f4" stroke="#999" stroke-width="1.5"/><line x1="131.8" y1="275.0" x2="140.4" y2="270.0" stroke="#999" stroke-width="1.4"/><text x="149.1" y="268.0" class="tk">0</text><line x1="127.6" y1="266.2" x2="132.3" y2="264.5" stroke="#999" stroke-width="1"/><line x1="125.0" y1="256.9" x2="129.9" y2="255.9" stroke="#999" stroke-width="1"/><line x1="124.0" y1="247.2" x2="129.0" y2="247.1" stroke="#999" stroke-width="1"/><line x1="124.6" y1="237.5" x2="129.6" y2="238.3" stroke="#999" stroke-width="1"/><line x1="126.8" y1="228.1" x2="136.3" y2="231.2" stroke="#999" stroke-width="1.4"/><text x="145.9" y="237.3" class="tk">50</text><line x1="130.6" y1="219.1" x2="135.0" y2="221.4" stroke="#999" stroke-width="1"/><line x1="135.8" y1="210.9" x2="139.8" y2="214.0" stroke="#999" stroke-width="1"/><line x1="142.3" y1="203.7" x2="145.7" y2="207.4" stroke="#999" stroke-width="1"/><line x1="149.9" y1="197.7" x2="152.7" y2="201.9" stroke="#999" stroke-width="1"/><line x1="158.4" y1="193.0" x2="162.5" y2="202.1" stroke="#999" stroke-width="1.4"/><text x="166.5" y="214.3" class="tk">100</text><line x1="167.6" y1="189.8" x2="168.8" y2="194.7" stroke="#999" stroke-width="1"/><line x1="177.1" y1="188.2" x2="177.6" y2="193.2" stroke="#999" stroke-width="1"/><line x1="186.9" y1="188.2" x2="186.4" y2="193.2" stroke="#999" stroke-width="1"/><line x1="196.4" y1="189.8" x2="195.2" y2="194.7" stroke="#999" stroke-width="1"/><line x1="205.6" y1="193.0" x2="201.5" y2="202.1" stroke="#999" stroke-width="1.4"/><text x="197.5" y="214.3" class="tk">150</text><line x1="214.1" y1="197.7" x2="211.3" y2="201.9" stroke="#999" stroke-width="1"/><line x1="221.7" y1="203.7" x2="218.3" y2="207.4" stroke="#999" stroke-width="1"/><line x1="228.2" y1="210.9" x2="224.2" y2="214.0" stroke="#999" stroke-width="1"/><line x1="233.4" y1="219.1" x2="229.0" y2="221.4" stroke="#999" stroke-width="1"/><line x1="237.2" y1="228.1" x2="227.7" y2="231.2" stroke="#999" stroke-width="1.4"/><text x="218.1" y="237.3" class="tk">200</text><line x1="239.4" y1="237.5" x2="234.4" y2="238.3" stroke="#999" stroke-width="1"/><line x1="240.0" y1="247.2" x2="235.0" y2="247.1" stroke="#999" stroke-width="1"/><line x1="239.0" y1="256.9" x2="234.1" y2="255.9" stroke="#999" stroke-width="1"/><line x1="236.4" y1="266.2" x2="231.7" y2="264.5" stroke="#999" stroke-width="1"/><line x1="232.2" y1="275.0" x2="223.6" y2="270.0" stroke="#999" stroke-width="1.4"/><text x="214.9" y="268.0" class="tk">250</text><line x1="182" y1="246" x2="223.4" y2="217.9" stroke="#999" stroke-width="1.5" stroke-dasharray="4 3" stroke-linecap="round"/><line x1="182" y1="246" x2="184.8" y2="196.1" stroke="#444" stroke-width="2.4"  stroke-linecap="round"/><circle cx="182" cy="246" r="5" fill="#444"/><text x="182" y="276" class="bl">万 tokens</text><circle cx="152" cy="318" r="2.5" fill="#aaa"/><circle cx="172" cy="318" r="3.2" fill="#aaa"/><circle cx="192" cy="318" r="4" fill="#aaa"/><circle cx="212" cy="318" r="5.5" fill="#444"/><path d="M300 328Q296 304 304 300L312 296Q318 290 324 296L332 300Q340 304 336 328Z" fill="none" stroke="#999" stroke-width="1.2" stroke-dasharray="3 2"/><text x="318" y="318" class="bl">?3</text><line x1="0" y1="336" x2="364" y2="336" stroke="#bbb" stroke-width="1.5"/><line x1="0" y1="404" x2="364" y2="404" stroke="#bbb" stroke-width="1.5"/><path d="M27.0 404L31.0 369H49.0L53.0 404Z" fill="#9a9e9b" stroke="#888" stroke-width="1.2"/><rect x="36.0" y="363" width="8" height="6" rx="2" fill="#9a9e9b"/><text x="40.0" y="359" class="bl" style="fill:#555;font-weight:700">31.0</text><text x="40.0" y="420" class="bl" style="">一</text><path d="M74.3 404L78.3 360H96.3L100.3 404Z" fill="#9a9e9b" stroke="#888" stroke-width="1.2"/><rect x="83.3" y="354" width="8" height="6" rx="2" fill="#9a9e9b"/><text x="87.3" y="350" class="bl" style="fill:#555;font-weight:700">42.6</text><text x="87.3" y="420" class="bl" style="">二</text><path d="M121.6 404L125.6 371H143.6L147.6 404Z" fill="#9a9e9b" stroke="#888" stroke-width="1.2"/><rect x="130.6" y="365" width="8" height="6" rx="2" fill="#9a9e9b"/><text x="134.6" y="361" class="bl" style="fill:#555;font-weight:700">28.8</text><text x="134.6" y="420" class="bl" style="">三</text><path d="M168.89999999999998 404L172.89999999999998 373H190.89999999999998L194.89999999999998 404Z" fill="#9a9e9b" stroke="#444" stroke-width="2"/><rect x="177.89999999999998" y="367" width="8" height="6" rx="2" fill="#9a9e9b"/><text x="181.89999999999998" y="363" class="bl" style="fill:#555;font-weight:700">26.0</text><text x="181.89999999999998" y="420" class="bl" style="fill:#333;font-weight:700">四</text><path d="M216.2 404L220.2 384H238.2L242.2 404Z" fill="none" stroke="#bbb" stroke-dasharray="3 2"/><text x="229.2" y="420" class="bl" style="">五</text><path d="M263.5 404L267.5 384H285.5L289.5 404Z" fill="none" stroke="#bbb" stroke-dasharray="3 2"/><text x="276.5" y="420" class="bl" style="">六</text><path d="M310.79999999999995 404L314.79999999999995 384H332.79999999999995L336.79999999999995 404Z" fill="none" stroke="#bbb" stroke-dasharray="3 2"/><text x="323.79999999999995" y="420" class="bl" style="">日</text><g><circle cx="12" cy="72" r="8" fill="#777"/><text x="12" y="75.5" class="no">1</text></g><line x1="20" y1="72" x2="64" y2="96" stroke="#999" stroke-width="1"/><circle cx="64" cy="96" r="2.5" fill="#999"/><g><circle cx="352" cy="200" r="8" fill="#777"/><text x="352" y="203.5" class="no">2</text></g><line x1="344" y1="200" x2="181" y2="196" stroke="#999" stroke-width="1"/><circle cx="181" cy="196" r="2.5" fill="#999"/><g><circle cx="352" cy="168" r="8" fill="#777"/><text x="352" y="171.5" class="no">3</text></g><line x1="344" y1="168" x2="227" y2="218" stroke="#999" stroke-width="1"/><circle cx="227" cy="218" r="2.5" fill="#999"/><g><circle cx="12" cy="370" r="8" fill="#777"/><text x="12" y="373.5" class="no">4</text></g><line x1="20" y1="370" x2="28" y2="376" stroke="#999" stroke-width="1"/><circle cx="28" cy="376" r="2.5" fill="#999"/><g><circle cx="352" cy="318" r="8" fill="#777"/><text x="352" y="321.5" class="no">5</text></g><line x1="344" y1="318" x2="218" y2="318" stroke="#999" stroke-width="1"/><circle cx="218" cy="318" r="2.5" fill="#999"/><g><circle cx="352" cy="276" r="8" fill="#777"/><text x="352" y="279.5" class="no">6</text></g><line x1="344" y1="276" x2="322" y2="300" stroke="#999" stroke-width="1"/><circle cx="322" cy="300" r="2.5" fill="#999"/></svg>
+<div class="lg">
+<i>1</i><span>秤盘上一袋 = 一个渠道，袋越大用得越多，数字写在袋上；点一袋原地抬起，袋上换成「聊天 / 记忆」</span>
+<i>2</i><span>实针 = 这周 128.4</span>
+<i>3</i><span>虚针 = 上周这时 183.2</span>
+<i>4</i><span>台下一排砝码 = 这周每天，今天加粗，没到的日子虚线</span>
+<i>5</i><span>秤面左右滑换周（43–46），袋子和砝码跟着换；点也行</span>
+<i>6</i><span>秤脚边虚线小袋 = 没报用量的调用 3 次</span>
+</div>
+</section>
+<section class="shelf">
+<div class="h">吧台</div>
+<div class="wall"><span class="bd"></span><span class="ob" style="left:160px;height:88px"></span><span class="ob" style="left:216px;height:64px"></span><span class="ob" style="left:300px;height:56px;width:40px"></span></div>
+<div class="bar"></div>
+<div class="it"><b>渠道 · 模型</b>3 条 4 款<span style="margin-left:auto">备用超时</span></div>
+<div class="row2"><div class="it"><b>声音</b>3 种</div><div class="it"><b>健康</b>6284 步</div></div>
+</section>
+<div class="ingr">配料<p><span>工具 3</span><span>搜索</span><span>MCP 未连</span><span>换一张请柬</span></p></div>
+<p class="note">线框：用量不再单独一页（只看状态、不用保存）。点设置页大字，原地展开一台制料秤（正面立面），大字位置不动，吧台往下让；再点大字收起。8 点网格、边距 24、字号 72 / 28 / 13。数字单位都是万 tokens。</p>
+</div>
+<nav class="nav"><span>今天</span><span>记忆</span><span>聊天</span><span>人格</span><span>设置</span></nav>
+<script>
+const b=document.getElementById('big');b.onclick=()=>{const o=document.body.classList.toggle('open');b.setAttribute('aria-expanded',o)};
+document.querySelectorAll('.bag').forEach(g=>g.onclick=()=>{g.style.transform=g.style.transform?'':'translateY(-8px)'});
+</script>
+</body></html>
