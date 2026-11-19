@@ -1,6 +1,6 @@
 # 交接说明（换账号 / 换对话时先读这个）
 
-更新：2026-11-19 13:10 CST · preview 最新 V=50（页顶统一 + 渠道页底栏渐进模糊）
+更新：2026-11-19 13:10 CST · preview 最新 V=51（页顶统一、渠道页搜索收回残影、保存改店章）
 
 ## 新对话开场
 1. `git clone https://github.com/gugewang319-spec/mintchoco-demo /workspace/work/mc && cd /workspace/work/mc && git checkout preview`
