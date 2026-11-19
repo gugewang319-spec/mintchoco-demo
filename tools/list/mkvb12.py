@@ -78,5 +78,48 @@ main .counter>b{align-self:center;font:500 12px/1 var(--body)!important;color:#f
 .tod .side .counter span{font-size:17px!important;min-width:15px}
 """
 s=s.replace('</style>',CTR+'</style>',1)
+# —— 05:05 茶茶：大卡不贴淋酱、轮次不用巧克力牌（字+装饰）；去「写了又擦掉」；奶茶热气雾；冰块水中浮沉；贴纸
+s=s.replace('<span class="tdz" aria-hidden="true"><img src="today-bg.png" alt=""></span><i class="tdd"></i><i class="tdd"></i><i class="tdd"></i>','<i class="steam" aria-hidden="true"><i></i><i></i><i></i><i></i></i>',1)
+s=s.replace("if(!RM)D.push(T=>{for(let i=0;i<3;i++)if(T>nx[i]){drip(i);nx[i]=T+4.5+Math.random()*4}});","")
+s=re.sub(r'<button class="wh"[^>]*>.*?</button>','',s)
+s=re.sub(r'<span class="wh"[^>]*>.*?</span></span>|<span class="wh"[^>]*><i>[^<]*</i>[^<]*</span>','',s)
+s=re.sub(r'<div><small style="display:block;margin-bottom:5px">([\d:]+)</small><span class="counter" aria-label="(\d+) 轮">.*?</b></span></div>',
+ lambda m:'<div class="rds" aria-label="'+m.group(2)+' 轮"><img class="bre" src="stk_mm.png" alt="" style="--r:-10deg;--d:4.6s;--dl:-1.3s"><em>'+m.group(2)+'</em><b>轮</b><i>rounds</i><small>'+m.group(1)+'</small></div>',s,count=1)
+s=s.replace('<div class="brk" style="margin-top:56px"><b>更早</b></div>','<div class="brk" style="margin-top:56px"><b>更早</b><img class="stk bre" src="stk_tag.png" alt="" style="width:40px;right:4px;top:-50px;--r:12deg;--d:5.2s;--dl:-2s"></div>',1)
+s=s.replace('<main','<img class="bgi bre stkp" src="stk_mac.png" alt="" style="width:62px;left:-16px;top:122px;--r:-14deg;--d:6.4s;--dl:-3s"><main',1)
+CSS2=""".tdz,.tdd{display:none!important}
+main .tod.dk .in{padding-top:22px!important}
+.rds{position:relative;text-align:right;line-height:1}
+.rds em{font:800 46px/1 BalooX,Baloo,ZK;font-style:normal;color:#5b3a2c;position:relative;z-index:2}
+.rds b{font:15px ZK;color:#5b3a2c;margin-left:2px;position:relative;z-index:2}
+.rds i{display:block;font:15px/1 Script;color:#3f9a80;margin-top:-4px;position:relative;z-index:2;opacity:.85}
+.rds small{display:block;margin-top:6px;font:12px Baloo,ZK;color:#8a6b5c;position:relative;z-index:2}
+.rds img{position:absolute;width:44px;right:44px;top:-14px;z-index:1;opacity:.95}
+.brk .stk{position:absolute}
+.stkp{z-index:1;pointer-events:none}
+/* 冰块浮力：在水里上下浮沉、轻轻打转（只动 translate/rotate） */
+.bgi.ic,.bh.ic{--an:bob;animation-direction:normal!important;animation-timing-function:ease-in-out!important}
+@keyframes bob{0%{translate:0 0;rotate:calc(var(--r,0deg) - .8deg)}28%{translate:1px -7px;rotate:calc(var(--r,0deg) + 1.2deg)}55%{translate:-1px 1px;rotate:calc(var(--r,0deg) - .4deg)}78%{translate:0 -3px;rotate:calc(var(--r,0deg) + .5deg)}100%{translate:0 0;rotate:calc(var(--r,0deg) - .8deg)}}
+/* 奶茶热气雾在玻璃内侧：几团淡白雾慢慢往上飘、散开 */
+.steam{position:absolute!important;inset:0;z-index:3!important;overflow:hidden;border-radius:inherit;pointer-events:none}
+.steam i{position:absolute;left:var(--x);bottom:28%;width:var(--w);aspect-ratio:1.5;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.55),rgba(255,255,255,.22) 55%,rgba(255,255,255,0));opacity:0;animation:stm var(--d) ease-out var(--dl) infinite}
+.steam i:nth-child(1){--x:6%;--w:46%;--d:9s;--dl:-1s}
+.steam i:nth-child(2){--x:34%;--w:40%;--d:11s;--dl:-5s}
+.steam i:nth-child(3){--x:58%;--w:44%;--d:10s;--dl:-8s}
+.steam i:nth-child(4){--x:20%;--w:52%;--d:12s;--dl:-3s}
+@keyframes stm{0%{opacity:0;transform:translateY(20px) scale(.7,.6)}25%{opacity:.9}70%{opacity:.5}100%{opacity:0;transform:translateY(-120px) scale(1.25,1.1)}}
+@media (prefers-reduced-motion:reduce){.steam i{animation:none;opacity:.5}}
+"""
+s=s.replace('</style>',CSS2+'</style>',1)
+# —— 05:05 茶茶：纯色字在毛玻璃上怪 → 排版手法：加粗、压字内描边（同色细描加粗 + 下沿白唇像刻在玻璃上）、光晕把字和玻璃分开、大引号、他/我小标签荧光笔
+CSS3="""main .gl .key,main .gl .sub,main .duo p,main .ice p{color:#4a3027;-webkit-text-stroke:.35px #4a3027;text-shadow:0 1px 0 rgba(255,255,255,.85),0 0 8px rgba(255,252,244,.75),0 0 2px rgba(255,252,244,.9)}
+main .tod .key{font:700 21px/1.5 var(--body)!important;text-wrap:balance;letter-spacing:.02em;position:relative}
+main .tod .key::before{content:'\\201C';position:absolute;left:-14px;top:-22px;font:52px/1 Script,serif;color:rgba(63,154,128,.45);-webkit-text-stroke:0;text-shadow:none;pointer-events:none}
+main .tod .sub{font:600 15px/1.5 var(--body)!important}
+main .duo p,main .ice p{font-weight:500!important;text-wrap:pretty;font-family:var(--body)!important}
+main .tod i.k,main .duo p i{display:table!important;margin-bottom:4px!important;font:12px/1.2 ZK!important;color:#5b3a2c!important;-webkit-text-stroke:0;text-shadow:none;letter-spacing:.12em;padding:0 3px 0 2px;background:linear-gradient(100deg,transparent 2%,rgba(63,154,128,.32) 6%,rgba(63,154,128,.26) 90%,rgba(63,154,128,.4) 95%,transparent 98%) 0 100%/100% 52% no-repeat}
+main .ice b{text-shadow:0 1px 0 rgba(255,255,255,.85)}
+"""
+s=s.replace('</style>',CSS3+'</style>',1)
 open(R+'vb12.html','w').write(s)
 print(s.count('class="lqw"'),s.count(' dk '))
