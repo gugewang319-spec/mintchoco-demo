@@ -74,6 +74,11 @@ body.grid .g{display:block}
 .fig4 .pick{position:absolute;left:0;top:0;margin:0}
 .anno{padding:16px 24px 0;display:grid;grid-template-columns:auto 1fr;gap:8px 8px;font-size:12px;color:#888;align-items:center}
 .sep{margin:24px 24px 0;border-top:1px dashed #ccc}
+.wb{position:absolute;left:0;top:240px;width:112px;height:48px;display:block;transform:rotate(-5deg)}
+.wb .st{position:absolute;left:0;right:0;top:14px;height:20px;border-radius:10px;background:#cfd2d0}
+.wb .fc{position:absolute;left:28px;top:0;width:56px;height:48px;border-radius:12px;background:#f4f5f4;border:2px solid #888;display:flex;align-items:center;justify-content:center;font:700 13px/1 system-ui;color:#555;font-style:normal}
+.wb .bd{position:absolute;left:78px;top:-4px;width:12px;height:12px;border-radius:50%;background:#555;border:2px solid #f4f5f4}
+body.off .wb .bd{background:#bbb}
 </style>
 <body>
 <div class="app">
@@ -86,7 +91,7 @@ body.grid .g{display:block}
  <div class="cup" style="width:96px"><i class="ln goal" style="bottom:154px"></i><i class="ln yd" style="bottom:104px"></i><span class="e"></span><span class="e"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
  <span class="tagr" style="right:136px;top:94px"><i class="no">2</i>8k</span><i class="lead" style="right:96px;width:32px;top:102px"></i>
  <span class="tagr" style="right:136px;top:144px"><i class="no">3</i>5.5k</span><i class="lead" style="right:96px;width:32px;top:152px"></i>
- <span class="ci" style="position:absolute;left:0;top:248px;width:64px;height:40px;border-radius:8px" title="手环图形位"></span>
+ <a class="wb" href="band.html?from=wf2" aria-label="手环已连上，点进接手环"><i class="st"></i><i class="fc">手环</i><i class="bd"></i></a>
 </section>
 
 <div class="sep"></div>
