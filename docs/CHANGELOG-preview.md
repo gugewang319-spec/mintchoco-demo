@@ -139,7 +139,8 @@
 | 21:35 | 50cacd9 | 🐱 动效样张 p/list/cat.html：茶茶要奶盖做猫猫头、Duang Duang 的。代码画的占位猫（没生图），弹簧挤压回弹（只改 transform）、耳朵晚半拍晃、平时轻轻呼吸，切后台暂停，右下显示帧率。正式图层之后按 DESIGN.md §1.5 模板生图再拆。 |
 | 21:40 | c1ebd81 | 🩶 聊天灰稿 E（p/list/wfE.html，脚本 /workspace/work/mkwf_listE.py）：茶茶选方向 C，照 Robert Sabuda 立体书——远近代表时间。近景今天（猫猫奶盖最大，字走引线写旁边，唯一一级按钮）/ 中景本周（冰块散漂略歪，选中那块拉一根引线写那天）/ 远景更早（珍珠最小最淡，同样引线）；滚动视差近快远慢。🐱 cat.html 改裱花奶油猫：边缘细褶、顺着弧的裱花纹、顶上可可粉点、杯口挂壁滴落、边上冒小泡逸散（CSS 只动 transform/opacity）。仍是代码占位，正式图按 §1.5 模板生。 |
 | 21:50 | 24f2c18 | 🐱 猫猫奶盖改生图 p/list/catfoam.png（cat.html 换用）。❌ 代码猫（实线描边、伞骨纹）。茶茶要：不描边、靠明暗出体积，泡沫绵密（参考春田黄油朗姆酒奶盖），上色学拉花猫（耳尖焦糖、可可粉点脸）。生图按 §1.5 模板，茶茶同意只把 thin warm cocoa outline 换成 no outline, form defined only by soft light-and-shadow shading，其余逐字；SUBJECT 加 matte/not glossy/not jelly。第一张参考了 ice.png 变成亮面果冻，弃；第二张参考 wafer.png，哑光绵密可用。弹簧+呼吸+小泡保留，加一点 skew。图中自带底部小泡。灰稿 E 茶茶说可以。 |
-| 21:47 | （本次） | 🐱 catfoam.png 换耳朵：茶茶说耳朵太写实有点恐怖谷 → 简单圆三角奶油小包、无内耳无毛，其余照旧（以上一版为参考图改）。❌ 写实猫耳。另：茶茶同意借鉴 David Aerne「overflow: infinite;」（滚动驱动小球留墨迹）的点子做珍珠滚奶茶印当引线，只借点子、自己写代码，灵感致谢 David Aerne（meodai.color.pizza）。 |
+| 21:47 | 26b022a | 🐱 catfoam.png 换耳朵：茶茶说耳朵太写实有点恐怖谷 → 简单圆三角奶油小包、无内耳无毛，其余照旧（以上一版为参考图改）。❌ 写实猫耳。另：茶茶同意借鉴 David Aerne「overflow: infinite;」（滚动驱动小球留墨迹）的点子做珍珠滚奶茶印当引线，只借点子、自己写代码，灵感致谢 David Aerne（meodai.color.pizza）。 |
+| 21:55 | （本次） | 🫧 p/list/roll.html（脚本 /workspace/work/mkroll.py，由 wfE 生成）：珍珠随滚动往下滚，拖出奶茶印当引线（猫猫脚下→选中冰→选中珍珠），替掉灰线引线；慢处印子粗、快处细，canvas 整层半透明避免叠色成串珠；滚动时珍珠按距离转、快时略拉长；点珍珠蹦一下；切后台暂停；prefers-reduced-motion 时隐藏。近景换真猫图。灵感 David Aerne「overflow: infinite;」，代码自写。 |
 
 ## 更早的样张（模型页方向探索）↩️ / 🧪
 | 时间 | 提交 | 页面 | 改了什么 |
