@@ -57,9 +57,16 @@ body.grid .g{display:block}
 .lc{margin:0 24px}
 .dy{position:relative;margin:0 24px 8px 72px}
 .dy>button{height:32px;padding:0 12px;border:1.5px solid #bbb;border-radius:6px;background:#fff;font:13px system-ui;color:#555}
-.fw{position:relative}.fw.on .cal{display:block}
+.fw{position:relative}
 .fig .stp{cursor:pointer}
-.cal{position:absolute;right:24px;top:0;z-index:30;width:264px;background:#fff;border:1.5px solid #bbb;border-radius:6px;padding:8px;display:none}
+.csh{position:fixed;inset:0;z-index:70;width:min(100%,412px);margin:0 auto}.csh[hidden]{display:none}
+.csh .cbg{position:absolute;inset:0;background:rgba(0,0,0,.18);opacity:0;transition:opacity .26s}
+.cal{position:absolute;left:12px;right:12px;bottom:14px;background:#fff;border:1.5px solid #bbb;border-radius:12px;padding:8px 12px 12px;transform:translateY(24px);opacity:0;transition:transform .26s cubic-bezier(.23,1,.32,1),opacity .2s}
+.csh.on .cbg{opacity:1}.csh.on .cal{transform:none;opacity:1}
+.cal .tip{display:flex;justify-content:center;align-items:center;gap:8px;font-size:12px;color:#888;min-height:32px;margin-top:4px;flex-wrap:wrap}.cal .tip b{color:#333}
+.cal .tip button{border:0;background:none;font:12px system-ui;color:#555;padding:4px 6px}
+.cal .tip button.sel{background:#dfe2e0;border-radius:12px;padding:4px 10px;color:#222}
+.cal .d.rg{background:#eef0ef;border-radius:0}.cal .d.cur{background:#cfd2d0;font-weight:700;color:#222;border-radius:4px}
 .cal .mh{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#444;font-weight:700;height:32px}
 .cal .mh button{width:32px;height:32px;border:0;background:none;font:700 16px system-ui;color:#777}
 .cal .gr{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
@@ -77,10 +84,11 @@ body.grid .g{display:block}
 <header class="hd"><button class="bk" aria-label="返回">‹</button><h1>用量</h1>
 </header>
 <div class="tot"><div class="k" id="tk"></div><div class="n" id="tn"></div><div class="u">万 tokens · 调用 <b id="tc">947</b> 次</div><p class="cs" id="cs"></p></div>
-<div class="fw" id="fw"><svg class="fig" viewBox="0 0 364 492" id="fig"></svg><div class="cal" id="cal"></div></div><svg width="0" height="0" style="position:absolute"><defs><pattern id="hp2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#9a9e9b"/><line x1="0" y1="0" x2="0" y2="5" stroke="#6f7370" stroke-width="2"/></pattern></defs></svg>
+<div class="fw" id="fw"><svg class="fig" viewBox="0 0 364 492" id="fig"></svg></div><svg width="0" height="0" style="position:absolute"><defs><pattern id="hp2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#9a9e9b"/><line x1="0" y1="0" x2="0" y2="5" stroke="#6f7370" stroke-width="2"/></pattern></defs></svg>
 <section class="lc" style="margin-top:0"><ul id="cl"></ul><button class="mr" id="pv" style="margin-left:48px">看前一天</button></section>
-<p class="note">灰稿 · 用量二级页（设置页点大字进来，设置页不再放秤）。母题：糖浆泵架，A 构图；整页跟着开瓶日章上的那一天走，月历圆点看每天多少：聊天一大瓶当主角，另三瓶站右边阶梯架，注解直接写在图上；吧台前沿就是今天的时间轴，每次调用是从台沿滴下的一滴。字号三级 72 / 28 / 13，8 点网格，边距 24。范围就地小选单。数据为演示。</p>
+<p class="note">灰稿 · 用量二级页（设置页点大字进来，设置页不再放秤）。母题：糖浆泵架，A 构图；整页跟着台阶上小台历选的那天或那一段走（仿记忆页台历）；选一段时台沿一滴 = 一天，竖轴一行一天，点行进那天：聊天一大瓶当主角，另三瓶站右边阶梯架，注解直接写在图上；吧台前沿就是今天的时间轴，每次调用是从台沿滴下的一滴。字号三级 72 / 28 / 13，8 点网格，边距 24。范围就地小选单。数据为演示。</p>
 </div>
+<div class="csh" id="csh" hidden><div class="cbg"></div><div class="cal" id="cal" role="dialog" aria-label="用量台历"></div></div>
 <script>
 const R={"今天": {"t": 18.6, "c": [[13.9, 58, 8.6, 4.1], [3.2, 6, 1.3, 0.9], [1.1, 57, 0.3, 0.6], [0.4, 14, null, null]], "u": 0, "m": 1}, "近 7 天": {"t": 128.4, "c": [[96.1, 412, 58.0, 31.2], [22.4, 38, 9.1, 11.0], [7.6, 401, 2.1, 4.3], [2.3, 96, null, null]], "u": 3, "m": 5}, "近 30 天": {"t": 566.0, "c": [[421.8, 1806, 247.3, 148.9], [99.5, 171, 41.2, 51.0], [34.1, 1752, 9.8, 20.6], [10.6, 430, null, null]], "u": 11, "m": 19}},NM=["聊天", "记忆整理", "检索", "向量索引"];let cur='近 7 天',sel=-1;
 const $=s=>document.querySelector(s);
@@ -96,60 +104,75 @@ const CL=[
 ['09:48','聊天','claude-sonnet-4.5',1980,220,1500,480,0],
 ['03:12','记忆整理','deepseek-chat',4100,610,null,null,null],
 ['01:20','聊天','claude-sonnet-4.5',2400,180,1900,500,0]];
-let pick=0;const TODAY=new Date(2026,10,19);let day=new Date(TODAY),calM=new Date(2026,10,1);const CL0=CL.slice();
-const WD='日一二三四五六';
+let pick=0;const TODAY=new Date(2026,10,19);let rs=new Date(TODAY),re=new Date(TODAY),pend=false,calM=new Date(2026,10,1);const CL0=CL.slice();
+const WD='日一二三四五六',MON=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const DD=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
 function rnd(seed){let x=seed%2147483647;return()=>(x=x*16807%2147483647)/2147483647}
-function genDay(dt){if(+dt==+TODAY)return CL0.slice();const r=rnd(dt.getFullYear()*400+dt.getMonth()*32+dt.getDate()),n=3+Math.floor(r()*10),out=[];
+const GC={};
+function genDay(dt){if(+dt==+TODAY)return CL0.slice();if(GC[+dt])return GC[+dt];const r=rnd(dt.getFullYear()*400+dt.getMonth()*32+dt.getDate()),n=3+Math.floor(r()*10),out=[];
  const M=[['聊天','claude-sonnet-4.5'],['聊天','deepseek-chat'],['记忆整理','deepseek-chat'],['检索','claude-haiku-4.5'],['检索','text-embedding-3-small'],['向量索引','text-embedding-3-small']];
  for(let i=0;i<n;i++){const m=M[Math.floor(r()*M.length)],t=Math.floor(r()*1440),tm=String(t/60|0).padStart(2,'0')+':'+String(t%60).padStart(2,'0');
   if(r()<.08){out.push([tm,m[0],m[1],null,null,null,null,null]);continue}
   const inp=300+Math.floor(r()*5000),o=m[1].includes('embedding')?0:Math.floor(r()*600);
   if(m[0]=='聊天'&&m[1].startsWith('claude')||m[1].includes('haiku')){const h=Math.floor(inp*r()*.8);out.push([tm,m[0],m[1],inp,o,h,inp-h,r()<.2?inp-h:0])}else out.push([tm,m[0],m[1],inp,o,null,null,null])}
- return out.sort((a,b)=>b[0].localeCompare(a[0]))}
-function agg(){const r2=x=>Math.round(x/100)/100;const c=NM.map(n=>{const rs=CL.filter(x=>x[1]==n&&x[3]!=null),rep=rs.filter(x=>x[5]!=null);
-  return [r2(rs.reduce((a,x)=>a+x[3]+x[4],0)),CL.filter(x=>x[1]==n).length,rep.length?r2(rep.reduce((a,x)=>a+x[5],0)):null,rep.length?r2(rep.reduce((a,x)=>a+x[6],0)):null]});
- return {c,t:r2(CL.reduce((a,x)=>a+(x[3]==null?0:x[3]+x[4]),0)),u:CL.filter(x=>x[3]==null).length,m:CL.filter(x=>x[3]!=null&&x[5]==null&&x[1]!='向量索引').length}}
-function dayLabel(d){return `${d.getMonth()+1}月${d.getDate()}日 周${WD[d.getDay()]}`+(+d==+TODAY?' · 今天':'')}
+ return GC[+dt]=out.sort((a,b)=>b[0].localeCompare(a[0]))}
+const span=()=>+rs!=+re;
+function days(){const a=[];for(let d=new Date(re);d>=rs;d=DD(d,-1))a.push(d);return a}
+// 一段时间：每天折成一行，字段同调用 [标签,类型,模型,入,出,命中,未命中,写入,日期]
+function dayRows(){return days().map(d=>{const cs=genDay(d),k=cs.filter(c=>c[3]!=null),rp=k.filter(c=>c[5]!=null);
+ return [`${d.getMonth()+1}.${d.getDate()}`,`周${WD[d.getDay()]}`,`${cs.length} 次`,k.reduce((a,c)=>a+c[3],0),k.reduce((a,c)=>a+c[4],0),rp.length?rp.reduce((a,c)=>a+c[5],0):null,rp.length?rp.reduce((a,c)=>a+c[6],0):null,null,d]})}
+function allCalls(){return days().flatMap(d=>genDay(d))}
+function agg(){const ALL=allCalls(),r2=x=>Math.round(x/100)/100;const c=NM.map(n=>{const rs_=ALL.filter(x=>x[1]==n&&x[3]!=null),rep=rs_.filter(x=>x[5]!=null);
+  return [r2(rs_.reduce((a,x)=>a+x[3]+x[4],0)),ALL.filter(x=>x[1]==n).length,rep.length?r2(rep.reduce((a,x)=>a+x[5],0)):null,rep.length?r2(rep.reduce((a,x)=>a+x[6],0)):null]});
+ return {c,t:r2(ALL.reduce((a,x)=>a+(x[3]==null?0:x[3]+x[4]),0)),u:ALL.filter(x=>x[3]==null).length,m:ALL.filter(x=>x[3]!=null&&x[5]==null&&x[1]!='向量索引').length}}
+function rangeLabel(){const f=d=>`${d.getMonth()+1}月${d.getDate()}日`;return span()?`${f(rs)} – ${f(re)} · ${days().length} 天`:`${f(rs)} 周${WD[rs.getDay()]}`+(+rs==+TODAY?' · 今天':'')}
 function dayTotal(d){if(d>TODAY)return -1;return genDay(d).reduce((a,c)=>a+(c[3]==null?0:c[3]+c[4]),0)}
 function cal(){const y=calM.getFullYear(),m=calM.getMonth(),first=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
  let h=`<div class="mh"><button id="cp">‹</button><span>${y}年${m+1}月</span><button id="cn">›</button></div><div class="gr">`+[...WD].map(w=>`<div class="wk">${w}</div>`).join('');
  for(let i=0;i<first;i++)h+='<div></div>';
- for(let d=1;d<=n;d++){const dt=new Date(y,m,d),t=dayTotal(dt),x=t<0,sz=x?0:Math.max(3,Math.min(10,Math.sqrt(t)/14));
-  h+=`<div class="d${x?' x':''}${+dt==+day?' cur':''}${+dt==+TODAY?' td':''}" data-d="${d}">${d}${x?'':`<i style="width:${sz}px;height:${sz}px"></i>`}</div>`}
- h+='</div>';$('#cal').innerHTML=h;
- $('#cp').onclick=e=>{e.stopPropagation();calM=new Date(y,m-1,1);cal()};
- $('#cn').onclick=e=>{e.stopPropagation();if(new Date(y,m+1,1)<=TODAY){calM=new Date(y,m+1,1);cal()}};
- $('#cal').querySelectorAll('.d:not(.x)').forEach(el=>el.onclick=e=>{e.stopPropagation();setDay(new Date(y,m,+el.dataset.d));$('#fw').classList.remove('on')});}
-function setDay(d){day=d;CL.length=0;genDay(d).forEach(c=>CL.push(c));pick=0;calM=new Date(d.getFullYear(),d.getMonth(),1);draw()}
-
+ for(let d=1;d<=n;d++){const dt=new Date(y,m,d),t=dayTotal(dt),x=t<0,sz=x?0:Math.max(3,Math.min(10,Math.sqrt(t)/14)),end=+dt==+rs||+dt==+re,inr=dt>rs&&dt<re;
+  h+=`<div class="d${x?' x':''}${end?' cur':''}${inr?' rg':''}${+dt==+TODAY?' td':''}" data-d="${d}">${d}${x?'':`<i style="width:${sz}px;height:${sz}px"></i>`}</div>`}
+ const n7=+rs==+DD(TODAY,-6)&&+re==+TODAY,n30=+rs==+DD(TODAY,-29)&&+re==+TODAY;
+ h+=`</div><div class="tip">${pend?'再点一天，选成一段 · ':''}<b>${rangeLabel()}</b><button id="q1" class="${!span()&&+rs==+TODAY?'sel':''}">今天</button><button id="q7" class="${n7?'sel':''}">近 7 天</button><button id="q30" class="${n30?'sel':''}">近 30 天</button></div>`;
+ $('#cal').innerHTML=h;
+ $('#cp').onclick=()=>{calM=new Date(y,m-1,1);cal()};
+ $('#cn').onclick=()=>{if(new Date(y,m+1,1)<=TODAY){calM=new Date(y,m+1,1);cal()}};
+ const q=(a,b)=>{rs=a;re=b;pend=false;pick=0;draw();sheet(0)};
+ $('#q1').onclick=()=>q(new Date(TODAY),new Date(TODAY));$('#q7').onclick=()=>q(DD(TODAY,-6),new Date(TODAY));$('#q30').onclick=()=>q(DD(TODAY,-29),new Date(TODAY));
+ $('#cal').querySelectorAll('.d:not(.x)').forEach(el=>el.onclick=()=>{const d=new Date(y,m,+el.dataset.d);
+  if(!pend){rs=re=d;pend=true;pick=0;draw();cal()}else{if(+d==+rs){pend=false;sheet(0);return}rs=d<rs?d:rs;re=d<rs?re:d;if(d<re&&d>=rs){} ;const a=[rs,d].sort((p,q)=>p-q);rs=a[0];re=a[1];pend=false;pick=0;draw();sheet(0)}});}
+function sheet(o){const S=$('#csh');if(o){pend=false;calM=new Date(re.getFullYear(),re.getMonth(),1);S.hidden=false;cal();requestAnimationFrame(()=>S.classList.add('on'))}else{pend=false;S.classList.remove('on');setTimeout(()=>S.hidden=true,260)}}
+function setDay(d){rs=re=d;pick=0;draw()}
 let ex=-1,more=0;
 function fmt(n){return n==null?'未知':n.toLocaleString('en-US')}
 const mins=t=>{const[h,m]=t.split(':');return h*60+ +m};
-function drops(){const Y=382,X0=48,X1=352;let h='';
- // 刻度
- [0,6,12,18,24].forEach(H=>{const x=X0+(X1-X0)*H/24;h+=`<line x1="${x}" y1="${Y}" x2="${x}" y2="${Y+6}" stroke="#9a9e9b"/><text x="${x}" y="${Y+76}" class="lt" style="font-size:10px">${H}点</text>`});
- CL.forEach((c,k)=>{const unk=c[3]==null,t=unk?0:c[3]+c[4],r=unk?6:2.5+Math.sqrt(t)*.09,cx=X0+(X1-X0)*mins(c[0])/1440,cy=Y+4+r*1.9;
+function drops(){const Y=382,X0=48,X1=352;let h='';const SP=span(),ROWS=SP?dayRows().slice().reverse():CL,N=ROWS.length,STEP=(X1-X0)/Math.max(1,N-1);
+ if(!SP)[0,6,12,18,24].forEach(H=>{const x=X0+(X1-X0)*H/24;h+=`<line x1="${x}" y1="${Y}" x2="${x}" y2="${Y+6}" stroke="#9a9e9b"/><text x="${x}" y="${Y+76}" class="lt" style="font-size:10px">${H}点</text>`});
+ else [0,Math.floor((N-1)/2),N-1].forEach(i=>{const x=X0+STEP*i;h+=`<line x1="${x}" y1="${Y}" x2="${x}" y2="${Y+6}" stroke="#9a9e9b"/><text x="${x}" y="${Y+76}" class="lt" style="font-size:10px">${ROWS[i][0]}</text>`});
+ ROWS.forEach((c,k0)=>{const k=SP?N-1-k0:k0,unk=c[3]==null,t=unk?0:c[3]+c[4],r=unk?6:SP?Math.min(STEP*.45+1,2+Math.sqrt(t)*.035):2.5+Math.sqrt(t)*.09,cx=SP?X0+STEP*k0:X0+(X1-X0)*mins(c[0])/1440,cy=Y+4+r*1.9;
   const d=`M${cx} ${cy-r*1.9} C${cx+r*.35} ${cy-r*1.2} ${cx+r} ${cy-r*.6} ${cx+r} ${cy} A${r} ${r} 0 1 1 ${cx-r} ${cy} C${cx-r} ${cy-r*.6} ${cx-r*.35} ${cy-r*1.2} ${cx} ${cy-r*1.9}Z`;
-  const dim=sel>=0&&NM[sel]!=c[1],on=k==pick;
+  const dim=!SP&&sel>=0&&NM[sel]!=c[1],on=k==pick;
   h+=`<g class="dr" data-k="${k}" opacity="${dim?.2:1}"><rect x="${cx-9}" y="${Y}" width="18" height="${r*3+12}" fill="transparent"/><line x1="${cx}" y1="${Y}" x2="${cx}" y2="${Y+4}" stroke="#999" stroke-width="1.2"/>`;
   if(unk)h+=`<path d="${d}" fill="#f4f5f4" stroke="${on?'#333':'#999'}" stroke-width="${on?2:1.2}" stroke-dasharray="2.5 2"/><text x="${cx}" y="${cy+3}" text-anchor="middle" style="font:700 8px system-ui;fill:#e0336a">?</text>`;
   else{const top=cy-r*1.9,H=cy+r-top,f=c[5]==null?0:c[5]/c[3];
    h+=`<clipPath id="dc${k}"><path d="${d}"/></clipPath><path d="${d}" fill="#cfd2d0"/>`+(f>0?`<rect clip-path="url(#dc${k})" x="${cx-r}" y="${cy+r-H*f}" width="${2*r}" height="${H*f}" fill="url(#hp)"/>`:'')+`<path d="${d}" fill="none" stroke="${on?'#333':'#888'}" stroke-width="${on?2:1.2}" ${c[5]==null?'stroke-dasharray="2 2"':''}/>`}
   if(on)h+=`<text x="${cx}" y="${Y+52}" class="lt" style="font:700 10px system-ui;fill:#333">${c[0]}</text>`;
   h+='</g>'});
- h+=`<text x="48" y="${Y+92}" class="an">每一滴 = 这一天一次调用 · 滴越大 tokens 越多</text><text x="48" y="${Y+106}" class="an">斜线 = 缓存命中 · 虚线边 = 没报缓存 · 虚线空滴 = 用量未知</text>`;
+ h+=`<text x="48" y="${Y+92}" class="an">${SP?'每一滴 = 一天':'每一滴 = 一次调用'} · 滴越大 tokens 越多</text><text x="48" y="${Y+106}" class="an">斜线 = 缓存命中 · 虚线边 = 没报缓存 · 虚线空滴 = 用量未知</text>`;
  return h}
-function drop(c,on){const unk=c[3]==null,t=unk?0:c[3]+c[4],r=unk?8:3+Math.sqrt(t)*.11,S=40,cx=S/2,cy=S-2-r;
+function drop(c,on,K=.11){const unk=c[3]==null,t=unk?0:c[3]+c[4],r=unk?8:Math.min(14,3+Math.sqrt(t)*K),S=40,cx=S/2,cy=S-2-r;
  const d=`M${cx} ${cy-r*1.9} C${cx+r*.35} ${cy-r*1.2} ${cx+r} ${cy-r*.6} ${cx+r} ${cy} A${r} ${r} 0 1 1 ${cx-r} ${cy} C${cx-r} ${cy-r*.6} ${cx-r*.35} ${cy-r*1.2} ${cx} ${cy-r*1.9}Z`,sw=on?2:1.3,sc=on?'#333':'#777';
  if(unk)return `<svg class="dp" viewBox="0 0 ${S} ${S}" width="${S}" height="${S}"><path d="${d}" fill="#f4f5f4" stroke="${on?'#333':'#999'}" stroke-width="${sw}" stroke-dasharray="3 2.5"/><text x="${cx}" y="${cy+4}" text-anchor="middle" style="font:700 10px system-ui;fill:#e0336a">?</text></svg>`;
  const top=cy-r*1.9,H=cy+r-top,f=c[5]==null?0:c[5]/c[3],id='lc'+Math.random().toString(36).slice(2,7);
  return `<svg class="dp" viewBox="0 0 ${S} ${S}" width="${S}" height="${S}"><defs><clipPath id="${id}"><path d="${d}"/></clipPath></defs><path d="${d}" fill="#dcdfdd"/>`+(f>0?`<rect clip-path="url(#${id})" x="0" y="${cy+r-H*f}" width="${S}" height="${H*f}" fill="url(#hp2)"/>`:'')+`<path d="${d}" fill="none" stroke="${sc}" stroke-width="${sw}" ${c[5]==null?'stroke-dasharray="2 2"':''}/></svg>`}
-function list(){let h='',prev=null;
- CL.forEach((c,k)=>{if(sel>=0&&c[1]!=NM[sel])return;const unk=c[3]==null,tot=unk?'未知':fmt(c[3]+c[4]);
-  const gap=prev==null?0:Math.min(32,Math.max(0,(mins(prev)-mins(c[0]))/6-4));prev=c[0];
-  h+=`<li data-k="${k}" class="${k==pick?'on':''}" style="margin-top:${gap}px">${drop(c,k==pick)}<div class="tx"><div class="a"><span class="tm">${c[0]}</span><span class="ty">${c[1]}</span><b class="${unk?'uk':''}">${tot}</b></div><div class="md">${c[2]}</div><div class="b">`+(unk?'用量未知（上游没报）':`入 ${fmt(c[3])} · 出 ${fmt(c[4])}<br>`+(c[5]==null?'缓存：上游没报':`缓存命中 ${fmt(c[5])} · 未命中 ${fmt(c[6])} · 写入 ${fmt(c[7])}`))+`</div></div></li>`});
+function list(){let h='',prev=null;const SP=span(),ROWS=SP?dayRows():CL;
+ ROWS.forEach((c,k)=>{if(!SP&&sel>=0&&c[1]!=NM[sel])return;const unk=c[3]==null,tot=unk?'未知':fmt(c[3]+c[4]);
+  const gap=SP||prev==null?0:Math.min(32,Math.max(0,(mins(prev)-mins(c[0]))/6-4));prev=c[0];
+  const sub=unk?'用量未知（上游没报）':`入 ${fmt(c[3])} · 出 ${fmt(c[4])}<br>`+(c[5]==null?'缓存：上游没报':`缓存命中 ${fmt(c[5])} · 未命中 ${fmt(c[6])}`+(SP?'':` · 写入 ${fmt(c[7])}`));
+  h+=`<li data-k="${k}" class="${k==pick?'on':''}" style="margin-top:${gap}px">${drop(c,k==pick,SP?.035:.11)}<div class="tx"><div class="a"><span class="tm">${c[0]}</span><span class="ty">${c[1]}</span><b class="${unk?'uk':''}">${tot}</b></div><div class="md">${SP?c[2]+' · 点进这一天':c[2]}</div><div class="b">${sub}</div></div></li>`});
  if(!h)h='<li class="em">这一天这一类没有调用</li>';
- $('#cl').innerHTML=h;$('#cl').querySelectorAll('li[data-k]').forEach(li=>li.onclick=()=>{pick=+li.dataset.k;draw()});}
+ $('#cl').innerHTML=h;$('#cl').querySelectorAll('li[data-k]').forEach(li=>li.onclick=()=>{const k=+li.dataset.k;if(SP){setDay(ROWS[k][8]);return}pick=k;draw()});
+ $('#pv').style.display=SP?'none':'';}
 let MX=1;function bottle(x,bot,w,H,c,i,big){let h='';const top=bot-H,lv=Math.max(8,(H-6)*c[0]/MX),ly=bot-3-lv;
   h+=`<g class="bt${sel==i?' sel':''}" data-i="${i}">`;
   const pw=big?44:30,ph=big?22:16,py=top-(big?60:42);
@@ -160,7 +183,7 @@ let MX=1;function bottle(x,bot,w,H,c,i,big){let h='';const top=bot-H,lv=Math.max
   const lw=w-(big?24:10),lh=big?48:30,lx=x+(w-lw)/2,lyy=top+(big?20:10);
   h+=`<rect x="${lx}" y="${lyy}" width="${lw}" height="${lh}" rx="3" fill="#fff" stroke="#bbb"/><text x="${x+w/2}" y="${lyy+(big?24:14)}" class="ln" style="font-size:${big?20:12}px">${c[0]}</text><text x="${x+w/2}" y="${lyy+(big?40:25)}" class="lt" style="font-size:${big?11:9}px">${NM[i]}</text></g>`;
   return [h,ly,ch]}
-function draw(){const d=agg(),f=$('#fig');d.mx=Math.max(...d.c.map(c=>c[0]),.01);MX=d.mx;let h='<defs><pattern id="hp" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#b3b7b4"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8d918e" stroke-width="2"/></pattern></defs>';
+function draw(){if(!span()){const g=genDay(rs);CL.length=0;g.forEach(c=>CL.push(c))}const d=agg(),f=$('#fig');d.mx=Math.max(...d.c.map(c=>c[0]),.01);MX=d.mx;let h='<defs><pattern id="hp" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#b3b7b4"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8d918e" stroke-width="2"/></pattern></defs>';
  // 地面
  const TX=20/(f.getBoundingClientRect().width/364||1);h+=`<path d="M${TX-6} 382 Q${TX} 386 ${TX} 396 V492" stroke="#cfd2d0" stroke-width="${3*364/(f.getBoundingClientRect().width||364)}" fill="none"/>`+'<rect x="0" y="372" width="364" height="10" rx="3" fill="#9a9e9b"/>'+drops();
  // 主角大瓶
@@ -175,20 +198,20 @@ function draw(){const d=agg(),f=$('#fig');d.mx=Math.max(...d.c.map(c=>c[0]),.01)
  const st=[[176,300],[236,252],[296,204]];
  st.forEach(([x,y],k)=>{h+=`<rect x="${x-4}" y="${y}" width="68" height="${372-y}" fill="#e3e5e4" stroke="#bbb"/>`});
  st.forEach(([x,y],k)=>{const [hh]=bottle(x+6,y,48,92,d.c[k+1],k+1,0);h+=hh});
- // 保质期章：贴在最高一级台阶立面上，点开日历
- const DS=`${day.getMonth()+1}.${String(day.getDate()).padStart(2,'0')}`;
- h+=`<g class="stp" id="stp"><rect x="298" y="292" width="56" height="64" rx="4" fill="#fff" stroke="#888" stroke-width="1.3" stroke-dasharray="4 2"/><text x="326" y="308" class="lt" style="font-size:9px">开瓶日</text><text x="326" y="330" class="ln" style="font-size:17px">${DS}</text><text x="326" y="347" class="lt" style="font-size:10px">周${WD[day.getDay()]}${+day==+TODAY?' 今天':''} ▾</text></g>`;
+ // 小台历：蹲在最高一级台阶上（仿记忆页台历：顶环、月份条、大日期、周几、底座）
+ {const SP=span(),big=SP?`${rs.getDate()}–${re.getDate()}`:`${rs.getDate()}`,sm=SP?`${days().length} 天`:`周${WD[rs.getDay()]}`;
+ h+=`<g class="stp" id="stp" transform="rotate(4 326 366)"><rect x="300" y="294" width="52" height="66" rx="6" fill="#fff" stroke="#888" stroke-width="1.3"/><rect x="300" y="294" width="52" height="14" rx="6" fill="#cfd2d0" stroke="#888" stroke-width="1.3"/><text x="326" y="305" class="lt" style="font:700 8px system-ui;letter-spacing:.15em">${MON[re.getMonth()]}</text>`+[312,320,328,336].map(x=>`<circle cx="${x}" cy="294" r="2.2" fill="#fff" stroke="#666"/>`).join('')+`<text x="326" y="333" class="ln" style="font-size:${SP?15:22}px">${big}</text><text x="326" y="350" class="lt" style="font-size:10px">${sm}</text><rect x="296" y="358" width="60" height="10" rx="3" fill="#777"/></g>`;}
  // 没报用量：大瓶脚边虚线空瓶
  h+=`<g><rect x="0" y="330" width="20" height="40" rx="5" fill="#f4f5f4" stroke="#999" stroke-width="1.2" stroke-dasharray="3 3"/><text x="10" y="355" class="ln" style="font-size:12px">${d.u}</text><text x="10" y="324" class="an" text-anchor="middle" style="font-size:9px">没报</text></g>`;
  f.innerHTML=h;
- f.querySelectorAll('.bt').forEach(g=>g.onclick=()=>{const i=+g.dataset.i;sel=sel==i?-1:i;if(sel>=0&&CL[pick][1]!=NM[sel]){const k=CL.findIndex(c=>c[1]==NM[sel]);if(k>=0)pick=k}draw()});$('#stp').onclick=e=>{e.stopPropagation();cal();const b=$('#stp').getBoundingClientRect(),w=$('#fw').getBoundingClientRect();$('#cal').style.top=(b.bottom-w.top+8)+'px';$('#fw').classList.toggle('on')};f.querySelectorAll('.dr').forEach(g=>g.onclick=()=>{pick=+g.dataset.k;draw()});
- $('#tn').textContent=d.t.toFixed(2);$('#tk').textContent=dayLabel(day)+' · 用量';
+ f.querySelectorAll('.bt').forEach(g=>g.onclick=()=>{const i=+g.dataset.i;sel=sel==i?-1:i;if(sel>=0&&CL[pick][1]!=NM[sel]){const k=CL.findIndex(c=>c[1]==NM[sel]);if(k>=0)pick=k}draw()});$('#stp').onclick=()=>sheet(1);f.querySelectorAll('.dr').forEach(g=>g.onclick=()=>{pick=+g.dataset.k;draw()});
+ $('#tn').textContent=d.t.toFixed(2);$('#tk').textContent=rangeLabel()+' · 用量';
  $('#tc').textContent=d.c.reduce((a,c)=>a+c[1],0);
  const hit=d.c.reduce((a,c)=>a+(c[2]||0),0),mis=d.c.reduce((a,c)=>a+(c[3]||0),0);const sc=sel<0?null:d.c[sel];$('#cs').innerHTML=sc?`${NM[sel]} ${sc[0]} 万 · 调用 ${sc[1]} 次 · `+(sc[2]!=null?`缓存命中 <b>${sc[2]}</b> 万 · 未命中 <b>${sc[3]}</b> 万`:'缓存不适用'):`缓存命中 <b>${hit.toFixed(2)}</b> 万 · 未命中 <b>${mis.toFixed(2)}</b> 万 · 没报缓存 <b>${d.m}</b> 次`;
  list();
 }
-addEventListener('click',()=>$('#fw').classList.remove('on'));$('#cal').onclick=e=>e.stopPropagation();
-$('#pv').onclick=()=>setDay(new Date(day.getFullYear(),day.getMonth(),day.getDate()-1));
+$('#csh .cbg').onclick=()=>sheet(0);
+$('#pv').onclick=()=>setDay(DD(rs,-1));
 if(location.hash=='#sel')sel=0;
 draw();addEventListener('resize',draw);
 </script>
