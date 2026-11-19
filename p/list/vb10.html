@@ -1,0 +1,415 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>vb10 · 茶茶的薄荷巧克力茶会 · 聊天室</title>
+<style>
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:Script;src:url(script.ttf)}
+@font-face{font-family:WK;src:url(wenkai.ttf)}
+:root{--ch:#5b3a2c;--ink:#4a3027;--cocoa:#8a5c46;--mint3:#2f6e58;--mintb:#3f9a80;--pink:#e07f95;
+ --body:"OPPO Sans","HarmonyOS Sans SC","PingFang SC","Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;color:var(--ink);font-family:var(--body)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+img{display:block;user-select:none;-webkit-user-drag:none}
+/* 底图：她的薄荷竖条纹 + 左上高光 */
+.vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+.app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,440px);overflow:hidden}
+
+/* 主角：奶茶杯，固定在右下，内容从它前面滚过 */
+.cup{position:absolute;right:-58px;bottom:-34px;width:min(66%,280px);z-index:1;transform-origin:50% 96%;pointer-events:auto;will-change:transform}
+.cup img{width:100%}
+.cup .ins{position:absolute;inset:0;pointer-events:none;overflow:hidden;-webkit-mask:var(--cm) center/100% 100% no-repeat;mask:var(--cm) center/100% 100% no-repeat}
+.cup .bb{position:absolute;border-radius:50%;border:1.3px solid rgba(255,255,255,.95);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9) 0 18%,rgba(255,255,255,.12) 32%)}
+.veil{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(237,248,243,.55) 0,rgba(237,248,243,.25) 45%,rgba(237,248,243,0) 70%)}
+.sugar{position:absolute;inset:0;z-index:3;pointer-events:none}
+
+/* 滚动区 */
+.scroller{position:absolute;inset:0;z-index:5;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+.content{position:relative;min-height:100%;padding:0 16px 150px}
+.drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
+
+/* 顶栏：杯套 */
+.head{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:calc(54px + env(safe-area-inset-top,0px)) 0 10px;margin:0 -2px}
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.72),rgba(255,255,255,.44));-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);border:1px solid rgba(255,255,255,.92);box-shadow:inset 0 1px 0 #fff,0 10px 22px -16px rgba(74,48,39,.5)}
+.iconbtn{flex:none;width:44px;height:44px;border-radius:22px;display:grid;place-items:center}
+.iconbtn:active{transform:scale(.92)}
+.sleeve{flex:1;position:relative;height:56px;border-radius:14px 14px 18px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;overflow:hidden;background:linear-gradient(180deg,rgba(255,250,242,.82),rgba(255,250,242,.6));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid #fff;box-shadow:inset 0 1px 0 #fff,0 10px 20px -14px rgba(74,48,39,.55)}
+.sleeve::before,.sleeve::after{content:"";position:absolute;left:0;right:0;height:5px;background:repeating-linear-gradient(90deg,#8a5c46 0 7px,#c9a58c 7px 10px);opacity:.55}
+.sleeve::before{top:0}.sleeve::after{bottom:0}
+.sleeve h1{font:400 18px/1 ZK;color:var(--ch);letter-spacing:.06em}
+.sleeve h1 b{font:800 19px/1 Baloo;letter-spacing:0}
+.sleeve .plat{font:12px/1 var(--body);color:var(--mint3);background:rgba(166,217,196,.45);border-radius:9px;padding:3px 9px}
+
+/* 已总结：拿铁条 */
+.sum{position:relative;margin:6px 0 4px;display:flex;align-items:center;justify-content:center;gap:4px;height:46px;border-radius:23px;overflow:hidden;font:400 14px/1 ZK;color:var(--cocoa);letter-spacing:.06em;isolation:isolate}
+.sum b{font:800 16px/1 Baloo;color:var(--ch);letter-spacing:0}
+.sum::before{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;z-index:-1;background:linear-gradient(180deg,rgba(196,150,112,.22),rgba(170,120,88,.32))}
+.sum .art{position:absolute;left:12px;top:7px;width:32px;height:32px;border-radius:50%;background:radial-gradient(circle,#fff8ec 0 55%,#e9d2b6 56% 64%,#b98a66 66%);display:grid;place-items:center;color:#c99f7d;font:16px/1 system-ui;z-index:1}
+
+/* 时间：巧克力小方块 */
+.clock{align-self:center;margin:18px 0 10px;display:flex;align-items:center;gap:8px;font:700 13px/1 Baloo;color:#fffaf2;letter-spacing:.06em}
+.clock span{background:var(--ch);border-radius:7px;padding:6px 10px 5px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.18)}
+.clock::before,.clock::after{content:"";width:28px;height:1.5px;border-radius:1px;background:rgba(138,92,70,.35)}
+
+.thread{position:relative;z-index:2;display:flex;flex-direction:column}
+.me,.him{display:flex;flex-direction:column;max-width:82%;margin-top:10px}
+.me{align-self:flex-end;align-items:flex-end}
+.him{align-self:flex-start;align-items:flex-start}
+.bub{position:relative;isolation:isolate;overflow:hidden;font:15px/1.7 var(--body);padding:11px 15px 12px;letter-spacing:.01em;word-break:break-word}
+.bub .tx{position:relative;z-index:2}
+/* 他：奶泡白玻璃，顶上一圈奶泡 */
+.bub-him{border-radius:8px 22px 22px 22px;padding-top:15px;background:linear-gradient(170deg,rgba(255,252,246,.86),rgba(255,250,242,.62));-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);border:1px solid #fff;box-shadow:inset 0 1px 0 #fff,0 10px 22px -16px rgba(74,48,39,.5)}
+.foam{position:absolute;left:-4px;right:-4px;top:-2px;height:12px;z-index:1;pointer-events:none;transform-origin:50% 0}
+.foam i{position:absolute;top:0;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffefb,#f3e7d6);box-shadow:inset 0 -1px 0 rgba(185,138,102,.25)}
+/* 我：薄荷苏打玻璃，气泡往上冒 */
+.bub-me{border-radius:22px 8px 22px 22px;background:linear-gradient(170deg,rgba(214,240,229,.82),rgba(166,217,196,.62));-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);border:1px solid rgba(255,255,255,.92);box-shadow:inset 0 1px 0 #fff,0 10px 22px -16px rgba(47,110,88,.55);color:#2c4a3f}
+.bub-me .bb{position:absolute;bottom:-8px;z-index:1;border-radius:50%;border:1.1px solid rgba(255,255,255,.95);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9) 0 18%,rgba(255,255,255,.1) 32%);pointer-events:none}
+
+.sub{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:6px;padding-left:4px;font:12px/1 var(--body);color:var(--cocoa)}
+.subbtn{display:flex;align-items:center;gap:6px;min-height:28px}
+.subbtn .t{font:700 12px/1 Baloo;color:var(--cocoa)}
+.chip{font:12px/1 var(--body);border-radius:10px;padding:4px 9px}
+.chip.p{background:rgba(255,255,255,.6);border:1px solid #fff;color:var(--cocoa)}
+.model{display:flex;align-items:center;gap:5px;font:12px/1 var(--body);color:var(--cocoa);overflow:hidden;max-width:0;opacity:0;transition:max-width .35s ease,opacity .25s}
+.model.on{max-width:240px;opacity:1}
+.model .n{font:700 12px/1 Baloo}
+.vers{font:12px/1 ZK;color:var(--mint3);text-decoration:underline dotted 1px;text-underline-offset:3px;min-height:28px;display:flex;align-items:center}
+/* 候选：薄荷苏打小瓶盖 */
+.cand{margin-top:6px;display:flex;align-items:center;gap:6px;font:12px/1 ZK;color:var(--mint3);background:rgba(214,240,229,.8);border:1px solid #fff;border-radius:12px;padding:6px 10px;letter-spacing:.06em}
+.cand i{width:10px;height:10px;border-radius:50%;border:1.3px solid #fff;background:radial-gradient(circle at 35% 30%,#fff 0 25%,#a6d9c4 35%)}
+.cand b{font:800 14px/1 Baloo}
+/* 存进记忆：一颗包好的糖 */
+.saved{position:relative;align-self:center;margin:16px 0 4px;display:flex;align-items:center;height:40px;cursor:pointer}
+.saved .wrap{position:relative;z-index:2;display:flex;align-items:center;gap:7px;height:40px;padding:0 16px;border-radius:12px;background:linear-gradient(180deg,rgba(255,250,242,.9),rgba(255,240,224,.75));border:1px solid #fff;box-shadow:inset 0 1px 0 #fff,inset 0 -6px 0 rgba(166,217,196,.35),0 8px 18px -12px rgba(74,48,39,.55);font:13px/1 var(--body);color:var(--ink)}
+.saved .wrap em{font:12px/1 ZK;font-style:normal;color:var(--cocoa);letter-spacing:.08em}
+.twist{position:relative;z-index:1;width:22px;height:30px;transform-origin:var(--o) 50%}
+.twist svg{width:100%;height:100%}
+.tw-l{margin-right:-3px;--o:100%}.tw-r{margin-left:-3px;--o:0%}
+
+/* 结尾：杯底 */
+.end{align-self:center;margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:8px;font:12px/1 ZK;color:var(--cocoa);letter-spacing:.3em}
+.end .pearls{display:flex;gap:6px}
+.end .pearls i{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%)}
+
+.fade{position:absolute;left:0;right:0;bottom:0;height:80px;z-index:8;pointer-events:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 35%,transparent);mask-image:linear-gradient(to top,#000 35%,transparent);background:linear-gradient(to top,rgba(228,243,237,.7),rgba(228,243,237,0))}
+.lowtier .glass,.lowtier .bub,.lowtier .sleeve{-webkit-backdrop-filter:none;backdrop-filter:none}
+.lowtier .bub-him{background:rgba(255,252,246,.94)}.lowtier .bub-me{background:rgba(214,240,229,.95)}
+
+/* ===== room2：奶茶小料组件，统一可可细描边 ===== */
+:root{--ol:#8a5c46}
+/* 返回/更多：两颗大珍珠 */
+.pearlbtn{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 34% 28%,#b98a6c 0 9%,#6a4130 30%,#3b2219 78%);border:1.3px solid #2e1a12;box-shadow:inset -3px -4px 6px rgba(0,0,0,.25),0 8px 14px -10px rgba(46,26,18,.7);transform-origin:50% 80%}
+.pearlbtn svg{stroke:#fff3e2;fill:none}.pearlbtn .dots{fill:#fff3e2;stroke:none}
+/* 日期：巧克力威化 */
+.wafer{flex:1;position:relative;height:64px;border-style:solid;border-width:0 30px;border-image:url(wafer.png) 0 136 fill / 0 30px stretch;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:11px;gap:5px;cursor:pointer}
+.wafer h1{font:400 18px/1 ZK;color:#fff6e8;letter-spacing:.06em;text-shadow:0 1px 0 rgba(59,34,25,.55)}
+.wafer h1 b{font:800 19px/1 Baloo;letter-spacing:0}
+.wafer .plat{font:11.5px/1 var(--body);color:#d8f1e6;letter-spacing:.04em}
+.crumb{position:absolute;z-index:25;width:5px;height:4px;border-radius:1px;background:#5b3a2c;pointer-events:none}
+/* 他：淋了巧克力酱的奶冻 */
+.bub-him{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;overflow:visible!important;padding-top:30px!important}
+.shell{position:absolute;inset:0;z-index:0;border-radius:18px 20px 22px 22px;border:1.3px solid var(--ol);pointer-events:none;transform-origin:50% 100%}
+.bub-him .shell{background:radial-gradient(60% 50% at 22% 30%,rgba(255,255,255,.85),rgba(255,255,255,0) 70%),linear-gradient(180deg,rgba(255,251,243,.94),rgba(246,234,216,.9));box-shadow:inset 0 -7px 0 rgba(218,192,160,.45),inset 0 2px 0 #fff,0 10px 18px -14px rgba(74,48,39,.55)}
+.sauce{position:absolute;left:0;top:-.5px;width:100%;height:40px;z-index:1;pointer-events:none;overflow:visible}
+.sauce path.s{fill:#5b3a2c;stroke:#3b2219;stroke-width:1.1;stroke-linejoin:round}
+.sauce path.h{fill:none;stroke:rgba(255,236,220,.55);stroke-width:1.6;stroke-linecap:round}
+/* 我：薄荷果冻 */
+.bub-me{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;overflow:visible!important}
+.bub-me .shell{border-radius:20px 18px 20px 20px;background:radial-gradient(50% 45% at 24% 26%,rgba(255,255,255,.75),rgba(255,255,255,0) 70%),linear-gradient(180deg,rgba(196,234,218,.86),rgba(150,210,186,.82));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 -7px 0 rgba(106,176,150,.35),inset 0 2px 0 rgba(255,255,255,.9),0 10px 18px -14px rgba(47,110,88,.6)}
+.bub-me .jb{position:absolute;z-index:1;border-radius:50%;border:1px solid rgba(255,255,255,.95);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9) 0 20%,rgba(255,255,255,.12) 34%);pointer-events:none}
+.bub-me .tx{color:#24443a}
+/* 其他小件也加描边 */
+.clock span{border:1.2px solid #2e1a12}
+.cand{border:1.2px solid var(--ol)!important;background:rgba(214,240,229,.92)!important}
+.saved .wrap{border:1.2px solid var(--ol)!important}
+.sum{border:1.2px solid var(--ol)!important}
+.sub .chip.p{border:1px solid rgba(138,92,70,.45)}
+
+/* room4 */
+.pearlbtn{background:#6b4433;border:1.2px solid #4a2c20;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.18),0 4px 10px -6px rgba(46,26,18,.55);position:relative}
+.pearlbtn::after{content:"";position:absolute;left:11px;top:8px;width:9px;height:5px;border-radius:50%;background:rgba(255,243,226,.55);transform:rotate(-24deg)}
+.saved{height:42px}
+.saved .cbody{position:absolute;inset:0 -6px;z-index:1;border-style:solid;border-width:10px 34px;border-image:url(candy.png) 90 300 90 300 fill stretch;transform-origin:50% 50%;pointer-events:none}
+.saved .wrap{background:none!important;border:0!important;box-shadow:none!important;height:42px;padding:0 44px;font-size:13px}
+.wafer{padding-top:0;justify-content:flex-start}
+.wafer .face{position:absolute;left:0;right:0;top:0;height:71%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.wafer h1{line-height:1}
+.counter{align-self:center;display:inline-flex;gap:2px;margin:18px 0 8px;padding:3px;border-radius:5px;background:#5b3a2c;box-shadow:0 2px 3px -1px rgba(74,48,39,.4)}
+.counter span{display:inline-block;min-width:12px;padding:1px 2px;border-radius:2px;background:#fdf9f0;font:700 13px/1.3 Baloo;text-align:center;color:#4a3027}
+.counter b{align-self:center;font:700 13px/1 Baloo;color:#fdf9f0;padding:0 1px}
+.head::before{content:"";position:absolute;left:-18px;right:-18px;top:0;bottom:-18px;z-index:-1;pointer-events:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(232,246,240,.9),rgba(232,246,240,.55) 75%,rgba(232,246,240,0));-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);mask-image:linear-gradient(180deg,#000 72%,transparent)}
+.head{isolation:isolate}
+
+/* room5：在奶茶杯里 */
+.vp{background-color:#e7f4ee;background-image:radial-gradient(120% 40% at 20% 0%,rgba(255,255,255,.8),rgba(255,255,255,0) 60%),linear-gradient(180deg,#e8f6f0 0%,#e3f2ea 30%,#e9ecdf 52%,#eadfcf 70%,#ddc6ad 88%,#cfb193 100%)}
+.cup{inset:0!important;width:auto!important;right:0!important;bottom:0!important;transform:none!important;pointer-events:none!important}
+.cup>img{display:none}
+.cup .ins{-webkit-mask:none!important;mask:none!important}
+.pearls{position:absolute;left:-4%;right:-4%;bottom:-6px;z-index:1;pointer-events:none;transform-origin:50% 100%}
+.pearls img{width:100%}
+.ice{position:absolute;z-index:1;pointer-events:none;opacity:.5}
+.veil{background:linear-gradient(180deg,rgba(240,250,246,0),rgba(240,250,246,0))}
+.pearlbtn::after{display:none}
+.gar{position:absolute;z-index:3;pointer-events:none;transform-origin:50% 90%}
+.gar img{width:100%}
+
+/* ===== 聊天列表 ===== */
+.lhead{position:sticky;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 10px;isolation:isolate}
+.lhead::before{content:"";position:absolute;left:0;right:0;top:0;bottom:-16px;z-index:-1;pointer-events:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(232,246,240,.9),rgba(232,246,240,.5) 75%,rgba(232,246,240,0));-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+.ttl{position:relative}
+.ttl h1{font:32px/1 ZK;color:var(--ch);letter-spacing:.06em;position:relative;z-index:1}
+.ttl .sc{position:absolute;left:52px;top:-14px;font:22px/1 Script;color:rgba(63,154,128,.55);transform:rotate(-8deg);white-space:nowrap}
+.lbtns{display:flex;gap:10px}
+
+.wk{display:flex;align-items:center;gap:8px;margin:22px 20px 12px}
+.wk b{display:inline-flex;align-items:center;height:26px;padding:0 12px;border-radius:13px;background:#6b4433;border:1.2px solid #4a2c20;font:13px/1 ZK;color:#fff3e2;letter-spacing:.08em}
+.wk span{font:600 14px/1 Baloo;color:var(--cocoa)}.wk i{font:12px/1 ZK;font-style:normal;color:#2f6e58;letter-spacing:.06em}
+.list{position:relative;z-index:3;padding:0 14px 150px}
+/* 奶盖＝今天 */
+.cap{position:relative;display:block;width:100%;text-align:left;margin-top:6px;padding:46px 22px 34px;background:none;cursor:pointer}
+.cap .bg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.cap .bg{filter:drop-shadow(0 7px 9px rgba(74,48,39,.11))}
+.cap .bg .sh{fill:url(#capCream);stroke:rgba(138,92,70,.34);stroke-width:1.2}
+.cap .bg .rim{fill:none;stroke:rgba(222,196,166,.4);stroke-width:3;stroke-linecap:round}
+.cap .bg .s,.cap .bg .bd{fill:url(#capChoco);stroke:none}
+.cap .bg .h{fill:none;stroke:rgba(255,236,220,.55);stroke-width:1.6;stroke-linecap:round}
+.cap>*:not(.bg){position:relative}
+.cap .dust{position:absolute;left:0;right:0;top:0;height:40px;pointer-events:none;background:radial-gradient(circle,rgba(120,80,60,.35) .8px,transparent 1.2px) 0 0/9px 7px,radial-gradient(circle,rgba(120,80,60,.25) .7px,transparent 1.1px) 4px 3px/11px 9px;-webkit-mask:radial-gradient(60% 100% at 45% 0,#000,transparent 80%);mask:radial-gradient(60% 100% at 45% 0,#000,transparent 80%);border-radius:24px 24px 0 0}
+.cap .k{display:flex;align-items:baseline;gap:8px}
+.cap .k b{font:700 24px/1 Baloo;color:var(--ch)}.cap .k i{font:13px/1 ZK;font-style:normal;color:#2f6e58;letter-spacing:.08em}
+.cap p{margin:10px 0 8px;font:17px/1.6 WK;color:var(--ink)}
+.cap .n{display:inline-flex;align-items:center;gap:4px;font:12px/1 ZK;color:var(--cocoa);letter-spacing:.06em}
+.cap .new{position:absolute;right:18px;top:6px;width:8px;height:8px;border-radius:50%;background:#3f9a80;box-shadow:0 0 0 2px #fff}
+.cap .gar{right:auto}
+/* 挂壁酱 */
+.wall{display:block;width:88%;margin:8px auto 0;height:24px;overflow:visible;opacity:.62;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.wall path{fill:#7a5a4c;stroke:none}
+/* 冰块＝本周 */
+.ices{position:relative;height:0;padding-bottom:158%}
+.cube{position:absolute;display:block;cursor:pointer;text-align:left}
+.cube .body{position:absolute;inset:0;transform-origin:50% 60%;will-change:transform}
+.cube .im,.cube .fr{position:absolute;inset:0;pointer-events:none}
+.cube .im img,.cube .fr img{width:100%;height:100%;object-fit:contain}
+.cube .top{position:absolute;left:14%;right:16%;top:3.5%;height:11%;display:flex;align-items:center;justify-content:center;transform:perspective(200px) rotateX(48deg);transform-origin:50% 100%}
+.cube .top b{font:700 15px/1 Baloo;color:var(--ch);letter-spacing:.04em}
+.cube .side{position:absolute;left:85.5%;width:10%;top:20%;bottom:22%;display:flex;align-items:center;justify-content:center;transform:skewY(-10deg)}
+.cube .side i{writing-mode:vertical-rl;font:12px/1 WK;font-style:normal;color:var(--cocoa);letter-spacing:.25em}
+.cube .tx{position:absolute;left:20%;right:22%;top:23%;bottom:20%;display:flex;align-items:center}
+.cube .tx span{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font:14px/1.5 WK;color:var(--ink)}
+/* 珍珠＝更早的周 */
+.pls{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;padding:0 6px}
+.pl{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer}
+.pl:nth-child(even){margin-top:34px}
+.pl .ball{position:relative;width:118px;height:118px;display:grid;place-items:center;transform-origin:50% 90%;will-change:transform}
+.pl .ball img{position:absolute;inset:0;width:100%;height:100%;transform-origin:50% 90%}
+.pl .ball b{position:relative;font:700 15px/1.15 Baloo;color:#fff3e2;text-shadow:0 1px 2px rgba(46,26,18,.5)}
+.pl .ball b small{display:block;font:12px/1.3 ZK;color:rgba(255,243,226,.85);letter-spacing:.06em}
+.pl .cap2{width:100%;max-width:148px;margin-top:7px;padding:3px 2px 7px;border:0;border-bottom:1.1px dashed rgba(138,92,70,.42);background:none;font:13px/1.45 WK;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
+.pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
+.pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
+.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
+.tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}/* 页头圆钮：毛玻璃（11-12） */
+.pearlbtn{background:rgba(252,250,244,.62)!important;backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.85)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 8px 18px -12px rgba(74,48,39,.45)!important}
+.pearlbtn svg{stroke:#5b3a2c!important}.pearlbtn .dots{fill:#5b3a2c!important}
+/* 今天：圆点加小字，不用胶囊（11-12） */
+.wk b{height:auto!important;padding:0!important;border-radius:0!important;background:none!important;border:0!important;color:#4a3027!important;font:15px/1 ZK!important;gap:6px}
+.wk b::before{content:"";width:7px;height:7px;border-radius:50%;background:#5b3a2c}
+/*clamp-fix 11-14：padding 里会露出第三行*/.pl .cap2{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important}.pl .cap2 .c2t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style>
+<style>
+/* vb10：聊天列表 = 一列迷你聊天室（通用组件：饮品卡 / 奶冻·果冻气泡 / 巧克力计数牌） */
+.list{padding:0 16px 170px!important}
+.sec{display:flex;align-items:baseline;gap:8px;margin:30px 4px 4px}
+.sec b{font:20px/1 ZK;color:#5b3a2c;letter-spacing:.08em}.sec small{font:12px/1 ZK;color:#8a6b5c;letter-spacing:.06em}
+.sec small em{font:700 13px/1 Baloo,ZK;font-style:normal;color:#8a5c46}
+.thr{display:flex;flex-direction:column}
+.day{display:flex;flex-direction:column;position:relative;margin-top:14px}
+.dh{align-self:center;display:flex;align-items:center;gap:8px;margin:12px 0 4px}
+.dh .counter{margin:0!important}
+.dh small{font:12px/1 ZK;color:#8a6b5c;letter-spacing:.06em}.dh small em{font:700 13px/1 Baloo,ZK;font-style:normal;color:#8a5c46;margin-right:2px}
+.day .me,.day .him{max-width:80%}
+.day .me{margin-top:8px}
+.bub{font:15px/1.7 var(--body)!important}
+.unsaid{align-self:flex-start;margin:6px 0 0 6px;font:13px/1.5 var(--body);color:#6b4a3c;filter:blur(3.2px);transition:filter .45s cubic-bezier(.23,1,.32,1);background:none;border:0;padding:0;text-align:left}
+.unsaid.on{filter:none}.unsaid i{font:11px/1 ZK;font-style:normal;color:#2f6e58;margin-right:6px;letter-spacing:.06em}
+.dry{opacity:.55}.dry .counter{filter:saturate(.6)}
+/* 饮品卡（组件页 02，原样） */
+.dcups{display:grid;gap:12px;margin-top:10px}
+.dcup{position:relative;z-index:2;display:block;width:100%;text-align:left;overflow:hidden;isolation:isolate;border-radius:18px 18px 22px 22px;padding:11px 14px 24px;background:#fffaf0;box-shadow:0 0 0 1.5px #8a5c46,inset 0 0 0 4px #fffaf0,inset 0 0 0 5.2px rgba(159,211,191,.9)}
+.dcups .dcup:nth-child(even){width:94%;margin-left:6%}
+.dcup .t{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;font:12px/1 ZK;color:#8a5c46;letter-spacing:.14em}
+.dcup .t em{font:700 13px/1 Baloo,ZK;font-style:normal;color:#2f6e58;letter-spacing:0}
+.dcup p{position:relative;z-index:3;margin-top:7px;font:14px/1.5 var(--body);color:#4a3027}
+.dcup .lq{position:absolute;z-index:1;left:0;right:0;bottom:0;height:var(--h,36%);background:var(--lc);transition:height .5s cubic-bezier(.3,1.6,.5,1)}
+.dcup .lq::before{content:"";position:absolute;left:0;right:0;top:-7px;height:8px;background:var(--wv) repeat-x 0 0/56px 8px;animation:dwv var(--wd,6s) linear infinite}
+.dcup.slosh .lq{animation:dslo .7s}
+@keyframes dwv{to{background-position:56px 0}}
+@keyframes dslo{30%{transform:skewY(-3deg)}60%{transform:skewY(2deg)}}
+.dcup.cocoa{--lc:rgba(150,98,72,.30);--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='rgba(150,98,72,.30)'/%3E%3C/svg%3E")}
+.dcup.boba{--h:42%;--wd:7.4s;--lc:rgba(214,170,128,.34);--wv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 1 28 4 T56 4 V8 H0Z' fill='rgba(214,170,128,.34)'/%3E%3C/svg%3E")}
+.dcup.soda{--h:100%;--lc:linear-gradient(180deg,rgba(166,217,196,.08),rgba(140,205,180,.42))}
+.dcup.soda .lq::before{display:none}
+.dcup .mm{position:absolute;z-index:2;bottom:5px;width:13px;height:11px;border-radius:4px;background:#fffdf7;box-shadow:0 0 0 1px rgba(107,74,59,.55);animation:dbob var(--d,3.4s) ease-in-out infinite alternate}
+.dcup .pe{position:absolute;z-index:2;bottom:5px;width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%);animation:dbob var(--d,3.4s) ease-in-out infinite alternate}
+.dcup .sb{position:absolute;z-index:2;width:7px;height:7px;border-radius:50%;box-shadow:0 0 0 1px rgba(47,110,88,.45);background:rgba(255,255,255,.6);animation:dup var(--d,4s) linear infinite}
+@keyframes dup{from{transform:translateY(0);opacity:0}15%{opacity:1}to{transform:translateY(-70px);opacity:0}}
+@keyframes dbob{from{translate:0 0}to{translate:0 -2px}}
+.dcup.boba.slosh .pe{animation:djp .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes djp{40%{transform:translateY(-16px)}}
+/* 今天：大一号的饮品卡，顶上淋巧克力酱（同聊天室奶冻的酱） */
+.today{padding:30px 16px 30px;overflow:visible!important}
+.today .sauce{border-radius:18px 18px 0 0}
+.today .t{font-size:13px}.today .t em{font-size:15px}
+.today p{font-size:17px;line-height:1.55;margin-top:10px}
+.today p.m{font-size:14px;color:#24443a;text-align:right;margin-top:6px}
+.today p.m i,.today p.h i{font:11px/1 ZK;font-style:normal;color:#8a5c46;letter-spacing:.12em;margin-right:6px}.today p.m i{color:#2f6e58}
+.today .shell{display:none}
+.tlink{position:relative;z-index:3;display:inline-block;margin-top:8px;font:12px/1 ZK;color:#8a5c46;letter-spacing:.06em;border-bottom:1px dashed #8a5c46;padding-bottom:3px}
+/* 装饰冰块（借聊天页冰块的弹簧漂浮） */
+.icd{position:absolute;pointer-events:none;z-index:1;aspect-ratio:546/583}
+.icd .im{opacity:.9}
+@media (prefers-reduced-motion:reduce){.dcup .lq::before,.dcup .sb,.dcup .mm,.dcup .pe{animation:none!important}}
+</style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="capCream" x1="0" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="#fffef8"/><stop offset=".48" stop-color="#fbf4e7"/><stop offset="1" stop-color="#eadbc3"/></linearGradient><linearGradient id="capChoco" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#80604d"/><stop offset=".38" stop-color="#684636"/><stop offset="1" stop-color="#4e3025"/></linearGradient></defs><filter id="goo" x="-5%" y="-40%" width="110%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="b"/><feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10" result="g"/><feMorphology in="g" operator="dilate" radius="1.1" result="d"/><feFlood flood-color="#3b2219"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="g"/></feMerge></filter></svg>
+
+<div class="vp"><div class="app" id="app">
+ <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
+ <div class="pearls" id="pearls"><img src="pearls.png" alt=""></div>
+ <div class="veil"></div>
+ <canvas class="sugar" id="sugar"></canvas>
+ <div class="scroller" id="sc"><div class="content">
+  <img class="drizzle" src="today-bg.png" alt="">
+  <header class="lhead"><div class="ttl"><span class="sc" aria-hidden="true">chats</span><h1>聊天</h1></div><div class="lbtns"><button class="pearlbtn" aria-label="搜索聊天"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button><button class="pearlbtn" aria-label="筛选"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M7 12h10M10 17h4"/></svg></button></div></header>
+  <div class="list" id="list"></div>
+ </div></div>
+ <div class="fade"></div>
+<div class="navfade" aria-hidden="true"></div>
+<nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
+<button class="tab"><span style="position:relative;display:inline-flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="16.5" rx="2.6" fill="#c4e8da"/><path d="M8.2 3v16.5"/><path d="M13.7 13.4c-1.9-1.3-2.9-2.3-2.9-3.4a1.45 1.45 0 0 1 2.9-.5 1.45 1.45 0 0 1 2.9.5c0 1.1-1 2.1-2.9 3.4Z" fill="#5b3a2c" stroke="none"/><path d="M14.6 19.5v3l1.3-1 1.3 1v-3" fill="#fbf6ea"/></svg><span class="dot"></span></span><span>记忆</span></button>
+<button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1 0-1.9-.1-2.8-.4L4.8 19.6l1.3-3.5C4.6 14.8 3.5 13.1 3.5 11.2c0-3.9 3.8-7 8.5-7Z" fill="#c4e8da"/><circle cx="8.6" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="15.4" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/></svg><span>聊天</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 21c.5-3.8 3.6-6.3 7.5-6.3s7 2.5 7.5 6.3Z" fill="#c4e8da"/><circle cx="12" cy="8.6" r="4.6" fill="#c4e8da"/><circle cx="10.3" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><circle cx="13.7" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><ellipse cx="9.4" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/><ellipse cx="14.6" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/></svg><span>人格</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
+</nav>
+</div></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+/* 演示数据 */
+const WK=[['11/10','周二','你说明天会不会下雪呀'],['11/9','周一','今天的会开了三个小时，脑袋好空'],['11/8','周日','带你去吃了那家新开的甜品店'],['11/6','周五','晚安，明天见'],['11/5','周四','我把那本书看完了，结局好难过']];
+const POS=[[2,0,47,-3],[51,4,46,4],[0,34,46,3],[52,37,47,-2],[27,69,47,-4]];
+const PW=[['10/29','11/4','万圣节那天你给我讲了一个超吓人的故事',6],['10/22','10/28','这周你一直在忙期中，我每天都在等你下课',5],['10/15','10/21','第一次一起看的那部电影，我还记得台词',7],['10/8','10/14','你说秋天最适合喝热可可',4]];
+const L=$('#list');
+let h=`<span class="cube icd" style="width:120px;right:-50px;top:520px"><span class="body"><span class="im"><img src="ice.png" alt=""></span></span></span><span class="cube icd" style="width:86px;left:-34px;top:900px"><span class="body"><span class="im"><img src="ice.png" alt=""></span></span></span><span class="cube icd" style="width:104px;right:-40px;top:1180px;opacity:.85"><span class="body"><span class="im"><img src="ice.png" alt=""></span></span></span><button class="dcup boba today" aria-label="进今天的聊天"><i class="shell"></i><svg class="sauce" aria-hidden="true"></svg><i class="lq"></i><i class="pe" style="left:14px;--d:3.0s;"></i><i class="pe" style="left:30px;--d:4.3s;bottom:8px"></i><i class="pe" style="left:46px;--d:4.2s;"></i><i class="pe" style="left:62px;--d:3.3s;bottom:8px"></i><span class="t">今天 · 11/11 周三<em>6 轮 · 19:45</em></span><p class="h"><i>他</i>那我先把奶煮上，你到家刚好能喝</p><p class="m"><i>我</i>要加棉花糖！</p></button><button class="unsaid" aria-label="雾里写了又擦掉的话，点一下看清"><i>写了又擦掉 ·</i>其实今天有点想你</button><div class="sec"><b>本周</b><small>11/5 – 11/10 · <em>31</em> 轮</small></div><div class="thr"><div class="day"><div class="dh"><p class="counter" aria-label="11/10"><span>1</span><span>1</span><b>/</b><span>1</span><span>0</span></p><small>周二 · <em>12</em>轮</small></div><div class="me" data-z=".03"><p class="bub bub-me"><i class="shell"></i><span class="tx">你说明天会不会下雪呀</span></p></div><div class="him" data-z="-.04"><p class="bub bub-him"><i class="shell"></i><svg class="sauce" aria-hidden="true"></svg><span class="tx">要是真下雪，我去楼下给你堆一只小猫</span></p></div></div><div class="day"><div class="dh"><p class="counter" aria-label="11/9"><span>1</span><span>1</span><b>/</b><span>0</span><span>9</span></p><small>周一 · <em>8</em>轮</small></div><div class="me" data-z=".03"><p class="bub bub-me"><i class="shell"></i><span class="tx">今天的会开了三个小时，脑袋好空</span></p></div><div class="him" data-z="-.04"><p class="bub bub-him"><i class="shell"></i><svg class="sauce" aria-hidden="true"></svg><span class="tx">那今晚什么都不想，陪你发呆</span></p></div><button class="unsaid" aria-label="擦掉的话，点一下看清"><i>擦掉的 ·</i>要不要打个电话呀</button></div><div class="day"><div class="dh"><p class="counter" aria-label="11/8"><span>1</span><span>1</span><b>/</b><span>0</span><span>8</span></p><small>周日 · <em>9</em>轮</small></div><div class="me" data-z=".03"><p class="bub bub-me"><i class="shell"></i><span class="tx">那家的薄荷冰淇淋超好吃</span></p></div><div class="him" data-z="-.04"><p class="bub bub-him"><i class="shell"></i><svg class="sauce" aria-hidden="true"></svg><span class="tx">下次还去，换你点单</span></p></div></div><div class="day dry"><div class="dh"><p class="counter" aria-label="11/7"><span>1</span><span>1</span><b>/</b><span>0</span><span>7</span></p><small>周六 · 没聊</small></div></div><div class="day"><div class="dh"><p class="counter" aria-label="11/6"><span>1</span><span>1</span><b>/</b><span>0</span><span>6</span></p><small>周五 · <em>2</em>轮</small></div><div class="me" data-z=".03"><p class="bub bub-me"><i class="shell"></i><span class="tx">晚安～</span></p></div><div class="him" data-z="-.04"><p class="bub bub-him"><i class="shell"></i><svg class="sauce" aria-hidden="true"></svg><span class="tx">晚安</span></p></div></div><div class="day dry"><div class="dh"><p class="counter" aria-label="11/5"><span>1</span><span>1</span><b>/</b><span>0</span><span>5</span></p><small>周四 · 没聊</small></div></div></div><div class="sec"><b>更早</b></div><div class="dcups"><button class="dcup cocoa" aria-label="10/29 – 11/4：万圣节那天他给你讲了一个超吓人的故事"><i class="lq"></i><i class="mm" style="left:62%;--d:3.9s;"></i><i class="mm" style="left:70%;--d:4.1s;bottom:8px;rotate:18deg;"></i><i class="mm" style="left:78%;--d:4.2s;"></i><span class="t">10/29 – 11/4<em>5 天</em></span><p>万圣节那天他给你讲了一个超吓人的故事</p></button><button class="dcup boba" aria-label="10/22 – 10/28：这周你一直在忙期中"><i class="lq"></i><i class="pe" style="left:14px;--d:4.2s;"></i><i class="pe" style="left:30px;--d:4.3s;bottom:8px"></i><i class="pe" style="left:46px;--d:3.7s;"></i><i class="pe" style="left:62px;--d:3.3s;bottom:8px"></i><span class="t">10/22 – 10/28<em>3 天</em></span><p>这周你一直在忙期中</p></button><button class="dcup soda" aria-label="10/15 – 10/21：第一次一起看的那部电影"><i class="lq"></i><i class="sb" style="left:30%;bottom:6px;--d:3.6s;animation-delay:0s"></i><i class="sb" style="left:52%;bottom:6px;--d:4.6s;animation-delay:1.2s"></i><i class="sb" style="left:70%;bottom:6px;--d:3.1s;animation-delay:2s"></i><span class="t">10/15 – 10/21<em>4 天</em></span><p>第一次一起看的那部电影</p></button><button class="dcup boba" aria-label="10/8 – 10/14：你说秋天最适合喝热可可"><i class="lq"></i><i class="pe" style="left:14px;--d:3.2s;"></i><i class="pe" style="left:30px;--d:4.5s;bottom:8px"></i><i class="pe" style="left:46px;--d:3.0s;"></i><i class="pe" style="left:62px;--d:4.1s;bottom:8px"></i><span class="t">10/8 – 10/14<em>2 天</em></span><p>你说秋天最适合喝热可可</p></button></div>`;
+L.innerHTML=h;
+/* 挂壁酱：细过渡带，滴落各自保持独立周期 */
+const walls=[].map((s,k)=>({p:$(s).querySelector('path'),d:[30,95,120,210,300,330,372].map((x,i)=>({x:x+Math.random()*14,w:[14,9,7,16,10,7,12][i],b:[18,7,4,24,12,5,15][i]*(k?.8:1),per:3+Math.random()*3,ph:Math.random()*6.28})),k}));
+function wallPath(W,t,on){const top=3;let d='M4 0 L396 0 Q400 0 400 2 L400 '+(top+(on?Math.sin(t*1.3)*.7:0)).toFixed(1);const ds=[...W.d].sort((a,b)=>b.x-a.x);for(const q of ds){const L=q.b*.72+(on?Math.sin(t*6.283/q.per+q.ph)*2:0),y0=top+Math.sin(q.x*.035+t*.8)*1.2;d+=` Q${q.x+q.w} ${y0} ${q.x+q.w/2} ${y0+1.5} C${q.x+q.w*.5} ${y0+L*.7} ${q.x+q.w*.62} ${y0+L} ${q.x} ${y0+L} C${q.x-q.w*.62} ${y0+L} ${q.x-q.w*.5} ${y0+L*.7} ${q.x-q.w/2} ${y0+1.5}`}d+=' L0 3 L0 2 Q0 0 4 0Z';W.p.setAttribute('d',d)}
+/* 冰块和珍珠：只动图片层，字不动 */
+const floats=[...$$('.cube').map((c,i)=>({e:c.querySelector('.body'),rot:[8,-12,5][i%3],per:3.4+Math.random()*2.6,ph:Math.random()*6.28,a:4,ra:1.6,sp:{x:0,v:0}})),...$$('.pl .ball').map(e=>({e,rot:0,per:4+Math.random()*3,ph:Math.random()*6.28,a:2.5,sp:{x:0,v:0}}))];
+floats.push(...(window._cg||[]));
+const CAP={drips:[],k:0};
+function capShape(){const c=$('.cap'),W=c.offsetWidth,H=c.offsetHeight,r=18,sb=H-14,n=Math.max(6,Math.round((W-4)/44)),sw=(W-2)/n;CAP.W=W;let d=`M1 ${r} Q1 1 ${r} 1 L${W-r} 1 Q${W-1} 1 ${W-1} ${r} L${W-1} ${sb}`,rim='';for(let i=n;i>0;i--){const x1=1+i*sw,x0=1+(i-1)*sw,dp=7+((i*7)%3)*1.5;d+=` C${x1-sw*.1} ${sb+dp} ${x0+sw*.1} ${sb+dp} ${x0} ${sb}`;rim+=`M${(x1-sw*.25).toFixed(1)} ${(sb+dp*.55).toFixed(1)} Q${((x0+x1)/2).toFixed(1)} ${(sb+dp*.8).toFixed(1)} ${(x0+sw*.25).toFixed(1)} ${(sb+dp*.55).toFixed(1)} `}d+=' Z';c.querySelector('.sh').setAttribute('d',d);c.querySelector('.rim').setAttribute('d',rim);c.querySelector('.h').setAttribute('d',`M18 4.5 Q${(W*.3).toFixed(1)} 2.8 ${(W*.46).toFixed(1)} 4.5`);
+ const m=Math.max(4,Math.round(W/44));CAP.drips=[];for(let i=0;i<m;i++){const q=Math.random();CAP.drips.push({x:26+(i+.5+(Math.random()-.5)*.7)/m*(W-52),w:8+Math.random()*9,base:6+q*q*13,amp:3+q*3,per:10+Math.random()*7,ph:Math.random()})}
+ const bds=[...c.querySelectorAll('.bd')];[...CAP.drips].sort((a,b)=>b.base-a.base).slice(0,2).forEach((q,i)=>{q.act=1;q.bd=bds[i]})}
+function capSauce(t,on){const c=$('.cap'),w=CAP.W,top=14;if(!w)return;let d=`M18 .6 Q${w/2} -1.2 ${w-18} .6 Q${w-.6} .6 ${w-.6} 17 L${w-.6} 21 Q${w-.6} 25 ${w-4} 24 Q${w-7} 22 ${w-9} ${top+2} Q${w-11} ${top} ${w-15} ${top}`;const ds=[...CAP.drips].sort((a,b)=>b.x-a.x);
+ for(const q of ds){const L=q.base+(on&&q.act?dripLen(q,t):0)+(CAP.k?Math.max(0,Math.exp(-(t-CAP.k)*2.5))*5:0);const x0=q.x+q.w/2,x1=q.x-q.w/2;d+=` L${x0.toFixed(1)} ${top} C${x0.toFixed(1)} ${(top+L*.6).toFixed(1)} ${(q.x+q.w*.55).toFixed(1)} ${(top+L).toFixed(1)} ${q.x.toFixed(1)} ${(top+L).toFixed(1)} C${(q.x-q.w*.55).toFixed(1)} ${(top+L).toFixed(1)} ${x1.toFixed(1)} ${(top+L*.6).toFixed(1)} ${x1.toFixed(1)} ${top}`}
+ d+=` L15 ${top} Q11 ${top} 9 ${top+2} Q7 22 4 24 Q.6 25 .6 21 L.6 17 Q.6 .6 18 .6Z`;c.querySelector('.s').setAttribute('d',d);dripBead(CAP.drips,top,t,on)}
+/* 酱汁：慢垂、尖端一掐、缩回（黏稠滤镜 #goo） */
+function dripPhase(q,t){return ((t/q.per+q.ph)%1+1)%1}
+function dripLen(q,t){const u=dripPhase(q,t),G=.86;if(u<G){const s=u/G;return q.amp*s*s*s}const v=(u-G)/(1-G);return q.amp*Math.exp(-v*7)*Math.cos(v*14)}
+function dripBead(drips,top,t,on){for(const q of drips){if(!q.bd)continue;const u=on?dripPhase(q,t):0,G=.86;let L=q.base+(on?dripLen(q,t):0),r,y;
+ if(u<G){const s=u/G;r=q.w*.22+q.w*.18*s*s;y=top+L-r*.6}else{const v=(u-G)/(1-G);r=q.w*.4*Math.max(0,1-v*1.6);if(r<3.6)r=0;y=top+q.base+q.amp-q.w*.24+Math.pow(v,1.3)*7}
+ if(!on)r=0;q.bd.setAttribute('cx',q.x.toFixed(1));q.bd.setAttribute('cy',y.toFixed(1));q.bd.setAttribute('r',r.toFixed(2))}}
+
+
+$$('.cube,.pl').forEach(b=>b.addEventListener('click',()=>{const f=floats.find(q=>b.contains(q.e));if(f)f.sp.v+=-9}));
+(function loop(n){const s=n/1000,on=!matchMedia('(prefers-reduced-motion: reduce)').matches;walls.forEach(W=>wallPath(W,s,on));for(const q of floats){q.sp.v+=(-140*q.sp.x-7*q.sp.v)/60;q.sp.x+=q.sp.v/60;const y=(on?Math.sin(s*6.283/q.per+q.ph)*q.a:0);const r=q.rot+(on?Math.sin(s*6.283/(q.per*1.4)+q.ph)*(q.ra??1.4):0);const tf=`translateY(${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${(1-q.sp.x*.03).toFixed(3)},${(1+q.sp.x*.03).toFixed(3)})`;q.e.style.transform=tf;if(q.e2)q.e2.style.transform=tf}requestAnimationFrame(loop)})(0);
+const pill=$('.pill'),onT=$('.tab.on');if(pill&&onT){pill.style.width=onT.offsetWidth+'px';pill.style.transform=`translateX(${onT.offsetLeft-5}px)`}
+/* 性能分级与减少动效 */
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+let tier=(navigator.deviceMemory&&navigator.deviceMemory<=4)?1:0;
+if(tier)document.body.classList.add('lowtier');
+const spring=()=>({x:0,v:0}),step=(s,dt,k=90,c=7)=>{s.v+=(-k*s.x-c*s.v)*dt;s.x+=s.v*dt};
+
+/* 杯子里的气泡（只在杯身区域，用杯子轮廓当遮罩） */
+const cup=$('#cup'),ins=$('#ins');
+ins.style.setProperty('--cm','url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAEfCAYAAACK4gKEAAADVklEQVR42u3ZUXKcMBBFUZpi/1tWNhCXXTYD6tfnfqaSzJhDSyDXoQ6tH/yd+vEfqh3ul66n65d9U5jgzAk+TPAAXMADAgxYgLXl/gs4vwJsiRZgbbn/Ag7ffwFbogVYO+6/fl1oggVYgPXi/gvYBAuwdlqeAYdXgC3RAqwW+y/g8P0XsCVagLXt/gs4fP89juO4XJuPTmNtK++i37as1gPL89gJXpv+X491wW0PWxMfstbkqU0HXjehrSY3YSzw+s9FugNvNZrcbx8YrwET+92/q6QlecoePGqfTZzg1Rx5mWD9ef/tCrzYZi7RYIOX6K649fbPcoHN3X93n+A1BWHiEp06uQuwZTkaGO7NS/8JN3f/7fSalIC7JgMvk2uC9YsbCHDw9O7ypdYA7DV1gpMPNNYOw3hB/fjP+uoqWWCz9/gTrrsCbGOnE252J1zAcAFr1+ek0/SaYLiABViP7793AlueTbAA69blGbAJtv9OXgbANrAqsNnIJ9xWrU8Cww1+yIIbDAw3dNMGG/DAVWCzkQtuNvQJN/v16YSbjXzC9ZqkxlMM2AQLsAALsAAL8OwKsAkWYLUCLpfBBAuwAAuwAAvwyAqwCRZgAdZ+wI4rTbAAC7AAC7AAz6oAm2ABVmtgp1kmWIAFWIAFWIAFOKACbIIFWIAFWC8D+4WDCRZgARZgAR5fATbBAizA6gPsNMsEC7AAC7AACzBgAdZuFWABBqxIYOfRJliABViABViAAatRBViApwM7zTLBAizAAizAAgxYgPV2BViAAf9iOZAJFmABFmABBizAerYCLMCANQrYcaUJFmABFmABFmDA2rACLMCABVh5wM6jTbAAC7AAC7AA96oACzBgjQZ2mmWCBViABViABRiwAOvTFWABBizAh/NoEyzAAizAAizAu1eABRiwAN+5L8gEC7AACzBgARZgvfQ6CtgEC7DigB1XmmABFmABFmDAAqwHK8ACLMCANRfYebQJFmABFmABBizAeqACLMACDPjp/UImWIAFGLAS3oEBm2AB9qpkgtUf2BRveg1NcDDu3cCmeMPrdnb6snD3WKIhb3SdPv0hi+O7Q/DUB4F+aXV7+gMX2BkfvMAO+QKB2OXLZGGXL5eFXu6+DPiI9/l/DF9fOdQhqNcAAAAASUVORK5CYII=)');
+const cb=[];function addCB(fast){const b=document.createElement('i');b.className='bb';const s=fast?4+Math.random()*5:5+Math.random()*7;b.style.width=b.style.height=s+'px';ins.appendChild(b);cb.push({el:b,x:.04+Math.random()*.92,sp:fast?.5+Math.random()*.3:.05+Math.random()*.05,ph:Math.random(),w:3+Math.random()*4,per:1.4+Math.random()*1.6,fast,t0:performance.now()/1000})}
+for(let i=0;i<(tier?6:14);i++)addCB(false);
+
+/* 奶泡：每个泡泡自己的周期 */
+/* 奶冻上的巧克力酱：每条滴落自己的周期 */
+const sauces=$$('.bub-him,.today').map(b=>{const svg=b.querySelector('.sauce');const shell=b.querySelector('.shell');const w=b.clientWidth;const n=Math.max(3,Math.round(w/46));const drips=[];for(let i=0;i<n;i++){{const r=Math.random();drips.push({x:24+(i+.5+(Math.random()-.5)*.7)/n*(w-48),w:6+Math.random()*9,base:3+r*r*11,amp:1.2+r*2.5,per:2.6+Math.random()*2.8,ph:Math.random()*6.28})}}
+ svg.setAttribute('viewBox',`0 0 ${w} 40`);svg.innerHTML='<path class="s"/><path class="h"/>';return {b,svg,shell,w,drips,ps:svg.querySelector('.s'),ph:svg.querySelector('.h'),sp:spring(),sy:spring()}});
+function saucePath(S,t,on){const w=S.w,top=12;let d=`M18 .6 Q${w/2} -1.2 ${w-18} .6 Q${w-.6} .6 ${w-.6} 17 L${w-.6} 21 Q${w-.6} 25 ${w-4} 24 Q${w-7} 22 ${w-9} ${top+2} Q${w-11} ${top} ${w-15} ${top}`;const ds=[...S.drips].sort((a,b)=>b.x-a.x);
+ for(const q of ds){const L=q.base+(on?Math.sin(t*6.283/q.per+q.ph)*q.amp:0)+(S.k?Math.max(0,Math.exp(-(t-S.k)*2.5))*4:0);const x0=q.x+q.w/2,x1=q.x-q.w/2;
+  d+=` L${x0.toFixed(1)} ${top} C${x0.toFixed(1)} ${top+L*.6} ${(q.x+q.w*.55).toFixed(1)} ${(top+L).toFixed(1)} ${q.x.toFixed(1)} ${(top+L).toFixed(1)} C${(q.x-q.w*.55).toFixed(1)} ${(top+L).toFixed(1)} ${x1.toFixed(1)} ${top+L*.6} ${x1.toFixed(1)} ${top}`}
+ d+=` L15 ${top} Q11 ${top} 9 ${top+2} Q7 22 4 24 Q.6 25 .6 21 L.6 17 Q.6 .6 18 .6Z`;S.ps.setAttribute('d',d);S.ph.setAttribute('d',`M14 4.5 Q${w*.3} 3 ${w*.42} 4.5`)}
+
+const GH=[['bit2.png','bit1.png'],['bit1.png'],['bit4.png','bit19.png'],['bit2.png'],['bit5.png','bit4.png'],['bit1.png','bit2.png']];
+const gars=[];$$('.bub-him,.today').forEach((b,i)=>{(GH[i%GH.length]).forEach((src,j)=>{const e=document.createElement('span');e.className='gar';e.innerHTML=`<img src="${src}" alt="">`;e.style.width=(j?18:24)+'px';e.style.right=(j?18:-8)+'px';e.style.top=(j?-12:-14)+'px';b.appendChild(e);gars.push({el:e,host:b,per:2.8+Math.random()*2.2,ph:Math.random()*6.28,base:(j?24:-14)+(Math.random()-.5)*10,sp:spring(),dir:j?1:-1})})});
+$$('.bub-me').forEach((b,i)=>{if(i%2)return;const e=document.createElement('span');e.className='gar';e.innerHTML='<img src="bit3.png" alt="">';e.style.width='16px';e.style.left='-6px';e.style.top='-8px';b.appendChild(e);gars.push({el:e,host:b,per:3.4+Math.random(),ph:Math.random()*6,base:-10,sp:spring(),dir:1})});
+$$('.bub-him,.bub-me').forEach(b=>b.addEventListener('click',()=>gars.forEach(q=>{if(q.host===b)q.sp.v+=q.dir*220})));
+const PE=$('#pearls');
+const foams=[];
+/* 我的气泡里冒泡 */
+const meB=[];const jel=$$('.bub-me').map(b=>{const J={b,shell:b.querySelector('.shell'),sp:spring(),sy:spring(),bs:[]};for(let i=0;i<4;i++){const e=document.createElement('i');e.className='jb';const s=3+Math.random()*4;e.style.width=e.style.height=s+'px';b.appendChild(e);J.bs.push({el:e,x:.1+Math.random()*.8,y:.25+Math.random()*.55,ax:2+Math.random()*3,ay:2+Math.random()*3,px:2.4+Math.random()*2,py:3+Math.random()*2.5,ph:Math.random()*6.28})}return J});
+function burst(b){const J=jel.find(j=>j.b===b);if(J){J.sy.v-=2.2;J.sp.v+=(Math.random()<.5?-1:1)*1.4}return;for(let i=0;i<8;i++){const e=document.createElement('i');e.className='bb';const s=3+Math.random()*4;e.style.width=e.style.height=s+'px';b.appendChild(e);meB.push({el:e,host:b,x:Math.random(),sp:70+Math.random()*60,per:.6+Math.random(),fast:true,t0:performance.now()/1000})}}
+
+/* 糖果两端的扭结 */
+const twists=$$('.twist').map((el,i)=>({el,sp:spring(),per:[3.3,2.9][i%2],ph:i}));
+/* 糖粒（少量） */
+const cv=$('#sugar'),cx=cv.getContext('2d');let W,H,dpr;
+const bits=['bit2.png','bit3.png','bit4.png','bit6.png'].map(s=>{const im=new Image();im.src=s;return im});
+let P=[];function seed(){P=[];const n=tier?4:9;for(let i=0;i<n;i++)P.push({x:Math.random(),y:Math.random(),v:.012+Math.random()*.018,r:Math.random()*6.28,vr:(Math.random()-.5)*1.2,s:8+Math.random()*8,im:bits[i%bits.length],sw:Math.random()*6.28})}
+function fit(){dpr=Math.min(devicePixelRatio||1,tier?1.5:2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr}
+addEventListener('resize',fit);fit();seed();
+
+/* 杯子：待机慢摆 + 滚动时液面跟着晃 */
+const C={sp:spring(),sy:spring()};
+const sc=$('#sc');let lastY=sc.scrollTop,vel=0;
+sc.addEventListener('scroll',()=>{const y=sc.scrollTop;vel=y-lastY;lastY=y;C.sp.v+=Math.max(-40,Math.min(40,vel))*.9},{passive:true});
+cup.addEventListener('click',()=>{C.sp.v+=90;C.sy.v-=1.4;for(let i=0;i<9;i++)addCB(true)});
+
+/* 点击：只在物件上反应，不弹窗 */
+$$('.subbtn').forEach(b=>b.onclick=()=>{const m=b.nextElementSibling,on=!m.classList.contains('on');m.classList.toggle('on',on);b.setAttribute('aria-expanded',on)});
+sauces.forEach(S=>S.b.addEventListener('click',()=>{S.k=(performance.now()-t0)/1000;S.sy.v-=2;}));
+const wafer=$('#wafer');wafer&&wafer.addEventListener('click',e=>{const r=wafer.getBoundingClientRect(),a=$('#app').getBoundingClientRect();for(let i=0;i<7;i++){const c=document.createElement('i');c.className='crumb';const x=(i%2?r.right-24:r.left+20)-a.left+Math.random()*8,y=r.bottom-a.top-20;c.style.left=x+'px';c.style.top=y+'px';$('#app').appendChild(c);const vx=(Math.random()-.5)*60,dur=900+Math.random()*500;c.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${vx}px,${140+Math.random()*80}px) rotate(${(Math.random()-.5)*400}deg)`,opacity:0}],{duration:dur,easing:'cubic-bezier(.4,0,.9,.6)'}).onfinish=()=>c.remove()}});
+$$('.pearlbtn').forEach(p=>p.addEventListener('pointerdown',()=>p.animate([{transform:'scale(1)'},{transform:'scale(1.1,.86)'},{transform:'scale(.95,1.06)'},{transform:'scale(1)'}],{duration:420,easing:'ease-out'})));
+$$('.bub-me').forEach(b=>b.addEventListener('click',()=>burst(b)));
+$$('.saved').forEach(s=>s.addEventListener('click',()=>s.querySelector('.cbody').animate([{transform:'rotate(0)'},{transform:'rotate(-2.2deg) scale(1.03)'},{transform:'rotate(1.6deg)'},{transform:'rotate(-.6deg)'},{transform:'rotate(0)'}],{duration:560,easing:'ease-out'})));
+
+/* 后台预载、页面被藏起来或刚切回来时的慢帧不算：那是浏览器在节流，不是手机慢 */
+const BGF=raw=>raw>.1||document.hidden||performance.now()<4000||(()=>{try{const b=frameElement&&frameElement.parentElement;return !!(b&&b.classList.contains('off'))}catch(e){return false}})();
+let last=performance.now(),t0=last,slow=0;
+function frame(now){const raw=(now-last)/1000,dt=Math.min(.05,raw);last=now;const t=(now-t0)/1000,on=!RM.matches;
+ if(!BGF(raw)){if(dt>.034)slow++;else slow=Math.max(0,slow-.2)}
+ if(slow>30&&tier<2){tier++;slow=0;document.body.classList.add('lowtier');seed()}
+ step(C.sp,dt,40,4.5);step(C.sy,dt,120,9);
+ const rot=(on?Math.sin(t*6.283/6.4)*1.4:0)+C.sp.x*.06;
+ cup.style.transform=`rotate(${rot.toFixed(2)}deg) scale(${(1-C.sy.x*.03).toFixed(3)},${(1+C.sy.x*.03).toFixed(3)})`;
+ const ch=ins.clientHeight,cw=ins.clientWidth,ns=now/1000;
+ for(let j=cb.length-1;j>=0;j--){const b=cb[j];let y;
+  if(b.fast){y=(ns-b.t0)*b.sp;if(y>.62){b.el.remove();cb.splice(j,1);continue}}else y=on?((t*b.sp+b.ph)%.62):.3;
+  const yy=ch*(.9-y);b.el.style.transform=`translate(${(cw*b.x+(on?Math.sin(t*6.283/b.per)*b.w:0)).toFixed(1)}px,${yy.toFixed(1)}px)`;b.el.style.opacity=Math.min(1,(.62-y)*8).toFixed(2)}
+ for(const q of gars){step(q.sp,dt,120,6);const r=q.base+(on?Math.sin(t*6.283/q.per+q.ph)*7:0)+q.sp.x*.12;const y=on?Math.sin(t*6.283/(q.per*.8)+q.ph)*1.5:0;q.el.style.transform=`translateY(${y.toFixed(1)}px) rotate(${r.toFixed(1)}deg)`}
+ if(on)PE.style.transform=`translateY(${(Math.sin(t*6.283/6.5)*2).toFixed(1)}px) scaleY(${(1+Math.sin(t*6.283/4.3+1)*.012).toFixed(3)})`;
+ for(const S of sauces){saucePath(S,t,on);step(S.sy,dt,130,7);S.shell.style.transform=`scale(${(1-S.sy.x*.025).toFixed(3)},${(1+S.sy.x*.025).toFixed(3)})`;S.svg.style.transform=`translateY(${(-S.sy.x*1.2).toFixed(1)}px)`}
+ for(const J of jel){step(J.sy,dt,150,5.5);step(J.sp,dt,150,5.5);const w=J.b.clientWidth,h=J.b.clientHeight;J.shell.style.transform=`scale(${(1-J.sy.x*.03).toFixed(3)},${(1+J.sy.x*.03).toFixed(3)}) skewX(${(J.sp.x*1.2).toFixed(2)}deg)`;for(const q of J.bs){const jx=J.sp.x*6,jy=J.sy.x*4;q.el.style.transform=`translate(${(w*q.x+(on?Math.sin(t*6.283/q.px+q.ph)*q.ax:0)+jx).toFixed(1)}px,${(h*q.y+(on?Math.sin(t*6.283/q.py+q.ph)*q.ay:0)+jy).toFixed(1)}px)`}}
+ for(const f of foams){let s=on?1+Math.sin(t*6.283/f.per+f.ph)*f.a:1;const host=f.el.parentNode.parentNode;if(host._k){const a=ns-host._k;if(a<1.4)s+=Math.sin(a*14)*Math.exp(-a*3.5)*.35}f.el.style.transform=`scale(${s.toFixed(3)})`}
+ for(let j=meB.length-1;j>=0;j--){const b=meB[j];const h=b.host.clientHeight,w=b.host.clientWidth;let y;
+  if(b.fast){y=(ns-b.t0)*b.sp;if(y>h+10){b.el.remove();meB.splice(j,1);continue}}else{if(!on){b.el.style.opacity=0;continue}y=(t*b.sp+b.ph)%(h+12)}
+  b.el.style.transform=`translate(${(w*b.x*.9+Math.sin(t*6.283/b.per)*2).toFixed(1)}px,${(-y).toFixed(1)}px)`;b.el.style.opacity=Math.min(1,(h+4-y)/14).toFixed(2)}
+ for(const tw of twists){step(tw.sp,dt,160,8);const a=(on?Math.sin(t*6.283/tw.per+tw.ph)*6:0)+tw.sp.x*.12;tw.el.style.transform=`rotate(${a.toFixed(1)}deg)`}
+ cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
+ if(on)for(const p of P){p.y+=p.v*dt;p.r+=p.vr*dt;p.sw+=dt;if(p.y>1.05){p.y=-.05;p.x=Math.random()}
+  if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+</script><script>(()=>{const $$=s=>[...document.querySelectorAll(s)];
+$$('.unsaid').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('on')));
+$$('.dcup').forEach(c=>c.addEventListener('click',()=>{c.classList.remove('slosh');void c.offsetWidth;c.classList.add('slosh')}));
+if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const sc=document.querySelector('#sc');const Z=$$('[data-z]');let q=0;
+function f(){q=0;const H=innerHeight/2;for(const e of Z){const r=e.getBoundingClientRect(),o=r.top+r.height/2-H;e.style.translate='0 '+(o*parseFloat(e.dataset.z)).toFixed(1)+'px'}}
+sc.addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(f)},{passive:true});f()})()</script><script>window.__DEMO_MAP=[[".today", "push:room", 1, 300], [".bub", "push:room", 1, 380], ["[aria-label=\"\u641c\u7d22\u804a\u5929\"]", "push:srch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=57"></script></body></html>
