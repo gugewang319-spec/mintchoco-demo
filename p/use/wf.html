@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>用量 · 量筒图解线框</title>
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>用量 · 糖浆泵架 线框</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#e9ecea;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#555}
@@ -7,101 +7,90 @@ html,body{height:100%;background:#e9ecea;font-family:system-ui,-apple-system,"Pi
 .g{position:fixed;inset:0;pointer-events:none;width:min(100%,412px);margin:0 auto;z-index:50;display:none;background:repeating-linear-gradient(0deg,rgba(255,0,80,.07) 0 1px,transparent 1px 8px)}
 .g::before,.g::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgba(255,0,80,.35)}.g::before{left:24px}.g::after{right:24px}
 body.grid .g{display:block}
+.tg{position:fixed;top:12px;right:max(24px,calc(50% - 182px));z-index:60;font-size:11px;color:#e0336a;background:#fff;border:1px solid #e0336a;border-radius:4px;padding:4px 8px}
 .hd{height:96px;padding:48px 24px 0;display:flex;align-items:center;gap:16px}
-.ci{width:36px;height:36px;border-radius:50%;background:#d6d9d7}
-.hd h1{font-size:20px;font-weight:700;color:#444}
-.hd .sp{margin-left:auto;width:52px;height:26px;border-radius:4px;background:#bfc3c0;font:700 12px/26px system-ui;color:#fff;text-align:center}
-.no{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#777;color:#fff;font:700 10px/1 system-ui;font-style:normal;flex:none}
-/* 主角区：大字左，量筒右，引线连左侧编号 */
-.hero{position:relative;height:328px;padding:16px 24px 0}
-.big{font-size:clamp(56px,17vw,72px);font-weight:800;line-height:1;color:#333;letter-spacing:-.02em}
-.big small{display:block;font-size:13px;font-weight:400;color:#888;margin-top:8px;letter-spacing:0}
-.wk{font-size:12px;color:#aaa;margin-top:8px}
-.lg{position:absolute;left:24px;width:140px!important;display:flex;align-items:center;gap:8px;font-size:13px;color:#555;width:150px}
-.lg b{margin-left:auto;color:#333}
-.lg::after{content:"";position:absolute;left:100%;top:50%;width:var(--w,60px);border-top:1.3px solid #999}
-.cyl{position:absolute;right:40px;top:96px;width:88px;height:216px;border:2px solid #bbb;border-top:0;border-radius:0 0 12px 12px}
-.cyl::before{content:"";position:absolute;left:-10px;right:-10px;top:-2px;height:6px;border:2px solid #bbb;border-radius:4px}
-.cyl .lv{position:absolute;left:0;right:0;bottom:0;border-radius:0 0 10px 10px;overflow:hidden;display:flex;flex-direction:column-reverse}
-.cyl .lv i{display:block;border-top:1.5px solid #f4f5f4}
-.ticks{position:absolute;right:-16px;top:16px;bottom:0;width:10px;background:repeating-linear-gradient(0deg,#bbb 0 1px,transparent 1px 14px)}
-.ly{position:absolute;right:-26px;left:-26px;border-top:1.5px dashed #999}
-.ly em{position:absolute;right:-6px;top:-18px;font:11px/1 system-ui;color:#999;font-style:normal;white-space:nowrap}
-/* 托盘 */
-.tray{margin:24px 16px 0;padding:16px;border:2px dashed #c4c7c5;border-radius:12px;position:relative}
-.tt{display:flex;align-items:center;gap:8px;font-size:13px;color:#888;margin-bottom:16px}
-.tt .r{margin-left:auto;font-size:12px;color:#aaa}
-.days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:112px}
-.d{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:#999}
-.d .bk{width:28px;height:72px;border:1.5px solid #bbb;border-top:0;border-radius:0 0 6px 6px;position:relative;overflow:hidden}
-.d .bk i{position:absolute;left:0;right:0;bottom:0;background:#9a9e9b}
-.d .n{font:700 11px/1 system-ui;color:#555;height:12px}
-.d.today .bk{border-color:#555;border-width:2px}.d.today{color:#333;font-weight:700}
-.d.fut .bk{border-style:dashed}
-.mix{display:flex;height:24px;border-radius:12px;overflow:hidden;border:1.5px solid #bbb}
-.mix i{display:block;height:100%}
-.mixl{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:#888}.mixl b{color:#333}
-.jars{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:end;height:128px}
-.jar{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:#999}
-.jar .j{width:44px;height:88px;border:1.5px solid #bbb;border-radius:10px 10px 8px 8px;position:relative;overflow:hidden}
-.jar .j i{position:absolute;left:0;right:0;bottom:0;background:#9a9e9b}
-.jar .n{font:700 12px/1 system-ui;color:#555}
-.jar.cur .j{border-color:#555;border-width:2px}.jar.cur .j i{background:repeating-linear-gradient(45deg,#9a9e9b 0 4px,#b6bab7 4px 8px)}
+.bk{width:40px;height:40px;border-radius:50%;background:#dfe2e0;border:0;font:700 20px system-ui;color:#777}
+.hd h1{font-size:28px;font-weight:800;color:#444}
+.rg{margin-left:auto;position:relative}
+.rg>button{height:32px;padding:0 12px;border:1.5px solid #bbb;border-radius:6px;background:#fff;font:13px system-ui;color:#555}
+.rg ul{position:absolute;right:0;top:36px;list-style:none;background:#fff;border:1.5px solid #bbb;border-radius:6px;display:none;z-index:30;min-width:96px}
+.rg.on ul{display:block}.rg li{padding:8px 12px;font-size:13px;cursor:pointer}.rg li.cur{color:#222;font-weight:700}
+.tot{margin:16px 24px 0}
+.tot .k{font-size:13px;color:#888;letter-spacing:.3em}
+.tot .n{font-size:clamp(56px,18vw,72px);font-weight:800;line-height:1;color:#333;margin-top:8px}
+.tot .u{font-size:13px;color:#888;margin-top:8px}
+.fig{display:block;width:calc(100% - 48px);margin:24px 24px 0;height:auto;overflow:visible}
+.fig text{font-family:system-ui}
+.fig .pn{font:700 12px system-ui;fill:#fff;text-anchor:middle}
+.fig .ln{font:700 13px system-ui;fill:#444;text-anchor:middle}
+.fig .lt{font:11px system-ui;fill:#777;text-anchor:middle}
+.fig .no{font:700 10px system-ui;fill:#fff;text-anchor:middle}
+.fig .bt{cursor:pointer}
+.fig .bt.sel .glass{stroke:#444;stroke-width:2.4}
+.lg{margin:16px 24px 0;display:grid;grid-template-columns:16px 1fr;gap:8px;font-size:13px;color:#666;line-height:16px}
+.lg i{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#777;color:#fff;font:700 10px/1 system-ui;font-style:normal}
+.dt{margin:16px 24px 0;border:1.5px solid #bbb;border-radius:6px;background:#fff;padding:16px;display:none}
+.dt.on{display:block}
+.dt h3{font-size:28px;font-weight:800;color:#444;line-height:1}
+.dt .r{display:flex;justify-content:space-between;font-size:13px;line-height:32px;border-top:1px dashed #ddd}
+.dt .r:first-of-type{margin-top:16px}
+.dt .r b{color:#333}
+.cc{margin:32px 24px 0}
+.cc h2{font-size:28px;font-weight:800;color:#444}
+.cc .s{font-size:13px;color:#888;margin-top:8px;line-height:1.6}
+.cc .bx{display:flex;gap:8px;margin-top:16px}
+.cc .bx div{flex:1;height:72px;border-radius:6px;background:#dfe2e0;padding:8px;font-size:11px;color:#777}
+.cc .bx b{display:block;font-size:20px;color:#444;margin-top:8px}
 .note{padding:24px 24px 160px;font-size:12px;color:#aaa;line-height:1.8}
-.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:min(calc(100% - 32px),380px);height:64px;border-radius:32px;background:#dfe2e0;display:flex;align-items:center;justify-content:space-around;font-size:12px;color:#888;z-index:40}
-.tg{position:fixed;top:12px;left:max(24px,calc(50% - 182px));z-index:60;font-size:11px;color:#e0336a;background:#fff;border:1px solid #e0336a;border-radius:4px;padding:4px 8px}
+.hint{color:#e0336a}
 </style>
 <body>
 <button class="tg" onclick="document.body.classList.toggle('grid')">网格</button>
 <div class="app">
 <div class="g"></div>
-<header class="hd"><span class="ci"></span><h1>用量</h1><span class="sp">46 周</span></header>
-
-<section class="hero">
- <div class="big">128.4<small>万 tokens</small></div>
- <div class="wk">11-09 至 11-15 · 第 4 天</div>
- <!-- 量筒里分层 = 各渠道；左边编号引线指到对应层 -->
- <div class="lg" style="top:267px;--w:110px"><i class="no">1</i>渠道 A<b>58.2</b></div>
- <div class="lg" style="top:207px;--w:110px"><i class="no">2</i>渠道 B<b>38.5</b></div>
- <div class="lg" style="top:166px;--w:110px"><i class="no">3</i>渠道 C<b>21.4</b></div>
- <div class="lg" style="top:134px;--w:110px"><i class="no">4</i>其他<b>10.3</b></div>
- <div class="cyl">
-  <div class="lv" style="height:75%"><i style="height:45%;background:#7d817e"></i><i style="height:30%;background:#9a9e9b"></i><i style="height:17%;background:#b3b7b4"></i><i style="height:8%;background:#ccd0cd"></i></div>
-  <div class="ly" style="bottom:86%"><em>上周这时 183.2</em></div>
-  <div class="ticks"></div>
- </div>
-</section>
-
-<section class="tray">
- <div class="tt"><i class="no">5</i>这周每天<span class="r">一只小量杯 = 一天</span></div>
- <div class="days">
-  <div class="d"><span class="n">31.0</span><span class="bk"><i style="height:75%"></i></span>一</div>
-  <div class="d"><span class="n">42.6</span><span class="bk"><i style="height:85%"></i></span>二</div>
-  <div class="d"><span class="n">28.8</span><span class="bk"><i style="height:57%"></i></span>三</div>
-  <div class="d today"><span class="n">26.0</span><span class="bk"><i style="height:54%"></i></span>四</div>
-  <div class="d fut"><span class="n"></span><span class="bk"></span>五</div>
-  <div class="d fut"><span class="n"></span><span class="bk"></span>六</div>
-  <div class="d fut"><span class="n"></span><span class="bk"></span>日</div>
- </div>
-</section>
-
-<section class="tray">
- <div class="tt"><i class="no">6</i>配比</div>
- <div class="mix"><i style="width:72%;background:#9a9e9b"></i><i style="width:28%;background:#ccd0cd"></i></div>
- <div class="mixl"><span>进 <b>92.4</b></span><span>出 <b>36.0</b></span></div>
-</section>
-
-<section class="tray">
- <div class="tt"><i class="no">7</i>最近四周<span class="r">点一只看那周</span></div>
- <div class="jars">
-  <div class="jar"><span class="n">162.0</span><span class="j"><i style="height:79%"></i></span>43</div>
-  <div class="jar"><span class="n">171.5</span><span class="j"><i style="height:84%"></i></span>44</div>
-  <div class="jar"><span class="n">204.8</span><span class="j"><i style="height:100%"></i></span>45</div>
-  <div class="jar cur"><span class="n">128.4</span><span class="j"><i style="height:63%"></i></span>46</div>
- </div>
-</section>
-
-<p class="note">线框：8 点网格、边距 24、字号 72 / 28 / 13。量筒分层 = 各渠道占比，左侧编号引线；虚线 = 上周同一时刻。下面三只托盘：每天小量杯、进出配比、四周罐子（点了原地换成那周，不跳页）。数字单位都是万 tokens。</p>
+<header class="hd"><button class="bk" aria-label="返回">‹</button><h1>用量</h1>
+<div class="rg" id="rg"><button id="rb" aria-haspopup="listbox">近 7 天 ▾</button><ul role="listbox"><li>今天</li><li class="cur">近 7 天</li><li>近 30 天</li></ul></div></header>
+<div class="tot"><div class="k" id="tk">近 7 天 用 量</div><div class="n" id="tn">128.4</div><div class="u">万 tokens · 调用 <b id="tc">947</b> 次</div></div>
+<svg class="fig" viewBox="0 0 364 300" id="fig"></svg>
+<div class="lg"><i>1</i><span>一瓶 = 一类调用，瓶签写 tokens</span><i>2</i><span>泵头数字 = 按了几次（调用次数）</span><i>3</i><span>斜线底层 = 缓存命中的那部分；向量索引没有缓存，不画</span><i>4</i><span>架尾空瓶 = 没报用量的调用</span></div>
+<p class="note hint" style="padding:8px 24px 0">点一瓶 → 下面原地展开这瓶的明细，再点收起</p>
+<section class="dt" id="dt"></section>
+<section class="cc"><h2>缓存</h2><p class="s">供应商返回的提示词缓存，不是记忆检索的缓存。只算上游报了的。</p>
+<div class="bx"><div>命中<b id="c1">69.2</b>万</div><div>未命中<b id="c2">46.5</b>万</div><div>没报缓存<b id="c3">5</b>次</div></div></section>
+<p class="note">灰稿 · 用量二级页（设置页大字点开秤 → 秤下「去看」进来）。母题：糖浆泵架。字号三级 72 / 28 / 13，8 点网格，边距 24。范围就地小选单。数据为演示。</p>
 </div>
-<nav class="nav"><span>今天</span><span>记忆</span><span>聊天</span><span>人格</span><span>设置</span></nav>
-</body></html>
+<script>
+const R={"今天": {"t": 18.6, "c": [[13.9, 58, 8.6, 4.1], [3.2, 6, 1.3, 0.9], [1.1, 57, 0.3, 0.6], [0.4, 14, null, null]], "u": 0, "m": 1}, "近 7 天": {"t": 128.4, "c": [[96.1, 412, 58.0, 31.2], [22.4, 38, 9.1, 11.0], [7.6, 401, 2.1, 4.3], [2.3, 96, null, null]], "u": 3, "m": 5}, "近 30 天": {"t": 566.0, "c": [[421.8, 1806, 247.3, 148.9], [99.5, 171, 41.2, 51.0], [34.1, 1752, 9.8, 20.6], [10.6, 430, null, null]], "u": 11, "m": 19}},NM=["聊天", "记忆整理", "检索", "向量索引"];let cur='近 7 天',sel=-1;
+const $=s=>document.querySelector(s);
+function draw(){const d=R[cur],f=$('#fig');let h='';
+ // 托盘
+ h+='<rect x="8" y="262" width="348" height="12" rx="3" fill="#9a9e9b"/>';
+ const mx=Math.max(...d.c.map(c=>c[0]));
+ d.c.forEach((c,i)=>{const x=16+i*76,w=60,top=96,bot=258,H=bot-top,lv=Math.max(10,H*c[0]/mx),ly=bot-lv;
+  h+=`<g class="bt${sel==i?' sel':''}" data-i="${i}">`;
+  // 泵头
+  h+=`<rect x="${x+w/2-4}" y="44" width="8" height="40" fill="#bfc3c0"/><path d="M${x+w/2-4} 50 H${x+w/2-30} V58 H${x+w/2-4}" fill="#bfc3c0"/><rect x="${x+w/2-18}" y="28" width="36" height="20" rx="4" fill="#777"/><text x="${x+w/2}" y="42" class="pn">${c[1]}</text>`;
+  // 瓶
+  h+=`<rect x="${x+w/2-10}" y="84" width="20" height="12" fill="#cfd2d0"/><rect class="glass" x="${x}" y="${top}" width="${w}" height="${H}" rx="8" fill="#fff" stroke="#999" stroke-width="1.4"/>`;
+  h+=`<rect x="${x+3}" y="${ly}" width="${w-6}" height="${lv-3}" rx="5" fill="#cfd2d0"/>`;
+  if(c[2]!=null){const ch=(lv-3)*c[2]/c[0];h+=`<pattern id="hp${i}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#b3b7b4"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8d918e" stroke-width="2"/></pattern><rect x="${x+3}" y="${bot-3-ch}" width="${w-6}" height="${ch}" fill="url(#hp${i})"/>`}
+  // 瓶签
+  h+=`<rect x="${x+6}" y="${top+16}" width="${w-12}" height="36" rx="3" fill="#fff" stroke="#bbb"/><text x="${x+w/2}" y="${top+32}" class="ln">${c[0]}</text><text x="${x+w/2}" y="${top+46}" class="lt">${NM[i]}</text></g>`});
+ // 空瓶（没报用量）
+ h+=`<g opacity=".8"><rect x="320" y="200" width="32" height="58" rx="6" fill="none" stroke="#999" stroke-width="1.4" stroke-dasharray="4 3"/><text x="336" y="234" class="ln">${d.u}</text></g>`;
+ // 编号
+ const N=[[16,108,1],[36,24,2],[302,252,3],[350,192,4]];N.forEach(([x,y,n])=>h+=`<circle cx="${x}" cy="${y}" r="8" fill="#e0336a"/><text x="${x}" y="${y+3.5}" class="no">${n}</text>`);
+ f.innerHTML=h;
+ f.querySelectorAll('.bt').forEach(g=>g.onclick=()=>{const i=+g.dataset.i;sel=sel==i?-1:i;draw()});
+ $('#tn').textContent=d.t.toFixed(1);$('#tk').textContent=cur.replace(/ /g,'')+' 用 量'.replace('','').split('').join('');$('#tk').textContent=cur+' · 用量';
+ $('#tc').textContent=d.c.reduce((a,c)=>a+c[1],0);
+ const hit=d.c.reduce((a,c)=>a+(c[2]||0),0),mis=d.c.reduce((a,c)=>a+(c[3]||0),0);$('#c1').textContent=hit.toFixed(1);$('#c2').textContent=mis.toFixed(1);$('#c3').textContent=d.m;
+ const dt=$('#dt');if(sel<0){dt.className='dt';dt.innerHTML=''}else{const c=d.c[sel];dt.className='dt on';
+  dt.innerHTML=`<h3>${NM[sel]}</h3><div class="r"><span>调用</span><b>${c[1]} 次</b></div><div class="r"><span>tokens</span><b>${c[0]} 万</b></div>`+(c[2]!=null?`<div class="r"><span>缓存命中</span><b>${c[2].toFixed(1)} 万</b></div><div class="r"><span>缓存未命中</span><b>${c[3].toFixed(1)} 万</b></div>`:`<div class="r"><span>缓存</span><b>不适用</b></div>`)}
+}
+$('#rb').onclick=e=>{e.stopPropagation();$('#rg').classList.toggle('on')};
+document.querySelectorAll('.rg li').forEach(li=>li.onclick=()=>{cur=li.textContent;document.querySelectorAll('.rg li').forEach(x=>x.classList.toggle('cur',x==li));$('#rb').textContent=cur+' ▾';$('#rg').classList.remove('on');draw()});
+addEventListener('click',()=>$('#rg').classList.remove('on'));
+if(location.hash=='#sel')sel=0;
+draw();
+</script>
