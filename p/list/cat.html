@@ -7,9 +7,12 @@ body{font-family:wk,serif;color:#5a3a2c;background:repeating-linear-gradient(90d
 .tip{font-size:14px;opacity:.75;margin-bottom:16px}
 .st{position:relative;width:260px;height:360px}
 .cup{position:absolute;left:30px;top:120px;width:200px;height:230px}
-#cat{position:absolute;left:10px;top:20px;width:240px;height:150px;transform-origin:50% 100%;will-change:transform;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#cat{position:absolute;left:10px;top:4px;width:240px;height:170px;transform-origin:50% 100%;will-change:transform;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .ear{transform-box:fill-box;will-change:transform}
 .el{transform-origin:100% 100%}.er{transform-origin:0% 100%}
+#bub{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.b{position:absolute;border-radius:50%;border:1px solid rgba(138,92,70,.45);background:rgba(255,253,248,.7);animation:up linear infinite;opacity:0}
+@keyframes up{0%{transform:translate(0,0) scale(.6);opacity:0}15%{opacity:1}100%{transform:translate(var(--dx),-70px) scale(1);opacity:0}}
 .fps{position:fixed;bottom:12px;font-size:12px;opacity:.6}
 </style></head><body>
 <div class="tip">戳一下猫猫奶盖</div>
@@ -18,25 +21,57 @@ body{font-family:wk,serif;color:#5a3a2c;background:repeating-linear-gradient(90d
  <defs><linearGradient id="tea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c79a74"/><stop offset="1" stop-color="#9c6b4b"/></linearGradient></defs>
  <path d="M4 6 L196 6 L180 222 Q178 228 170 228 L30 228 Q22 228 20 222 Z" fill="rgba(252,250,244,.55)" stroke="#8a5c46" stroke-width="1.3"/>
  <path d="M9 40 L191 40 L180 218 Q178 224 170 224 L30 224 Q22 224 20 218 Z" fill="url(#tea)" opacity=".85"/>
+ <path d="M6 40 Q20 40 22 52 Q24 64 30 62 Q34 60 34 50 Q36 42 60 42 L150 42 Q166 42 168 54 Q170 70 177 68 Q182 66 182 52 Q184 42 194 40 L194 30 L6 30 Z" fill="#fbf4e8" stroke="#8a5c46" stroke-width="1.2"/>
  <g fill="#3b2418"><circle cx="50" cy="208" r="9"/><circle cx="72" cy="212" r="9"/><circle cx="96" cy="206" r="9"/><circle cx="120" cy="212" r="9"/><circle cx="146" cy="207" r="9"/><circle cx="62" cy="194" r="9"/><circle cx="132" cy="193" r="9"/></g>
 </svg>
-<svg id="cat" viewBox="0 0 240 150">
+<svg id="cat" viewBox="0 0 240 170">
+ <defs>
+  <radialGradient id="cr" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#fffdf8"/><stop offset=".6" stop-color="#fbf4e8"/><stop offset="1" stop-color="#eadbc6"/></radialGradient>
+ </defs>
  <g id="body">
-  <path class="ear el" d="M52 64 L60 6 Q64 2 70 8 L104 44 Z" fill="#fffaf2" stroke="#8a5c46" stroke-width="1.3" stroke-linejoin="round"/>
-  <path class="ear er" d="M188 64 L180 6 Q176 2 170 8 L136 44 Z" fill="#fffaf2" stroke="#8a5c46" stroke-width="1.3" stroke-linejoin="round"/>
-  <path d="M20 148 Q14 110 36 76 Q70 34 120 34 Q170 34 204 76 Q226 110 220 148 Z" fill="#fffaf2" stroke="#8a5c46" stroke-width="1.3"/>
-  <path d="M40 100 Q60 70 96 58" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" opacity=".9"/>
-  <g id="face" fill="#5a3a2c">
-   <ellipse cx="92" cy="102" rx="5" ry="6.5"/><ellipse cx="148" cy="102" rx="5" ry="6.5"/>
-   <path d="M110 116 q5 6 10 0 q5 6 10 0" stroke="#5a3a2c" stroke-width="2" fill="none" stroke-linecap="round"/>
-   <g stroke="#5a3a2c" stroke-width="1.6" stroke-linecap="round"><path d="M58 104 l-22 -4"/><path d="M58 112 l-22 2"/><path d="M182 104 l22 -4"/><path d="M182 112 l22 2"/></g>
-   <ellipse cx="74" cy="118" rx="9" ry="5" fill="#f2b8a8" opacity=".55"/><ellipse cx="166" cy="118" rx="9" ry="5" fill="#f2b8a8" opacity=".55"/>
+  <path id="earL" class="ear el" fill="url(#cr)" stroke="#8a5c46" stroke-width="1.2" stroke-linejoin="round"/>
+  <path id="earR" class="ear er" fill="url(#cr)" stroke="#8a5c46" stroke-width="1.2" stroke-linejoin="round"/>
+  <path id="blob" fill="url(#cr)" stroke="#8a5c46" stroke-width="1.2" stroke-linejoin="round"/>
+  <g id="ridge" fill="none" stroke="#e2d2bb" stroke-width="1.6" stroke-linecap="round" opacity=".8"></g>
+  <g id="dust" fill="#7a4a32"></g>
+  <g fill="#5a3a2c">
+   <circle cx="98" cy="104" r="3.2"/><circle cx="142" cy="104" r="3.2"/>
+   <path d="M113 114 q3.5 4 7 0 q3.5 4 7 0" stroke="#5a3a2c" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+   <g stroke="#7a4a32" stroke-width="1.3" stroke-linecap="round" opacity=".8"><path d="M72 106 l-14 -3"/><path d="M72 112 l-14 1"/><path d="M168 106 l14 -3"/><path d="M168 112 l14 1"/></g>
   </g>
  </g>
 </svg>
 </div>
-<div class="fps" id="fps"></div>
+<div id="bub"></div><div class="fps" id="fps"></div>
 <script>
+function rng(s){return()=>{s=(s*16807)%2147483647;return s/2147483647}}
+
+// 裱花奶油：边缘一圈褶，顶上一个小尖
+(function(){const R=rng(7),pts=[],N=46,cx=120,base=158;
+ for(let i=0;i<=N;i++){const t=Math.PI*(i/N);const rx=104,ry=98;
+  let x=cx-Math.cos(t)*rx, y=base-Math.sin(t)*ry;
+  const bump=Math.sin(i*2.3)*1.3+(R()-.5)*1.4; const nx=-Math.cos(t), ny=-Math.sin(t);
+  x+=nx*bump; y+=ny*bump; pts.push([x,y]);}
+ // 顶尖：往右卷
+ let d='M18 '+base+' ';
+ pts.forEach((p,i)=>{ if(i==0){d+='L'+p[0].toFixed(1)+' '+p[1].toFixed(1);return}
+  const q=pts[i-1],mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2; d+=' Q'+q[0].toFixed(1)+' '+q[1].toFixed(1)+' '+mx.toFixed(1)+' '+my.toFixed(1);});
+ d+=' L222 '+base;
+ // 底边软塌：往下鼓几个包
+ d+=' Q200 168 180 160 Q160 170 140 161 Q120 169 100 161 Q80 170 60 160 Q40 168 18 '+base+' Z';
+ document.getElementById('blob').setAttribute('d',d);
+ // 耳朵：软尖
+ document.getElementById('earL').setAttribute('d','M58 86 Q56 50 66 30 Q72 22 78 30 Q92 46 104 62 Z');
+ document.getElementById('earR').setAttribute('d','M182 86 Q184 50 174 30 Q168 22 162 30 Q148 46 136 62 Z');
+ // 褶纹：从顶往下的弧线
+ let r='';[[.78,.12,.62],[.56,.18,.5],[.9,.55,.85]].forEach(([k,t0,t1])=>{let d='';for(let i=0;i<=20;i++){const t=Math.PI*(t0+(t1-t0)*i/20);const x=cx-Math.cos(t)*104*k,y=base-6-Math.sin(t)*98*k+Math.sin(i*2.1)*1.2;d+=(i?' L':'M')+x.toFixed(1)+' '+y.toFixed(1)}r+=`<path d="${d}"/>`});
+ document.getElementById('ridge').innerHTML=r;
+ let du='';for(let k=0;k<40;k++){const x=70+R()*90,y=62+R()*34;if(Math.hypot((x-120)/100,(y-150)/96)>1)continue;du+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(.4+R()*.9).toFixed(2)}" opacity="${(.25+R()*.4).toFixed(2)}"/>`}
+ document.getElementById('dust').innerHTML=du;
+ // 逸散小泡
+ const B=document.getElementById('bub');for(let k=0;k<9;k++){const e=document.createElement('i');e.className='b';const sz=3+R()*6;
+  e.style.cssText=`width:${sz}px;height:${sz}px;left:${30+R()*200}px;top:${70+R()*60}px;--dx:${(R()-.5)*30}px;animation-duration:${3+R()*3}s;animation-delay:${-R()*6}s`;B.appendChild(e)}
+})();
 // 弹簧：只改 transform，GPU 合成，不触发重排
 const cat=document.getElementById('cat'),ears=[...document.querySelectorAll('.ear')];
 let s=0,v=0,e=0,ev=0,t0=performance.now(),run=true;
