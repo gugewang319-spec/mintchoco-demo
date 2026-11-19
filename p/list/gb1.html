@@ -1,0 +1,87 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>聊天页 灰稿 gb1 · 气泡即对话框</title>
+<style>
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#d9d9d9;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#333}
+.app{position:relative;max-width:430px;height:100%;margin:0 auto;overflow:hidden;background:linear-gradient(#f2f2f2 0,#f2f2f2 160px,#e6e6e6 640px,#d2d2d2 1150px,#bdbdbd 100%)}
+.sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.page{position:relative;height:1500px}
+.top{position:absolute;left:24px;right:20px;top:42px;display:flex;align-items:center;gap:10px}
+.top h1{font-size:28px;font-weight:800;flex:1}.top h1 small{font:italic 14px serif;color:#999;margin-left:4px}
+.rb{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.7);box-shadow:0 0 0 1px #fff inset,0 2px 6px rgba(0,0,0,.08)}
+.surf{position:absolute;left:0;right:0;top:190px;height:30px}
+.lab{position:absolute;font-size:12px;letter-spacing:.2em;color:#777}
+.lab b{font-size:15px;letter-spacing:.05em;color:#444;margin-right:6px}
+.cnt{position:absolute;font-weight:800;color:#555;font-size:40px;line-height:1}.cnt i{font:400 12px system-ui;color:#888;margin-left:3px;font-style:normal}
+.cat{position:absolute;left:22px;top:136px;width:132px;height:104px;border-radius:50% 50% 44% 44%/62% 62% 38% 38%;background:#fff;box-shadow:0 0 0 2px #bbb inset;display:grid;place-items:center;font-size:12px;color:#999;cursor:pointer;transform-origin:50% 100%}
+.cat:before,.cat:after{content:"";position:absolute;top:-12px;width:26px;height:26px;background:#fff;border:2px solid #bbb;border-bottom:0;border-right:0;transform:rotate(45deg)}.cat:before{left:22px}.cat:after{right:22px}
+.b{position:absolute;border-radius:50%;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+ background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95) 0 8%,rgba(255,255,255,.55) 22%,rgba(255,255,255,.35) 60%,rgba(170,170,170,.35) 100%);
+ box-shadow:inset 0 0 0 1.5px rgba(120,120,120,.45),inset -6px -8px 14px rgba(0,0,0,.06);will-change:auto}
+.b .d{font-size:11px;color:#777;letter-spacing:.05em}.b .d em{font-style:normal;font-weight:700;color:#555;margin-left:4px}
+.b p{font-size:13.5px;line-height:1.5;color:#333;margin-top:3px}
+.b.t p{font-size:14.5px}.b.t .w{font-size:11px;color:#888;margin-right:4px}
+.b.sel{box-shadow:inset 0 0 0 2.5px #555,inset -6px -8px 14px rgba(0,0,0,.06)}
+.b.sel:after{content:"再点一下进去聊";position:absolute;bottom:-22px;left:50%;translate:-50% 0;white-space:nowrap;font-size:11px;color:#555}
+.ice{position:absolute;width:30px;height:30px;border-radius:7px;background:#e9e9e9;box-shadow:inset 0 0 0 1.5px #999;rotate:-14deg}
+.pearl{position:absolute;width:20px;height:20px;border-radius:50%;background:#666}
+.mini{position:absolute;width:30px;height:30px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(120,120,120,.35);background:rgba(255,255,255,.3);font-size:9.5px;color:#888;display:grid;place-items:center;cursor:pointer}
+.note{position:absolute;font-size:11px;color:#c0392b;line-height:1.5;border-left:2px solid #c0392b;padding-left:6px}
+.rip{position:absolute;border-radius:50%;border:1.5px solid rgba(90,90,90,.5);pointer-events:none}
+.nav{position:absolute;left:14px;right:14px;bottom:18px;height:62px;border-radius:31px;background:rgba(255,255,255,.75);box-shadow:0 0 0 1px #fff inset,0 4px 14px rgba(0,0,0,.1);display:flex;justify-content:space-around;align-items:center;font-size:11px;color:#777;z-index:5}
+.nav span{width:52px;height:46px;border-radius:23px;display:grid;place-items:center}.nav .on{background:#cfcfcf;color:#333}
+.leg{position:absolute;left:12px;right:12px;font-size:12px;line-height:1.7;color:#555;background:rgba(255,255,255,.6);padding:10px 12px;border-radius:10px}
+</style></head><body>
+<div class="app"><div class="sc" id="sc"><div class="page" id="pg">
+<div class="top"><h1>聊天<small>chats</small></h1><span class="rb"></span><span class="rb"></span></div>
+<svg class="surf" viewBox="0 0 412 30" preserveAspectRatio="none"><path d="M0 14 Q 50 4 103 14 T 206 14 T 309 14 T 412 14" fill="none" stroke="#aaa" stroke-width="2"/></svg>
+</div></div>
+<div class="nav"><span>今天</span><span>记忆</span><span class="on">聊天</span><span>人格</span><span>设置</span></div>
+</div>
+<script>
+const pg=document.getElementById('pg'),sc=document.getElementById('sc');
+const el=(c,h,s)=>{const e=document.createElement('div');e.className=c;if(h)e.innerHTML=h;Object.assign(e.style,s||{});pg.appendChild(e);return e};
+const W=Math.min(innerWidth,430);
+/* 今天：猫猫浮在液面，今天的两句话就是从猫猫身上冒出来的两颗大气泡 */
+el('cat','猫猫奶盖');
+el('cnt','6<i>轮 · 19:45</i>',{left:'34px',top:'252px',fontSize:'34px'});
+el('lab','<b>今天</b>11/11 周三',{left:'26px',top:'96px'});
+const B=[];
+function bub(cls,x,y,d,html,k){const e=el('b '+cls,html,{left:x+'px',top:y+'px',width:d+'px',height:d+'px',padding:Math.round(d*.14)+'px'});B.push({e,x,y,d,k,s:{x:0,v:0},q:{x:0,v:0},ph:Math.random()*6.28,per:3+Math.random()*2});return e}
+bub('t',W-232,92,168,'<p><span class="w">他</span>那我先把奶煮上，你到家刚好能喝</p>','today');
+bub('t',W-150,250,118,'<p><span class="w">我</span>要加棉花糖！</p>','today');
+el('note','今天＝猫猫身上冒的气泡<br>点猫猫直接进今天',{left:'24px',top:'300px'});
+/* 本周：每天一颗气泡，大小＝轮数；冰块贴在气泡边上；没聊的那天只是一颗小空泡 */
+el('lab','<b>本周</b>11/5 – 11/10',{left:'24px',top:'372px'});
+el('cnt','31<i>轮</i>',{right:'24px',top:'360px'});
+const wk=[['11/10 周二',12,'你说明天会不会下雪呀'],['11/9 周一',8,'今天的会开了三个小时，脑袋好空'],['11/8 周日',9,'带你去吃了那家新开的甜品店'],['11/7 周六',0],['11/6 周五',2,'晚安'],['11/5 周四',0]];
+let y=420,side=0;
+wk.forEach(([d,n,t],i)=>{if(!n){const m=el('mini',d.split(' ')[0],{left:(side?W-90:70)+'px',top:(y+6)+'px'});B.push({e:m,x:0,y,d:30,s:{x:0,v:0},q:{x:0,v:0},ph:i,per:4});y+=46;return}
+ const D=Math.round(112+n*5.5);const x=side?W-D-22:22;bub('w',x,y,D,`<span class="d">${d}<em>${n} 轮</em></span><p>${t}</p>`,'week');
+ el('ice','',{left:(side?x-10:x+D-22)+'px',top:(y+D*.62)+'px'});side^=1;y+=D*.72});
+el('note','本周＝一天一颗气泡，大小＝轮数<br>冰块贴在泡边（冰在、泡在冒）<br>没聊的那天＝一颗小空泡，只写日期',{left:'24px',top:(y+50)+'px'});
+/* 更早：一周一颗，气泡沉下去，里面裹着一颗珍珠 */
+y+=150;el('lab','<b>更早</b>10/8 – 11/4',{left:'24px',top:y+'px'});el('cnt','4<i>周</i>',{right:'24px',top:(y-12)+'px'});y+=40;
+const ea=[['10/29 – 11/4',6,'万圣节那天你给我讲了一个超吓人的故事'],['10/22 – 10/28',5,'这周你一直在忙期中'],['10/15 – 10/21',7,'第一次一起看的那部电影'],['10/8 – 10/14',4,'你说秋天最适合喝热可可']];
+ea.forEach(([d,n,t],i)=>{const D=124;const x=i%2?W-D-30:30;const e=bub('e',x,y,D,`<span class="d">${d}</span><p style="font-size:12px">${t}</p>`,'early');el('pearl','',{left:(x+D/2-10)+'px',top:(y+D-26)+'px'});y+=96});
+el('note','更早＝一周一颗，泡沉下去<br>泡底裹着一颗珍珠',{left:'24px',top:(y+40)+'px'});
+y+=110;const LG=el('leg','<b>灰稿 gb1 · 气泡即对话框</b><br>· 只有一种主角：气泡。它本身就是对话框，字住在泡里，不用框、不用引线<br>· 三段靠「谁冒的泡」分：猫猫（今天）→ 冰块（本周）→ 珍珠（更早），越往下泡越小越沉，底色越深<br>· Duang：点一下泡泡果冻弹、旁边的泡被推一下（一圈涟漪），再点一下才进去聊；滑动时所有泡跟着晃<br>· 正式版：泡＝半透明奶白，透出后面的小料；液体只染色不盖死',{top:y+'px'});pg.style.height=(y+260)+'px';
+document.querySelector('.cat').addEventListener('click',()=>{duangEl({e:document.querySelector('.cat'),s:CAT.s,q:CAT.q},2.2)});
+const CAT={s:{x:0,v:0},q:{x:0,v:0},e:document.querySelector('.cat'),y:136,d:104,ph:0,per:5};B.push(CAT);
+/* Duang：弹簧（压扁→回弹），点到的泡推开邻居 */
+let sel=null;
+function duangEl(o,k){o.q.v-=k*4}
+function ripple(cx,cy){const r=el('rip','',{left:cx+'px',top:cy+'px',width:'0',height:'0'});r.animate([{width:'0px',height:'0px',translate:'0 0',opacity:.9},{width:'220px',height:'220px',translate:'-110px -110px',opacity:0}],{duration:650,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>r.remove()}
+B.forEach(o=>o.e.addEventListener('click',ev=>{if(o===CAT)return;ev.stopPropagation();
+ if(sel===o){o.e.animate([{scale:1},{scale:'1.25 .7'},{scale:1.5,opacity:0}],{duration:380,easing:'ease-in'}).onfinish=()=>{o.e.style.opacity=1;alert('进入聊天室（演示）')};return}
+ if(sel)sel.e.classList.remove('sel');sel=o;o.e.classList.add('sel');
+ duangEl(o,2.6);const r=o.e.getBoundingClientRect(),pr=pg.getBoundingClientRect(),cx=r.left-pr.left+r.width/2,cy=r.top-pr.top+r.height/2;ripple(cx,cy);
+ B.forEach(n=>{if(n===o)return;const q=n.e.getBoundingClientRect();const dx=q.left-pr.left+q.width/2-cx,dy=q.top-pr.top+q.height/2-cy,dd=Math.hypot(dx,dy);if(dd<260)n.s.v+=(dy>=0?1:-1)*(260-dd)*.35})}));
+let ly=sc.scrollTop;sc.addEventListener('scroll',()=>{const v=sc.scrollTop-ly;ly=sc.scrollTop;B.forEach(o=>{o.q.v+=Math.max(-6,Math.min(6,v))*.08;o.s.v-=v*.4})},{passive:true});
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let last=performance.now();
+(function f(now){const dt=Math.min(.033,(now-last)/1000);last=now;const t=now/1000;
+ for(const o of B){o.s.v+=(-120*o.s.x-9*o.s.v)*dt;o.s.x+=o.s.v*dt;o.q.v+=(-260*o.q.x-7*o.q.v)*dt;o.q.x+=o.q.v*dt;
+  const by=RM?0:Math.sin(t*6.283/o.per+o.ph)*3,br=RM?0:Math.sin(t*6.283/(o.per*1.3)+o.ph)*.012;const sq=o.q.x*.06;
+  o.e.style.transform=`translateY(${(by+o.s.x).toFixed(1)}px) scale(${(1+sq+br).toFixed(3)},${(1-sq-br).toFixed(3)})`}
+ requestAnimationFrame(f)})(last);
+</script></body></html>
