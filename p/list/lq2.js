@@ -22,7 +22,7 @@ document.querySelectorAll('.dk').forEach(el=>{
  const k=['cocoa','boba','latte','soda'].find(c=>el.classList.contains(c));if(!k)return;
  const key=k+(nC++);el.dataset.lq=key;const host=el.querySelector('.lqw')||el;
  const cv=document.createElement('canvas');cv.className='lqc';cv.setAttribute('aria-hidden','true');host.insertBefore(cv,host.firstChild);
- const sp=Object.assign({},SPEC[k]);if(el.dataset.lv)sp.lv=+el.dataset.lv;sp.ph+=nC*1.37;sp.P*=1+(nC%5)*.07;
+ const sp=Object.assign({},SPEC[k],(window.LQSPEC||{})[k]);if(el.dataset.lv)sp.lv=+el.dataset.lv;sp.ph+=nC*1.37;sp.P*=1+(nC%5)*.07;
  const c={k:key,el,host,cv,ctx:cv.getContext('2d'),sim:new Liquid(),s:sp,kick:0,kdir:0,w:0,h:0};cups[key]=c;if(io)io.observe(el);else vis.add(el);
  el.addEventListener('pointerdown',e=>{const r=el.getBoundingClientRect();const t=clamp((e.clientX-r.left)/r.width,0,1);poke(c,t)});
 });

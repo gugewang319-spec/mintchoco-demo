@@ -23,9 +23,7 @@ def ice(m):
 s=re.sub(r'(<button class="ice gl[^>]*>)',ice,s)
 CSS=r'''
 /* ===== vb12：卡片 = 今天页那只装奶茶的毛玻璃（同款 .glass + 液面），小料照今天页画法 ===== */
-.gl,.duo .his,.duo .mine,.ice.dp1,.tod{background:linear-gradient(160deg,rgba(255,255,255,.8),rgba(250,252,248,.58))!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:1px solid rgba(255,255,255,.9)!important;box-shadow:inset 0 1px 0 #fff,0 10px 22px -16px rgba(74,48,39,.5)!important}
-.duo .his{box-shadow:inset 0 1px 0 #fff,0 6px 16px -14px rgba(74,48,39,.4)!important}
-.duo .mine{box-shadow:inset 0 1px 0 #fff,0 14px 24px -14px rgba(74,48,39,.5)!important}
+.gl,.duo .his,.duo .mine,.ice.dp1,.tod{background:linear-gradient(160deg,rgba(255,255,255,.8),rgba(250,252,248,.58))!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .gl::before{display:none!important}
 .dk{isolation:isolate}
 .dk>*:not(.lqw):not(.dc):not(.bh){position:relative;z-index:3}
@@ -47,7 +45,7 @@ main .tod.dk .in{padding-top:54px!important}
 .tod .key{font-weight:700!important}
 '''
 s=s.replace('</style>',CSS+'</style>',1)
-JS=r'''<script src="lq2.js"></script><script>
+JS=r'''<script src="lq2.js"></script><script>(function(){const T='.key,.sub,p,b,small';function cut(){document.querySelectorAll('.dk').forEach(el=>{const lv=window.LQlv?LQlv(el.dataset.lq):0;if(!lv)return;const r=el.getBoundingClientRect(),y=r.top+r.height*(1-lv);el.querySelectorAll(T).forEach(t=>{{t.style.top='';const cs=getComputedStyle(t),lh=parseFloat(cs.lineHeight)||20,pt=parseFloat(cs.paddingTop)||0,tr=t.getBoundingClientRect(),c=y-tr.top-pt;let cut=c;if(c>2&&c<tr.height-pt-2){const m=c%lh,d=m<lh/2?m:m-lh;t.style.position='relative';t.style.top=d+'px';cut=c-d}t.style.setProperty('--cut',(pt+cut)+'px')}})})}addEventListener('load',cut);addEventListener('resize',cut);setTimeout(cut,300)})()</script><script>
 /* 饮品卡里的小料：照今天页，各自周期、错开；减少动效时静止 */
 (()=>{const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,$$=(q,r=document)=>[...r.querySelectorAll(q)],D=[];
 const V=new Set(),io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?V.add(e.target):V.delete(e.target)),{rootMargin:'60px'});
@@ -124,8 +122,6 @@ s=s.replace('</style>',CSS3+'</style>',1)
 # —— 05:12 茶茶选 A：字只写在杯子上半更厚的奶白磨砂区，液面压到字下面；去掉描边/白唇/光晕/大引号；巧克力色深中浅三档（Apple HIG Materials：字多用厚材质，层级靠 vibrancy 三档而非特效）
 s=s.replace(CSS3,'',1)
 CSS4="""main .gl,main .duo .his,main .duo .mine,main .ice,main .tod{background:linear-gradient(180deg,rgba(253,251,245,.92) 0%,rgba(252,249,243,.86) 55%,rgba(250,251,247,.6) 100%)!important}
-main .duo p,main .ice p,main .tod .in{padding-bottom:30px!important}
-main .ice{padding-bottom:30px!important}
 main .gl .key,main .gl .sub,main .duo p,main .ice p,main .ice b,main .ice small{-webkit-text-stroke:0!important;text-shadow:none!important}
 main .tod .key{font:600 20px/1.5 var(--body)!important;color:#4a3027!important;text-wrap:balance}
 main .tod .sub{font:400 15px/1.5 var(--body)!important;color:#7a5a4a!important}
@@ -154,5 +150,16 @@ def wan(m):
 s=re.sub(r'<img class="bgi bre (?:ic|lf|cu|pe)"[^>]*>',wan,s)
 # 液面只占卡底那一条（字下面），按卡高换算
 s=s.replace('<script src="lq2.js">','<script>document.querySelectorAll(".dk").forEach(e=>{e.dataset.lv=Math.min(.3,30/Math.max(60,e.offsetHeight)).toFixed(3)})</script><script src="lq2.js">',1)
+# —— 05:18 茶茶改选 B：字全泡进奶茶液面，奶白字；玻璃只留杯口一窄条放小料热气。字体换系统无衬线（她不喜欢文楷那种怪字）
+LQS='window.LQSPEC={cocoa:{top:"rgba(128,84,62,.86)",bot:"rgba(104,66,48,.92)"},boba:{top:"rgba(176,124,88,.86)",bot:"rgba(150,102,70,.92)"},latte:{top:"rgba(166,120,90,.84)",bot:"rgba(140,98,72,.9)"},soda:{top:"rgba(78,150,124,.84)",bot:"rgba(58,128,104,.9)"}};'
+s=s.replace('<script>document.querySelectorAll(".dk").forEach(e=>{e.dataset.lv=Math.min(.3,30/Math.max(60,e.offsetHeight)).toFixed(3)})</script>','<script>'+LQS+'</script>',1)
+CSS5="""main .tod .key,main .tod .sub,main .duo p,main .ice p,main .ice b{font-family:-apple-system,"PingFang SC","HarmonyOS Sans SC","MiSans","Noto Sans SC","Source Han Sans SC",sans-serif!important}
+main .tod .key{font-weight:600!important;font-size:19px!important}
+/* 水位还原（各杯原液面）；字跟着液面换色：液面上是巧克力色，泡进奶茶的部分是奶白 */
+main .tod .key,main .tod .sub,main .duo p,main .ice p,main .ice b,main .ice small,main .tod .side small{color:transparent!important;-webkit-text-fill-color:transparent;background:linear-gradient(180deg,var(--tc,#4a3027) calc(var(--cut,9999px) - 2px),var(--tw,#fff8ec) calc(var(--cut,9999px) + 2px))!important;-webkit-background-clip:text!important;background-clip:text!important}
+main .tod .sub,main .ice small,main .tod .side small{--tc:#7a5a4a;--tw:rgba(255,248,236,.85)}
+main .tod i.k,main .duo p i{color:transparent!important;-webkit-text-fill-color:transparent;opacity:.6}
+"""
+s=s.replace('</style>',CSS5+'</style>',1)
 open(R+'vb12.html','w').write(s)
 print(s.count('class="lqw"'),s.count(' dk '))
