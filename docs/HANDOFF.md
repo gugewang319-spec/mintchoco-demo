@@ -1,6 +1,6 @@
 # 交接说明（换账号 / 换对话时先读这个）
 
-更新：2026-11-20 00:15 CST · preview index V=56；聊天页样张做到 vb5（已否），构图待重想，见文末「聊天页交接（00:15）」
+更新：2026-11-20 00:15 CST · preview index V=57（健康页 vb15 已并）；聊天页样张做到 vb5（已否），构图待重想，见文末「聊天页交接（00:15）」
 
 ## 新对话开场
 1. `git clone https://github.com/gugewang319-spec/mintchoco-demo /workspace/work/mc && cd /workspace/work/mc && git checkout preview`
