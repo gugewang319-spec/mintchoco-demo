@@ -36,9 +36,10 @@ body.grid .g{display:block}
 .pr{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:#888}
 .pr i{width:56px;height:56px;border-radius:50%;background:#8d918e;display:grid;place-items:center;font:700 12px system-ui;color:#fff;font-style:normal}
 .pr.on i{outline:3px solid #e0336a;outline-offset:2px}
+.pr span b{display:none}
 
 </style><body><div class="g"></div><button class="tg" onclick="document.body.classList.toggle('grid')">网格</button>
-<nav class="ab"><a href="wfA.html" class="on">A 三层</a><a href="wfB.html" class="">B 一杯</a><a href="wfC.html" class="">C 冰格</a></nav>
+<nav class="ab"><a href="wfA.html" class="on">A 三层</a><a href="wfA2.html" class="">A2 通栏</a><a href="wfB.html" class="">B 一杯</a><a href="wfC.html" class="">C 冰格</a></nav>
 <div class="app">
 <header class="hd"><h1>聊天</h1><small>共 10 杯 · since 10/08</small><div class="r"><i title="搜"></i><i class="p" title="新开一杯"></i></div></header>
 <p class="sub">杯子从上往下 = 从新到旧</p>
@@ -61,6 +62,6 @@ body.grid .g{display:block}
 const $=s=>document.querySelector(s);let wd=3,pk=0;
 function d(){$('#cubes').innerHTML=W.map((x,i)=>x[2]?`<button class="cb${i==wd?' on':''}" data-i="${i}"><b>${x[3]}</b>${x[2]} 轮<span>${x[1]}</span></button>`:`<span class="cb e">${x[1]}</span>`).join('');
 const w=W[wd];$('#wl').innerHTML=`<small>${w[0]} 周${w[1]} · 聊了 ${w[2]} 轮</small>${w[4]}　<a href="#">接着这天聊 ›</a>`;
-$('#prl').innerHTML=K.map((x,i)=>`<button class="pr${i==pk?' on':''}" data-p="${i}"><i>${x[2]}</i>${x[0]}</button>`).join('');
+$('#prl').innerHTML=K.map((x,i)=>`<button class="pr${i==pk?' on':''}" data-p="${i}"><i>${x[2]}</i><span><b>${x[2]}</b>${x[0]}</span></button>`).join('');
 const k=K[pk];$('#pl').innerHTML=`<small>${k[0]} · ${k[1]} 天</small>${k[3]}　<a href="#">看这一周 ›</a>`;
 document.querySelectorAll('.cb[data-i]').forEach(b=>b.onclick=()=>{wd=+b.dataset.i;d()});document.querySelectorAll('.pr').forEach(b=>b.onclick=()=>{pk=+b.dataset.p;d()})}d();</script></body></html>
