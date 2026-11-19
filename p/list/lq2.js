@@ -26,6 +26,7 @@ document.querySelectorAll('.dk').forEach(el=>{
  const c={k:key,el,host,cv,ctx:cv.getContext('2d'),sim:new Liquid(),s:sp,kick:0,kdir:0,w:0,h:0};cups[key]=c;if(io)io.observe(el);else vis.add(el);
  el.addEventListener('pointerdown',e=>{const r=el.getBoundingClientRect();const t=clamp((e.clientX-r.left)/r.width,0,1);poke(c,t)});
 });
+window.LQpoke=(k,t)=>{const c=cups[k];if(c)poke(c,t)};
 window.LQlv=k=>{const c=cups[k];return c?c.s.lv:0};
 function size(c){const d=Math.min(2,devicePixelRatio||1);c.w=c.host.offsetWidth;c.h=c.host.offsetHeight;c.cv.width=Math.round(c.w*d);c.cv.height=Math.round(c.h*d);c.d=d}
 /* 点一下：点到的那一侧液面被按下去，同时整杯受一下横向冲击，往另一边撞 */

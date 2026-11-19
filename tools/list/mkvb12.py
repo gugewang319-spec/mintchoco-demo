@@ -162,5 +162,30 @@ main .tod i.k,main .duo p i{color:transparent!important;-webkit-text-fill-color:
 """
 s=s.replace('</style>',CSS5+'</style>',1)
 s=s.replace('</style>','/* 05:24 茶茶：照 vb1（07c06ef）的饮品卡做——可可细描边、上圆下更圆、奶白渐变玻璃、浅色液面过半、字是墨色文楷直接写在杯里，不换色不加特效 */\nmain .gl,main .duo .his,main .duo .mine,main .ice,main .tod{border:1.2px solid #8a5c46!important;border-radius:22px 22px 26px 26px!important;background:linear-gradient(170deg,rgba(255,253,248,.78),rgba(255,250,242,.52))!important;box-shadow:inset 0 1.5px 0 #fff,0 12px 22px -16px rgba(74,48,39,.5)!important}\nmain .tod .key,main .tod .sub,main .duo p,main .ice p,main .ice b,main .ice small,main .tod .side small{color:#4a3027!important;-webkit-text-fill-color:currentColor!important;background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;top:0!important}\nmain .duo p,main .ice p{font:16px/1.6 WK!important;letter-spacing:0!important}\nmain .tod .key{font:18px/1.6 WK!important;font-weight:400!important}\nmain .tod .sub{font:15px/1.6 WK!important;color:#7a5a4a!important}\nmain .ice b,main .rds b{font-family:Baloo,sans-serif!important}\nmain .ice small,main .tod .side small{font:12px/1.2 ZK!important;color:#8a5c46!important}\nmain .tod i.k,main .duo p i{-webkit-text-fill-color:currentColor!important;color:#2f6e58!important;opacity:1!important;font:12px/1.2 ZK!important;letter-spacing:.06em}\n'+'</style>',1)
+# —— 05:29 茶茶：今天大卡要巧克力流酱（像今天页：挂在卡顶、尖端时不时掉一滴），但不要淋面贴图 → 代码画：SVG 按卡宽现算的淋面+长短不一的酱滴（静态手绘抖边），尖端鼓起一颗、拉长、掉进奶茶，液面被砸出涟漪
+CSS7=""".tod .choco{position:absolute!important;left:0;top:0;width:100%;height:46px;z-index:3!important;pointer-events:none;clip-path:inset(0 round 21px 21px 0 0);overflow:hidden}
+.tod .choco svg{display:block;width:100%;height:46px;overflow:visible}
+.tod .cdrop{position:absolute;z-index:3;width:9px;height:11px;margin-left:-4.5px;border-radius:50% 50% 50% 50%/40% 40% 60% 60%;background:#5a3627;opacity:0;pointer-events:none;will-change:transform}
+main .tod.dk .in{padding-top:36px!important}
+@media (prefers-reduced-motion:reduce){.tod .cdrop{display:none}}
+"""
+s=s.replace('</style>',CSS7+'</style>',1)
+s=s.replace('aria-label="进今天的聊天">','aria-label="进今天的聊天"><span class="choco" aria-hidden="true"></span>',1)
+JS7=r"""<script>(function(){const card=document.querySelector('.tod.dk');if(!card)return;const box=card.querySelector('.choco');
+const TIPS=[[.06,13],[.2,24],[.36,11],[.55,9],[.7,20],[.86,12],[.95,17]],B=11;let W=0;
+function draw(){W=card.clientWidth;if(!W)return;let d=`M0 0 H${W} V${B}`;const pts=TIPS.slice().reverse();let x=W;
+ for(const[f,L]of pts){const cx=f*W,r=3+L*.07,fl=r*2.6;d+=` Q${(x+cx+fl)/2} ${B+2.5} ${cx+fl} ${B}`;d+=` C${cx+r*.9} ${B+1} ${cx+r*.55} ${B+L*.35} ${cx+r*.6} ${B+L-r*1.6}`;d+=` C${cx+r*.62} ${B+L-r*.9} ${cx+r*1.05} ${B+L-r*.6} ${cx+r} ${B+L-r}`;d+=` A${r} ${r} 0 1 1 ${cx-r} ${B+L-r}`;d+=` C${cx-r*1.05} ${B+L-r*.6} ${cx-r*.62} ${B+L-r*.9} ${cx-r*.6} ${B+L-r*1.6}`;d+=` C${cx-r*.55} ${B+L*.35} ${cx-r*.9} ${B+1} ${cx-fl} ${B}`;x=cx-fl}
+ d+=` Q${x/2} ${B+3} 0 ${B} Z`;
+ box.innerHTML=`<svg viewBox="0 0 ${W} 46" aria-hidden="true"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4b36"/><stop offset=".35" stop-color="#63402f"/><stop offset="1" stop-color="#4f2f22"/></linearGradient><filter id="cw" x="-5%" y="-20%" width="110%" height="160%"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter></defs><path d="${d}" fill="url(#cg)" filter="url(#cw)"/><path d="M6 3.2 H${W-6}" stroke="rgba(150,104,80,.55)" stroke-width="1.6" stroke-linecap="round" fill="none" filter="url(#cw)"/></svg>`}
+draw();addEventListener('resize',draw);
+let vis=true;if('IntersectionObserver' in window)new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(card);
+const big=TIPS.map((t,i)=>[t,i]).filter(([t])=>t[1]>=17);
+function one(){if(vis&&!document.hidden&&W){const[[f,L]]=big[Math.floor(Math.random()*big.length)];const x=f*W,y=B+L-6;const e=document.createElement('i');e.className='cdrop';e.style.left=x+'px';e.style.top=y+'px';card.appendChild(e);
+ const k=card.dataset.lq,lv=window.LQlv?LQlv(k):.36,fall=Math.max(20,card.clientHeight*(1-lv)-y-4);
+ e.animate([{opacity:1,transform:'translateY(-5px) scale(.25,.2)'},{opacity:1,transform:'translateY(-1px) scale(.9,.85)',offset:.38},{opacity:1,transform:'translateY(3px) scale(.85,1.25)',offset:.5},{opacity:1,transform:`translateY(${fall*.5}px) scale(.75,1.35)`,offset:.78},{opacity:.9,transform:`translateY(${fall}px) scale(1.15,.6)`,offset:.97},{opacity:0,transform:`translateY(${fall+3}px) scale(1.4,.3)`}],{duration:2600,easing:'cubic-bezier(.55,0,.85,.45)'}).onfinish=()=>e.remove();
+ setTimeout(()=>{window.LQpoke&&LQpoke(k,x/W)},2600*.95)}
+ setTimeout(one,3800+Math.random()*4200)}
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches)setTimeout(one,1800)})()</script>"""
+s=s.replace('<script src="lq2.js"></script>','<script src="lq2.js"></script>'+JS7,1)
 open(R+'vb12.html','w').write(s)
 print(s.count('class="lqw"'),s.count(' dk '))
