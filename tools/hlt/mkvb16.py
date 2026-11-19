@@ -38,36 +38,8 @@ t=t.replace('</style>','.pp u:not(.e){background:radial-gradient(circle at 35% 3
 open(R+'vb16b.html','w').write(t)
 print('ok b')
 
-# 06:00 茶茶：手势要像手机「侧滑返回」——从屏幕左/右边往里划放回手表；系统返回手势/返回键也只放回手表（pushState），不离开页面。05:51 的下拖放回作废。
-SW=r"""<i class="wedge l" aria-hidden="true"></i><i class="wedge r" aria-hidden="true"></i><i class="wba" id="wba" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#5b3a2c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 6-6 6 6 6"/></svg></i>
-<style>.wedge{position:fixed;top:0;bottom:0;width:26px;z-index:70;touch-action:none;display:none}.wedge.l{left:0}.wedge.r{right:0}.wup.on~.wedge{display:block}
-.wba{position:fixed;left:0;top:50%;z-index:71;width:40px;height:40px;margin:-20px 0 0 -44px;border-radius:50%;display:grid;place-items:center;background:rgba(252,250,244,.9);box-shadow:inset 0 1px 0 #fff,0 6px 14px -8px rgba(74,48,39,.5);opacity:0;pointer-events:none;transform:translateX(calc(var(--p,0)*58px)) scale(calc(.6 + var(--p,0)*.4))}
-.wba.r{left:auto;right:0;margin:-20px -44px 0 0;transform:translateX(calc(var(--p,0)*-58px)) scale(calc(.6 + var(--p,0)*.4))}.wba.r svg{rotate:180deg}.wba.on{opacity:calc(var(--p,0)*1.6)}.wba.go{background:#c4e8da}</style>
-<script>
-(()=>{const $=q=>document.getElementById(q),up=$('wup'),big=$('wbig'),put=$('wput'),arr=$('wba');let pushed=false;
-new MutationObserver(()=>{const on=up.classList.contains('on');if(on&&!pushed){history.pushState({w:1},'');pushed=true}else if(!on&&pushed){pushed=false;history.back()}}).observe(up,{attributes:true,attributeFilter:['class']});
-addEventListener('popstate',()=>{if(pushed){pushed=false;if(up.classList.contains('on'))put.click()}});
-let sx=0,dir=0,id=null,p=0;
-document.querySelectorAll('.wedge').forEach(w=>w.addEventListener('pointerdown',e=>{if(!up.classList.contains('on'))return;dir=w.classList.contains('l')?1:-1;sx=e.clientX;id=e.pointerId;p=0;try{w.setPointerCapture(id)}catch(_){}
- arr.style.top=e.clientY+'px';arr.classList.toggle('r',dir<0);arr.classList.add('on');arr.style.setProperty('--p',0)}));
-addEventListener('pointermove',e=>{if(e.pointerId!==id)return;p=Math.max(0,Math.min(1,(e.clientX-sx)*dir/140));arr.style.setProperty('--p',p.toFixed(3));arr.classList.toggle('go',p>=.55);
- big.style.scale=(1-.1*p).toFixed(3);big.style.translate=`${(dir*p*26).toFixed(1)}px 0`});
-function end(e){if(e.pointerId!==id)return;id=null;arr.classList.remove('on','go');arr.style.setProperty('--p',0);const sc=big.style.scale||'1',tr=big.style.translate||'0 0';big.style.scale='';big.style.translate='';
- if(p>=.55){if(pushed)history.back();else put.click()}else big.animate({scale:[sc,'1'],translate:[tr,'0 0']},{duration:260,easing:'cubic-bezier(.3,1.3,.5,1)'});p=0}
-addEventListener('pointerup',end);addEventListener('pointercancel',end);
-})();</script>"""
-for f in ['vb16.html','vb16b.html']:
-  t=open(R+f).read();t=t.replace('</body>',SW+'</body>',1);open(R+f,'w').write(t)
-print('ok swipe')
+# 06:10 茶茶：侧滑返回手机上触发不了、SVG 重画也算了 → 都撤掉，手表用原 SVG，靠点表冠/空白放回（05:51 下拖、06:00 侧滑都已否）
 
-# 06:00 茶茶：手表用生图的彩铅水彩技法重画 SVG（tools/hlt/watch.svg / watch_s.svg，滤镜：抖线、铅笔颗粒描边、水彩边缘积色+纸纹、阴影侧彩铅排线、光从左上），用 r.py/rs.py 烘成 webp（动画元素不挂实时滤镜）
-import re as _re
-for f in ['vb16.html','vb16b.html']:
-  t=open(R+f).read()
-  t=_re.sub(r'<svg class="wsv".*?</svg>','<img class="wsv" src="watch.webp" alt="" style="left:-6px;top:-6px;width:272px;height:536px;inset:auto">',t,1,flags=_re.S)
-  t=_re.sub(r'(<button type="button" class="wbk"[^>]*>)<svg viewBox="0 0 72 96".*?</svg>',r'\1<img src="watch_s.webp" alt="" style="display:block;height:89px;width:auto;margin:-3px auto 0">',t,1,flags=_re.S)
-  open(R+f,'w').write(t)
-print('ok watch')
 
 # 06:00 茶茶：「1 颗 = 1000 步」不直观 → 改成地图比例尺：黑白分段尺，每格 = 杯里一颗珍珠宽（24px），格上坐珍珠，刻度 0/1k/2k/3k 步
 SC='<div class="mscl" aria-label="比例尺：一颗珍珠等于一千步"><div class="mscp"><u></u><u></u><u></u></div><div class="mscb"><i></i><i></i><i></i></div><div class="mscn"><span>0</span><span>1k</span><span>2k</span><span>3k<em>步</em></span></div></div>'
