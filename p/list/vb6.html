@@ -119,7 +119,10 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 
 /* ===== vb6 气泡即对话框 ===== */
 .scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;z-index:3}
-.content{background:linear-gradient(180deg,#e8f4ee 0,#ece7d8 150px,#e9ecdf 330px,#eadfcf 640px,#ddc6ad 1050px,#d2b597 1400px,#c9aa8b 100%)}
+.content{background:none}
+.rz{position:absolute;bottom:-12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.95) 0 20%,rgba(255,255,255,.12) 46%);border:1px solid rgba(255,255,255,.75);animation:rz linear infinite;pointer-events:none}
+@keyframes rz{0%{transform:translateY(0);opacity:0}10%{opacity:1}90%{opacity:.9}100%{transform:translateY(-105vh);opacity:0}}
+#far2 .fz{animation:fz ease-in-out infinite alternate}@keyframes fz{from{transform:translate(-4px,-6px) rotate(-8deg)}to{transform:translate(4px,6px) rotate(8deg)}}
 #bub{position:relative;height:1500px}
 .surf{position:absolute;left:0;width:100%;top:182px;height:40px;pointer-events:none}
 .flt{position:absolute;pointer-events:none;opacity:.9;animation:flt var(--p,6s) ease-in-out infinite alternate}
@@ -139,7 +142,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .b .d{white-space:nowrap;font:12px/1.2 WK;color:#8a6a5a}.b .d em{font:700 13px Baloo;font-style:normal;color:var(--mint3);margin-left:5px}
 .b p{font:15px/1.55 WK;color:var(--ink);margin-top:4px}
 .b .who{font:12px WK;color:var(--mintb);margin-right:5px}
-.b.sel{box-shadow:inset 0 0 0 2px rgba(63,154,128,.85),inset -8px -12px 18px rgba(138,92,70,.10),inset 6px 8px 14px rgba(255,255,255,.7),0 8px 18px -6px rgba(47,110,88,.35)}
+.b.sel{box-shadow:inset 0 0 0 1.3px #fff,inset -8px -12px 18px rgba(138,92,70,.10),inset 6px 8px 14px rgba(255,255,255,.8),0 0 0 5px rgba(255,251,242,.55),0 0 22px 6px rgba(255,248,232,.75),0 10px 20px -8px rgba(138,92,70,.35)}
 .b .go{position:absolute;bottom:-22px;white-space:nowrap;font:12px WK;color:var(--mint3);opacity:0;transition:opacity .25s}
 .b.sel .go{opacity:1}
 .ice2{position:absolute;pointer-events:none;filter:drop-shadow(0 3px 3px rgba(74,48,39,.15))}
@@ -149,6 +152,7 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 </style></head>
 <body>
 <div class="vp"><div class="app" id="app">
+ <div id="far2" aria-hidden="true"></div><div class="btm" aria-hidden="true"><img src="pearls.png" alt=""></div><div id="rzw" aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden"></div>
  <div class="scroller" id="sc"><div class="content" id="content">
   <img class="drizzle" src="today-bg.png" alt="">
   <header class="lhead"><div class="ttl"><span class="sc" aria-hidden="true">chats</span><h1>聊天</h1></div><div class="lbtns"><button class="pearlbtn" aria-label="搜索聊天"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button><button class="pearlbtn" aria-label="筛选"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M7 12h10M10 17h4"/></svg></button></div></header>
@@ -171,6 +175,9 @@ const W=Math.min(innerWidth,440),K=Math.min(1,W/412);
 /* 背景里漂着的小料（被半透明泡泡透出来） */
 const BITS=['bit1.png','bit2.png','bit4.png','bit5.png','bit6.png','bit3.png','bit9.png','bit12.png'];
 [[.84,60],[.06,330],[.9,470],[.48,560],[.04,760],[.86,880],[.42,1010],[.08,1150],[.88,1260],[.55,1360],[.25,420],[.66,700],[.3,220],[.62,1180],[.18,600],[.74,1100]].forEach(([x,y],i)=>{el('img','flt','',{left:(x*W)+'px',top:y+'px',width:(16+(i*7)%14)+'px','--p':(4.5+(i%4))+'s','--r':((i*47)%60-30)+'deg'}).src=BITS[i%BITS.length]});
+/* 固定背景：远处小料＋杯底珍珠＋往上冒的小气泡 */
+[['ice.png',30,8,58,.22],['pearl.png',16,70,64,.28],['ice.png',24,82,40,.18],['pearl.png',12,22,80,.3],['pearl.png',14,48,88,.26],['bit17.png',12,60,30,.3],['ice.png',20,40,70,.16],['pearl.png',10,88,74,.3]].forEach((z,i)=>{const e=document.createElement('i');e.className='fz';e.style.cssText=`width:${z[1]}px;height:${z[1]}px;left:${z[2]}%;top:${z[3]}%;opacity:${z[4]};animation-duration:${7+i%4*2}s;animation-delay:-${i*1.3}s`;e.innerHTML=`<img src="${z[0]}" alt="">`;$('#far2').appendChild(e)});
+for(let i=0;i<12;i++){const b=document.createElement('i');b.className='rz';const s=3+Math.random()*7;b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*96}%;animation-duration:${9+Math.random()*9}s;animation-delay:-${Math.random()*16}s`;$('#rzw').appendChild(b)}
 /* 液面 */
 const sf=el('div','surf');sf.innerHTML=`<svg width="100%" height="40" viewBox="0 0 412 40" preserveAspectRatio="none"><path id="sp" fill="rgba(255,252,244,.28)"/><path id="sl" fill="none" stroke="rgba(255,253,246,.95)" stroke-width="1.8"/></svg>`;
 /* 今天 */
@@ -178,7 +185,7 @@ el('div','lb','<b>今天</b>11/11 周三',{left:'26px',top:'96px'});
 const cat=el('div','catw2','<img src="catfoam.png" alt="今天的猫猫奶盖">');
 el('div','tdm','<strong>6</strong>轮 · 19:45',{});
 const B=[];
-function bub(cls,x,y,d,html){const e=el('div','b '+cls,html+'<span class="go">再点一下 去聊</span>',{left:x+'px',top:y+'px',width:d+'px',height:d+'px',padding:Math.round(d*.15)+'px'});const o={e,s:{x:0,v:0},q:{x:0,v:0},ph:Math.random()*6.28,per:3+Math.random()*2};B.push(o);return o}
+function bub(cls,x,y,d,html){const e=el('div','b '+cls,html+'',{left:x+'px',top:y+'px',width:d+'px',height:d+'px',padding:Math.round(d*.15)+'px'});const o={e,s:{x:0,v:0},q:{x:0,v:0},ph:Math.random()*6.28,per:3+Math.random()*2};B.push(o);return o}
 bub('t',W-Math.round(170*K)-28,96,Math.round(170*K),'<p><span class="who">他</span>那我先把奶煮上，你到家刚好能喝</p>');
 bub('t',W-Math.round(112*K)-30,262,Math.round(112*K),'<p><span class="who">我</span>要加棉花糖！</p>');
 /* 本周 */
