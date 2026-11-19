@@ -55,3 +55,10 @@ addEventListener('pointerup',end);addEventListener('pointercancel',end);
 for f in ['vb16.html','vb16b.html']:
   t=open(R+f).read();t=t.replace('</body>',SW+'</body>',1);open(R+f,'w').write(t)
 print('ok swipe')
+
+# 05:54 茶茶：加个神经的提示语「粒粒皆千步」→ 杯身奶白小纸签
+LL='<span class="ll">粒粒皆千步</span>'
+LC='<style>.ll{position:absolute;left:50%;top:30px;z-index:2;translate:-50% 0;rotate:-4deg;padding:5px 7px 4px;border-radius:4px 7px 7px 4px;background:rgba(251,244,230,.92);box-shadow:inset 0 0 0 2.5px rgba(233,214,194,.6),0 1.5px 0 rgba(91,58,44,.16);font:12px/1 ZK;color:var(--ch);white-space:nowrap;letter-spacing:.04em}</style>'
+for f in ['vb16.html','vb16b.html']:
+  t=open(R+f).read();t=t.replace('<div class="glass">','<div class="glass">'+LL,1).replace('</body>',LC+'</body>',1);open(R+f,'w').write(t)
+print('ok ll')
