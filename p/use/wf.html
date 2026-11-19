@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>用量 · 糖浆泵架 线框</title>
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>用量 · 糖浆泵架 A 线框</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#e9ecea;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#555}
@@ -35,6 +35,7 @@ body.grid .g{display:block}
 .dt .r{display:flex;justify-content:space-between;font-size:13px;line-height:32px;border-top:1px dashed #ddd}
 .dt .r:first-of-type{margin-top:16px}
 .dt .r b{color:#333}
+.cs{margin:16px 24px 0;font-size:13px;color:#666;line-height:1.6}.cs b{color:#333}.fig .an{font:11px system-ui;fill:#e0336a}.fig .in{font:700 12px system-ui;fill:#333;text-anchor:middle;paint-order:stroke;stroke:#f4f5f4;stroke-width:3px;pointer-events:none}
 .cc{margin:32px 24px 0}
 .cc h2{font-size:28px;font-weight:800;color:#444}
 .cc .s{font-size:13px;color:#888;margin-top:8px;line-height:1.6}
@@ -51,40 +52,47 @@ body.grid .g{display:block}
 <header class="hd"><button class="bk" aria-label="返回">‹</button><h1>用量</h1>
 <div class="rg" id="rg"><button id="rb" aria-haspopup="listbox">近 7 天 ▾</button><ul role="listbox"><li>今天</li><li class="cur">近 7 天</li><li>近 30 天</li></ul></div></header>
 <div class="tot"><div class="k" id="tk">近 7 天 用 量</div><div class="n" id="tn">128.4</div><div class="u">万 tokens · 调用 <b id="tc">947</b> 次</div></div>
-<svg class="fig" viewBox="0 0 364 300" id="fig"></svg>
-<div class="lg"><i>1</i><span>一瓶 = 一类调用，瓶签写 tokens</span><i>2</i><span>泵头数字 = 按了几次（调用次数）</span><i>3</i><span>斜线底层 = 缓存命中的那部分；向量索引没有缓存，不画</span><i>4</i><span>架尾空瓶 = 没报用量的调用</span></div>
-<p class="note hint" style="padding:8px 24px 0">点一瓶 → 下面原地展开这瓶的明细，再点收起</p>
+<svg class="fig" viewBox="0 0 364 384" id="fig"></svg>
+<p class="cs" id="cs"></p>
+<p class="note hint" style="padding:8px 24px 0">点一瓶 → 下面原地展开明细，再点收起。缓存 = 供应商提示词缓存，只算上游报了的</p>
 <section class="dt" id="dt"></section>
-<section class="cc"><h2>缓存</h2><p class="s">供应商返回的提示词缓存，不是记忆检索的缓存。只算上游报了的。</p>
-<div class="bx"><div>命中<b id="c1">69.2</b>万</div><div>未命中<b id="c2">46.5</b>万</div><div>没报缓存<b id="c3">5</b>次</div></div></section>
-<p class="note">灰稿 · 用量二级页（设置页大字点开秤 → 秤下「去看」进来）。母题：糖浆泵架。字号三级 72 / 28 / 13，8 点网格，边距 24。范围就地小选单。数据为演示。</p>
+<p class="note">灰稿 · 用量二级页（设置页点大字进来，设置页不再放秤）。母题：糖浆泵架，A 构图：聊天一大瓶当主角，另三瓶站右边阶梯架，注解直接写在图上。字号三级 72 / 28 / 13，8 点网格，边距 24。范围就地小选单。数据为演示。</p>
 </div>
 <script>
 const R={"今天": {"t": 18.6, "c": [[13.9, 58, 8.6, 4.1], [3.2, 6, 1.3, 0.9], [1.1, 57, 0.3, 0.6], [0.4, 14, null, null]], "u": 0, "m": 1}, "近 7 天": {"t": 128.4, "c": [[96.1, 412, 58.0, 31.2], [22.4, 38, 9.1, 11.0], [7.6, 401, 2.1, 4.3], [2.3, 96, null, null]], "u": 3, "m": 5}, "近 30 天": {"t": 566.0, "c": [[421.8, 1806, 247.3, 148.9], [99.5, 171, 41.2, 51.0], [34.1, 1752, 9.8, 20.6], [10.6, 430, null, null]], "u": 11, "m": 19}},NM=["聊天", "记忆整理", "检索", "向量索引"];let cur='近 7 天',sel=-1;
 const $=s=>document.querySelector(s);
-function draw(){const d=R[cur],f=$('#fig');let h='';
- // 托盘
- h+='<rect x="8" y="262" width="348" height="12" rx="3" fill="#9a9e9b"/>';
- const mx=Math.max(...d.c.map(c=>c[0]));
- d.c.forEach((c,i)=>{const x=16+i*76,w=60,top=96,bot=258,H=bot-top,lv=Math.max(10,H*c[0]/mx),ly=bot-lv;
+function bottle(x,bot,w,H,c,i,big){let h='';const top=bot-H,lv=Math.max(8,(H-6)*c[0]/R[cur].mx),ly=bot-3-lv;
   h+=`<g class="bt${sel==i?' sel':''}" data-i="${i}">`;
-  // 泵头
-  h+=`<rect x="${x+w/2-4}" y="44" width="8" height="40" fill="#bfc3c0"/><path d="M${x+w/2-4} 50 H${x+w/2-30} V58 H${x+w/2-4}" fill="#bfc3c0"/><rect x="${x+w/2-18}" y="28" width="36" height="20" rx="4" fill="#777"/><text x="${x+w/2}" y="42" class="pn">${c[1]}</text>`;
-  // 瓶
-  h+=`<rect x="${x+w/2-10}" y="84" width="20" height="12" fill="#cfd2d0"/><rect class="glass" x="${x}" y="${top}" width="${w}" height="${H}" rx="8" fill="#fff" stroke="#999" stroke-width="1.4"/>`;
-  h+=`<rect x="${x+3}" y="${ly}" width="${w-6}" height="${lv-3}" rx="5" fill="#cfd2d0"/>`;
-  if(c[2]!=null){const ch=(lv-3)*c[2]/c[0];h+=`<pattern id="hp${i}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#b3b7b4"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8d918e" stroke-width="2"/></pattern><rect x="${x+3}" y="${bot-3-ch}" width="${w-6}" height="${ch}" fill="url(#hp${i})"/>`}
-  // 瓶签
-  h+=`<rect x="${x+6}" y="${top+16}" width="${w-12}" height="36" rx="3" fill="#fff" stroke="#bbb"/><text x="${x+w/2}" y="${top+32}" class="ln">${c[0]}</text><text x="${x+w/2}" y="${top+46}" class="lt">${NM[i]}</text></g>`});
- // 空瓶（没报用量）
- h+=`<g opacity=".8"><rect x="320" y="200" width="32" height="58" rx="6" fill="none" stroke="#999" stroke-width="1.4" stroke-dasharray="4 3"/><text x="336" y="234" class="ln">${d.u}</text></g>`;
- // 编号
- const N=[[16,108,1],[36,24,2],[302,252,3],[350,192,4]];N.forEach(([x,y,n])=>h+=`<circle cx="${x}" cy="${y}" r="8" fill="#e0336a"/><text x="${x}" y="${y+3.5}" class="no">${n}</text>`);
+  const pw=big?44:30,ph=big?22:16,py=top-(big?60:42);
+  h+=`<rect x="${x+w/2-(big?5:3.5)}" y="${py+ph}" width="${big?10:7}" height="${top-py-ph-(big?14:10)}" fill="#bfc3c0"/><path d="M${x+w/2} ${py+ph+6} H${x+w/2-(big?38:24)} v${big?8:6} H${x+w/2}" fill="#bfc3c0"/><rect x="${x+w/2-pw/2}" y="${py}" width="${pw}" height="${ph}" rx="4" fill="#777"/><text x="${x+w/2}" y="${py+ph/2+4}" class="pn" style="font-size:${big?13:11}px">${c[1]}</text>`;
+  h+=`<rect x="${x+w/2-(big?14:9)}" y="${top-(big?14:10)}" width="${big?28:18}" height="${big?14:10}" fill="#cfd2d0"/><rect class="glass" x="${x}" y="${top}" width="${w}" height="${H}" rx="${big?12:7}" fill="#fff" stroke="#999" stroke-width="1.4"/>`;
+  h+=`<rect x="${x+3}" y="${ly}" width="${w-6}" height="${lv}" rx="5" fill="#cfd2d0"/>`;
+  let ch=0;if(c[2]!=null){ch=lv*c[2]/c[0];h+=`<rect x="${x+3}" y="${bot-3-ch}" width="${w-6}" height="${ch}" fill="url(#hp)"/>`}
+  const lw=w-(big?24:10),lh=big?48:30,lx=x+(w-lw)/2,lyy=top+(big?20:10);
+  h+=`<rect x="${lx}" y="${lyy}" width="${lw}" height="${lh}" rx="3" fill="#fff" stroke="#bbb"/><text x="${x+w/2}" y="${lyy+(big?24:14)}" class="ln" style="font-size:${big?20:12}px">${c[0]}</text><text x="${x+w/2}" y="${lyy+(big?40:25)}" class="lt" style="font-size:${big?11:9}px">${NM[i]}</text></g>`;
+  return [h,ly,ch]}
+function draw(){const d=R[cur],f=$('#fig');d.mx=d.c[0][0];let h='<defs><pattern id="hp" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#b3b7b4"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8d918e" stroke-width="2"/></pattern></defs>';
+ // 地面
+ h+='<rect x="0" y="372" width="364" height="10" rx="3" fill="#9a9e9b"/>';
+ // 主角大瓶
+ const [hb,ly,ch]=bottle(24,372,128,250,d.c[0],0,1);h+=hb;
+ const c0=d.c[0];
+ // 注解直接写在大瓶液体上
+ const hy=372-3-ch/2,uy=(Math.max(ly,190)+(372-3-ch))/2;
+ h+=`<text x="88" y="${hy+4}" class="in">缓存命中 ${c0[2].toFixed(1)} 万</text>`;
+ if(372-3-ch-Math.max(ly,190)>18)h+=`<text x="88" y="${uy+4}" class="in">未命中 ${c0[3].toFixed(1)} 万</text>`;
+ h+=`<text x="116" y="80" class="an">← 按了几次</text>`;
+ // 右侧阶梯架：三级，从左到右升高
+ const st=[[176,300],[236,252],[296,204]];
+ st.forEach(([x,y],k)=>{h+=`<rect x="${x-4}" y="${y}" width="68" height="${372-y}" fill="#e3e5e4" stroke="#bbb"/>`});
+ st.forEach(([x,y],k)=>{const [hh]=bottle(x+6,y,48,92,d.c[k+1],k+1,0);h+=hh});
+ // 没报用量：大瓶脚边虚线空瓶
+ h+=`<g><rect x="0" y="330" width="20" height="40" rx="5" fill="#f4f5f4" stroke="#999" stroke-width="1.2" stroke-dasharray="3 3"/><text x="10" y="355" class="ln" style="font-size:12px">${d.u}</text><text x="10" y="324" class="an" text-anchor="middle" style="font-size:9px">没报</text></g>`;
  f.innerHTML=h;
  f.querySelectorAll('.bt').forEach(g=>g.onclick=()=>{const i=+g.dataset.i;sel=sel==i?-1:i;draw()});
- $('#tn').textContent=d.t.toFixed(1);$('#tk').textContent=cur.replace(/ /g,'')+' 用 量'.replace('','').split('').join('');$('#tk').textContent=cur+' · 用量';
+ $('#tn').textContent=d.t.toFixed(1);$('#tk').textContent=cur+' · 用量';
  $('#tc').textContent=d.c.reduce((a,c)=>a+c[1],0);
- const hit=d.c.reduce((a,c)=>a+(c[2]||0),0),mis=d.c.reduce((a,c)=>a+(c[3]||0),0);$('#c1').textContent=hit.toFixed(1);$('#c2').textContent=mis.toFixed(1);$('#c3').textContent=d.m;
+ const hit=d.c.reduce((a,c)=>a+(c[2]||0),0),mis=d.c.reduce((a,c)=>a+(c[3]||0),0);$('#cs').innerHTML=`缓存命中 <b>${hit.toFixed(1)}</b> 万 · 未命中 <b>${mis.toFixed(1)}</b> 万 · 没报缓存 <b>${d.m}</b> 次`;
  const dt=$('#dt');if(sel<0){dt.className='dt';dt.innerHTML=''}else{const c=d.c[sel];dt.className='dt on';
   dt.innerHTML=`<h3>${NM[sel]}</h3><div class="r"><span>调用</span><b>${c[1]} 次</b></div><div class="r"><span>tokens</span><b>${c[0]} 万</b></div>`+(c[2]!=null?`<div class="r"><span>缓存命中</span><b>${c[2].toFixed(1)} 万</b></div><div class="r"><span>缓存未命中</span><b>${c[3].toFixed(1)} 万</b></div>`:`<div class="r"><span>缓存</span><b>不适用</b></div>`)}
 }
