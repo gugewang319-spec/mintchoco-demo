@@ -66,5 +66,17 @@ if(!RM)D.push(T=>{for(let i=0;i<3;i++)if(T>nx[i]){drip(i);nx[i]=T+4.5+Math.rando
 let T0=performance.now();let on=true;function f(now){if(!on)return;const T=RM?0:(now-T0)/1000;for(const d of D)d(T);if(!RM)requestAnimationFrame(f)}requestAnimationFrame(f);document.addEventListener('visibilitychange',()=>{on=!document.hidden;if(on)requestAnimationFrame(f)});
 })();</script>'''
 s=s.replace('<script src="../pfix.js',JS+'<script src="../pfix.js',1)
+# 轮次用聊天室的巧克力计数牌 .counter（巧克力底、奶白数字格）
+def ctr(n,unit='轮'):return '<span class="counter" aria-label="'+n+' '+unit+'">'+''.join('<span>'+d+'</span>' for d in n)+'<b>'+unit+'</b></span>'
+s=re.sub(r'<em><b>(\d+)</b>轮</em>',lambda m:ctr(m.group(1)),s)
+s=re.sub(r'<div><em>(\d+)</em><small>轮 · ([\d:]+)</small></div>',lambda m:'<div><small style="display:block;margin-bottom:5px">'+m.group(2)+'</small>'+ctr(m.group(1))+'</div>',s,count=1)
+CTR=""".counter{display:inline-flex;gap:2px;padding:3px;border-radius:5px;background:#5b3a2c;box-shadow:0 2px 3px -1px rgba(74,48,39,.4);vertical-align:middle}
+.counter span{display:inline-block;min-width:12px;padding:1px 2px;border-radius:2px;background:#fdf9f0;font:700 13px/1.3 Baloo,ZK!important;text-align:center;color:#4a3027}
+main .counter>b{align-self:center;font:500 12px/1 var(--body)!important;color:#fdf9f0!important;margin:0!important;padding:0 2px 0 3px}
+.rw .lb .counter{margin-left:auto}
+.tod .side small{position:relative;z-index:4}
+.tod .side .counter span{font-size:17px!important;min-width:15px}
+"""
+s=s.replace('</style>',CTR+'</style>',1)
 open(R+'vb12.html','w').write(s)
 print(s.count('class="lqw"'),s.count(' dk '))
