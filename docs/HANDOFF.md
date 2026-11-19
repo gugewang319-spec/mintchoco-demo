@@ -136,6 +136,6 @@
 
 **前序文件**：wfE.html 灰稿 E（已通过）、milk.html、blend.html（融合版，58b19eb）、hl.html 荧光笔样张（选 ①）。
 
-**下一步**：问清 vb3 要改哪 → 改 → 她定了并进 `p/list/index.html` 并 V+1（当前 V=56）。之后：健康页收尾（vb15 未并 index）、人格页模型分组多选、全站统一动效。
+**下一步**：vb3 已否（原因见 CHANGELOG 22:35）；新样张 `p/list/vb4.html`（源 tools/list/vb4_src.html，跑 mkvb4.py 生成）等茶茶看 → 她定了并进 `p/list/index.html` 并 V+1（当前 V=56）。之后：健康页收尾（vb15 未并 index）、人格页模型分组多选、全站统一动效。
 
 **工具**：`tools/list/shot.py <url> <tag> [js]` 出 358×622 / 412×715 截图（需本地 `python3 -m http.server 8811`）；`key.py` 抠绿。wenkai.ttf 新字从全量 LXGW WenKai Lite Medium 用 pyftsubset 重切（已含 vb3 全部字）。
