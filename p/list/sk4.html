@@ -1,0 +1,58 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>聊天 骨架 sk4 · 自然标本</title><style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#d9d9d9;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#222}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:inherit}
+.app{position:fixed;inset:0;margin:0 auto;width:min(100%,440px);overflow:hidden;background:#f4f4f4}
+.scroller{position:absolute;inset:0;z-index:2;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}.scroller::-webkit-scrollbar{display:none}
+.content{position:relative;min-height:100%}
+.lhead{position:sticky;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 10px}
+.lhead h1{font-size:30px;font-weight:800;color:#222}.lhead h1 small{font:italic 14px serif;color:#888;margin-left:6px}
+.lbtns{display:flex;gap:10px}.rb{width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px #d0d0d0 inset}
+.pnav{position:absolute;left:16px;right:16px;bottom:20px;height:62px;border-radius:31px;background:#fff;box-shadow:0 0 0 1.5px #d0d0d0 inset;z-index:30;display:flex;align-items:center;padding:0 5px}
+.pnav .tab{position:relative;z-index:1;flex:1;height:52px;font-size:11px;color:#888;text-align:center}.pnav .tab.on{color:#222;font-weight:700}
+.pnav .tab.on{background:#d0d0d0;border-radius:26px}
+.g1{color:#222}.g2{color:#888}.g3{color:#d0d0d0}
+.tap{transition:transform .25s ease-out}.tap:active{transform:scale(.97)}
+
+.p4{position:relative;padding:0 0 0}
+.tod{position:relative;display:block;width:100%;padding:4px 18px 0}
+.tod .catsvg{width:clamp(150px,46vw,190px);display:block;margin-left:-6px}
+.tod .lab{position:absolute;right:18px;top:18px;text-align:right}
+.tod .lab b{display:block;font-size:30px;font-weight:900;letter-spacing:-.02em;color:#222;line-height:1}
+.tod .lab span{font-size:12px;color:#888}.tod .lab .n{display:block;margin-top:10px;font-size:12px;color:#888}.tod .lab .n em{font-style:normal;font-size:26px;font-weight:800;color:#222;margin-right:2px}
+.tod .q{margin-top:12px;font-size:18px;line-height:1.5;color:#222}
+.tod .q p{max-width:84%}.tod .q p.m{margin-left:auto;text-align:right;margin-top:8px}
+.tod .q em{font-style:normal;font-size:11px;color:#888;display:block}
+.sec{padding:52px 18px 6px;display:flex;align-items:baseline;gap:8px}.sec b{font-size:17px;color:#222}.sec i{font-style:normal;font-size:11px;color:#888}
+.chain{position:relative;margin-top:4px}
+.chain svg.link{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cr{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:6px 18px}
+.cr.r{flex-direction:row-reverse;text-align:right}
+.cr .xt{flex:1;min-width:0}
+.cr .xt b{font-size:16px;color:#222}.cr .xt b small{font-size:11px;color:#888;font-weight:400;margin-left:4px}
+.cr .xt .rn{font-size:11px;color:#888}
+.cr .xt p{font-size:14px;line-height:1.5;color:#222;margin-top:3px}.cr .xt p.m{color:#222}
+.cr .xt p span{color:#888;font-size:11px;margin-right:5px}
+.cr.r .xt p span{margin:0 5px 0 0}
+.crys{flex:none;display:grid;place-items:center}
+.crys svg{display:block}
+.cr.none .xt{color:#888;font-size:12px}
+.clu{display:grid;grid-template-columns:1fr 1fr;gap:20px 16px;padding:8px 18px 0}
+.cl{display:block;text-align:left}
+.cl .pp{position:relative;height:40px}
+.cl .pp s{position:absolute;width:12px;height:12px;border-radius:50%;background:#888}
+.cl b{display:block;font-size:12px;color:#222;margin-top:4px}.cl small{font-size:11px;color:#888}
+.cl p{font-size:13px;line-height:1.5;color:#222;margin-top:2px}
+.morew{display:block;margin:22px 18px 0;font-size:12px;color:#888}
+
+</style></head><body><div class="app"><div class="scroller" id="sc"><div class="content">
+<header class="lhead"><h1>聊天<small>chats</small></h1><div class="lbtns"><button class="rb" aria-label="搜索聊天"></button><button class="rb" aria-label="更多"></button></div></header>
+<main class="p4"><button class="tod tap" aria-label="进今天的聊天"><svg viewBox="0 0 120 92" class="catsvg" aria-hidden="true"><path d="M14 80C6 62 12 40 26 30C28 18 34 10 40 8C46 14 48 20 50 24C56 22 64 22 70 24C72 18 76 12 82 8C88 12 92 22 94 30C108 40 114 62 106 80C96 88 24 88 14 80Z" fill="#fff" stroke="#888" stroke-width="2"/><circle cx="46" cy="52" r="3" fill="#222"/><circle cx="74" cy="52" r="3" fill="#222"/><path d="M54 60q6 5 12 0" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/><path d="M4 84q56 10 112 0" fill="none" stroke="#d0d0d0" stroke-width="6" stroke-linecap="round"/></svg>
+<div class="lab"><b>今天</b><span>11/11 周三</span><span class="n"><em>6</em>轮 · 19:45</span></div>
+<div class="q"><p><em>他</em>那我先把奶煮上，你到家刚好能喝</p><p class="m"><em>我</em>要加棉花糖！</p></div></button>
+<div class="sec"><b>本周</b><i>11/5 – 11/10 · 31 轮</i></div><div class="chain"><button class="cr tap "><div class="crys"><svg width="74" height="74" viewBox="0 0 74 74"><polygon points="68.5,46.7 37.5,74.0 7.8,47.0 16.0,9.0 53.6,13.4" fill="#fff" stroke="#888" stroke-width="1.6"/><path d="M37.0,37.0L68.5,46.7 M37.0,37.0L7.8,47.0 M37.0,37.0L53.6,13.4" stroke="#d0d0d0" stroke-width="1.2"/></svg></div><div class="xt"><b>11/10<small>周二</small></b> <span class="rn">12 轮</span><p><span>他</span>要是真下雪，我去楼下给你堆一只小猫</p><p class="m"><span>我</span>你说明天会不会下雪呀</p></div></button><button class="cr tap r"><div class="crys"><svg width="61" height="61" viewBox="0 0 61 61"><polygon points="58.0,39.0 30.8,54.3 4.8,39.3 12.2,6.1 45.2,9.7" fill="#fff" stroke="#888" stroke-width="1.6"/><path d="M30.5,30.5L58.0,39.0 M30.5,30.5L4.8,39.3 M30.5,30.5L45.2,9.7" stroke="#d0d0d0" stroke-width="1.2"/></svg></div><div class="xt"><b>11/9<small>周一</small></b> <span class="rn">8 轮</span><p><span>他</span>那今晚什么都不想，陪你发呆</p><p class="m"><span>我</span>今天的会开了三个小时，脑袋好空</p></div></button><button class="cr tap "><div class="crys"><svg width="64" height="64" viewBox="0 0 64 64"><polygon points="62.6,41.5 37.9,58.1 9.8,52.6 8.2,24.6 25.7,4.2 55.5,10.3" fill="#fff" stroke="#888" stroke-width="1.6"/><path d="M32.0,32.0L62.6,41.5 M32.0,32.0L9.8,52.6 M32.0,32.0L25.7,4.2" stroke="#d0d0d0" stroke-width="1.2"/></svg></div><div class="xt"><b>11/8<small>周日</small></b> <span class="rn">9 轮</span><p><span>他</span>下次还去，换你点单</p><p class="m"><span>我</span>那家的薄荷冰淇淋超好吃</p></div></button><div class="cr none r"><div class="crys"><svg width="40" height="40" viewBox="0 0 40 40"><ellipse cx="20" cy="22" rx="15" ry="11" fill="none" stroke="#d0d0d0" stroke-width="1.5" stroke-dasharray="3 3"/></svg></div><div class="xt"><b>11/7<small>周六</small></b><br>那天没有聊天</div></div><button class="cr tap "><div class="crys"><svg width="42" height="42" viewBox="0 0 42 42"><polygon points="38.9,26.5 21.3,42.0 4.4,26.7 9.1,5.1 30.4,7.6" fill="#fff" stroke="#888" stroke-width="1.6"/><path d="M21.0,21.0L38.9,26.5 M21.0,21.0L4.4,26.7 M21.0,21.0L30.4,7.6" stroke="#d0d0d0" stroke-width="1.2"/></svg></div><div class="xt"><b>11/6<small>周五</small></b> <span class="rn">2 轮</span><p><span>他</span>晚安</p><p class="m"><span>我</span>晚安～</p></div></button><div class="cr none r"><div class="crys"><svg width="40" height="40" viewBox="0 0 40 40"><ellipse cx="20" cy="22" rx="15" ry="11" fill="none" stroke="#d0d0d0" stroke-width="1.5" stroke-dasharray="3 3"/></svg></div><div class="xt"><b>11/5<small>周四</small></b><br>那天没有聊天</div></div></div><div class="sec"><b>更早</b><i>4 周 · 一颗珍珠是聊过的一天</i></div><div class="clu"><button class="cl tap"><div class="pp"><s style="left:8px;top:6px"></s><s style="left:37px;top:23px"></s><s style="left:20px;top:18px"></s><s style="left:49px;top:13px"></s><s style="left:32px;top:8px"></s></div><b>10/29 – 11/4</b><small>5 天</small><p>万圣节那天他给你讲了一个超吓人的故事</p></button><button class="cl tap"><div class="pp"><s style="left:8px;top:6px"></s><s style="left:37px;top:23px"></s><s style="left:20px;top:18px"></s></div><b>10/22 – 10/28</b><small>3 天</small><p>这周你一直在忙期中</p></button><button class="cl tap"><div class="pp"><s style="left:8px;top:6px"></s><s style="left:37px;top:23px"></s><s style="left:20px;top:18px"></s><s style="left:49px;top:13px"></s></div><b>10/15 – 10/21</b><small>4 天</small><p>第一次一起看的那部电影</p></button><button class="cl tap"><div class="pp"><s style="left:8px;top:6px"></s><s style="left:37px;top:23px"></s></div><b>10/8 – 10/14</b><small>2 天</small><p>你说秋天最适合喝热可可</p></button></div><button class="morew">再往前一个月 →</button></main>
+<div style="height:120px"></div>
+</div></div>
+<nav class="pnav" aria-label="主导航"><button class="tab">今天</button><button class="tab">记忆</button><button class="tab on" aria-current="page">聊天</button><button class="tab">人格</button><button class="tab">设置</button></nav>
+</div><script src="../pfix.js?v=57"></script></body></html>

@@ -1,0 +1,60 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>聊天 骨架 sk1 · 活字海报</title><style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#d9d9d9;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#222}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:inherit}
+.app{position:fixed;inset:0;margin:0 auto;width:min(100%,440px);overflow:hidden;background:#f4f4f4}
+.scroller{position:absolute;inset:0;z-index:2;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}.scroller::-webkit-scrollbar{display:none}
+.content{position:relative;min-height:100%}
+.lhead{position:sticky;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 10px}
+.lhead h1{font-size:30px;font-weight:800;color:#222}.lhead h1 small{font:italic 14px serif;color:#888;margin-left:6px}
+.lbtns{display:flex;gap:10px}.rb{width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px #d0d0d0 inset}
+.pnav{position:absolute;left:16px;right:16px;bottom:20px;height:62px;border-radius:31px;background:#fff;box-shadow:0 0 0 1.5px #d0d0d0 inset;z-index:30;display:flex;align-items:center;padding:0 5px}
+.pnav .tab{position:relative;z-index:1;flex:1;height:52px;font-size:11px;color:#888;text-align:center}.pnav .tab.on{color:#222;font-weight:700}
+.pnav .tab.on{background:#d0d0d0;border-radius:26px}
+.g1{color:#222}.g2{color:#888}.g3{color:#d0d0d0}
+.tap{transition:transform .25s ease-out}.tap:active{transform:scale(.97)}
+
+.p1{padding:6px 18px 0}
+.t-top{display:grid;grid-template-columns:1fr auto;align-items:end;gap:6px}
+.big{font-size:clamp(62px,20vw,90px);font-weight:900;line-height:.82;letter-spacing:-.04em;color:#222}
+.big small{display:block;font-size:13px;font-weight:600;letter-spacing:.1em;color:#888;margin:10px 0 0 4px}
+.t-top .catsvg{width:clamp(84px,26vw,112px);margin-bottom:-4px}
+.meta{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid #222;margin-top:14px;padding-top:6px;font-size:12px;color:#888}
+.meta b{font-size:22px;color:#222;margin-right:3px}
+.hl{margin-top:16px;display:block;width:100%}
+.hl .his{font-size:22px;line-height:1.38;font-weight:700;color:#222;max-width:88%}
+.hl .mine{font-size:22px;line-height:1.38;font-weight:700;color:#222;text-align:right;margin-top:10px}
+.hl em{display:block;font-style:normal;font-size:11px;font-weight:600;color:#888;letter-spacing:.12em;margin-bottom:2px}
+.sec{display:flex;align-items:baseline;gap:10px;margin:46px 0 10px}
+.sec b{font-size:13px;letter-spacing:.3em;color:#222}.sec span{flex:1;height:1px;background:#d0d0d0}.sec i{font-style:normal;font-size:11px;color:#888}
+.day{display:grid;align-items:start;padding:12px 0;border-bottom:1px solid #d0d0d0;width:100%;column-gap:12px}
+.day.r{grid-template-columns:1fr 104px}.day.l{grid-template-columns:104px 1fr}
+.day .dt{position:relative;font-size:30px;font-weight:900;letter-spacing:-.03em;line-height:1;color:#222}
+.day.r .dt{text-align:right;grid-column:2;grid-row:1}.day.r .tx{grid-column:1;grid-row:1}
+.day .dt small{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;color:#888;margin-top:4px}
+.ice{display:inline-block;vertical-align:-3px;width:14px;height:14px;border:1.5px solid #888;border-radius:3px;background:#fff;transform:rotate(14deg);margin:0 6px}
+.tx{font-size:14.5px;line-height:1.55;color:#222}
+.tx p+p{margin-top:4px}.tx .m{color:#222;padding-left:1.2em}.tx .rn{font-size:11px;color:#888;margin-bottom:4px;letter-spacing:.06em}
+.tx .k{color:#888;font-size:11px;margin-right:6px}
+.day.none{grid-template-columns:104px 1fr;padding:8px 0}
+.day.none .dt{font-size:18px;color:#d0d0d0}.day.none .tx{color:#888;font-size:12px;align-self:center}
+.arc{display:grid;grid-template-columns:auto 1fr;column-gap:14px;row-gap:12px;margin-top:4px;padding-right:18%}
+.arc .wd{font-size:12px;font-weight:700;color:#222;white-space:nowrap;padding-top:2px}
+.arc .wd i{display:flex;gap:4px;margin-top:5px}.arc .wd i s{width:7px;height:7px;border-radius:50%;background:#888;display:block}
+.arc .wl{font-size:13px;line-height:1.5;color:#222}.arc .wl small{display:block;font-size:11px;color:#888}
+.morew{margin-top:16px;font-size:12px;color:#888;border-top:2px solid #222;padding-top:8px;width:100%}
+
+</style></head><body><div class="app"><div class="scroller" id="sc"><div class="content">
+<header class="lhead"><h1>聊天<small>chats</small></h1><div class="lbtns"><button class="rb" aria-label="搜索聊天"></button><button class="rb" aria-label="更多"></button></div></header>
+<main class="p1">
+<button class="tap" style="display:block;width:100%" aria-label="进今天的聊天">
+<div class="t-top"><div class="big">11.11<small>今天 · 周三</small></div><svg viewBox="0 0 120 92" class="catsvg" aria-hidden="true"><path d="M14 80C6 62 12 40 26 30C28 18 34 10 40 8C46 14 48 20 50 24C56 22 64 22 70 24C72 18 76 12 82 8C88 12 92 22 94 30C108 40 114 62 106 80C96 88 24 88 14 80Z" fill="#fff" stroke="#888" stroke-width="2"/><circle cx="46" cy="52" r="3" fill="#222"/><circle cx="74" cy="52" r="3" fill="#222"/><path d="M54 60q6 5 12 0" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/><path d="M4 84q56 10 112 0" fill="none" stroke="#d0d0d0" stroke-width="6" stroke-linecap="round"/></svg></div>
+<div class="meta"><span><b>6</b>轮</span><span>最后一句 19:45</span></div>
+<div class="hl"><div class="his"><em>他</em>那我先把奶煮上，你到家刚好能喝</div><div class="mine"><em>我</em>要加棉花糖！</div></div>
+</button>
+<div class="sec"><b>本周</b><span></span><i>11/5 – 11/10 · 31 轮</i></div><button class="day r tap"><div class="dt">11/10<small>周二<span class=ice></span></small></div><div class="tx"><div class="rn">12 轮</div><p><span class="k">他</span>要是真下雪，我去楼下给你堆一只小猫</p><p class="m"><span class="k">我</span>你说明天会不会下雪呀</p></div></button><button class="day l tap"><div class="dt">11/9<small><span class=ice></span>周一</small></div><div class="tx"><div class="rn">8 轮</div><p><span class="k">他</span>那今晚什么都不想，陪你发呆</p><p class="m"><span class="k">我</span>今天的会开了三个小时，脑袋好空</p></div></button><button class="day r tap"><div class="dt">11/8<small>周日<span class=ice></span></small></div><div class="tx"><div class="rn">9 轮</div><p><span class="k">他</span>下次还去，换你点单</p><p class="m"><span class="k">我</span>那家的薄荷冰淇淋超好吃</p></div></button><div class="day none"><div class="dt">11/7</div><div class="tx">那天没有聊天</div></div><button class="day l tap"><div class="dt">11/6<small><span class=ice></span>周五</small></div><div class="tx"><div class="rn">2 轮</div><p><span class="k">他</span>晚安</p><p class="m"><span class="k">我</span>晚安～</p></div></button><div class="day none"><div class="dt">11/5</div><div class="tx">那天没有聊天</div></div><div class="sec"><b>更早</b><span></span><i>4 周</i></div><div class="arc"><div class="wd">10/29 – 11/4<i><s></s><s></s><s></s><s></s><s></s></i></div><div class="wl">万圣节那天他给你讲了一个超吓人的故事<small>聊了 5 天</small></div><div class="wd">10/22 – 10/28<i><s></s><s></s><s></s></i></div><div class="wl">这周你一直在忙期中<small>聊了 3 天</small></div><div class="wd">10/15 – 10/21<i><s></s><s></s><s></s><s></s></i></div><div class="wl">第一次一起看的那部电影<small>聊了 4 天</small></div><div class="wd">10/8 – 10/14<i><s></s><s></s></i></div><div class="wl">你说秋天最适合喝热可可<small>聊了 2 天</small></div></div><button class="morew">再往前一个月 →</button></main>
+<div style="height:120px"></div>
+</div></div>
+<nav class="pnav" aria-label="主导航"><button class="tab">今天</button><button class="tab">记忆</button><button class="tab on" aria-current="page">聊天</button><button class="tab">人格</button><button class="tab">设置</button></nav>
+</div><script src="../pfix.js?v=57"></script></body></html>
