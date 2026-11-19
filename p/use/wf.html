@@ -38,9 +38,14 @@ body.grid .g{display:block}
 .cs{margin:16px 24px 0;font-size:13px;color:#666;line-height:1.6}.cs b{color:#333}.fig .an{font:11px system-ui;fill:#e0336a}.fig .in{font:700 12px system-ui;fill:#333;text-anchor:middle;paint-order:stroke;stroke:#f4f5f4;stroke-width:3px;pointer-events:none}
 .lc{margin:32px 24px 0}.lc h2{font-size:28px;font-weight:800;color:#444}.lc .s{font-size:13px;color:#888;margin-top:8px;line-height:1.6}
 .demo{display:inline-block;font-size:11px;color:#fff;background:#e0336a;border-radius:3px;padding:0 4px;margin-right:4px}
-#cl{list-style:none;margin-top:16px}#cl li{border-top:1px dashed #ccc;padding:8px 0;cursor:pointer}
-#cl .a{display:flex;align-items:baseline;gap:8px;font-size:13px;line-height:24px}#cl .tm{color:#999;width:40px}#cl .ty{color:#444;font-weight:700}#cl .md{color:#888;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#cl .a b{color:#333;font-size:13px}#cl .a b.uk{color:#e0336a}
-#cl .b{font-size:11px;color:#999;padding-left:48px;line-height:16px}#cl .c{margin:8px 0 0 48px;background:#fff;border:1.5px solid #bbb;border-radius:6px;padding:8px 12px}#cl .c p{display:flex;justify-content:space-between;font-size:12px;line-height:24px}#cl .em{color:#aaa;font-size:13px}
+#cl{list-style:none;margin-top:16px;position:relative}
+#cl::before{content:"";position:absolute;left:66.5px;top:0;bottom:0;width:3px;border-radius:2px;background:#cfd2d0}
+#cl li{position:relative;display:flex;align-items:flex-start;gap:8px;padding:8px 0;cursor:pointer}
+#cl .tm{width:40px;flex:none;font-size:12px;color:#999;line-height:40px;text-align:right}
+#cl .dp{flex:none;position:relative;z-index:1}
+#cl .tx{flex:1;min-width:0;padding-top:8px}
+#cl .a{display:flex;align-items:baseline;gap:8px;font-size:13px;line-height:24px}#cl .ty{color:#444;font-weight:700;flex:none}#cl .md{color:#888;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#cl .a b{color:#333;font-size:13px}#cl .a b.uk{color:#e0336a}
+#cl .b{font-size:11px;color:#999;line-height:16px}#cl .c{margin-top:8px;background:#fff;border:1.5px solid #bbb;border-radius:6px;padding:8px 12px}#cl .c p{display:flex;justify-content:space-between;font-size:12px;line-height:24px}#cl .em{color:#aaa;font-size:13px;padding-left:80px}
 .mr{margin-top:8px;background:none;border:0;font:13px system-ui;color:#777;padding:8px 0}
 .cc{margin:32px 24px 0}
 .cc h2{font-size:28px;font-weight:800;color:#444}
@@ -58,11 +63,11 @@ body.grid .g{display:block}
 <header class="hd"><button class="bk" aria-label="返回">‹</button><h1>用量</h1>
 <div class="rg" id="rg"><button id="rb" aria-haspopup="listbox">近 7 天 ▾</button><ul role="listbox"><li>今天</li><li class="cur">近 7 天</li><li>近 30 天</li></ul></div></header>
 <div class="tot"><div class="k" id="tk">近 7 天 用 量</div><div class="n" id="tn">128.4</div><div class="u">万 tokens · 调用 <b id="tc">947</b> 次</div></div>
-<svg class="fig" viewBox="0 0 364 384" id="fig"></svg>
+<svg class="fig" viewBox="0 0 364 384" id="fig"></svg><svg width="0" height="0" style="position:absolute"><defs><pattern id="hp2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#9a9e9b"/><line x1="0" y1="0" x2="0" y2="5" stroke="#6f7370" stroke-width="2"/></pattern></defs></svg>
 <p class="cs" id="cs"></p>
 <p class="note hint" style="padding:8px 24px 0">点一瓶 → 下面原地展开明细，再点收起。缓存 = 供应商提示词缓存，只算上游报了的</p>
 <section class="dt" id="dt"></section>
-<section class="lc"><h2 id="clh">最近调用</h2><p class="s"><span class="demo">演示</span> 后端还没有统一的调用列表接口，等补了只读、按时间倒序分页的接口再接真数据。点一瓶只看那一类，点一行展开</p><ul id="cl"></ul><button class="mr">再看 20 条</button></section>
+<section class="lc"><h2 id="clh">最近调用</h2><p class="s"><span class="demo">演示</span> 后端还没有统一的调用列表接口，等补了只读、按时间倒序分页的接口再接真数据。点一瓶只看那一类，点一行展开</p><p class="s" style="font-size:12px">左边竖线 = 时间，滴越大 tokens 越多，滴里斜线 = 缓存命中占输入的比例；虚线边 = 上游没报缓存，虚线空滴 = 用量未知；滴隔得远 = 那段时间闲</p><ul id="cl"></ul><button class="mr">再看 20 条</button></section>
 <p class="note">灰稿 · 用量二级页（设置页点大字进来，设置页不再放秤）。母题：糖浆泵架，A 构图：聊天一大瓶当主角，另三瓶站右边阶梯架，注解直接写在图上。字号三级 72 / 28 / 13，8 点网格，边距 24。范围就地小选单。数据为演示。</p>
 </div>
 <script>
@@ -79,9 +84,17 @@ const CL=[
 ['18:31','检索','claude-haiku-4.5',640,48,512,128,0]];
 let ex=-1,more=0;
 function fmt(n){return n==null?'未知':n.toLocaleString('en-US')}
-function list(){const t=sel<0?null:NM[sel],rs=CL.filter(c=>!t||c[1]==t);let h='';
+function drop(c){const unk=c[3]==null,t=unk?0:c[3]+c[4],r=unk?8:3+Math.sqrt(t)*.11,S=40,cx=S/2,cy=S-2-r;
+ const d=`M${cx} ${cy-r*1.9} C${cx+r*.35} ${cy-r*1.2} ${cx+r} ${cy-r*.6} ${cx+r} ${cy} A${r} ${r} 0 1 1 ${cx-r} ${cy} C${cx-r} ${cy-r*.6} ${cx-r*.35} ${cy-r*1.2} ${cx} ${cy-r*1.9}Z`;
+ const id='dc'+Math.random().toString(36).slice(2,7);
+ if(unk)return `<svg class="dp" viewBox="0 0 ${S} ${S}" width="${S}" height="${S}"><path d="${d}" fill="#f4f5f4" stroke="#999" stroke-width="1.3" stroke-dasharray="3 2.5"/><text x="${cx}" y="${cy+4}" text-anchor="middle" style="font:700 10px system-ui;fill:#e0336a">?</text></svg>`;
+ const top=cy-r*1.9,H=cy+r-top,f=c[5]==null?0:c[5]/c[3];
+ return `<svg class="dp" viewBox="0 0 ${S} ${S}" width="${S}" height="${S}"><defs><clipPath id="${id}"><path d="${d}"/></clipPath></defs><path d="${d}" fill="#dcdfdd"/>`+(f>0?`<rect clip-path="url(#${id})" x="0" y="${cy+r-H*f}" width="${S}" height="${H*f}" fill="url(#hp2)"/>`:'')+`<path d="${d}" fill="none" stroke="#777" stroke-width="1.3" ${c[5]==null?'stroke-dasharray="2 2"':''}/></svg>`}
+const mins=t=>{const[h,m]=t.split(':');return h*60+ +m};
+function list(){const t=sel<0?null:NM[sel],rs=CL.filter(c=>!t||c[1]==t);let h='',prev=null;
  rs.forEach((c,k)=>{const unk=c[3]==null,tot=unk?'未知':fmt(c[3]+c[4]);const cache=unk?'用量未知（上游没报）':c[5]==null?'缓存：上游没报':`缓存命中 ${fmt(c[5])}`;
-  h+=`<li data-k="${k}" class="${ex==k?'on':''}"><div class="a"><span class="tm">${c[0]}</span><span class="ty">${c[1]}</span><span class="md">${c[2]}</span><b class="${unk?'uk':''}">${tot}</b></div><div class="b">${unk?cache:`入 ${fmt(c[3])} · 出 ${fmt(c[4])} · ${cache}`}</div>`+(ex==k&&!unk?`<div class="c"><p><span>输入</span><b>${fmt(c[3])}</b></p><p><span>输出</span><b>${fmt(c[4])}</b></p><p><span>缓存命中</span><b>${fmt(c[5])}</b></p><p><span>缓存未命中</span><b>${fmt(c[6])}</b></p><p><span>缓存写入</span><b>${fmt(c[7])}</b></p></div>`:'')+`</li>`});
+  const gap=prev==null?0:Math.min(48,Math.max(0,(mins(prev)-mins(c[0]))*2-8));prev=c[0];
+  h+=`<li data-k="${k}" class="${ex==k?'on':''}" style="margin-top:${gap}px"><span class="tm">${c[0]}</span>${drop(c)}<div class="tx"><div class="a"><span class="ty">${c[1]}</span><span class="md">${c[2]}</span><b class="${unk?'uk':''}">${tot}</b></div><div class="b">${unk?cache:`入 ${fmt(c[3])} · 出 ${fmt(c[4])} · ${cache}`}</div>`+(ex==k&&!unk?`<div class="c"><p><span>输入</span><b>${fmt(c[3])}</b></p><p><span>输出</span><b>${fmt(c[4])}</b></p><p><span>缓存命中</span><b>${fmt(c[5])}</b></p><p><span>缓存未命中</span><b>${fmt(c[6])}</b></p><p><span>缓存写入</span><b>${fmt(c[7])}</b></p></div>`:'')+`</div></li>`});
  if(!rs.length)h='<li class="em">这一类最近没有调用</li>';
  $('#cl').innerHTML=h;$('#clh').textContent=t?`最近调用 · ${t}`:'最近调用';
  $('#cl').querySelectorAll('li[data-k]').forEach(li=>li.onclick=()=>{const k=+li.dataset.k;ex=ex==k?-1:k;list()});}
