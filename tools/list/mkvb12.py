@@ -187,5 +187,10 @@ function one(){if(vis&&!document.hidden&&W){const[[f,L]]=big[Math.floor(Math.ran
  setTimeout(one,3800+Math.random()*4200)}
 if(!matchMedia('(prefers-reduced-motion:reduce)').matches)setTimeout(one,1800)})()</script>"""
 s=s.replace('<script src="lq2.js"></script>','<script src="lq2.js"></script>'+JS7,1)
+# —— 05:35 茶茶：他/我小标签的荧光笔要回来；修流酱让卡片抽搐（.cdrop 被 .dk>* 规则改成 position:relative 进了文档流，每滴一次卡片变高）
+CSS8="""main .tod i.k,main .duo p i{display:table!important;margin-bottom:4px!important;font:12px/1.2 ZK!important;color:#5b3a2c!important;opacity:1!important;-webkit-text-fill-color:currentColor!important;letter-spacing:.12em;padding:0 3px 0 2px!important;background:linear-gradient(100deg,transparent 2%,rgba(63,154,128,.32) 6%,rgba(63,154,128,.26) 90%,rgba(63,154,128,.4) 95%,transparent 98%) 0 100%/100% 52% no-repeat!important}
+.tod.dk>.cdrop{position:absolute!important;z-index:3!important}
+"""
+s=s.replace('</style>',CSS8+'</style>',1)
 open(R+'vb12.html','w').write(s)
 print(s.count('class="lqw"'),s.count(' dk '))
