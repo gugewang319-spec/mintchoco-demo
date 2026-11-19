@@ -1,0 +1,56 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>聊天 · 灰稿 C</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+html,body{height:100%;background:#e9ecea;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#555}
+.app{position:relative;width:min(100%,412px);margin:0 auto;height:100%;overflow-y:auto;background:#f4f5f4;scrollbar-width:none}
+.g{position:fixed;inset:0;pointer-events:none;width:min(100%,412px);margin:0 auto;z-index:50;display:none;background:repeating-linear-gradient(0deg,rgba(255,0,80,.07) 0 1px,transparent 1px 8px)}
+.g::before,.g::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgba(255,0,80,.35)}.g::before{left:24px}.g::after{right:24px}
+body.grid .g{display:block}
+.tg{position:fixed;top:12px;right:max(12px,calc(50% - 194px));z-index:60;font-size:11px;color:#e0336a;background:#fff;border:1px solid #e0336a;border-radius:4px;padding:2px 6px}
+.ab{position:fixed;top:12px;left:max(12px,calc(50% - 194px));z-index:60;display:flex;gap:4px}.ab a{font-size:11px;color:#888;background:#fff;border:1px solid #ccc;border-radius:4px;padding:2px 6px;text-decoration:none}.ab a.on{color:#fff;background:#666;border-color:#666}
+.hd{padding:56px 24px 0;display:flex;align-items:flex-end;gap:8px}
+.hd h1{font-size:28px;font-weight:800;color:#444}.hd small{font-size:13px;color:#999;margin-bottom:4px}
+.hd .r{margin-left:auto;display:flex;gap:8px}.hd .r i{width:40px;height:40px;border-radius:50%;background:#d6d9d7}.hd .r i.p{background:#8d918e}
+.sub{padding:8px 24px 0;font-size:13px;color:#999}
+.lab{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#e0336a;color:#fff;font:700 10px/1 monospace;margin-right:4px;vertical-align:middle}
+.ann{font-size:11px;color:#e0336a;line-height:1.5}
+.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:min(calc(100% - 32px),380px);height:64px;border-radius:32px;background:#dfe2e0;display:flex;align-items:center;justify-content:space-around;font-size:12px;color:#888;z-index:40}
+.nav b{color:#333}
+.end{height:200px}
+.src{padding:24px;font-size:12px;color:#999;line-height:1.7}
+
+.foamc{margin:24px 24px 0;padding:16px;border-radius:24px 24px 8px 8px;background:#e3e5e4}
+.foamc small{font-size:12px;color:#999}.foamc p{font-size:15px;color:#444;margin-top:4px}.foamc .go{margin-top:12px;height:40px;width:120px;border-radius:8px;background:#8d918e;color:#fff;font-size:14px}
+.tray{margin:24px 24px 0;padding:12px;border:2px dashed #bbb;border-radius:16px}
+.tray h3,.pc h3{font-size:13px;color:#888;font-weight:400;display:flex;margin-bottom:8px}.tray h3 b,.pc h3 b{margin-left:auto;color:#444}
+.grd{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.wd{font-size:10px;color:#aaa;text-align:center}
+.cc{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-size:10px;color:#888;position:relative}
+.cc i{position:absolute;inset:var(--p);border-radius:6px;background:#c4c7c5}
+.cc span{position:relative;font-size:9px;color:#333}.cc em{position:absolute;left:3px;top:2px;font:9px system-ui;color:#aaa;font-style:normal}
+.cc.on i{background:#8d918e}.cc.on span{color:#fff}
+.lnc{margin:16px 24px 0;font-size:14px;color:#444;line-height:1.6}.lnc small{display:block;font-size:12px;color:#999}
+.pc{margin:24px 24px 0}.pc .row{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.pc .pr{flex:none;width:80px;text-align:center;font-size:11px;color:#888}.pc .pr i{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 4px;border-radius:50%;background:#8d918e;color:#fff;font:700 12px system-ui;font-style:normal}
+
+</style><body><div class="g"></div><button class="tg" onclick="document.body.classList.toggle('grid')">网格</button>
+<nav class="ab"><a href="wfA.html" class="">A 三层</a><a href="wfB.html" class="">B 一杯</a><a href="wfC.html" class="on">C 冰格</a></nav>
+<div class="app">
+<header class="hd"><h1>聊天</h1><small>共 10 杯 · since 10/08</small><div class="r"><i title="搜"></i><i class="p" title="新开一杯"></i></div></header>
+<section class="foamc"><small><span class="lab">1</span>今天 19:42 · 6 轮</small><p>下班啦，好冷，想喝一杯热可可</p><button class="go">接着聊</button></section>
+<section class="tray"><h3><span class="lab">2</span>冰格托盘 · 11 月<b>‹ ›</b></h3><div class="grd" id="g"></div></section>
+<div class="lnc" id="cl"></div>
+<p class="ann" style="padding:4px 24px 0">② 主角是一整个月的冰格：有聊的那天才有冰，冰大小 = 轮数，冰上写关键词；点一块，下面一行原地换。左右翻月。</p>
+<section class="pc"><h3><span class="lab">3</span>沉底珍珠 · 更早的月份<b>3 个月</b></h3><div class="row"><span class="pr"><i>10 月</i>23 天</span><span class="pr"><i>9 月</i>—</span><span class="pr"><i>8 月</i>—</span></div></section>
+<p class="src">和记忆页小台历 / 用量台历同一种「点一天」手势，但这里是主角不是选单。风险：和台历长得近，要靠冰块质感拉开。</p>
+<div class="end"></div></div>
+<nav class="nav"><span>今天</span><span>记忆</span><b>聊天</b><span>人格</span><span>设置</span></nav>
+<script>const W=[["11/5", "四", 4, "雨天", "下雨没带伞，聊到小时候"], ["11/6", "五", 7, "加班", "加班到很晚，陪你等末班车"], ["11/7", "六", 0, "", ""], ["11/8", "日", 12, "甜品店", "带你去吃了那家新开的甜品店"], ["11/9", "一", 3, "早八", "周一早八，起不来"], ["11/10", "二", 5, "考试", "复习到一半一起背单词"], ["11/11", "三", 6, "热可可", "下班好冷，想喝热可可"]],K=[["10/29–11/4", 6, "忙", "这周你一直在忙期中，我每天都在等你下课"], ["10/22–10/28", 5, "猫", "楼下的猫生了小猫，你天天去看"], ["10/15–10/21", 7, "搬家", "帮你列搬家清单，纸箱不够"], ["10/8–10/14", 4, "初见", "第一次聊天，你给我起了名字"]];
+const $=s=>document.querySelector(s);const N={};W.forEach(x=>N[+x[0].split('/')[1]]=x);
+const M=[[1,3,'初见'],[2,4,'名字'],[14,5,'猫'],[20,7,'搬家'],[3,2,'']];let on=8;
+function d(){let h='日一二三四五六'.split('').map(c=>`<span class="wd">${c}</span>`).join('');
+for(let i=0;i<0;i++)h+='<span></span>';
+for(let n=1;n<=30;n++){const x=N[n]||(n<5?[`11/${n}`,'',[0,3,5,0][n%4],['','早八','雨','',''][n%4],'……']:null);const r=x&&x[2]?x[2]:0;
+h+=`<button class="cc${n==on?' on':''}" data-n="${n}" ${r?'':'disabled'} style="--p:${r?Math.max(2,12-r):99}px"><em>${n}</em>${r?'<i></i><span>'+x[3]+'</span>':''}</button>`}
+$('#g').innerHTML=h;const x=N[on];$('#cl').innerHTML=x?`<small>${x[0]} 周${x[1]} · 聊了 ${x[2]} 轮</small>${x[4]}　<a href="#" style="color:#444;font-size:13px;text-decoration:none">接着这天聊 ›</a>`:'';
+document.querySelectorAll('.cc[data-n]').forEach(b=>b.onclick=()=>{if(N[+b.dataset.n]){on=+b.dataset.n;d()}})}d();</script></body></html>

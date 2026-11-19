@@ -1,0 +1,50 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>聊天 · 灰稿 B</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+html,body{height:100%;background:#e9ecea;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#555}
+.app{position:relative;width:min(100%,412px);margin:0 auto;height:100%;overflow-y:auto;background:#f4f5f4;scrollbar-width:none}
+.g{position:fixed;inset:0;pointer-events:none;width:min(100%,412px);margin:0 auto;z-index:50;display:none;background:repeating-linear-gradient(0deg,rgba(255,0,80,.07) 0 1px,transparent 1px 8px)}
+.g::before,.g::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgba(255,0,80,.35)}.g::before{left:24px}.g::after{right:24px}
+body.grid .g{display:block}
+.tg{position:fixed;top:12px;right:max(12px,calc(50% - 194px));z-index:60;font-size:11px;color:#e0336a;background:#fff;border:1px solid #e0336a;border-radius:4px;padding:2px 6px}
+.ab{position:fixed;top:12px;left:max(12px,calc(50% - 194px));z-index:60;display:flex;gap:4px}.ab a{font-size:11px;color:#888;background:#fff;border:1px solid #ccc;border-radius:4px;padding:2px 6px;text-decoration:none}.ab a.on{color:#fff;background:#666;border-color:#666}
+.hd{padding:56px 24px 0;display:flex;align-items:flex-end;gap:8px}
+.hd h1{font-size:28px;font-weight:800;color:#444}.hd small{font-size:13px;color:#999;margin-bottom:4px}
+.hd .r{margin-left:auto;display:flex;gap:8px}.hd .r i{width:40px;height:40px;border-radius:50%;background:#d6d9d7}.hd .r i.p{background:#8d918e}
+.sub{padding:8px 24px 0;font-size:13px;color:#999}
+.lab{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#e0336a;color:#fff;font:700 10px/1 monospace;margin-right:4px;vertical-align:middle}
+.ann{font-size:11px;color:#e0336a;line-height:1.5}
+.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:min(calc(100% - 32px),380px);height:64px;border-radius:32px;background:#dfe2e0;display:flex;align-items:center;justify-content:space-around;font-size:12px;color:#888;z-index:40}
+.nav b{color:#333}
+.end{height:200px}
+.src{padding:24px;font-size:12px;color:#999;line-height:1.7}
+
+.wrap{position:relative;margin:24px 24px 0;padding:16px 0 40px}
+.rw{position:relative;min-height:74px;display:flex;align-items:center;z-index:1}
+.cupb{position:absolute;right:0;top:0;width:132px;height:100%;border:2px dashed #bbb;border-top:0;border-radius:0 0 48px 40px;background:linear-gradient(#ececec,#e2e4e3 30%,#d6d9d7 70%,#c9ccca)}
+.rulb{position:absolute;left:0;top:0;bottom:0;width:1px;background:#ccc}
+.it{position:absolute;top:37px;border-radius:50%;background:#8d918e;transform:translate(-50%,-50%)}
+.it.f{border-radius:40%;background:#fff;border:1.5px solid #aaa}.it.c{border-radius:6px;background:#b4b8b5}
+.an{position:relative;margin-left:8px;width:calc(100% - 158px);font-size:13px;color:#444;cursor:pointer;padding:8px 0}
+.an small{display:block;font-size:11px;color:#999}
+.an::after{content:"";position:absolute;left:100%;top:29px;width:var(--l);border-top:1px dashed #aaa}
+.an .x{display:none;margin-top:8px;padding:8px;border-radius:8px;background:#e6e8e7;font-size:12px;color:#666;line-height:1.6}
+.an.on{z-index:3}.an.on .x{display:block}
+
+</style><body><div class="g"></div><button class="tg" onclick="document.body.classList.toggle('grid')">网格</button>
+<nav class="ab"><a href="wfA.html" class="">A 三层</a><a href="wfB.html" class="on">B 一杯</a><a href="wfC.html" class="">C 冰格</a></nav>
+<div class="app">
+<header class="hd"><h1>聊天</h1><small>共 10 杯 · since 10/08</small><div class="r"><i title="搜"></i><i class="p" title="新开一杯"></i></div></header>
+<p class="sub"><span class="lab">1</span>一整杯，越往下越早；没有硬切三段，质地随时间慢慢变：上面是奶沫（今天）、中间冰块（这几天）、沉底珍珠（更早）</p>
+<div class="wrap" id="wb"><div class="rulb"></div><div class="cupb"></div></div>
+<p class="ann" style="padding:0 24px"><span class="lab">2</span>每次聊天是杯里一个东西，大小 = 轮数，位置 = 时间（左边竖线是日期刻度）。<span class="lab">3</span>左侧引线标注写一句话；点标注原地展开三行 + 接着聊（再点收起只针对这一条，不是折叠面板）。</p>
+<p class="src">借：信息图解式「引线 + 编号 + 手写注」，同 DESIGN 母题。风险：标注多了会挤，超过 ~12 条后更早的合成一颗大珍珠「10 月 · 4 周」。</p>
+<div class="end"></div></div>
+<nav class="nav"><span>今天</span><span>记忆</span><b>聊天</b><span>人格</span><span>设置</span></nav>
+<script>const W=[["11/5", "四", 4, "雨天", "下雨没带伞，聊到小时候"], ["11/6", "五", 7, "加班", "加班到很晚，陪你等末班车"], ["11/7", "六", 0, "", ""], ["11/8", "日", 12, "甜品店", "带你去吃了那家新开的甜品店"], ["11/9", "一", 3, "早八", "周一早八，起不来"], ["11/10", "二", 5, "考试", "复习到一半一起背单词"], ["11/11", "三", 6, "热可可", "下班好冷，想喝热可可"]],K=[["10/29–11/4", 6, "忙", "这周你一直在忙期中，我每天都在等你下课"], ["10/22–10/28", 5, "猫", "楼下的猫生了小猫，你天天去看"], ["10/15–10/21", 7, "搬家", "帮你列搬家清单，纸箱不够"], ["10/8–10/14", 4, "初见", "第一次聊天，你给我起了名字"]];
+const wb=document.getElementById('wb');const R=[['今天 19:42','f',6,'下班好冷，想喝热可可','下班啦，好冷，想喝一杯热可可 / 那我先把奶煮上 / 要加棉花糖！']];
+W.slice().reverse().forEach(x=>{if(x[2]&&x[0]!='11/11')R.push([x[0]+' 周'+x[1],'c',x[2],x[4],x[4]+'……（三行摘要）'])});
+K.forEach(k=>R.push([k[0],'p',k[1]*2,k[3],k[3]+'……（三行摘要）']));
+let h='';const CW=wb.clientWidth;R.forEach((r,i)=>{const s=r[1]=='f'?44:r[1]=='c'?18+r[2]*2.4:16+r[2]*2,x=CW-66+(i%2?-22:22);
+h+=`<div class="rw"><i class="it ${r[1]}" style="left:${x}px;width:${s}px;height:${s}px"></i><div class="an" style="--l:${x-s/2-(CW-150)+8}px"><small>${r[0]} · ${r[2]} 轮</small>${r[3]}<div class="x">${r[4]}<br>接着这次聊 ›</div></div></div>`});
+wb.insertAdjacentHTML('beforeend',h);wb.querySelectorAll('.an').forEach(a=>a.onclick=()=>a.classList.toggle('on'));</script></body></html>
