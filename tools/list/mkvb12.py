@@ -121,5 +121,38 @@ main .tod i.k,main .duo p i{display:table!important;margin-bottom:4px!important;
 main .ice b{text-shadow:0 1px 0 rgba(255,255,255,.85)}
 """
 s=s.replace('</style>',CSS3+'</style>',1)
+# —— 05:12 茶茶选 A：字只写在杯子上半更厚的奶白磨砂区，液面压到字下面；去掉描边/白唇/光晕/大引号；巧克力色深中浅三档（Apple HIG Materials：字多用厚材质，层级靠 vibrancy 三档而非特效）
+s=s.replace(CSS3,'',1)
+CSS4="""main .gl,main .duo .his,main .duo .mine,main .ice,main .tod{background:linear-gradient(180deg,rgba(253,251,245,.92) 0%,rgba(252,249,243,.86) 55%,rgba(250,251,247,.6) 100%)!important}
+main .duo p,main .ice p,main .tod .in{padding-bottom:30px!important}
+main .ice{padding-bottom:30px!important}
+main .gl .key,main .gl .sub,main .duo p,main .ice p,main .ice b,main .ice small{-webkit-text-stroke:0!important;text-shadow:none!important}
+main .tod .key{font:600 20px/1.5 var(--body)!important;color:#4a3027!important;text-wrap:balance}
+main .tod .sub{font:400 15px/1.5 var(--body)!important;color:#7a5a4a!important}
+main .duo p,main .ice p{font:400 14px/1.55 var(--body)!important;color:#4a3027!important;text-wrap:pretty}
+main .duo .mine p{color:#4a3027!important}
+main .ice b{color:#4a3027!important}
+main .ice small,.rw .lb small,.tod .side small,.rds small{color:#a08676!important}
+main .tod i.k,main .duo p i{display:block!important;background:none!important;padding:0!important;margin-bottom:3px!important;font:11px/1.2 ZK!important;letter-spacing:.14em;color:#a08676!important}
+/* 背景：奶茶里一直往上冒的小泡泡（L3，只动 transform/opacity） */
+.bgb{position:absolute;bottom:-24px;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;border:1.2px solid rgba(255,255,255,.9);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.85) 0 18%,rgba(255,255,255,.12) 34%);opacity:0;animation:bgb var(--d) linear var(--dl) infinite;will-change:transform}
+@keyframes bgb{0%{opacity:0;transform:translate(0,0)}12%{opacity:.85}45%{transform:translate(var(--sw),-30vh)}80%{opacity:.6}100%{opacity:0;transform:translate(calc(var(--sw)*-.6),-58vh)}}
+/* 背景冰块和小装饰：在奶茶里随意漂（transform 漂移 + 原来的摆动，滚动视差仍走 translate） */
+.bg .bgi.wan{animation:wan var(--wd) ease-in-out var(--dl,0s) infinite alternate!important}
+@keyframes wan{0%{transform:translate(0,0) rotate(0)}22%{transform:translate(var(--wx),calc(var(--wy)*-1)) rotate(var(--wr))}48%{transform:translate(calc(var(--wx)*-.7),calc(var(--wy)*-.35)) rotate(calc(var(--wr)*-.8))}74%{transform:translate(calc(var(--wx)*.45),var(--wy)) rotate(calc(var(--wr)*.5))}100%{transform:translate(calc(var(--wx)*-.25),calc(var(--wy)*-.6)) rotate(calc(var(--wr)*-.3))}}
+@media (prefers-reduced-motion:reduce){.bgb{display:none}.bg .bgi.wan{animation:none!important}}
+"""
+s=s.replace('</style>',CSS4+'</style>',1)
+import random
+random.seed(7)
+B=''.join('<i class="bgb" style="--x:%d%%;--s:%dpx;--d:%.1fs;--dl:-%.1fs;--sw:%dpx"></i>'%(x,sz,d,random.uniform(0,d),random.choice([-8,-5,5,8])) for x,sz,d in [(6,9,11),(14,6,9),(23,12,14),(38,7,10),(52,10,13),(63,6,8.5),(74,13,15),(86,8,10.5),(94,6,9.5)])
+s=s.replace('<div class="tea"></div>','<div class="tea"></div>'+B,1)
+def wan(m):
+    t=m.group(0);ice=' ic"' in t
+    a=(14,16,4) if ice else (22,26,14)
+    return t.replace('class="bgi bre','class="bgi bre wan',1).replace('style="','style="--wx:%dpx;--wy:%dpx;--wr:%ddeg;--wd:%.1fs;'%(a[0]*random.choice([1,-1]),a[1],a[2],random.uniform(13,21)),1)
+s=re.sub(r'<img class="bgi bre (?:ic|lf|cu|pe)"[^>]*>',wan,s)
+# 液面只占卡底那一条（字下面），按卡高换算
+s=s.replace('<script src="lq2.js">','<script>document.querySelectorAll(".dk").forEach(e=>{e.dataset.lv=Math.min(.3,30/Math.max(60,e.offsetHeight)).toFixed(3)})</script><script src="lq2.js">',1)
 open(R+'vb12.html','w').write(s)
 print(s.count('class="lqw"'),s.count(' dk '))

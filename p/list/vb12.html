@@ -141,13 +141,24 @@ main .tod.dk .in{padding-top:22px!important}
 .steam i:nth-child(4){--x:20%;--w:52%;--d:12s;--dl:-3s}
 @keyframes stm{0%{opacity:0;transform:translateY(20px) scale(.7,.6)}25%{opacity:.9}70%{opacity:.5}100%{opacity:0;transform:translateY(-120px) scale(1.25,1.1)}}
 @media (prefers-reduced-motion:reduce){.steam i{animation:none;opacity:.5}}
-main .gl .key,main .gl .sub,main .duo p,main .ice p{color:#4a3027;-webkit-text-stroke:.35px #4a3027;text-shadow:0 1px 0 rgba(255,255,255,.85),0 0 8px rgba(255,252,244,.75),0 0 2px rgba(255,252,244,.9)}
-main .tod .key{font:700 21px/1.5 var(--body)!important;text-wrap:balance;letter-spacing:.02em;position:relative}
-main .tod .key::before{content:'\201C';position:absolute;left:-14px;top:-22px;font:52px/1 Script,serif;color:rgba(63,154,128,.45);-webkit-text-stroke:0;text-shadow:none;pointer-events:none}
-main .tod .sub{font:600 15px/1.5 var(--body)!important}
-main .duo p,main .ice p{font-weight:500!important;text-wrap:pretty;font-family:var(--body)!important}
-main .tod i.k,main .duo p i{display:table!important;margin-bottom:4px!important;font:12px/1.2 ZK!important;color:#5b3a2c!important;-webkit-text-stroke:0;text-shadow:none;letter-spacing:.12em;padding:0 3px 0 2px;background:linear-gradient(100deg,transparent 2%,rgba(63,154,128,.32) 6%,rgba(63,154,128,.26) 90%,rgba(63,154,128,.4) 95%,transparent 98%) 0 100%/100% 52% no-repeat}
-main .ice b{text-shadow:0 1px 0 rgba(255,255,255,.85)}
+main .gl,main .duo .his,main .duo .mine,main .ice,main .tod{background:linear-gradient(180deg,rgba(253,251,245,.92) 0%,rgba(252,249,243,.86) 55%,rgba(250,251,247,.6) 100%)!important}
+main .duo p,main .ice p,main .tod .in{padding-bottom:30px!important}
+main .ice{padding-bottom:30px!important}
+main .gl .key,main .gl .sub,main .duo p,main .ice p,main .ice b,main .ice small{-webkit-text-stroke:0!important;text-shadow:none!important}
+main .tod .key{font:600 20px/1.5 var(--body)!important;color:#4a3027!important;text-wrap:balance}
+main .tod .sub{font:400 15px/1.5 var(--body)!important;color:#7a5a4a!important}
+main .duo p,main .ice p{font:400 14px/1.55 var(--body)!important;color:#4a3027!important;text-wrap:pretty}
+main .duo .mine p{color:#4a3027!important}
+main .ice b{color:#4a3027!important}
+main .ice small,.rw .lb small,.tod .side small,.rds small{color:#a08676!important}
+main .tod i.k,main .duo p i{display:block!important;background:none!important;padding:0!important;margin-bottom:3px!important;font:11px/1.2 ZK!important;letter-spacing:.14em;color:#a08676!important}
+/* 背景：奶茶里一直往上冒的小泡泡（L3，只动 transform/opacity） */
+.bgb{position:absolute;bottom:-24px;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;border:1.2px solid rgba(255,255,255,.9);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.85) 0 18%,rgba(255,255,255,.12) 34%);opacity:0;animation:bgb var(--d) linear var(--dl) infinite;will-change:transform}
+@keyframes bgb{0%{opacity:0;transform:translate(0,0)}12%{opacity:.85}45%{transform:translate(var(--sw),-30vh)}80%{opacity:.6}100%{opacity:0;transform:translate(calc(var(--sw)*-.6),-58vh)}}
+/* 背景冰块和小装饰：在奶茶里随意漂（transform 漂移 + 原来的摆动，滚动视差仍走 translate） */
+.bg .bgi.wan{animation:wan var(--wd) ease-in-out var(--dl,0s) infinite alternate!important}
+@keyframes wan{0%{transform:translate(0,0) rotate(0)}22%{transform:translate(var(--wx),calc(var(--wy)*-1)) rotate(var(--wr))}48%{transform:translate(calc(var(--wx)*-.7),calc(var(--wy)*-.35)) rotate(calc(var(--wr)*-.8))}74%{transform:translate(calc(var(--wx)*.45),var(--wy)) rotate(calc(var(--wr)*.5))}100%{transform:translate(calc(var(--wx)*-.25),calc(var(--wy)*-.6)) rotate(calc(var(--wr)*-.3))}}
+@media (prefers-reduced-motion:reduce){.bgb{display:none}.bg .bgi.wan{animation:none!important}}
 </style>
 <style>
 .bg #far,.bg svg.pearls,.bg svg.sunk{display:none!important}
@@ -241,7 +252,7 @@ main .ice b{text-shadow:0 1px 0 rgba(255,255,255,.85)}
 .tap{transition:transform .25s ease-out}.tap:active{transform:scale(.98)}
 </style></head><body>
 <div class="app">
- <div class="bg" aria-hidden="true"><div class="foam"></div><div class="tea"></div><img class="bgi bre ic" src="ice.png" alt="" style="--d:5.4s;--dl:-2.2s;width:150px;right:-46px;top:150px;--r:14deg;opacity:.9"><img class="bgi bre ic" src="ice.png" alt="" style="--d:7.5s;--dl:-1.9s;width:96px;left:-30px;top:47%;--r:-18deg;opacity:.85"><img class="bgi bre ic" src="ice.png" alt="" style="--d:5.6s;--dl:-2.3s;width:120px;right:-34px;bottom:150px;--r:-6deg;opacity:.8"><img class="bgi bre lf" src="fg1.png" alt="" style="--d:4.2s;--dl:-2.0s;width:58px;left:22%;top:118px;--r:-30deg;opacity:.7"><img class="bgi bre cu" data-nb="1" src="fg12.png" alt="" style="--d:6.2s;--dl:-3.2s;width:54px;right:30%;top:58%;--r:20deg;opacity:.65"><img class="bgi bre pe" src="fg9.png" alt="" style="--d:3.8s;--dl:-1.2s;width:40px;left:8%;bottom:28%;opacity:.7"><img class="bgi bre lf" src="fg5.png" alt="" style="--d:3.8s;--dl:-3.2s;width:52px;right:8%;top:36%;--r:40deg;opacity:.6"><img class="bgi" src="pearls.png" alt="" style="width:118%;left:-9%;bottom:-6px" data-pz="1"></div>
+ <div class="bg" aria-hidden="true"><div class="foam"></div><div class="tea"></div><i class="bgb" style="--x:6%;--s:9px;--d:11.0s;--dl:-3.6s;--sw:-5px"></i><i class="bgb" style="--x:14%;--s:6px;--d:9.0s;--dl:-3.6s;--sw:-8px"></i><i class="bgb" style="--x:23%;--s:12px;--d:14.0s;--dl:-1.0s;--sw:-8px"></i><i class="bgb" style="--x:38%;--s:7px;--d:10.0s;--dl:-3.7s;--sw:-8px"></i><i class="bgb" style="--x:52%;--s:10px;--d:13.0s;--dl:-11.8s;--sw:-5px"></i><i class="bgb" style="--x:63%;--s:6px;--d:8.5s;--dl:-0.3s;--sw:8px"></i><i class="bgb" style="--x:74%;--s:13px;--d:15.0s;--dl:-6.3s;--sw:-5px"></i><i class="bgb" style="--x:86%;--s:8px;--d:10.5s;--dl:-1.0s;--sw:8px"></i><i class="bgb" style="--x:94%;--s:6px;--d:9.5s;--dl:-0.6s;--sw:-8px"></i><img class="bgi bre wan ic" src="ice.png" alt="" style="--wx:14px;--wy:16px;--wr:4deg;--wd:18.0s;--d:5.4s;--dl:-2.2s;width:150px;right:-46px;top:150px;--r:14deg;opacity:.9"><img class="bgi bre wan ic" src="ice.png" alt="" style="--wx:14px;--wy:16px;--wr:4deg;--wd:17.6s;--d:7.5s;--dl:-1.9s;width:96px;left:-30px;top:47%;--r:-18deg;opacity:.85"><img class="bgi bre wan ic" src="ice.png" alt="" style="--wx:-14px;--wy:16px;--wr:4deg;--wd:13.4s;--d:5.6s;--dl:-2.3s;width:120px;right:-34px;bottom:150px;--r:-6deg;opacity:.8"><img class="bgi bre wan lf" src="fg1.png" alt="" style="--wx:22px;--wy:26px;--wr:14deg;--wd:13.4s;--d:4.2s;--dl:-2.0s;width:58px;left:22%;top:118px;--r:-30deg;opacity:.7"><img class="bgi bre wan cu" data-nb="1" src="fg12.png" alt="" style="--wx:22px;--wy:26px;--wr:14deg;--wd:15.3s;--d:6.2s;--dl:-3.2s;width:54px;right:30%;top:58%;--r:20deg;opacity:.65"><img class="bgi bre wan pe" src="fg9.png" alt="" style="--wx:22px;--wy:26px;--wr:14deg;--wd:17.3s;--d:3.8s;--dl:-1.2s;width:40px;left:8%;bottom:28%;opacity:.7"><img class="bgi bre wan lf" src="fg5.png" alt="" style="--wx:-22px;--wy:26px;--wr:14deg;--wd:17.5s;--d:3.8s;--dl:-3.2s;width:52px;right:8%;top:36%;--r:40deg;opacity:.6"><img class="bgi" src="pearls.png" alt="" style="width:118%;left:-9%;bottom:-6px" data-pz="1"></div>
  <div class="scroller" id="sc"><div class="content">
   <img class="drizzle" src="today-bg.png" alt="">
   <header class="lhead"><div class="ttl"><span class="sc" aria-hidden="true">chats</span><h1>聊天</h1></div><div class="lbtns"><button class="pearlbtn" aria-label="搜索聊天"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button><button class="pearlbtn" aria-label="筛选"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff3e2" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M7 12h10M10 17h4"/></svg></button></div></header>
@@ -260,7 +271,7 @@ main .ice b{text-shadow:0 1px 0 rgba(255,255,255,.85)}
 </nav>
  <div class="navfade" aria-hidden="true"></div>
 </div>
-<script>(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const sc=document.querySelector('#sc');const Z=[...document.querySelectorAll('[data-z]')];const B=[...document.querySelectorAll('.bg .bgi')].map(e=>({e,k:e.dataset.pz?0:(parseFloat(e.style.width)>90?.07:.035)}));let q=0;function f(){q=0;const H=innerHeight/2;for(const e of Z){const r=e.parentElement.getBoundingClientRect(),o=r.top+r.height/2-H;e.style.translate='0 '+(o*parseFloat(e.dataset.z)).toFixed(1)+'px'}const t=sc.scrollTop;for(const b of B)if(b.k)b.e.style.translate='0 '+(-t*b.k).toFixed(1)+'px'}sc.addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(f)},{passive:true});f()})()</script><script src="lq2.js"></script><script>
+<script>(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const sc=document.querySelector('#sc');const Z=[...document.querySelectorAll('[data-z]')];const B=[...document.querySelectorAll('.bg .bgi')].map(e=>({e,k:e.dataset.pz?0:(parseFloat(e.style.width)>90?.07:.035)}));let q=0;function f(){q=0;const H=innerHeight/2;for(const e of Z){const r=e.parentElement.getBoundingClientRect(),o=r.top+r.height/2-H;e.style.translate='0 '+(o*parseFloat(e.dataset.z)).toFixed(1)+'px'}const t=sc.scrollTop;for(const b of B)if(b.k)b.e.style.translate='0 '+(-t*b.k).toFixed(1)+'px'}sc.addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(f)},{passive:true});f()})()</script><script>document.querySelectorAll(".dk").forEach(e=>{e.dataset.lv=Math.min(.3,30/Math.max(60,e.offsetHeight)).toFixed(3)})</script><script src="lq2.js"></script><script>
 /* 饮品卡里的小料：照今天页，各自周期、错开；减少动效时静止 */
 (()=>{const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,$$=(q,r=document)=>[...r.querySelectorAll(q)],D=[];
 const V=new Set(),io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?V.add(e.target):V.delete(e.target)),{rootMargin:'60px'});

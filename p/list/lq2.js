@@ -32,7 +32,7 @@ function size(c){const d=Math.min(2,devicePixelRatio||1);c.w=c.host.offsetWidth;
 function poke(c,t){const{h,u}=c.sim;let m=0;for(let i=0;i<N;i++){const x=(i+.5)/N,g=Math.exp(-((x-t)**2)/.006);h[i]-=.05*g;m+=.05*g}for(let i=0;i<N;i++)h[i]+=m/N;
  c.kdir=t<.5?1:-1;c.kick=.14;}
 /* 手机倾斜（要 HTTPS 才有数据） */
-let gx=0;addEventListener('devicemotion',e=>{const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;gx+=(a.x-gx)*.12;tilt=clamp(-gx/9.8*.9,-.35,.35)});
+let gx=0;addEventListener('devicemotion',e=>{const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;gx+=(a.x-gx)*.12;tilt=clamp(-gx/9.8*.2,-.05,.05)});
 function surf(c,x){/* x: 0..1, 返回液面相对静止的位移（容器单位），Catmull-Rom */const{h}=c.sim;const f=x*N-.5,i=Math.floor(f),t=f-i;const p=j=>h[clamp(j,0,N-1)];const p0=p(i-1),p1=p(i),p2=p(i+1),p3=p(i+2);return .5*(2*p1+(-p0+p2)*t+(2*p0-5*p1+4*p2-p3)*t*t+(-p0+3*p1-3*p2+p3)*t*t*t)}
 const AMP=.55;/* 容器单位换成像素时的缩放：卡片很扁，波高按宽度的 0.55 画 */
 window.LQ=(k,px)=>{const c=cups[k];if(!c||!c.w)return 0;return surf(c,clamp(px/c.w,0,1))*c.w*AMP};
