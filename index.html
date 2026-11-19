@@ -14,7 +14,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#e4f3ec}
 <canvas id="edge" aria-hidden="true"></canvas><div id="shield"></div>
 <script>
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const V=54;const url=k=>k==='gate'?`p/conn/index.html?v=${V}&gate=1`:`p/${k}/index.html?v=${V}`;
+const V=55;const url=k=>k==='gate'?`p/conn/index.html?v=${V}&gate=1`:`p/${k}/index.html?v=${V}`;
 const MAX=10;                      /* 最多常驻 10 页，超出把最久没看的卸掉 */
 const SUB={set:['chn','mdl','snd','hlt','use','conn'],today:['room'],list:['room','srch'],mem:['msrch']};
 const pool=new Map();              /* k -> {box,fr,ready,used} */
