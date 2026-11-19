@@ -11,6 +11,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .bg .tea{position:absolute;left:0;right:0;bottom:0;height:62%;background:linear-gradient(180deg,rgba(205,205,205,0) 0%,rgba(205,205,205,.75) 38%,#c4c4c4 70%,#b8b8b8 100%)}
 .bg .foam{position:absolute;left:0;right:0;top:0;height:22%;background:linear-gradient(180deg,rgba(250,250,250,.9),rgba(250,250,250,0))}
 .bg svg.pearls{position:absolute;left:0;bottom:0;width:100%;height:120px}
+.bg svg.sunk{position:absolute;left:0;bottom:0;width:100%;height:260px;display:none}
+.bg.deep svg.sunk{display:block}.bg.deep svg.pearls{display:none}
+.bg.deep .tea{height:66%;background:linear-gradient(180deg,rgba(205,205,205,0) 0%,rgba(200,200,200,.7) 34%,#bdbdbd 66%,#a9a9a9 100%)}
+.sk{transform-box:fill-box;transform-origin:50% 60%;animation:rest var(--d) ease-in-out infinite;animation-delay:var(--dl)}
+@keyframes rest{0%,100%{transform:rotate(0deg) translateY(0)}50%{transform:rotate(var(--a)) translateY(-1.5px)}}
+@media (prefers-reduced-motion:reduce){.sk{animation:none}}
 .bg.sink::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(180deg,rgba(196,196,196,.85) 0%,rgba(190,190,190,.45) 55%,rgba(184,184,184,0) 100%)}
 .far{position:absolute;will-change:transform;opacity:.5}
 .far.lf{animation:drift var(--d) ease-in-out infinite;animation-delay:var(--dl)}
@@ -68,7 +74,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @media (prefers-reduced-motion:reduce){#outline,.gland i,.far{animation:none}}
 </style></head><body>
 <div class="app">
- <div class="bg" aria-hidden="true"><div class="foam"></div><div class="tea"></div><div id="far"></div><svg class="pearls" id="pearls" preserveAspectRatio="none"></svg></div>
+ <div class="bg" aria-hidden="true"><div class="foam"></div><div class="tea"></div><div id="far"></div><svg class="pearls" id="pearls" preserveAspectRatio="none"></svg><svg class="sunk" id="sunk" viewBox="0 0 440 260" preserveAspectRatio="xMidYMax meet"></svg></div>
  <div class="scroller" id="sc"><div class="content">
   <header class="lhead"><h1>聊天<small>chats</small></h1><div class="lbtns"><button class="rb" aria-label="搜索聊天"></button><button class="rb" aria-label="更多"></button></div></header>
   <div class="pg" id="pg">
@@ -154,14 +160,22 @@ document.querySelectorAll('.day').forEach(el=>el.addEventListener('click',()=>{
  if(sel)(veinMap.get(sel)||[]).forEach(p=>p.setAttribute('opacity',0));
  sel=el;document.querySelectorAll('.day').forEach(o=>o.classList.toggle('dim',o!==el));flow(el)}));
 $('#cat').addEventListener('click',e=>{e.stopPropagation();$('#cat').animate([{transform:'scale(1)'},{transform:'scale(.97,.94)'},{transform:'scale(1)'}],{duration:260,easing:'cubic-bezier(.23,1,.32,1)'});setTimeout(()=>alert('进今天的聊天'),280)});
-/* 杯底珍珠：平涂，一圈细边，不做 3D。?p=a 满铺三排（原样）/ b 一排半埋进奶茶 / c 零散几颗沉底 */
+/* 杯底珍珠：平涂，一圈细边，不做 3D。?p=a 满铺三排（原样）/ b 一排半埋进奶茶 / c 零散几颗沉底 / d 不要珍珠：奶茶变深＋沉底旧叶子 */
 (function(){const v=new URLSearchParams(location.search).get('p')||'a',sv=$('#pearls'),W=440,H=120;sv.setAttribute('viewBox',`0 0 ${W} ${H}`);let g='';
  const P=(x,y,rr,f,st)=>`<circle cx="${x}" cy="${y}" r="${rr}" fill="${f}" stroke="${st}" stroke-width="1"/><circle cx="${(x-rr*.35).toFixed(1)}" cy="${(y-rr*.35).toFixed(1)}" r="${(rr*.18).toFixed(1)}" fill="#c9c9c9"/>`;
  if(v==='a'){for(let row=0;row<3;row++){for(let x=-6;x<W+10;x+=20+((x*7+row*13)%9)){const y=H-10-row*15-((x*3)%7),rr=8+((x+row*5)%5);g+=P(x,y,rr,row?'#8f8f8f':'#7d7d7d','#6b6b6b')}}}
  else if(v==='b'){for(let x=-4;x<W+10;x+=19+((x*7)%8)){const y=H-6-((x*3)%6),rr=8+((x*5)%4);g+=P(x,y,rr,'#9c9c9c','#858585')}
   for(let x=6;x<W;x+=46+((x*11)%17)){g+=P(x,H-22-((x*3)%5),7+((x*7)%3),'#a8a8a8','#929292')}}
  else{[[34,H-10,10],[58,H-6,7],[120,H-12,9],[205,H-7,11],[232,H-16,7],[300,H-9,8],[372,H-11,10],[398,H-5,7]].forEach(([x,y,r])=>g+=P(x,y,r,'#9a9a9a','#848484'))}
- sv.innerHTML=g;if(v!=='a')document.querySelector('.bg').classList.add('sink')})();
+ sv.innerHTML=g;if(v==='b'||v==='c')document.querySelector('.bg').classList.add('sink');
+ if(v==='d'){document.querySelector('.bg').classList.add('deep');
+  /* 杯底沉着的旧叶子：褪色、躺平、轻轻随水晃；越大的越沉 */
+  const L=(x,y,len,rot,op,d,dl,a)=>{const w=len*.27,n=5;let side='';for(let k=1;k<=n;k++){const t=k/(n+1),px=-len/2+len*t,sw=w*Math.pow(Math.sin(Math.PI*Math.pow(t,.8)),.8)*.62;side+=`M${px.toFixed(1)} 0 Q${(px+len*.07).toFixed(1)} ${(-sw*.55).toFixed(1)} ${(px+len*.1).toFixed(1)} ${(-sw).toFixed(1)}M${px.toFixed(1)} 0 Q${(px+len*.07).toFixed(1)} ${(sw*.55).toFixed(1)} ${(px+len*.1).toFixed(1)} ${sw.toFixed(1)}`}
+   let e='';for(let i=0;i<=24;i++){const t=i/24,xx=-len/2+len*t,ww=w*Math.pow(Math.sin(Math.PI*Math.pow(t,.8)),.8)+(i%2?-1.4:0);e+=`${i?'L':'M'}${xx.toFixed(1)} ${(-Math.max(0,ww)).toFixed(1)}`}
+   for(let i=24;i>=0;i--){const t=i/24,xx=-len/2+len*t,ww=w*Math.pow(Math.sin(Math.PI*Math.pow(t,.8)),.8)+(i%2?-1.4:0);e+=`L${xx.toFixed(1)} ${Math.max(0,ww).toFixed(1)}`}
+   return `<g transform="translate(${x} ${y}) rotate(${rot})" opacity="${op}"><g class="sk" style="--d:${d}s;--dl:-${dl}s;--a:${a}deg"><path d="${e}Z" fill="#b3b3b3" stroke="#8e8e8e" stroke-width="1.3" stroke-linejoin="round"/><path d="M${-len/2-10} 0 L${len/2} 0" stroke="#8e8e8e" stroke-width="1.4" stroke-linecap="round"/><path d="${side}" fill="none" stroke="#9a9a9a" stroke-width="1" stroke-linecap="round"/></g></g>`};
+  $('#sunk').innerHTML=L(70,150,170,-12,.55,11,0,1.6)+L(372,118,112,16,.45,9,3,-2)+L(250,96,52,-30,.32,7,5,4);
+ }})();
 /* 远处小料：几片小叶子、几颗油点，固定层里各自慢慢漂 */
 (function(){const f=$('#far'),leaf=s=>`<svg width="${s}" height="${s*1.5}" viewBox="0 0 20 30"><path d="M10 1C17 8 18 19 10 29 2 19 3 8 10 1Z" fill="rgba(255,255,255,.5)" stroke="#a6a6a6" stroke-width="1.3"/><path d="M10 4V27" stroke="#a6a6a6" stroke-width="1"/></svg>`;
  [[16,8,30,-20],[12,84,24,35],[18,78,52,-50],[11,12,62,15],[14,90,74,60]].forEach(([s,x,y,r],i)=>{const e=document.createElement('div');e.className='far lf';e.innerHTML=leaf(s);e.style.cssText=`left:${x}%;top:${y}%;--r:${r}deg;--d:${8+i*1.7}s;--dl:-${i*2.1}s`;f.appendChild(e)});
