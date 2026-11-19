@@ -161,7 +161,7 @@ document.querySelectorAll('.day').forEach(el=>el.addEventListener('click',()=>{
  sel=el;document.querySelectorAll('.day').forEach(o=>o.classList.toggle('dim',o!==el));flow(el)}));
 $('#cat').addEventListener('click',e=>{e.stopPropagation();$('#cat').animate([{transform:'scale(1)'},{transform:'scale(.97,.94)'},{transform:'scale(1)'}],{duration:260,easing:'cubic-bezier(.23,1,.32,1)'});setTimeout(()=>alert('进今天的聊天'),280)});
 /* 杯底珍珠：平涂，一圈细边，不做 3D。?p=a 满铺三排（原样）/ b 一排半埋进奶茶 / c 零散几颗沉底 / d 不要珍珠：奶茶变深＋沉底旧叶子 */
-(function(){const v=new URLSearchParams(location.search).get('p')||'a',sv=$('#pearls'),W=440,H=120;sv.setAttribute('viewBox',`0 0 ${W} ${H}`);let g='';
+(function(){const v=new URLSearchParams(location.search).get('p')||'d',sv=$('#pearls'),W=440,H=120;sv.setAttribute('viewBox',`0 0 ${W} ${H}`);let g='';
  const P=(x,y,rr,f,st)=>`<circle cx="${x}" cy="${y}" r="${rr}" fill="${f}" stroke="${st}" stroke-width="1"/><circle cx="${(x-rr*.35).toFixed(1)}" cy="${(y-rr*.35).toFixed(1)}" r="${(rr*.18).toFixed(1)}" fill="#c9c9c9"/>`;
  if(v==='a'){for(let row=0;row<3;row++){for(let x=-6;x<W+10;x+=20+((x*7+row*13)%9)){const y=H-10-row*15-((x*3)%7),rr=8+((x+row*5)%5);g+=P(x,y,rr,row?'#8f8f8f':'#7d7d7d','#6b6b6b')}}}
  else if(v==='b'){for(let x=-4;x<W+10;x+=19+((x*7)%8)){const y=H-6-((x*3)%6),rr=8+((x*5)%4);g+=P(x,y,rr,'#9c9c9c','#858585')}
