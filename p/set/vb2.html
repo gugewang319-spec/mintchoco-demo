@@ -1,0 +1,313 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>vb2 用量秤 · 设置</title>
+<style>
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:BalooX;src:url(baloo800.ttf)}
+@font-face{font-family:WK;src:url(wk2.ttf)}
+@font-face{font-family:Script;src:url(script.ttf)}
+:root{--ch:#5b3a2c;--ink:#4a3027;--cocoa:#8a5c46;--mint3:#2f6e58;--mintb:#3f9a80}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;color:var(--ink)}
+button{font:inherit;color:inherit;background:none;border:0;outline:0;cursor:pointer}
+img{display:block;user-select:none;-webkit-user-drag:none;width:100%}
+
+.vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+.app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,412px);overflow:hidden}
+.drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
+.pearls{position:absolute;left:-4%;right:-4%;bottom:-46px;z-index:1;pointer-events:none;opacity:.8}
+canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.o{position:absolute;z-index:6;will-change:transform}
+.bit{position:absolute;pointer-events:none}
+.ground{position:absolute;left:-56px;width:524px;top:694px;z-index:14;pointer-events:none}
+.groundfill{position:absolute;left:0;right:0;top:796px;bottom:0;background:#fbf8eb;z-index:14}
+.sp{position:absolute;pointer-events:none}
+
+
+
+.lhead{position:absolute;left:0;right:0;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 0}
+.ttl{position:relative}
+.ttl h1{font:32px/1 ZK;color:var(--ch);letter-spacing:.06em;position:relative;z-index:1}
+.ttl .sc{position:absolute;left:52px;top:-14px;font:22px/1 Script;color:rgba(63,154,128,.55);transform:rotate(-8deg);white-space:nowrap}
+.lhead .counter{margin:0 0 4px}
+.counter{display:inline-flex;gap:2px;padding:3px;border-radius:5px;background:#5b3a2c}
+.counter span{display:inline-block;min-width:12px;padding:1px 2px;border-radius:2px;background:#fdf9f0;font:700 13px/1.3 Baloo,ZK;text-align:center;color:#4a3027}
+.counter b{align-self:center;font:13px/1 ZK;color:#fdf9f0;padding:0 3px}
+
+
+
+/* 拼贴印刷：一个锚点（大字）+ 一枝破框薄荷 + 营养成分表 + 行尾小剪纸 */
+.big{position:absolute;left:22px;top:128px;z-index:10;text-align:left;color:var(--ch)}
+.big .k{font:13px/1 ZK;color:var(--cocoa);letter-spacing:.32em;display:flex;align-items:center;gap:7px}
+.big .k i{width:7px;height:7px;border-radius:50%;background:var(--mintb)}
+.big .n{margin-top:8px;font:800 96px/.86 BalooX,ZK;letter-spacing:-.02em;white-space:nowrap}
+.big .u{margin-top:8px;font:14px/1 ZK;letter-spacing:.08em}
+.big .u b{font:700 15px/1 Baloo,ZK}
+#sprig{position:absolute;right:-78px;top:132px;width:262px;z-index:11;pointer-events:none}
+.cmp{position:absolute;left:22px;top:292px;padding-bottom:12px;z-index:12;font:14px/1.5 WK;color:var(--ch)}
+.cmp em{font:800 22px/1 BalooX,ZK;font-style:normal;margin:0 2px;position:relative;display:inline-block}
+.cmp .ul{position:relative;display:inline-block}
+.cmp .ul img{position:absolute;left:-6px;right:-6px;width:calc(100% + 12px);bottom:-9px;height:13px}
+.facts{position:absolute;left:22px;right:22px;top:352px;z-index:12}
+.facts .hd{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:6px;border-bottom:7px solid var(--ch)}
+.facts .hd h2{font:24px/1 ZK;color:var(--ch);letter-spacing:.14em}
+.facts .hd span{font:12px/1 WK;color:#7a5a4c}
+.row{display:block;width:100%;text-align:left;position:relative;padding:11px 74px 10px 0;border-bottom:1.3px solid rgba(91,58,44,.55)}
+.row:last-of-type{border-bottom:4px solid var(--ch)}
+.row .l{display:flex;align-items:baseline;justify-content:space-between}
+.row .nm{font:19px/1 ZK;color:var(--ch);letter-spacing:.12em}
+.row .v{font:800 24px/1 BalooX,ZK;color:var(--ch)}
+.row .v small{font:13px/1 ZK;margin-left:3px}
+.row .sub{margin-top:6px;font:12.5px/1.4 WK;color:#7a5a4c;position:relative;display:inline-block}
+.row.bad .sub{color:#a0533c}
+.row .ex{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.3,1,.4,1);font:12.5px/1.65 WK;color:var(--ink)}
+.row .ex span{display:flex;justify-content:space-between}
+.row .ex a{display:inline-block;margin-top:2px;font:12px/1 ZK;color:var(--cocoa);border-bottom:1.2px dashed var(--cocoa);padding-bottom:2px}
+.row.open .ex{max-height:110px}
+.circ{position:absolute;left:-12px;top:-7px;width:calc(100% + 24px);height:calc(100% + 13px);pointer-events:none;clip-path:inset(0 100% 0 0);transition:clip-path .9s cubic-bezier(.5,0,.3,1) .6s}
+.ready .circ{clip-path:inset(0 0 0 0)}
+.ul img{clip-path:inset(0 100% 0 0);transition:clip-path .6s ease 1.1s}
+.ready .ul img{clip-path:inset(0 0 0 0)}
+.cut{position:absolute;right:26px;width:auto;z-index:13;pointer-events:none;transform-origin:50% 0}
+.ingr{position:absolute;left:22px;right:22px;z-index:12;padding-top:18px;color:var(--ch)}
+.ingr .ih{position:relative;display:flex;align-items:baseline;justify-content:space-between;padding-bottom:7px;border-bottom:1.3px solid rgba(91,58,44,.55)}
+.ingr .ih h3{position:relative;z-index:1;font:21px/1 ZK;font-weight:400;letter-spacing:.2em;color:var(--ch)}
+.ingr .ih .sc{position:absolute;left:50px;top:-13px;font:21px/1 Script;color:rgba(63,154,128,.6);transform:rotate(-7deg);white-space:nowrap}
+.ingr .ic{font:12px/1 WK;color:#7a5a4c}
+.ingr .il{display:flex;flex-wrap:wrap;align-items:center;column-gap:12px;row-gap:14px;padding-top:14px}
+.ingr .il i{width:6px;height:6px;border-radius:50%;background:var(--mintb);flex:none}
+.ingr button{position:relative;font:18px/1 ZK;color:var(--ch);letter-spacing:.06em;border-bottom:1.3px dashed var(--cocoa);padding-bottom:4px;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.ingr button .en{font:800 17px/1 BalooX,ZK;letter-spacing:.02em}
+.ingr sup{display:inline-block;margin-left:3px;vertical-align:top;position:relative;top:-6px;font:11px/1 WK;color:var(--mint3);letter-spacing:0}
+.ingr sup.off{color:#a0533c}
+.ingr button.hit{transform:translateY(-3px)}
+.cols{position:absolute;left:22px;right:22px;z-index:12;display:flex;align-items:baseline;gap:20px;font:16px/1 ZK;color:var(--ch)}
+.cols .t{font:13px/1 ZK;color:var(--cocoa);letter-spacing:.3em;display:flex;align-items:center;gap:6px;margin-right:4px}
+.cols .t i{width:6px;height:6px;border-radius:50%;background:var(--mintb)}
+.cols button{border-bottom:1.2px dashed var(--cocoa);padding-bottom:3px;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.cols button.hit{transform:translateY(-3px)}
+
+/* 吧台搁板：物件就是按钮，名字和数写在搁板前沿的价签上；不折叠 */
+.shelf{position:absolute;left:34px;right:34px;top:352px;z-index:12}
+.shelf .hd{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:4px}
+.shelf .hd h2{position:relative;font:24px/1 ZK;color:var(--ch);letter-spacing:.14em}
+.shelf .hd h2 .sc{position:absolute;left:54px;top:-12px;font:21px/1 Script;color:rgba(63,154,128,.6);rotate:-7deg;white-space:nowrap;letter-spacing:0}
+.tier{position:relative;display:flex;align-items:flex-start;gap:12px;margin-top:8px}
+.tier:not(.hd)::before{content:"";position:absolute;left:-12px;right:-12px;top:124px;height:14px;border-radius:4px 4px 6px 6px;
+ background:linear-gradient(#a4bfb3 0 2px,#7a4c3b 2px 4px,#6b4132 4px 70%,#5b3a2c);box-shadow:0 1px 0 rgba(255,255,255,.5) inset}
+.it{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;padding:0}
+.it .ob{position:relative;height:125px;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:4px;transform-origin:50% 100%}
+.it .ob img{width:auto;transform-origin:50% 100%}
+.it .tag{position:relative;margin-top:8px;min-width:120px;min-height:54px;padding:7px 12px 7px 20px;border-radius:5px;background:#fdf8ee;border:1.2px solid var(--cocoa);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;text-align:left}
+.it .tag::before{content:"";position:absolute;left:7px;top:50%;width:5px;height:5px;margin-top:-3px;border-radius:50%;border:1.2px solid var(--cocoa);background:#e4f3ed}
+.it .tag::after{content:"";position:absolute;left:50%;top:-8px;width:1.2px;height:8px;background:var(--cocoa)}
+.it .nm{font:18px/1 ZK;color:var(--ch);letter-spacing:.1em;white-space:nowrap}
+.it .v{font:800 21px/1 BalooX,ZK;color:var(--ch);white-space:nowrap}
+.it .v small{font:12px/1 ZK;margin-left:2px}
+.it .warn{position:relative;font:12px/1 WK;color:#a0533c;white-space:nowrap}
+.it .warn .circ{left:-8px;top:-6px;width:calc(100% + 16px);height:calc(100% + 12px)}
+.it.wide{flex:2.2}
+.it.wide .tag{flex-direction:row;align-items:center;gap:10px}
+.it.wide .tag>span{display:flex;flex-direction:column;gap:4px}
+.plus{flex:none;align-self:flex-start;margin-top:68px;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;
+ background:radial-gradient(circle at 38% 32%,#e7f6ef,#c4e8da 60%,#a9d9c6);border:1.3px solid var(--cocoa);transform-origin:50% 100%}
+.plus svg{width:22px;height:22px}
+/* 呼吸：各自绕底部支点轻晃，节奏错开；黑胶慢转 */
+@keyframes sway{0%,100%{rotate:-1.4deg}50%{rotate:1.4deg}}
+@keyframes spin{to{rotate:360deg}}
+.ob .s1{animation:sway 5.3s ease-in-out infinite}
+.ob .s2{animation:sway 6.9s ease-in-out -2s infinite}
+.it .ob img.s3{transform-origin:50% 50%;animation:spin 14s linear infinite}
+.ob .s4{animation:sway 7.7s ease-in-out -4s infinite}
+.it.hit .ob,.plus.hit{animation:hop .34s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hop{40%{transform:translateY(-7px) scale(1.04)}}
+.it:active .tag{background:#f3ece0}
+/* 配料：大一点的小甜点块 */
+.ingr .il{column-gap:10px!important;row-gap:10px!important}
+.ingr .il i{display:none}
+.ingr button{min-height:44px;padding:0 16px!important;border:1.2px solid rgba(138,92,70,.55)!important;border-radius:14px;background:rgba(253,248,238,.75);font:17px/1 ZK!important}
+.ingr button.mcard{background:#c4e8da}
+.tier.pl{clip-path:none!important;opacity:0;translate:0 8px;transition:opacity .5s,translate .5s}
+.ready .tier.pl{opacity:1;translate:0 0}
+/* 逐行印出 */
+.pl{clip-path:inset(0 100% 0 0);transition:clip-path .5s steps(14)}
+.ready .pl{clip-path:inset(0 0 0 0)}
+.bit{position:absolute;pointer-events:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.85),rgba(228,243,237,0))}
+.pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
+.pill{position:absolute;z-index:0;top:5px;left:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);transition:transform 380ms cubic-bezier(.3,1.25,.5,1),width 380ms}
+.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
+.tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
+
+/*hdr-align 11-13 margin34*/.lhead{padding:70px 34px 0!important}.big,.cmp{left:34px!important;right:34px}.facts,.ingr,.cols{left:34px!important;right:34px!important}.cut{right:38px!important}/*sprig-fix 11-13*/#sprig{z-index:9!important;right:auto!important;left:250px!important}@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}/*nav-font 11-14*/.pnav,.pnav *{font-family:"OPPO Sans","HarmonyOS Sans SC","PingFang SC","Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif}/*phone-fix 11-14：矮屏可滚*/.app{left:0!important;right:0!important;margin:0 auto;transform:none!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}.ingr{padding-bottom:120px}.app::-webkit-scrollbar{display:none}/*样张 白框精修版：只加装饰，结构不动*/@keyframes dsw{from{rotate:calc(var(--a,2deg)*-1)}to{rotate:var(--a,2deg)}}.dz{position:absolute;pointer-events:none;z-index:0}.dz img{display:block;width:100%;height:auto}.tier .it{position:relative;z-index:2}@media (prefers-reduced-motion:reduce){.dz{animation:none!important}}.dz.wall{left:-34px;right:-34px;top:26px;height:372px;z-index:0;background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='44' height='22'><g fill='none' stroke='%238a5c46' stroke-opacity='.16' stroke-width='1'><path d='M0 .5H44M0 11.5H44M.5 0V11M22.5 11V22'/></g></svg>") 0 0/44px 22px,linear-gradient(rgba(252,250,244,.30),rgba(252,250,244,.18));-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}.dz.wall:before{content:'';position:absolute;left:0;right:0;top:-6px;height:6px;background:#7d503c;border-top:1.2px solid #8a5c46;border-bottom:1.2px solid #8a5c46;opacity:.85}.dz.lamp img{position:absolute;bottom:0;left:0}.dz.lamp{right:6px;top:-16px;width:62px;height:150px;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 34px);mask-image:linear-gradient(transparent,#000 34px);transform-origin:50% 0;--a:1.6deg;animation:dsw 5.5s ease-in-out infinite alternate}.dz.board{left:-6px;top:34px;width:min(96px,27%);rotate:-3deg;transform-origin:50% 4%;--a:1.2deg;animation:dsw 7s ease-in-out -2s infinite alternate}.dz.board .bt{position:absolute;left:12%;right:12%;top:33%;bottom:16%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:rgba(244,240,228,.86)}.dz.board .bt b{font:400 17px/1 Script,cursive}.dz.board .bt i{font:600 9.5px/1.2 Baloo,sans-serif;letter-spacing:.08em;font-style:normal;color:rgba(196,232,218,.85);text-align:center}.dz.jars{left:50%;top:262px;width:min(104px,30%);translate:-50% 0;opacity:.92}.dz.glow{right:-14px;top:52px;width:130px;height:110px;background:radial-gradient(closest-side,rgba(255,236,190,.38),transparent);}.dz.straws{left:2px;top:96px;width:min(58px,17%);z-index:1}.dz.pitcher{right:4px;top:118px;width:min(76px,22%);z-index:1}.dz.flag{left:50%;top:274px;width:38px;translate:-50% 0;transform-origin:50% 100%;--a:2.5deg;animation:dsw 4.5s ease-in-out infinite alternate}.dz.flag .ft{position:absolute;left:4%;width:46%;top:4%;height:24%;display:grid;place-items:center;font:400 12px/1 Script,cursive;color:#5b3a2c}.dz.straws{left:4px;top:110px;width:40px}.dz.pitcher{left:auto;right:2px;top:326px;width:54px}.dz.jars{left:44%;top:-30px;width:min(104px,30%);translate:none;opacity:1}.dz.mb{right:6px;top:228px;z-index:1;rotate:-8deg;font:42px/1 Script,cursive;color:#e07f95;-webkit-text-stroke:5px #fffaf2;paint-order:stroke fill;white-space:nowrap}.fl{position:absolute;pointer-events:none;z-index:1;animation:dsw 6s ease-in-out infinite alternate}@media (prefers-reduced-motion:reduce){.fl{animation:none}}.far{position:absolute;z-index:0;pointer-events:none;overflow:visible}.far.vd{right:6px;top:520px;writing-mode:vertical-rl;font:700 10px/1 Baloo,sans-serif;letter-spacing:.32em;color:#e07f95;opacity:.55}
+.it .tag{background:#fffaf1;border:1.2px solid #8a5c46;border-radius:6px;box-shadow:inset 0 0 0 3px #fffaf1,inset 0 0 0 3.8px rgba(138,92,70,.26),0 2px 0 rgba(91,58,44,.14),0 8px 14px -8px rgba(47,125,100,.45);padding:8px 14px 8px 16px!important;min-height:58px}
+.it .tag::after{left:18%!important;width:64%!important;top:-9px!important;height:9px!important;background:linear-gradient(90deg,#8a5c46 0 1.2px,transparent 1.2px calc(100% - 1.2px),#8a5c46 calc(100% - 1.2px))!important}
+.it .tag::before{left:auto!important;right:9px!important;top:6px!important;margin:0!important;width:auto!important;height:auto!important;border:0!important;border-radius:0!important;background:none!important;font:15px/1 Script;color:rgba(63,154,128,.75);transform:rotate(-6deg)}
+.it[data-c="0"] .tag::before{content:none!important}
+.it[data-c="2"] .tag::before{content:"voice"!important}
+.it[data-c="3"] .tag::before{content:"health"!important}
+.it:active .tag{background:#f6efe3;transform:translateY(1px)}
+.ingr{z-index:14}
+.ingr button{background:#fffaf1;border:1.2px solid #8a5c46;border-radius:6px;box-shadow:inset 0 0 0 3px #fffaf1,inset 0 0 0 3.8px rgba(138,92,70,.26),0 2px 0 rgba(91,58,44,.14),0 8px 14px -8px rgba(47,125,100,.45);border-radius:6px!important;border:1.2px solid #8a5c46!important;padding:0 16px!important;min-height:46px;transition:transform .2s}
+.ingr button.mcard{background:#c9eadc;box-shadow:inset 0 0 0 3px #c9eadc,inset 0 0 0 3.8px rgba(253,248,238,.95),0 2px 0 rgba(91,58,44,.14),0 8px 14px -8px rgba(47,125,100,.45)}
+.ingr button:active{transform:translateY(1px);box-shadow:inset 0 0 0 3px #fffaf1,inset 0 0 0 3.8px rgba(138,92,70,.26),0 1px 0 rgba(91,58,44,.14)}
+
+/*用量秤 vb2*/
+#scl{position:absolute;left:34px;right:34px;z-index:12;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+body.uo #scl{opacity:1;visibility:visible}
+#scl svg{display:block;width:100%;height:auto;overflow:visible}
+.sh{transition:top .4s cubic-bezier(.2,.8,.2,1)}
+#scl .sk{cursor:pointer;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+#scl .sk.up{transform:translateY(-10px) rotate(-2deg)}
+#scl .sk text{font-family:BalooX,WK;text-anchor:middle;fill:#5b3a2c}
+#scl .sk .nm{font:400 9px WK;fill:#8a5c46}
+#scl .sk .sp2{font:400 9.5px WK;fill:#5b3a2c}
+#scl .tk{font:600 9px Baloo,WK;fill:#8a5c46;text-anchor:middle}
+#scl .ul{font:600 9px Baloo,WK;fill:#8a5c46;text-anchor:middle;letter-spacing:.06em}
+#scl .an{font:400 12px WK;fill:#5b3a2c}
+#scl .an b{font-weight:400}
+#scl .wn{font:800 11px BalooX,WK;fill:#5b3a2c;text-anchor:middle}
+#scl .wd{font:400 12px WK;fill:#8a5c46;text-anchor:middle}
+#scl .wd.td{fill:#2f6e58}
+#scl .no{font:800 10px BalooX;fill:#fffaf2;text-anchor:middle}
+#scl .wk{font:800 10px BalooX;fill:#8a5c46;text-anchor:middle}
+#scl .dial{cursor:grab;touch-action:pan-y}
+#scl .ndl{transition:transform .6s cubic-bezier(.3,1.5,.5,1)}
+#scl .q{font:800 10px BalooX,WK;fill:#8a5c46;text-anchor:middle}
+@media (prefers-reduced-motion:reduce){.sh,#scl,#scl .ndl,#scl .sk{transition:none}}
+</style></head><body>
+<div class="vp"><div class="app" id="app">
+<img class="drizzle" src="today-bg.png" alt="">
+<canvas id="fx"></canvas><img class="far" src="f-latte.svg" style="left:-74px;top:24px;width:240px;rotate:-14deg;opacity:.26" alt="" aria-hidden="true"><img class="far" src="f-sprig.svg" style="right:-118px;top:520px;width:300px;rotate:-74deg;opacity:.26" alt="" aria-hidden="true"><img class="far" src="f-sprig.svg" style="left:-70px;top:600px;width:170px;rotate:112deg;opacity:.2" alt="" aria-hidden="true"><img class="far" src="f-pitcher.svg" style="left:-34px;top:700px;width:120px;rotate:-8deg;opacity:.22" alt="" aria-hidden="true"><div class="far vd" aria-hidden="true">2026 · 11 · 19 · No.46</div>
+<header class="lhead"><div class="ttl"><span class="sc" aria-hidden="true">settings</span><h1>设置</h1></div><div class="counter"><span>4</span><span>6</span><b>周</b></div></header>
+
+<button class="big" id="big" aria-label="本周用量，点一下换着看"><div class="k"><i></i><span id="bk">本 周 用 量</span></div><div class="n" id="bn">128.4</div><div class="u">万 <b>tokens</b></div></button>
+<img id="sprig" src="sprig.png" alt="">
+<div class="cmp pl" style="transition-delay:.15s">比上周同一时候，<span class="ul">到了<em>七</em>成<img src="under.png" alt=""></span> · 聊天 96.1 万 · 记忆 32.3 万</div>
+
+<section id="scl" aria-label="本周用量明细"><svg viewBox="0 -34 344 490" id="sv">
+<g id="sacks"></g>
+<image href="u-scale.png" x="74" y="92" width="196" height="247"/>
+<g class="dial" id="dial">
+ <g id="ticks"></g>
+ <g class="ndl" id="gh" style="transform-origin:172.5px 246.5px"><line x1="172.5" y1="246.5" x2="172.5" y2="196" stroke="#e07f95" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round"/></g>
+ <g class="ndl" id="nd" style="transform-origin:172.5px 246.5px"><path d="M170.6 252 L172.5 190 L174.4 252Z" fill="#5b3a2c"/></g>
+ <circle cx="172.5" cy="246.5" r="5" fill="#5b3a2c"/><circle cx="171.6" cy="245.6" r="1.4" fill="#fbf6ea"/>
+ <text x="172.5" y="282" class="ul">万 tokens</text>
+</g>
+<g id="unk" opacity=".6"><image href="u-sack4.png" x="282" y="309" width="34" height="30"/><text x="299" y="330" class="q">?3</text></g>
+<rect x="44" y="337" width="256" height="5" rx="2" fill="#f6efe3" stroke="#8a5c46" stroke-width="1.2"/>
+<g id="wks"></g>
+<g id="wts"></g>
+<rect x="8" y="428" width="328" height="5" rx="2" fill="#f6efe3" stroke="#8a5c46" stroke-width="1.2"/>
+<g id="days"></g>
+<g id="ann">
+ <circle cx="12" cy="-22" r="8" fill="#5b3a2c"/><text x="12" y="-18.5" class="no">1</text>
+ <text x="24" y="-18" class="an">一袋 = 一个渠道</text>
+ <path d="M14 -12 Q18 30 50 52" fill="none" stroke="#8a5c46" stroke-width="1" stroke-dasharray="2 2"/>
+ <g id="ga"><circle cx="276" cy="168" r="8" fill="#5b3a2c"/><text x="276" y="171.5" class="no">2</text>
+ <text x="288" y="172" class="an">虚针 =</text><text x="276" y="190" class="an">上周这时</text><text x="276" y="208" class="an" style="font-family:BalooX,WK;font-size:13px">183.2</text>
+ <path d="M268 172 Q246 176 226 196" fill="none" stroke="#8a5c46" stroke-width="1" stroke-dasharray="2 2"/></g>
+ <circle cx="12" cy="354" r="8" fill="#5b3a2c"/><text x="12" y="357.5" class="no">3</text>
+ <text x="24" y="358" class="an">一个砝码 = 一天</text>
+</g>
+</svg></section>
+<section class="shelf" id="shelf"><div class="dz wall" aria-hidden="true"></div><div class="dz glow" aria-hidden="true"></div><div class="dz lamp" aria-hidden="true"><img src="s-lamp.png" alt=""></div><div class="dz board" aria-hidden="true"><img src="s-board.png" alt=""><div class="bt"><b>menu</b><i>MINT<br>CHOCO</i></div></div><div class="dz flag" aria-hidden="true"><img src="s-flag.png" alt=""><span class="ft">open</span></div><div class="dz straws" aria-hidden="true"><img src="s-straws.png" alt=""></div><div class="dz pitcher" aria-hidden="true"><img src="s-pitcher.png" alt=""></div><div class="dz jars" aria-hidden="true"><img src="s-jars.png" alt=""></div><div class="dz mb" aria-hidden="true">Mint Bar</div>
+<div class="hd tier pl" style="transition-delay:.25s;margin:0"><h2><span class="sc" aria-hidden="true">bar</span>吧台</h2></div>
+<div class="tier pl" style="transition-delay:.35s">
+ <button class="it wide" data-c="0" aria-label="渠道和模型"><span class="ob"><img class="s1" src="c-ticket.png" style="height:122px" alt=""><img class="s2" src="c-teabag.png" style="height:104px" alt=""></span>
+  <span class="tag"><span><b class="nm">渠道 · 模型</b><span class="v">3<small>条</small> 4<small>款</small></span></span><span class="warn">备用超时<img class="circ" src="circle.png" alt=""></span></span></button>
+</div>
+<div class="tier pl" style="transition-delay:.45s;margin-top:26px">
+ <button class="it" data-c="2" aria-label="声音"><span class="ob"><img class="s3" src="c-vinyl.png" style="height:104px;margin-bottom:8px" alt=""></span><span class="tag"><b class="nm">声音</b><span class="v">3<small>种</small></span></span></button>
+ <button class="it" data-c="3" aria-label="健康"><span class="ob"><img class="s4" src="c-thermo.png" style="height:120px" alt=""></span><span class="tag"><b class="nm">健康</b><span class="v">6284<small>步</small></span></span></button>
+</div>
+</section>
+<div class="ingr pl" id="cols" style="transition-delay:.8s"><div class="ih"><span class="sc" aria-hidden="true">ingredients</span><h3>配料</h3></div><p class="il"><button>工具<sup>3 个</sup></button><i></i><button>搜索</button><i></i><button><span class="en">MCP</span><sup class="off">未连</sup></button><i></i><button class="mcard">换一张请柬</button></p></div>
+<img class="bit" src="bit2.png" style="width:20px;left:352px;top:772px;z-index:9" alt="">
+<img class="fl" src="d-leafb1.png" style="width:52px;left:-20px;top:176px;--a:4deg;rotate:24deg" alt=""><img class="fl" src="d-bit3.png" style="width:18px;left:196px;top:58px;--a:8deg" alt=""><img class="fl" src="d-bit9.png" style="width:13px;right:34px;top:110px;--a:0deg;animation-duration:4s" alt=""><img class="fl" src="d-bit0.png" style="width:30px;right:16px;top:262px;--a:6deg" alt=""><img class="fl" src="d-bit8.png" style="width:16px;left:150px;top:350px;--a:7deg;animation-duration:5s" alt=""><img class="fl" src="d-bit14.png" style="width:16px;left:10px;top:598px;--a:9deg" alt=""><img class="fl" src="d-leafb2.png" style="width:50px;right:-18px;top:690px;--a:4deg;rotate:-30deg" alt=""><img class="fl" src="d-bit6.png" style="width:24px;right:22px;top:828px;--a:5deg;rotate:12deg" alt=""><div class="navfade" aria-hidden="true"></div>
+<nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
+<button class="tab"><span style="position:relative;display:inline-flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="16.5" rx="2.6" fill="#c4e8da"/><path d="M8.2 3v16.5"/><path d="M13.7 13.4c-1.9-1.3-2.9-2.3-2.9-3.4a1.45 1.45 0 0 1 2.9-.5 1.45 1.45 0 0 1 2.9.5c0 1.1-1 2.1-2.9 3.4Z" fill="#5b3a2c" stroke="none"/><path d="M14.6 19.5v3l1.3-1 1.3 1v-3" fill="#fbf6ea"/></svg><span class="dot"></span></span><span>记忆</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1 0-1.9-.1-2.8-.4L4.8 19.6l1.3-3.5C4.6 14.8 3.5 13.1 3.5 11.2c0-3.9 3.8-7 8.5-7Z" fill="#c4e8da"/><circle cx="8.6" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="15.4" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/></svg><span>聊天</span></button>
+<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 21c.5-3.8 3.6-6.3 7.5-6.3s7 2.5 7.5 6.3Z" fill="#c4e8da"/><circle cx="12" cy="8.6" r="4.6" fill="#c4e8da"/><circle cx="10.3" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><circle cx="13.7" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><ellipse cx="9.4" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/><ellipse cx="14.6" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/></svg><span>人格</span></button>
+<button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
+</nav>
+</div></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let mode=0,bigK=0;
+
+const cv=$('#fx'),cx=cv.getContext('2d'),DPR=Math.min(2,devicePixelRatio||1);let B=[];
+function fit(){const r=cv.getBoundingClientRect();cv.width=r.width*DPR;cv.height=r.height*DPR;cx.setTransform(DPR,0,0,DPR,0,0)}
+function bub(n,x,y,top){const b=cv.getBoundingClientRect();for(let i=0;i<n;i++)B.push({x:x??Math.random()*b.width,y:y??b.height+10,r:1.5+Math.random()*3,vy:-(.35+Math.random()*.6),w:Math.random()*6.28,stop:top?y-120:-10})}
+fit();addEventListener('resize',fit);for(let i=0;i<(RM?0:10);i++){bub(1);B[B.length-1].y=Math.random()*cv.getBoundingClientRect().height}
+function place(){const sh=$('#shelf');$('#cols').style.top=(sh.offsetTop+sh.offsetHeight+18)+'px'}
+$$('.it').forEach(e=>e.addEventListener('click',()=>{e.classList.remove('hit');void e.offsetWidth;e.classList.add('hit')}));
+$$('.ingr button').forEach(b=>b.onclick=()=>{b.classList.add('hit');setTimeout(()=>b.classList.remove('hit'),300)});
+place();requestAnimationFrame(()=>$('#app').classList.add('ready'));
+let t0=performance.now();addEventListener('resize',place);
+function loop(now){const t=(now-t0)/1000,m=RM?0:1;
+ bigK*=.95;$('#bn').style.transform=`translateY(${-bigK*5*Math.abs(Math.sin(t*10))}px)`;
+ cx.clearRect(0,0,cv.width,cv.height);if(Math.random()<.03&&!RM)bub(1);
+ B=B.filter(b=>{b.y+=b.vy;b.w+=.04;const x=b.x+Math.sin(b.w)*2;cx.beginPath();cx.arc(x,b.y,b.r,0,7);cx.strokeStyle='rgba(138,92,70,.35)';cx.lineWidth=1;cx.stroke();cx.fillStyle='rgba(255,255,255,.45)';cx.fill();return b.y>b.stop});
+ requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script><script>window.__DEMO_MAP=[[".mcard", "push:conn", 0, 0], [".it[data-c=\"0\"]", "push:chn", 1, 200], [".it[data-c=\"2\"]", "push:snd", 1, 200], [".it[data-c=\"3\"]", "push:hlt", 1, 200]]</script>
+<script>
+(()=>{const W={"46": {"c": [58.2, 38.5, 21.4, 10.3], "ch": [44.0, 29.1, 16.0, 7.0], "d": [31.0, 42.6, 28.8, 26.0, null, null, null], "g": 183.2, "t": 128.4, "me": [14.2, 9.4, 5.4, 3.3]}, "45": {"c": [92.6, 61.3, 33.4, 17.5], "d": [28.4, 30.1, 33.0, 29.7, 31.6, 26.2, 25.8], "t": 204.8, "ch": [69.3, 45.9, 25.0, 13.1], "me": [23.3, 15.4, 8.4, 4.4]}, "44": {"c": [77.0, 51.6, 28.1, 14.8], "d": [24.0, 26.5, 22.8, 25.1, 27.3, 23.6, 22.2], "t": 171.5, "ch": [57.6, 38.6, 21.0, 11.1], "me": [19.4, 13.0, 7.1, 3.7]}, "43": {"c": [73.5, 48.2, 26.6, 13.7], "d": [22.1, 25.4, 23.9, 21.6, 24.8, 22.3, 21.9], "t": 162.0, "ch": [55.0, 36.1, 19.9, 10.2], "me": [18.5, 12.1, 6.7, 3.5]}},CX=172.5,CY=246.5,R=64;const NS='http://www.w3.org/2000/svg';
+const $s=id=>document.getElementById(id);let wk=46,open=0;
+const ang=v=>-120+240*Math.min(v,250)/250;
+const tk=$s('ticks');for(let v=0;v<=250;v+=10){const a=(ang(v)-90)*Math.PI/180,L=v%50?4:8,r1=R-6,r2=r1-L;
+ tk.insertAdjacentHTML('beforeend',`<line x1="${CX+r1*Math.cos(a)}" y1="${CY+r1*Math.sin(a)}" x2="${CX+r2*Math.cos(a)}" y2="${CY+r2*Math.sin(a)}" stroke="#8a5c46" stroke-width="${v%50?1:1.4}" stroke-linecap="round"/>`);
+ if(v%50==0)tk.insertAdjacentHTML('beforeend',`<text x="${CX+(r2-9)*Math.cos(a)}" y="${CY+(r2-9)*Math.sin(a)+3}" class="tk">${v}</text>`)}
+const SK=[['u-sack1.png',.82,[.33,.73,.47,.72]],['u-sack2.png',.82,[.38,.82,.55,.82]],['u-sack3.png',.66,[.3,.82,.4,.56]],['u-sack4.png',.93,[.36,.83,.6,.83]]],NM=['渠道 A','渠道 B','渠道 C','其他'];
+const DN='一二三四五六日';
+function draw(){const w=W[wk];
+ // 料袋
+ let hs=w.c.map(v=>36+v*.9),ws=hs.map((h,i)=>h*SK[i][1]);const kk=Math.min(1,236/ws.reduce((a,b)=>a+b));hs=hs.map(h=>h*kk);ws=ws.map(x=>x*kk);const tot=ws.reduce((a,b)=>a+b)+6;let x=CX-tot/2;const g=$s('sacks');g.innerHTML='';
+ w.c.forEach((v,i)=>{const h=hs[i],wd=ws[i],y=98-h,[l,r,t,b]=SK[i][2],lx=x+wd*(l+r)/2,ly=y+h*(t+b)/2,big=wd>48;
+  g.insertAdjacentHTML('beforeend',`<g class="sk" data-i="${i}" style="transform-origin:${x+wd/2}px 98px"><image href="${SK[i][0]}" x="${x}" y="${y}" width="${wd}" height="${h}"/>
+  <g class="lb"><text x="${lx}" y="${ly+(big?1:3)}" style="font-size:${big?14:10}px">${v}</text>${big?`<text x="${lx}" y="${ly+12}" class="nm">${NM[i]}</text>`:''}</g>
+  <g class="lb2" style="display:none"><text x="${lx}" y="${ly-2}" class="sp2">聊 ${w.ch[i]}</text><text x="${lx}" y="${ly+10}" class="sp2">记 ${w.me[i]}</text></g></g>`);x+=wd+2});
+ g.querySelectorAll('.sk').forEach(e=>e.onclick=ev=>{ev.stopPropagation();const u=e.classList.toggle('up');e.querySelector('.lb').style.display=u?'none':'';e.querySelector('.lb2').style.display=u?'':'none'});
+ // 指针
+ $s('nd').style.transform=`rotate(${ang(w.t)}deg)`;
+ $s('gh').style.display=$s('ga').style.display=w.g?'':'none';if(w.g)$s('gh').style.transform=`rotate(${ang(w.g)}deg)`;
+ $s('unk').style.display=wk==46?'':'none';
+ // 换周点（波峰）
+ const ks=[43,44,45,46],wg=$s('wks');wg.innerHTML='';ks.forEach((k,i)=>{const d=Math.abs(ks.indexOf(wk)-i),r=[6,4,3,2.4][d],cx=196+i*22;
+  wg.insertAdjacentHTML('beforeend',`<g data-k="${k}" style="cursor:pointer"><circle cx="${cx}" cy="356" r="10" fill="transparent"/><circle cx="${cx}" cy="356" r="${r}" fill="${k==wk?'#2f6e58':'#c4e8da'}" stroke="#8a5c46" stroke-width="1"/></g>`)});
+ wg.insertAdjacentHTML('beforeend',`<text x="${196+66+22}" y="359.5" class="wk">${wk} 周</text>`);
+ wg.querySelectorAll('[data-k]').forEach(e=>e.onclick=ev=>{ev.stopPropagation();go(+e.dataset.k)});
+ // 砝码
+ const tg=$s('wts'),dg=$s('days');tg.innerHTML='';dg.innerHTML='';
+ w.d.forEach((v,i)=>{const px=34+i*46,td=wk==46&&i==3,bw=28;
+  if(v==null){tg.insertAdjacentHTML('beforeend',`<path d="M${px-bw/2} 428 L${px-bw/2+4} 410 H${px+bw/2-4} L${px+bw/2} 428Z" fill="none" stroke="#8a5c46" stroke-width="1" stroke-dasharray="3 2.5" opacity=".6"/>`)}
+  else{const h=12+v*.8;tg.insertAdjacentHTML('beforeend',`<path d="M${px-bw/2} 428 L${px-bw/2+4} ${428-h} H${px+bw/2-4} L${px+bw/2} 428Z" fill="${td?'#5b3a2c':'#c4e8da'}" stroke="#8a5c46" stroke-width="1.2" stroke-linejoin="round"/>
+   <rect x="${px-5}" y="${428-h-6}" width="10" height="6" rx="2.5" fill="#f6efe3" stroke="#8a5c46" stroke-width="1"/><path d="M${px-bw/2+6} ${428-h+4} V424" stroke="${td?'rgba(255,250,242,.35)':'rgba(255,255,255,.7)'}" stroke-width="2" stroke-linecap="round"/>
+   <text x="${px}" y="${428-h-10}" class="wn">${v.toFixed(1)}</text>`)}
+  dg.insertAdjacentHTML('beforeend',`<text x="${px}" y="448" class="wd${td?' td':''}">${DN[i]}</text>`)});
+ // 大字跟着周
+ const bn=document.getElementById('bn'),bk=document.getElementById('bk');bn.textContent=w.t.toFixed(1);bk.textContent=wk==46?'本 周 用 量':`第 ${wk} 周`;
+ const cp=document.querySelector('.cmp');if(!cp.dataset.o)cp.dataset.o=cp.innerHTML;
+ cp.innerHTML=wk==46?cp.dataset.o:`第 ${wk} 周 · 聊天 ${w.ch.reduce((a,b)=>a+b).toFixed(1)} 万 · 记忆 ${w.me.reduce((a,b)=>a+b).toFixed(1)} 万`;
+}
+function go(k){if(!W[k]||k==wk)return;wk=k;draw()}
+// 滑表盘换周
+let sx=null;const dl=$s('dial');dl.addEventListener('pointerdown',e=>{sx=e.clientX});
+addEventListener('pointerup',e=>{if(sx==null)return;const dx=e.clientX-sx;sx=null;if(Math.abs(dx)>24)go(wk+(dx<0?1:-1))});
+// 展开 / 收起：大字不动，下面的往下让
+const app=document.getElementById('app'),scl=$s('scl'),cmp=document.querySelector('.cmp');let mov=null;
+function lay(){scl.style.top=(cmp.offsetTop+cmp.offsetHeight+6)+'px';
+ if(!mov){const t0=parseFloat(scl.style.top)-10;mov=[...app.children].filter(e=>e!==scl&&!/^(NAV|CANVAS|HEADER|BUTTON)$/.test(e.tagName)&&e.id!=='sprig'&&e.offsetTop>=t0);mov.forEach(e=>{e.dataset.t0=e.offsetTop;e.classList.add('sh')})}
+ const H=open?scl.offsetHeight+24:0;mov.forEach(e=>e.style.top=(+e.dataset.t0+H)+'px')}
+document.getElementById('big').onclick=()=>{open=!open;document.body.classList.toggle('uo',open);document.getElementById('big').setAttribute('aria-expanded',open);if(!open&&wk!=46){wk=46;draw()}lay()};
+document.getElementById('big').setAttribute('aria-label','本周用量，点一下展开或收起');document.getElementById('big').setAttribute('aria-expanded','false');
+draw();requestAnimationFrame(()=>requestAnimationFrame(lay));
+if(location.hash=='#open')setTimeout(()=>document.getElementById('big').click(),300);
+})();
+</script><script src="../../bridge.js"></script><script src="../pfix.js?v=55"></script></body></html>
