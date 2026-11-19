@@ -1,0 +1,61 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>聊天 骨架 sk5 · 小票动线</title><style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#d9d9d9;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#222}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:inherit}
+.app{position:fixed;inset:0;margin:0 auto;width:min(100%,440px);overflow:hidden;background:#f4f4f4}
+.scroller{position:absolute;inset:0;z-index:2;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}.scroller::-webkit-scrollbar{display:none}
+.content{position:relative;min-height:100%}
+.lhead{position:sticky;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 10px}
+.lhead h1{font-size:30px;font-weight:800;color:#222}.lhead h1 small{font:italic 14px serif;color:#888;margin-left:6px}
+.lbtns{display:flex;gap:10px}.rb{width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px #d0d0d0 inset}
+.pnav{position:absolute;left:16px;right:16px;bottom:20px;height:62px;border-radius:31px;background:#fff;box-shadow:0 0 0 1.5px #d0d0d0 inset;z-index:30;display:flex;align-items:center;padding:0 5px}
+.pnav .tab{position:relative;z-index:1;flex:1;height:52px;font-size:11px;color:#888;text-align:center}.pnav .tab.on{color:#222;font-weight:700}
+.pnav .tab.on{background:#d0d0d0;border-radius:26px}
+.g1{color:#222}.g2{color:#888}.g3{color:#d0d0d0}
+.tap{transition:transform .25s ease-out}.tap:active{transform:scale(.97)}
+
+.p5{padding:4px 18px 0;font-variant-numeric:tabular-nums}
+.hd{display:grid;grid-template-columns:1fr auto;column-gap:10px;align-items:start;width:100%}
+.hd .k{font-size:12px;color:#888;letter-spacing:.1em}
+.hd .dt{font-size:44px;font-weight:900;line-height:1;letter-spacing:-.02em;color:#222;margin-top:2px}
+.hd .dt small{font-size:14px;font-weight:600;color:#888;margin-left:6px;letter-spacing:0}
+.hd .catsvg{width:74px;margin-top:4px}
+.tot{display:flex;align-items:baseline;gap:8px;margin-top:10px;width:100%}
+.tot .lb{font-size:12px;color:#888}.tot .dots{flex:1;border-bottom:2px dotted #d0d0d0;transform:translateY(-4px)}
+.tot b{font-size:40px;font-weight:900;color:#222;line-height:1}.tot span{font-size:13px;color:#888}
+.lines{margin-top:14px;width:100%}
+.lines p{font-size:18px;line-height:1.55;color:#222;display:grid;grid-template-columns:28px 1fr}
+.lines p+p{margin-top:6px}.lines p i{font-style:normal;font-size:12px;color:#888;padding-top:4px}
+.lines .lt{font-size:12px;color:#888;margin-top:8px;padding-left:28px}
+.cut{margin:28px -18px 0;border-top:2px dashed #d0d0d0}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin:20px 0 6px}
+.sec b{font-size:15px;color:#222;letter-spacing:.2em}.sec i{font-style:normal;font-size:11px;color:#888}
+.row{display:block;width:100%;padding:10px 0}
+.row .top{display:flex;align-items:baseline;gap:8px}
+.row .top b{font-size:16px;color:#222}.row .top small{font-size:12px;color:#888}
+.row .top .dots{flex:1;border-bottom:2px dotted #d0d0d0;transform:translateY(-4px)}
+.row .top em{font-style:normal;font-size:16px;font-weight:800;color:#222}.row .top em small{font-weight:400;margin-left:2px}
+.row .ex{font-size:14px;line-height:1.5;color:#222;margin-top:3px;display:grid;grid-template-columns:28px 1fr}
+.row .ex i{font-style:normal;font-size:11px;color:#888;padding-top:2px}
+.row .ex span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.row.none .top b,.row.none .top em{color:#d0d0d0;font-weight:600}.row.none .top small{color:#d0d0d0}
+.sub{display:flex;align-items:baseline;gap:8px;border-top:2px solid #222;margin-top:6px;padding-top:8px}
+.sub span{font-size:13px;color:#222;font-weight:700}.sub .dots{flex:1}.sub b{font-size:22px;font-weight:900}.sub small{font-size:12px;color:#888}
+.row.wk .top b{font-size:14px}
+.morew{display:block;margin-top:10px;font-size:12px;color:#888}
+.foot{margin:34px -18px 0;border-top:2px dashed #d0d0d0;padding:16px 18px 0;text-align:center;font-size:11px;line-height:1.8;color:#888}
+.foot b{display:block;font-size:13px;color:#888;letter-spacing:.15em}
+
+</style></head><body><div class="app"><div class="scroller" id="sc"><div class="content">
+<header class="lhead"><h1>聊天<small>chats</small></h1><div class="lbtns"><button class="rb" aria-label="搜索聊天"></button><button class="rb" aria-label="更多"></button></div></header>
+<main class="p5"><button class="tap" style="display:block;width:100%" aria-label="进今天的聊天">
+<div class="hd"><div><div class="k">今天 · 最后一句 19:45</div><div class="dt">11/11<small>周三</small></div></div><svg viewBox="0 0 120 92" class="catsvg" aria-hidden="true"><path d="M14 80C6 62 12 40 26 30C28 18 34 10 40 8C46 14 48 20 50 24C56 22 64 22 70 24C72 18 76 12 82 8C88 12 92 22 94 30C108 40 114 62 106 80C96 88 24 88 14 80Z" fill="#fff" stroke="#888" stroke-width="2"/><circle cx="46" cy="52" r="3" fill="#222"/><circle cx="74" cy="52" r="3" fill="#222"/><path d="M54 60q6 5 12 0" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/><path d="M4 84q56 10 112 0" fill="none" stroke="#d0d0d0" stroke-width="6" stroke-linecap="round"/></svg></div>
+<div class="tot"><span class="lb">今天聊了</span><span class="dots"></span><b>6</b><span>轮</span></div>
+<div class="lines"><p><i>他</i>那我先把奶煮上，你到家刚好能喝</p><p><i>我</i>要加棉花糖！</p><div class="lt">点开继续聊 →</div></div></button>
+<div class="cut"></div>
+<div class="sec"><b>本周明细</b><i>11/5 – 11/10</i></div><button class="row tap"><div class="top"><b>11/10</b><small>周二</small><span class="dots"></span><em>12<small>轮</small></em></div><div class="ex"><i>他</i><span>要是真下雪，我去楼下给你堆一只小猫</span></div><div class="ex"><i>我</i><span>你说明天会不会下雪呀</span></div></button><button class="row tap"><div class="top"><b>11/9</b><small>周一</small><span class="dots"></span><em>8<small>轮</small></em></div><div class="ex"><i>他</i><span>那今晚什么都不想，陪你发呆</span></div><div class="ex"><i>我</i><span>今天的会开了三个小时，脑袋好空</span></div></button><button class="row tap"><div class="top"><b>11/8</b><small>周日</small><span class="dots"></span><em>9<small>轮</small></em></div><div class="ex"><i>他</i><span>下次还去，换你点单</span></div><div class="ex"><i>我</i><span>那家的薄荷冰淇淋超好吃</span></div></button><div class="row none"><div class="top"><b>11/7</b><small>周六</small><span class="dots"></span><em>没聊</em></div></div><button class="row tap"><div class="top"><b>11/6</b><small>周五</small><span class="dots"></span><em>2<small>轮</small></em></div><div class="ex"><i>他</i><span>晚安</span></div><div class="ex"><i>我</i><span>晚安～</span></div></button><div class="row none"><div class="top"><b>11/5</b><small>周四</small><span class="dots"></span><em>没聊</em></div></div><div class="sub"><span>本周合计</span><span class="dots"></span><b>31</b><small>轮 · 聊了 4 天</small></div><div class="sec" style="margin-top:34px"><b>更早</b><i>按周</i></div><button class="row wk tap"><div class="top"><b>10/29 – 11/4</b><span class="dots"></span><em>5<small>天</small></em></div><div class="ex"><i></i><span>万圣节那天他给你讲了一个超吓人的故事</span></div></button><button class="row wk tap"><div class="top"><b>10/22 – 10/28</b><span class="dots"></span><em>3<small>天</small></em></div><div class="ex"><i></i><span>这周你一直在忙期中</span></div></button><button class="row wk tap"><div class="top"><b>10/15 – 10/21</b><span class="dots"></span><em>4<small>天</small></em></div><div class="ex"><i></i><span>第一次一起看的那部电影</span></div></button><button class="row wk tap"><div class="top"><b>10/8 – 10/14</b><span class="dots"></span><em>2<small>天</small></em></div><div class="ex"><i></i><span>你说秋天最适合喝热可可</span></div></button><button class="morew">再往前一个月 →</button><div class="foot"><b>茶茶的薄荷巧克力茶会</b>每天坐近一点</div></main>
+<div style="height:120px"></div>
+</div></div>
+<nav class="pnav" aria-label="主导航"><button class="tab">今天</button><button class="tab">记忆</button><button class="tab on" aria-current="page">聊天</button><button class="tab">人格</button><button class="tab">设置</button></nav>
+</div><script src="../pfix.js?v=57"></script></body></html>
