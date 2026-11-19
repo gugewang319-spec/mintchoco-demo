@@ -1,0 +1,165 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>聊天页 灰稿 gb4 · 叶子浮在奶茶上</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#d9d9d9;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#333}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+/* 茶底：固定在 .app 上，不随滚动 */
+.app{position:fixed;top:0;bottom:0;left:0;right:0;margin:0 auto;width:min(100%,440px);overflow:hidden;background-color:#efefef;background-image:repeating-linear-gradient(90deg,#e6e6e6 0,#e6e6e6 18px,#f3f3f3 18px,#f3f3f3 36px)}
+/* 固定层：奶盖白 → 薄荷条纹 → 往下化进奶茶 → 杯底珍珠；都不随滑动 */
+.bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.bg .tea{position:absolute;left:0;right:0;bottom:0;height:62%;background:linear-gradient(180deg,rgba(205,205,205,0) 0%,rgba(205,205,205,.75) 38%,#c4c4c4 70%,#b8b8b8 100%)}
+.bg .foam{position:absolute;left:0;right:0;top:0;height:22%;background:linear-gradient(180deg,rgba(250,250,250,.9),rgba(250,250,250,0))}
+.bg svg.pearls{position:absolute;left:0;bottom:0;width:100%;height:120px}
+.far{position:absolute;will-change:transform;opacity:.5}
+.far.lf{animation:drift var(--d) ease-in-out infinite;animation-delay:var(--dl)}
+.far.oil{width:var(--s);height:var(--s);border-radius:50%;box-shadow:inset 0 0 0 1.2px #a9a9a9;animation:bob var(--d) ease-in-out infinite;animation-delay:var(--dl)}
+@keyframes drift{0%,100%{transform:translate(0,0) rotate(var(--r))}50%{transform:translate(6px,-10px) rotate(calc(var(--r) + 8deg))}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.scroller{position:absolute;inset:0;z-index:2;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;overscroll-behavior:contain}.scroller::-webkit-scrollbar{display:none}
+.content{position:relative;min-height:100%}
+/* 页头：交给 pfix.js 统一处理 */
+.lhead{position:sticky;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 10px}
+.lhead h1{font-size:30px;font-weight:800;color:#444}.lhead h1 small{font:italic 14px serif;color:#999;margin-left:6px}
+.lbtns{display:flex;gap:10px}.rb{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.7);box-shadow:0 0 0 1px #fff inset,0 2px 6px rgba(0,0,0,.08)}
+
+.pg{position:relative;padding:4px 0 170px}
+#leaf{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:0;overflow:visible}
+#outline{transform-origin:50% 0;animation:sway 9s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-.12deg)}50%{transform:rotate(.12deg)}}
+.blk{position:relative;z-index:1}
+
+/* 叶柄顶端：猫猫 */
+.catw{display:flex;justify-content:center;padding-top:6px}
+.cat{width:104px;height:80px;border-radius:50% 50% 44% 44%/62% 62% 38% 38%;background:#fff;box-shadow:0 0 0 2px #bbb inset;display:grid;place-items:center;font-size:11px;color:#999;position:relative;transform-origin:50% 100%}
+.cat:before,.cat:after{content:"";position:absolute;top:-10px;width:22px;height:22px;background:#fff;border:2px solid #bbb;border-bottom:0;border-right:0;transform:rotate(45deg)}.cat:before{left:18px}.cat:after{right:18px}
+
+/* 节点：日期写在主脉的断口里 */
+.node{display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 0 0;cursor:pointer}
+.node .d{font-size:12px;color:#888;letter-spacing:.04em;line-height:1.3}
+.node .d b{font-size:15px;color:#444;margin-right:5px}
+.node .n{font-size:11px;color:#999;margin-top:1px}.node .n em{font-style:normal;font-weight:800;font-size:16px;color:#555;margin-right:2px}
+.node.today .n em{font-size:30px}
+/* 一天一对侧脉：左边他说的，右边你说的；聊得越多，两句坐得越近 */
+.pair{position:relative;display:flex;padding-top:22px;cursor:pointer}
+.pair .s{width:50%;font-size:14.5px;line-height:1.6;color:#333;transition:color .2s,opacity .2s}
+.pair .s.his{text-align:right;padding:0 var(--g) 0 26px}
+.pair .s.mine{padding:0 26px 0 var(--g)}
+.pair .s em{display:block;font-style:normal;font-size:11px;color:#999;margin-bottom:2px}
+.today .pair .s{font-size:16.5px}
+/* 没聊的那天：主脉上一颗油腺小点 */
+.gland{display:flex;flex-direction:column;align-items:center;padding:26px 0 0}
+.gland i{width:11px;height:11px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #aaa;background:rgba(255,255,255,.6);animation:gl 3s ease-in-out infinite}
+.gland span{font-size:10.5px;color:#aaa;margin-top:4px}
+@keyframes gl{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+/* 分段标题 */
+.sh{display:flex;flex-direction:column;align-items:center;padding-top:56px}
+.sh b{font-size:16px;color:#444}.sh span{font-size:11px;color:#888;margin-top:2px}
+/* 更早：叶尖细脉，一周一条，一句写在主脉下方 */
+.wk .pair{padding-top:16px}
+.wk .one{width:100%;text-align:center;font-size:13px;line-height:1.6;color:#555;padding:0 72px;transition:color .2s,opacity .2s}
+.dim .s,.dim .one{opacity:.45}
+.note{position:relative;z-index:1;margin:220px 24px 0;font-size:11px;color:#999;line-height:1.7}
+
+.pnav{position:absolute;left:16px;right:16px;bottom:20px;height:62px;border-radius:31px;background:rgba(255,255,255,.72);box-shadow:0 0 0 1px #fff inset,0 8px 20px -10px rgba(0,0,0,.3);z-index:30;display:flex;align-items:center;padding:0 5px}
+.pnav .tab{position:relative;z-index:1;flex:1;height:52px;font-size:11px;color:#777;text-align:center}
+.pnav .pill{position:absolute;left:5px;top:5px;height:52px;border-radius:26px;background:#ddd}
+@media (prefers-reduced-motion:reduce){#outline,.gland i,.far{animation:none}}
+</style></head><body>
+<div class="app">
+ <div class="bg" aria-hidden="true"><div class="foam"></div><div class="tea"></div><div id="far"></div><svg class="pearls" id="pearls" preserveAspectRatio="none"></svg></div>
+ <div class="scroller" id="sc"><div class="content">
+  <header class="lhead"><h1>聊天<small>chats</small></h1><div class="lbtns"><button class="rb" aria-label="搜索聊天"></button><button class="rb" aria-label="更多"></button></div></header>
+  <div class="pg" id="pg">
+   <svg id="leaf" aria-hidden="true"><g id="outline"></g><g id="veins"></g></svg>
+   <div class="blk catw"><button class="cat" id="cat">猫猫奶盖</button></div>
+   <div id="list"></div>
+   <p class="note">灰稿 gb4 · 叶子浮在奶茶上：背景照旧分层并固定不动——顶上奶盖白、中间薄荷竖条纹、往下慢慢化进奶茶、杯底一层平涂珍珠（就在奶茶里，不和底分开）。冰块拿掉，远处换成几片小薄荷叶和小油点慢慢漂，各自节奏。叶子半透明，透出下面的条纹和奶茶。以下同 gb3：一片大薄荷叶挂在猫猫奶盖下面，叶柄在上、叶尖在下（越往下越早）。主脉＝时间线，日期写在主脉的断口里。每天一对侧脉：左边是他那天最后一句，右边是你的；那天聊得越多，两句坐得越近（像《小王子》的狐狸，每天坐近一点），聊得少就各自站得远。没聊的那天只是主脉上一颗油腺小点。叶尖是更早，一周一条细脉。点一天：一道汁液顺着侧脉流到两句话，再点进去（演示为 alert）。叶子边缘轻轻晃，没有任何框。</p>
+  </div>
+ </div></div>
+ <nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span><button class="tab">今天</button><button class="tab">记忆</button><button class="tab on" aria-current="page">聊天</button><button class="tab">人格</button><button class="tab">设置</button></nav>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const D=[
+ {k:'today',d:'今天',sub:'11/11 周三',n:6,t:'19:45',his:'那我先把奶煮上，你到家刚好能喝',mine:'要加棉花糖！'},
+ {sh:'本周',r:'11/5 – 11/10 · 31 轮'},
+ {d:'11/10',sub:'周二',n:12,his:'要是真下雪，我去楼下给你堆一只小猫',mine:'你说明天会不会下雪呀'},
+ {d:'11/9',sub:'周一',n:8,his:'那今晚什么都不想，陪你发呆',mine:'今天的会开了三个小时，脑袋好空'},
+ {d:'11/8',sub:'周日',n:9,his:'下次还去，换你点单',mine:'那家的薄荷冰淇淋超好吃'},
+ {d:'11/7',n:0},
+ {d:'11/6',sub:'周五',n:2,his:'晚安',mine:'晚安～'},
+ {d:'11/5',n:0},
+ {sh:'更早',r:'10/8 – 11/4 · 4 周'},
+ {w:1,d:'10/29 – 11/4',n:5,one:'万圣节那天他给你讲了一个超吓人的故事'},
+ {w:1,d:'10/22 – 10/28',n:3,one:'这周你一直在忙期中'},
+ {w:1,d:'10/15 – 10/21',n:4,one:'第一次一起看的那部电影'},
+ {w:1,d:'10/8 – 10/14',n:2,one:'你说秋天最适合喝热可可'}];
+const gap=n=>Math.max(12,Math.min(56,60-n*4));
+let H='';
+D.forEach((x,i)=>{
+ if(x.sh){H+=`<div class="blk sh"><b>${x.sh}</b><span>${x.r}</span></div>`;return}
+ if(!x.n){H+=`<div class="blk gland" data-i="${i}"><i style="animation-delay:-${i*.7}s"></i><span>${x.d}</span></div>`;return}
+ if(x.w){H+=`<div class="blk day wk" data-i="${i}" data-go="${x.d}"><div class="node"><div class="d">${x.d}</div><div class="n">${x.n} 天</div></div><div class="pair" style="--g:0px"><div class="one">${x.one}</div></div></div>`;return}
+ H+=`<div class="blk day ${x.k||''}" data-i="${i}" data-go="${x.d}"><div class="node"><div class="d"><b>${x.d}</b>${x.sub||''}</div><div class="n"><em>${x.n}</em>轮${x.t?' · '+x.t:''}</div></div>
+  <div class="pair" style="--g:${gap(x.n)}px"><div class="s his"><em>他</em>${x.his}</div><div class="s mine"><em>我</em>${x.mine}</div></div></div>`});
+$('#list').innerHTML=H;
+const today=$('.day.today');today.classList.add('today');
+
+/* 画叶子：外形、主脉、侧脉 */
+const NS='http://www.w3.org/2000/svg',svg=$('#leaf'),pg=$('#pg');
+const mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e};
+let veinMap=new Map();
+function draw(){
+ const W=pg.clientWidth,mid=W/2,pr=pg.getBoundingClientRect(),Ht=pg.scrollHeight;
+ svg.setAttribute('height',Ht);svg.setAttribute('viewBox',`0 0 ${W} ${Ht}`);
+ const og=$('#outline'),vg=$('#veins');og.innerHTML='';vg.innerHTML='';veinMap.clear();
+ const cat=$('#cat').getBoundingClientRect(),top=cat.bottom-pr.top-4;
+ const last=[...document.querySelectorAll('.day.wk')].pop().getBoundingClientRect(),tip=last.bottom-pr.top+170;
+ /* 外形：叶柄连着猫猫，往下张开再收成叶尖；边上细细的锯齿 */
+ const Wm=mid-8,L=tip-top,pts=[];
+ for(let y=0;y<=L;y+=11){const t=y/L,w=Wm*Math.pow(Math.sin(Math.PI*Math.pow(t,.4)),.45),z=(Math.round(y/11)%2?-2.6:0)*Math.min(1,w/30);pts.push([y,Math.max(0,w+z)])}
+ let d=`M${mid} ${top}`;pts.forEach(([y,w])=>d+=` L${(mid-w).toFixed(1)} ${(top+y).toFixed(1)}`);d+=` L${mid} ${tip}`;
+ [...pts].reverse().forEach(([y,w])=>d+=` L${(mid+w).toFixed(1)} ${(top+y).toFixed(1)}`);d+='Z';
+ og.appendChild(mk('path',{d,fill:'rgba(255,255,255,.3)',stroke:'#bdbdbd','stroke-width':1.4,'stroke-linejoin':'round'}));
+ /* 主脉：在日期、标题、细脉那句话处断开 */
+ const holes=[...document.querySelectorAll('.node,.sh,.gland,.wk .one')].map(e=>{const r=e.getBoundingClientRect(),pad=e.classList.contains('gland')?-2:6;return[r.top-pr.top-pad,r.bottom-pr.top+pad]}).sort((a,b)=>a[0]-b[0]);
+ let y0=top;holes.forEach(([a,b])=>{if(a>y0)vg.appendChild(mk('line',{x1:mid,y1:y0,x2:mid,y2:a,stroke:'#a8a8a8','stroke-width':2,'stroke-linecap':'round'}));y0=Math.max(y0,b)});
+ if(tip-10>y0)vg.appendChild(mk('line',{x1:mid,y1:y0,x2:mid,y2:tip-10,stroke:'#a8a8a8','stroke-width':1.4,'stroke-linecap':'round'}));
+ /* 侧脉：从节点下方分出去，弯到两句话的里侧；继续淡淡延到叶缘 */
+ document.querySelectorAll('.day').forEach(el=>{
+  const nd=el.querySelector('.node').getBoundingClientRect(),ny=nd.bottom-pr.top+3,arr=[];
+  const wk=el.classList.contains('wk');
+  const sides=wk?[[-1,null],[1,null]]:[[-1,el.querySelector('.his')],[1,el.querySelector('.mine')]];
+  sides.forEach(([sg,s])=>{
+   let ex,ey;
+   if(s){const g=parseFloat(getComputedStyle(el.querySelector('.pair')).getPropertyValue('--g')),em=s.querySelector('em').getBoundingClientRect();ex=mid+sg*(g-4);ey=em.top-pr.top+em.height/2}
+   else{ex=mid+sg*58;ey=ny+5}
+   const p=`M${mid} ${ny} C${mid} ${ny+8} ${mid+sg*(Math.abs(ex-mid)*.25)} ${ey} ${ex} ${ey}`;
+   const yy=ey-pr.top+pr.top, wAt=y=>{const t=Math.max(0,Math.min(1,(y-top)/L));return Wm*Math.pow(Math.sin(Math.PI*Math.pow(t,.4)),.45)};
+   const edge=mid+sg*(wAt(ey-20)-6);
+   if(!wk){vg.appendChild(mk('path',{d:`M${ex} ${ey} Q${(ex+edge)/2} ${ey-6} ${edge} ${ey-22}`,fill:'none',stroke:'#cfcfcf','stroke-width':1,'stroke-dasharray':'2 4','stroke-linecap':'round'}))}
+   vg.appendChild(mk('path',{d:p,fill:'none',stroke:'#a8a8a8','stroke-width':wk?1:1.6,'stroke-linecap':'round'}));
+   const sap=mk('path',{d:p,fill:'none',stroke:'#4f4f4f','stroke-width':wk?2:2.8,'stroke-linecap':'round',opacity:0});
+   vg.appendChild(sap);arr.push(sap)});
+  veinMap.set(el,arr)});
+}
+/* 点一天：汁液顺着侧脉流过去；再点进去 */
+let sel=null;
+function flow(el){(veinMap.get(el)||[]).forEach(p=>{const l=p.getTotalLength();p.style.strokeDasharray=l;p.setAttribute('opacity',1);
+ p.animate([{strokeDashoffset:l},{strokeDashoffset:0}],{duration:matchMedia('(prefers-reduced-motion: reduce)').matches?0:300,easing:'cubic-bezier(.23,1,.32,1)',fill:'forwards'})})}
+document.querySelectorAll('.day').forEach(el=>el.addEventListener('click',()=>{
+ if(sel===el){alert('进 '+el.dataset.go);return}
+ if(sel)(veinMap.get(sel)||[]).forEach(p=>p.setAttribute('opacity',0));
+ sel=el;document.querySelectorAll('.day').forEach(o=>o.classList.toggle('dim',o!==el));flow(el)}));
+$('#cat').addEventListener('click',e=>{e.stopPropagation();$('#cat').animate([{transform:'scale(1)'},{transform:'scale(.97,.94)'},{transform:'scale(1)'}],{duration:260,easing:'cubic-bezier(.23,1,.32,1)'});setTimeout(()=>alert('进今天的聊天'),280)});
+/* 杯底珍珠：平涂，一圈细边，不做 3D */
+(function(){const sv=$('#pearls'),W=440,H=120;sv.setAttribute('viewBox',`0 0 ${W} ${H}`);let r=7,g='';
+ for(let row=0;row<3;row++){for(let x=-6;x<W+10;x+=20+((x*7+row*13)%9)){const y=H-10-row*15-((x*3)%7),rr=8+((x+row*5)%5);g+=`<circle cx="${x}" cy="${y}" r="${rr}" fill="${row?'#8f8f8f':'#7d7d7d'}" stroke="#6b6b6b" stroke-width="1"/><circle cx="${x-rr*.35}" cy="${y-rr*.35}" r="${rr*.18}" fill="#bdbdbd"/>`}}
+ sv.innerHTML=g})();
+/* 远处小料：几片小叶子、几颗油点，固定层里各自慢慢漂 */
+(function(){const f=$('#far'),leaf=s=>`<svg width="${s}" height="${s*1.5}" viewBox="0 0 20 30"><path d="M10 1C17 8 18 19 10 29 2 19 3 8 10 1Z" fill="rgba(255,255,255,.5)" stroke="#a6a6a6" stroke-width="1.3"/><path d="M10 4V27" stroke="#a6a6a6" stroke-width="1"/></svg>`;
+ [[16,8,30,-20],[12,84,24,35],[18,78,52,-50],[11,12,62,15],[14,90,74,60]].forEach(([s,x,y,r],i)=>{const e=document.createElement('div');e.className='far lf';e.innerHTML=leaf(s);e.style.cssText=`left:${x}%;top:${y}%;--r:${r}deg;--d:${8+i*1.7}s;--dl:-${i*2.1}s`;f.appendChild(e)});
+ [[7,20,40],[5,70,36],[9,6,48],[6,88,60],[5,30,70],[8,62,66]].forEach(([s,x,y],i)=>{const e=document.createElement('i');e.className='far oil';e.style.cssText=`left:${x}%;top:${y}%;--s:${s}px;--d:${5+i*1.3}s;--dl:-${i*1.1}s`;f.appendChild(e)})})();
+addEventListener('load',draw);addEventListener('resize',draw);if(document.fonts)document.fonts.ready.then(draw);draw();
+</script><script src="../pfix.js?v=57"></script></body></html>
