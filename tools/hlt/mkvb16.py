@@ -43,7 +43,7 @@ print('ok b')
 
 # 06:00 茶茶：「1 颗 = 1000 步」不直观 → 改成地图比例尺：黑白分段尺，每格 = 杯里一颗珍珠宽（24px），格上坐珍珠，刻度 0/1k/2k/3k 步
 SC='<div class="mscl" aria-label="比例尺：一颗珍珠等于一千步"><div class="mscp"><u></u><u></u><u></u></div><div class="mscb"><i></i><i></i><i></i></div><div class="mscn"><span>0</span><span>1k</span><span>2k</span><span>3k<em>步</em></span></div></div>'
-SCC='''<style>.key{display:none!important}.mscl{position:absolute;left:24px;top:140px;width:72px;z-index:2}.mscp{display:flex}.mscp u{width:24px;height:24px;margin-bottom:2px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b88566 0 9%,#8a5a40 20%,#4b2c1f 58%,#33201a 100%);box-shadow:0 0 0 .8px rgba(60,35,25,.55),inset -2px -3px 4px rgba(30,18,12,.35)}
+SCC='''<style>.key{display:none!important}.mscl{position:absolute;right:174px;top:46px;width:72px;z-index:2}.mscp{display:flex}.mscp u{width:24px;height:24px;margin-bottom:2px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b88566 0 9%,#8a5a40 20%,#4b2c1f 58%,#33201a 100%);box-shadow:0 0 0 .8px rgba(60,35,25,.55),inset -2px -3px 4px rgba(30,18,12,.35)}
 .mscb{display:flex;height:7px;border:1.2px solid #8a5c46;border-radius:1.5px;background:#fbf6ea}.mscb i{flex:1}.mscb i:nth-child(odd){background:#8a5c46}
 .mscn{position:relative;height:16px;margin-top:3px;font:800 11px/1 BalooX;color:var(--cocoa)}.mscn span{position:absolute;top:0;translate:-50% 0;white-space:nowrap}.mscn span:nth-child(1){left:0}.mscn span:nth-child(2){left:33.33%}.mscn span:nth-child(3){left:66.67%}.mscn span:nth-child(4){left:100%;translate:-28% 0}.mscn em{font:12px/1 ZK;font-style:normal;margin-left:3px}</style>'''
 for f in ['vb16.html','vb16b.html']:
@@ -57,4 +57,4 @@ for f in ['vb16.html','vb16b.html']:
   t=open(R+f).read();t=t.replace('<div class="glass">','<div class="glass">'+LL,1).replace('</body>',LC+'</body>',1);open(R+f,'w').write(t)
 print('ok ll')
 # 空态：比例尺挪到手表右边，别压纸签
-t=open(R+'vb16.html').read();t=t.replace('</body>','<style>.mscl{left:112px!important;top:30px!important}</style></body>',1);open(R+'vb16.html','w').write(t)
+# 06:15 比例尺挪到 ② 8k 上面（茶茶指定），两态同位
