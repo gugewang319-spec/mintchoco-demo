@@ -40,7 +40,7 @@ body.grid .g{display:block}
 .demo{display:inline-block;font-size:11px;color:#fff;background:#e0336a;border-radius:3px;padding:0 4px;margin-right:4px}
 #cl{list-style:none;margin-top:16px;position:relative}
 #cl::before{content:"";position:absolute;left:66.5px;top:0;bottom:0;width:3px;border-radius:2px;background:#cfd2d0}
-#cl li{position:relative;display:flex;align-items:flex-start;gap:8px;padding:8px 0;cursor:pointer}
+#cl li{position:relative;display:flex;align-items:flex-start;gap:8px;padding:8px 0}
 #cl .tm{width:40px;flex:none;font-size:12px;color:#999;line-height:40px;text-align:right}
 #cl .dp{flex:none;position:relative;z-index:1}
 #cl .tx{flex:1;min-width:0;padding-top:8px}
@@ -67,7 +67,7 @@ body.grid .g{display:block}
 <p class="cs" id="cs"></p>
 <p class="note hint" style="padding:8px 24px 0">点一瓶 → 下面原地展开明细，再点收起。缓存 = 供应商提示词缓存，只算上游报了的</p>
 <section class="dt" id="dt"></section>
-<section class="lc"><h2 id="clh">最近调用</h2><p class="s"><span class="demo">演示</span> 后端还没有统一的调用列表接口，等补了只读、按时间倒序分页的接口再接真数据。点一瓶只看那一类，点一行展开</p><p class="s" style="font-size:12px">左边竖线 = 时间，滴越大 tokens 越多，滴里斜线 = 缓存命中占输入的比例；虚线边 = 上游没报缓存，虚线空滴 = 用量未知；滴隔得远 = 那段时间闲</p><ul id="cl"></ul><button class="mr">再看 20 条</button></section>
+<section class="lc"><h2 id="clh">最近调用</h2><p class="s"><span class="demo">演示</span> 后端还没有统一的调用列表接口，等补了只读、按时间倒序分页的接口再接真数据。点一瓶只看那一类</p><p class="s" style="font-size:12px">左边竖线 = 时间，滴越大 tokens 越多，滴里斜线 = 缓存命中占输入的比例；虚线边 = 上游没报缓存，虚线空滴 = 用量未知；滴隔得远 = 那段时间闲</p><ul id="cl"></ul><button class="mr">再看 20 条</button></section>
 <p class="note">灰稿 · 用量二级页（设置页点大字进来，设置页不再放秤）。母题：糖浆泵架，A 构图：聊天一大瓶当主角，另三瓶站右边阶梯架，注解直接写在图上。字号三级 72 / 28 / 13，8 点网格，边距 24。范围就地小选单。数据为演示。</p>
 </div>
 <script>
@@ -94,10 +94,10 @@ const mins=t=>{const[h,m]=t.split(':');return h*60+ +m};
 function list(){const t=sel<0?null:NM[sel],rs=CL.filter(c=>!t||c[1]==t);let h='',prev=null;
  rs.forEach((c,k)=>{const unk=c[3]==null,tot=unk?'未知':fmt(c[3]+c[4]);const cache=unk?'用量未知（上游没报）':c[5]==null?'缓存：上游没报':`缓存命中 ${fmt(c[5])}`;
   const gap=prev==null?0:Math.min(48,Math.max(0,(mins(prev)-mins(c[0]))*2-8));prev=c[0];
-  h+=`<li data-k="${k}" class="${ex==k?'on':''}" style="margin-top:${gap}px"><span class="tm">${c[0]}</span>${drop(c)}<div class="tx"><div class="a"><span class="ty">${c[1]}</span><span class="md">${c[2]}</span><b class="${unk?'uk':''}">${tot}</b></div><div class="b">${unk?cache:`入 ${fmt(c[3])} · 出 ${fmt(c[4])} · ${cache}`}</div>`+(ex==k&&!unk?`<div class="c"><p><span>输入</span><b>${fmt(c[3])}</b></p><p><span>输出</span><b>${fmt(c[4])}</b></p><p><span>缓存命中</span><b>${fmt(c[5])}</b></p><p><span>缓存未命中</span><b>${fmt(c[6])}</b></p><p><span>缓存写入</span><b>${fmt(c[7])}</b></p></div>`:'')+`</div></li>`});
+  h+=`<li data-k="${k}" style="margin-top:${gap}px"><span class="tm">${c[0]}</span>${drop(c)}<div class="tx"><div class="a"><span class="ty">${c[1]}</span><span class="md">${c[2]}</span><b class="${unk?'uk':''}">${tot}</b></div><div class="b">${unk?cache:`入 ${fmt(c[3])} · 出 ${fmt(c[4])} · ${cache}`}</div>`+(unk||c[5]==null?'':`<div class="b">缓存未命中 ${c[6]==null?'没报':fmt(c[6])} · 缓存写入 ${c[7]==null?'没报':fmt(c[7])}</div>`)+`</div></li>`});
  if(!rs.length)h='<li class="em">这一类最近没有调用</li>';
  $('#cl').innerHTML=h;$('#clh').textContent=t?`最近调用 · ${t}`:'最近调用';
- $('#cl').querySelectorAll('li[data-k]').forEach(li=>li.onclick=()=>{const k=+li.dataset.k;ex=ex==k?-1:k;list()});}
+ }
 function bottle(x,bot,w,H,c,i,big){let h='';const top=bot-H,lv=Math.max(8,(H-6)*c[0]/R[cur].mx),ly=bot-3-lv;
   h+=`<g class="bt${sel==i?' sel':''}" data-i="${i}">`;
   const pw=big?44:30,ph=big?22:16,py=top-(big?60:42);
