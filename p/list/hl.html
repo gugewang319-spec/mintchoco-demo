@@ -1,0 +1,48 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>荧光笔样张</title>
+<style>
+@font-face{font-family:wk;src:url(wenkai.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:wk,serif;color:#5a3a2c;background:linear-gradient(#eef6f1,#f3ebe0 60%,#e8d9c6);min-height:100vh;padding:28px 24px 60px}
+h1{font-size:26px;margin-bottom:4px}
+.sub{font-size:13px;opacity:.7;margin-bottom:22px}
+.row{margin:0 0 26px}
+.tag{font-size:12px;color:#8a5c46;opacity:.75;margin-bottom:6px}
+.hl{position:relative;display:inline-block;font-size:22px;line-height:1.3;padding:0 4px;isolation:isolate}
+.hl svg{position:absolute;left:-6px;top:0;z-index:-1;overflow:visible;mix-blend-mode:multiply}
+.en{font-family:Georgia,serif;font-style:italic;font-size:16px}
+</style></head><body>
+<h1>荧光笔</h1><div class="sub">照真马克笔：斜切笔头、两端积墨、来回重叠处深、边缘不齐</div>
+<div class="row"><div class="tag">① 单笔 · 斜头 · 盖下半</div><span class="hl" data-k="1">那我先把奶煮上</span></div>
+<div class="row"><div class="tag">② 来回两笔 · 重叠处深</div><span class="hl" data-k="2">要加棉花糖！</span></div>
+<div class="row"><div class="tag">③ 整行盖满 · 微歪</div><span class="hl" data-k="3">好，给你多放两颗</span></div>
+<div class="row"><div class="tag">④ 短一笔 · 没涂到头</div><span class="hl" data-k="4">11/11 周三</span></div>
+<div class="row"><div class="tag">⑤ 英文小标题 · 下半截</div><span class="hl en" data-k="1">today's chat</span></div>
+<script>
+// 伪随机，保证每次一样
+function rng(s){return()=>{s=(s*16807)%2147483647;return s/2147483647}}
+function stroke(x0,x1,yTop,hh,tilt,r,alpha,id,defs){
+  // 斜切笔头：左端下斜、右端上斜（同一笔头角度）
+  const cut=hh*0.22, n=8, top=[],bot=[];
+  for(let i=0;i<=n;i++){const t=i/n,x=x0+(x1-x0)*t,y=yTop+tilt*t;
+    top.push([x+cut*0.5, y+(r()-.5)*1.4]); bot.push([x-cut*0.5, y+hh+(r()-.5)*1.6]);}
+  // 尾端收笔：略窄、抖一下
+  const p=top.map(a=>a.join(',')).concat(bot.reverse().map(a=>a.join(','))).join(' ');
+  const g=`<linearGradient id="${id}" x1="0" x2="1"><stop offset="0" stop-color="#4fbf9c" stop-opacity="${alpha+.22}"/><stop offset=".07" stop-color="#4fbf9c" stop-opacity="${alpha}"/><stop offset=".55" stop-color="#4fbf9c" stop-opacity="${alpha-.05}"/><stop offset=".93" stop-color="#4fbf9c" stop-opacity="${alpha}"/><stop offset="1" stop-color="#4fbf9c" stop-opacity="${alpha+.25}"/></linearGradient>`;
+  defs.push(g);
+  // 顺着笔走向的几道细纹（笔头干的地方）
+  let st='';for(let k=0;k<3;k++){const yy=yTop+hh*(.2+.6*r());st+=`<line x1="${x0+8+r()*20}" y1="${yy}" x2="${x1-10-r()*30}" y2="${yy+tilt}" stroke="#fff" stroke-opacity=".18" stroke-width="${.6+r()*.8}"/>`}
+  const L=top[0],R=top[top.length-1];
+  const capL=`<path d="M${x0+cut*.5},${yTop} q-${cut*.9},${hh*.5} -${cut},${hh} l3,0 q${cut*.6},-${hh*.5} ${cut*.9},-${hh}z" fill="#3aa585" fill-opacity="${alpha*.9}"/>`;
+  const capR=`<path d="M${x1+cut*.5},${yTop+tilt} q-${cut*.4},${hh*.5} -${cut},${hh} l-3,0 q${cut*.3},-${hh*.5} ${cut*.9},-${hh}z" fill="#3aa585" fill-opacity="${alpha*1.1}"/>`;
+  return `<polygon points="${p}" fill="url(#${id})" stroke="#3aa585" stroke-opacity=".16" stroke-width=".8" stroke-linejoin="round"/>`+st+capL+capR;
+}
+document.querySelectorAll('.hl').forEach((el,i)=>{
+  const k=+el.dataset.k, w=el.offsetWidth+12, h=el.offsetHeight, r=rng(97+i*31), defs=[]; let body='';
+  if(k==1){body=stroke(2,w-2,h*.48,h*.46,-1.5,r,.42,'g'+i+'a',defs)}
+  if(k==2){body=stroke(0,w-4,h*.40,h*.44,-1,r,.34,'g'+i+'a',defs)+stroke(w*.18,w+2,h*.58,h*.36,1.2,r,.32,'g'+i+'b',defs)}
+  if(k==3){body=stroke(-2,w,h*.12,h*.82,-2.5,r,.3,'g'+i+'a',defs)}
+  if(k==4){body=stroke(4,w*.78,h*.5,h*.42,1,r,.42,'g'+i+'a',defs)}
+  el.insertAdjacentHTML('afterbegin',`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs>${defs.join('')}</defs>${body}</svg>`);
+});
+</script></body></html>
