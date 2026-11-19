@@ -141,7 +141,8 @@
 | 21:50 | 24f2c18 | 🐱 猫猫奶盖改生图 p/list/catfoam.png（cat.html 换用）。❌ 代码猫（实线描边、伞骨纹）。茶茶要：不描边、靠明暗出体积，泡沫绵密（参考春田黄油朗姆酒奶盖），上色学拉花猫（耳尖焦糖、可可粉点脸）。生图按 §1.5 模板，茶茶同意只把 thin warm cocoa outline 换成 no outline, form defined only by soft light-and-shadow shading，其余逐字；SUBJECT 加 matte/not glossy/not jelly。第一张参考了 ice.png 变成亮面果冻，弃；第二张参考 wafer.png，哑光绵密可用。弹簧+呼吸+小泡保留，加一点 skew。图中自带底部小泡。灰稿 E 茶茶说可以。 |
 | 21:47 | 26b022a | 🐱 catfoam.png 换耳朵：茶茶说耳朵太写实有点恐怖谷 → 简单圆三角奶油小包、无内耳无毛，其余照旧（以上一版为参考图改）。❌ 写实猫耳。另：茶茶同意借鉴 David Aerne「overflow: infinite;」（滚动驱动小球留墨迹）的点子做珍珠滚奶茶印当引线，只借点子、自己写代码，灵感致谢 David Aerne（meodai.color.pizza）。 |
 | 21:55 | 3dde0d9 | 🫧 p/list/roll.html（脚本 /workspace/work/mkroll.py，由 wfE 生成）：珍珠随滚动往下滚，拖出奶茶印当引线（猫猫脚下→选中冰→选中珍珠），替掉灰线引线；慢处印子粗、快处细，canvas 整层半透明避免叠色成串珠；滚动时珍珠按距离转、快时略拉长；点珍珠蹦一下；切后台暂停；prefers-reduced-motion 时隐藏。近景换真猫图。灵感 David Aerne「overflow: infinite;」，代码自写。 |
-| 22:00 | （本次） | ❌ roll.html 珍珠滚奶茶印（纸上墨迹式留痕不像液体；珍珠乏味）。🥛 p/list/milk.html（脚本 /workspace/work/mkmilk.py 由 wfE 生成）：猫猫奶盖垂一滴奶，滑动时掉进奶茶边沉边散成奶云（预渲染柔边圆贴图、固定视口 canvas、上限 260 团），经过选中冰/珍珠开一朵，奶云卷边变淡；下落按速度拉长，静止时垂着晃，点它晃一下；切后台暂停；reduced-motion 隐藏。背景临时铺奶茶色只为看清奶云。 |
+| 22:00 | 38f4a7e | ❌ roll.html 珍珠滚奶茶印（纸上墨迹式留痕不像液体；珍珠乏味）。🥛 p/list/milk.html（脚本 /workspace/work/mkmilk.py 由 wfE 生成）：猫猫奶盖垂一滴奶，滑动时掉进奶茶边沉边散成奶云（预渲染柔边圆贴图、固定视口 canvas、上限 260 团），经过选中冰/珍珠开一朵，奶云卷边变淡；下落按速度拉长，静止时垂着晃，点它晃一下；切后台暂停；reduced-motion 隐藏。背景临时铺奶茶色只为看清奶云。 |
+| 22:03 | （本次） | 🥛 milk.html 修：奶滴卡在视口 42% 处，滑到底也够不着更早的珍珠（茶茶：奶奶见不到珍珠乖孙）。改为按滚动进度从猫猫脚下映射到选中珍珠，滑到底刚好落上去，奶滴淡出、珍珠蹦一下（hug 弹性动画，用 scale/translate 属性不碰 transform）。 |
 
 ## 更早的样张（模型页方向探索）↩️ / 🧪
 | 时间 | 提交 | 页面 | 改了什么 |
