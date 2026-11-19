@@ -36,6 +36,12 @@ body.grid .g{display:block}
 .dt .r:first-of-type{margin-top:16px}
 .dt .r b{color:#333}
 .cs{margin:16px 24px 0;font-size:13px;color:#666;line-height:1.6}.cs b{color:#333}.fig .an{font:11px system-ui;fill:#e0336a}.fig .in{font:700 12px system-ui;fill:#333;text-anchor:middle;paint-order:stroke;stroke:#f4f5f4;stroke-width:3px;pointer-events:none}
+.lc{margin:32px 24px 0}.lc h2{font-size:28px;font-weight:800;color:#444}.lc .s{font-size:13px;color:#888;margin-top:8px;line-height:1.6}
+.demo{display:inline-block;font-size:11px;color:#fff;background:#e0336a;border-radius:3px;padding:0 4px;margin-right:4px}
+#cl{list-style:none;margin-top:16px}#cl li{border-top:1px dashed #ccc;padding:8px 0;cursor:pointer}
+#cl .a{display:flex;align-items:baseline;gap:8px;font-size:13px;line-height:24px}#cl .tm{color:#999;width:40px}#cl .ty{color:#444;font-weight:700}#cl .md{color:#888;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#cl .a b{color:#333;font-size:13px}#cl .a b.uk{color:#e0336a}
+#cl .b{font-size:11px;color:#999;padding-left:48px;line-height:16px}#cl .c{margin:8px 0 0 48px;background:#fff;border:1.5px solid #bbb;border-radius:6px;padding:8px 12px}#cl .c p{display:flex;justify-content:space-between;font-size:12px;line-height:24px}#cl .em{color:#aaa;font-size:13px}
+.mr{margin-top:8px;background:none;border:0;font:13px system-ui;color:#777;padding:8px 0}
 .cc{margin:32px 24px 0}
 .cc h2{font-size:28px;font-weight:800;color:#444}
 .cc .s{font-size:13px;color:#888;margin-top:8px;line-height:1.6}
@@ -56,11 +62,29 @@ body.grid .g{display:block}
 <p class="cs" id="cs"></p>
 <p class="note hint" style="padding:8px 24px 0">点一瓶 → 下面原地展开明细，再点收起。缓存 = 供应商提示词缓存，只算上游报了的</p>
 <section class="dt" id="dt"></section>
+<section class="lc"><h2 id="clh">最近调用</h2><p class="s"><span class="demo">演示</span> 后端还没有统一的调用列表接口，等补了只读、按时间倒序分页的接口再接真数据。点一瓶只看那一类，点一行展开</p><ul id="cl"></ul><button class="mr">再看 20 条</button></section>
 <p class="note">灰稿 · 用量二级页（设置页点大字进来，设置页不再放秤）。母题：糖浆泵架，A 构图：聊天一大瓶当主角，另三瓶站右边阶梯架，注解直接写在图上。字号三级 72 / 28 / 13，8 点网格，边距 24。范围就地小选单。数据为演示。</p>
 </div>
 <script>
 const R={"今天": {"t": 18.6, "c": [[13.9, 58, 8.6, 4.1], [3.2, 6, 1.3, 0.9], [1.1, 57, 0.3, 0.6], [0.4, 14, null, null]], "u": 0, "m": 1}, "近 7 天": {"t": 128.4, "c": [[96.1, 412, 58.0, 31.2], [22.4, 38, 9.1, 11.0], [7.6, 401, 2.1, 4.3], [2.3, 96, null, null]], "u": 3, "m": 5}, "近 30 天": {"t": 566.0, "c": [[421.8, 1806, 247.3, 148.9], [99.5, 171, 41.2, 51.0], [34.1, 1752, 9.8, 20.6], [10.6, 430, null, null]], "u": 11, "m": 19}},NM=["聊天", "记忆整理", "检索", "向量索引"];let cur='近 7 天',sel=-1;
 const $=s=>document.querySelector(s);
+const CL=[
+['19:12','聊天','claude-sonnet-4.5',2980,260,2104,876,0],
+['19:11','检索','text-embedding-3-small',412,0,null,null,null],
+['19:08','聊天','claude-sonnet-4.5',3105,312,2104,1001,0],
+['19:02','记忆整理','deepseek-chat',5820,940,null,null,null],
+['18:57','聊天','deepseek-chat',null,null,null,null,null],
+['18:55','向量索引','text-embedding-3-small',1260,0,null,null,null],
+['18:40','聊天','claude-sonnet-4.5',2870,198,0,2870,2870],
+['18:31','检索','claude-haiku-4.5',640,48,512,128,0]];
+let ex=-1,more=0;
+function fmt(n){return n==null?'未知':n.toLocaleString('en-US')}
+function list(){const t=sel<0?null:NM[sel],rs=CL.filter(c=>!t||c[1]==t);let h='';
+ rs.forEach((c,k)=>{const unk=c[3]==null,tot=unk?'未知':fmt(c[3]+c[4]);const cache=unk?'用量未知（上游没报）':c[5]==null?'缓存：上游没报':`缓存命中 ${fmt(c[5])}`;
+  h+=`<li data-k="${k}" class="${ex==k?'on':''}"><div class="a"><span class="tm">${c[0]}</span><span class="ty">${c[1]}</span><span class="md">${c[2]}</span><b class="${unk?'uk':''}">${tot}</b></div><div class="b">${unk?cache:`入 ${fmt(c[3])} · 出 ${fmt(c[4])} · ${cache}`}</div>`+(ex==k&&!unk?`<div class="c"><p><span>输入</span><b>${fmt(c[3])}</b></p><p><span>输出</span><b>${fmt(c[4])}</b></p><p><span>缓存命中</span><b>${fmt(c[5])}</b></p><p><span>缓存未命中</span><b>${fmt(c[6])}</b></p><p><span>缓存写入</span><b>${fmt(c[7])}</b></p></div>`:'')+`</li>`});
+ if(!rs.length)h='<li class="em">这一类最近没有调用</li>';
+ $('#cl').innerHTML=h;$('#clh').textContent=t?`最近调用 · ${t}`:'最近调用';
+ $('#cl').querySelectorAll('li[data-k]').forEach(li=>li.onclick=()=>{const k=+li.dataset.k;ex=ex==k?-1:k;list()});}
 function bottle(x,bot,w,H,c,i,big){let h='';const top=bot-H,lv=Math.max(8,(H-6)*c[0]/R[cur].mx),ly=bot-3-lv;
   h+=`<g class="bt${sel==i?' sel':''}" data-i="${i}">`;
   const pw=big?44:30,ph=big?22:16,py=top-(big?60:42);
@@ -89,11 +113,11 @@ function draw(){const d=R[cur],f=$('#fig');d.mx=d.c[0][0];let h='<defs><pattern 
  // 没报用量：大瓶脚边虚线空瓶
  h+=`<g><rect x="0" y="330" width="20" height="40" rx="5" fill="#f4f5f4" stroke="#999" stroke-width="1.2" stroke-dasharray="3 3"/><text x="10" y="355" class="ln" style="font-size:12px">${d.u}</text><text x="10" y="324" class="an" text-anchor="middle" style="font-size:9px">没报</text></g>`;
  f.innerHTML=h;
- f.querySelectorAll('.bt').forEach(g=>g.onclick=()=>{const i=+g.dataset.i;sel=sel==i?-1:i;draw()});
+ f.querySelectorAll('.bt').forEach(g=>g.onclick=()=>{const i=+g.dataset.i;sel=sel==i?-1:i;ex=-1;draw()});
  $('#tn').textContent=d.t.toFixed(1);$('#tk').textContent=cur+' · 用量';
  $('#tc').textContent=d.c.reduce((a,c)=>a+c[1],0);
  const hit=d.c.reduce((a,c)=>a+(c[2]||0),0),mis=d.c.reduce((a,c)=>a+(c[3]||0),0);$('#cs').innerHTML=`缓存命中 <b>${hit.toFixed(1)}</b> 万 · 未命中 <b>${mis.toFixed(1)}</b> 万 · 没报缓存 <b>${d.m}</b> 次`;
- const dt=$('#dt');if(sel<0){dt.className='dt';dt.innerHTML=''}else{const c=d.c[sel];dt.className='dt on';
+ list();const dt=$('#dt');if(sel<0){dt.className='dt';dt.innerHTML=''}else{const c=d.c[sel];dt.className='dt on';
   dt.innerHTML=`<h3>${NM[sel]}</h3><div class="r"><span>调用</span><b>${c[1]} 次</b></div><div class="r"><span>tokens</span><b>${c[0]} 万</b></div>`+(c[2]!=null?`<div class="r"><span>缓存命中</span><b>${c[2].toFixed(1)} 万</b></div><div class="r"><span>缓存未命中</span><b>${c[3].toFixed(1)} 万</b></div>`:`<div class="r"><span>缓存</span><b>不适用</b></div>`)}
 }
 $('#rb').onclick=e=>{e.stopPropagation();$('#rg').classList.toggle('on')};
