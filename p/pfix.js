@@ -15,8 +15,16 @@
   function scrolls(el){for(let p=el.parentElement;p&&p!==document.body;p=p.parentElement){const o=getComputedStyle(p).overflowY;if(/(auto|scroll)/.test(o))return true}return false}
   function run(){document.querySelectorAll('#sc,.scroller,.vp,.app,.page,.menu').forEach(e=>{if(/(auto|scroll)/.test(getComputedStyle(e).overflowY)){e.style.overflowX='hidden';[...e.children].forEach(c=>{if((c.classList.contains('content')||c.offsetWidth>=e.clientWidth-2)&&!/(auto|scroll)/.test(getComputedStyle(c).overflowX))c.style.overflowX='clip'});e.addEventListener('scroll',()=>{if(e.scrollLeft)e.scrollLeft=0},{passive:true})}});
     const d=document.querySelector('img.drizzle');
-    const h=[...document.querySelectorAll('.lhead,.head')].find(e=>getComputedStyle(e).position==='sticky');
-    if(d&&scrolls(d)){
+    let h=[...document.querySelectorAll('.lhead,.head')].find(e=>getComputedStyle(e).position==='sticky');
+    /* V=50 页顶统一：没有吸顶页头的页（设置、渠道、用量、搜索、声音、健康）也走记忆页这套 */
+    let ext=null,uni=false,big=null;
+    if(!h){const c=document.querySelector('.lhead,.head');
+      big=[...document.querySelectorAll('#sc,.scroller,.vp,.app,.page,.menu,.sc')].filter(e=>/(auto|scroll)/.test(getComputedStyle(e).overflowY)).sort((a,b)=>(b.scrollHeight-b.clientHeight)-(a.scrollHeight-a.clientHeight))[0];
+      if(c&&big){const pos=getComputedStyle(c).position;
+        if(big.contains(c)){uni=true;for(let a=c.parentElement;a&&a!==big;a=a.parentElement){const cs=getComputedStyle(a);if(/(hidden|auto|scroll)/.test(cs.overflowY)){a.style.overflow='clip'}}if(pos==='absolute'){const H=c.offsetHeight;c.style.left='auto';c.style.right='auto';c.style.marginBottom=(-H)+'px'}h=c}
+        else if(pos==='absolute'){uni=true;ext=big;h=c;
+          if(getComputedStyle(big).maskImage!=='none'||getComputedStyle(big).webkitMaskImage!=='none'){big.style.webkitMaskImage='none';big.style.maskImage='none'}}}}
+    if(d&&!uni&&scrolls(d)){
       if(h){ /* 有吸顶页头：淋酱当背景钉在滚动层顶上，和内容一起被渐进模糊 */
         const w=document.createElement('div');w.className='pfx-drw';w.setAttribute('aria-hidden','true');
         h.parentNode.insertBefore(w,h.parentNode.firstChild);w.appendChild(d);d.classList.add('pfx-drin');
@@ -24,8 +32,10 @@
     }
     if(!h)return;
     /* v18：像 X 一样，页头跟内容一起滚走；只在最顶上留一条很薄的渐进模糊，滚动后才出现 */
-    h.style.position='sticky';h.style.top='0';h.classList.add('pfx-on');
-    const sc=h.closest('#sc,.scroller,.vp,.app,.page,.menu')||document.scrollingElement;
+    if(!ext){h.style.position='sticky';h.style.top='0'}h.classList.add('pfx-on');
+    const sc=ext||(uni&&big)||h.closest('#sc,.scroller,.vp,.app,.page,.menu,.sc')||document.scrollingElement;
+    /* 淋酱不在滚动层里的页：跟着滚走 */
+    if(d&&uni&&!sc.contains(d)){const dz=()=>{const st=sc.scrollTop||0;d.style.transform=st?`translate3d(0,${-Math.min(st,d.offsetHeight+20)}px,0)`:''};(sc===document.scrollingElement?window:sc).addEventListener('scroll',dz,{passive:true});dz()}
     const pb=document.createElement('div');pb.className='pfx-pb pfx-strip';pb.setAttribute('aria-hidden','true');
     const L=[[6,'0%','45%'],[3,'25%','75%'],[1,'50%','100%']];
     pb.innerHTML=L.map(([b,s0,e])=>`<i style="-webkit-backdrop-filter:blur(${b}px);backdrop-filter:blur(${b}px);-webkit-mask-image:linear-gradient(180deg,#000 ${s0},transparent ${e});mask-image:linear-gradient(180deg,#000 ${s0},transparent ${e})"></i>`).join('')+
