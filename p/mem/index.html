@@ -339,6 +339,15 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .navfade::before{-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);-webkit-mask-image:linear-gradient(to top,transparent 12%,#000 30%,transparent 75%);mask-image:linear-gradient(to top,transparent 12%,#000 30%,transparent 75%)}
 .navfade::after{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);-webkit-mask-image:linear-gradient(to top,transparent 14%,#000 26%,transparent 50%);mask-image:linear-gradient(to top,transparent 14%,#000 26%,transparent 50%)}
 .fade{background:linear-gradient(to top,rgba(221,198,173,.5),rgba(221,198,173,0))!important}
+
+/* 09:46 全站日历统一＝糖粉选中（同健康页/记忆搜索页）：有记忆的日子下面薄荷小点，选中铺糖粉点点 + 手绘圈 */
+.mcal .gd .hd,.mcal .gd .hd.sel{position:relative;isolation:isolate;width:auto;height:38px;margin:0;border-radius:0;background:transparent!important;box-shadow:none!important;color:#4a3027!important;font:600 14px/1 Baloo!important}
+.mcal .gd>*{height:38px}
+.mcal .gd .nd{color:rgba(74,48,39,.22)}
+.mcal .gd .hd .cd,.mcal .gd .hd.sel .cd{left:50%;bottom:3px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#7fc8ad;box-shadow:none}
+.mcal .gd .hd.sel::before{content:"";position:absolute;inset:5px -1px;z-index:-1;background-color:rgba(196,232,218,.6);background-image:radial-gradient(circle,#fffdf8 0 1.1px,transparent 1.7px),radial-gradient(circle,#fffdf8 0 .8px,transparent 1.3px);background-size:6px 6px,5px 5px;background-position:0 0,3px 2px}
+.mcal .gd .hd.sel::after{content:"";position:absolute;inset:4px 6px;border:1.6px solid #5b3a2c;border-radius:50% 46% 52% 48%;transform:rotate(-8deg)}
+.mcal .tip .clr{background:transparent!important;padding:4px 2px!important}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
  <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
@@ -402,10 +411,10 @@ MEMS.sort((a,b)=>b[4].localeCompare(a[4]));MEMS.forEach((m,i)=>{const e=document
  function pick(k){fd=k;pg=0;FC.hidden=!k;if(k)FC.innerHTML=`${+k.split('.')[0]}/${+k.split('.')[1]}<i>×</i>`;apply(0,!!k)}
  FC.addEventListener('click',()=>pick(''));
  function drawCal(){const days=new Set(MEMS.filter(m=>+m[4].split('.')[0]===cmo).map(m=>+m[4].split('.')[1]));
-  const first=new Date(cy,cmo-1,1).getDay(),n=new Date(cy,cmo,0).getDate(),pi=mons.indexOf(cmo);
+  const first=(new Date(cy,cmo-1,1).getDay()+6)%7,n=new Date(cy,cmo,0).getDate(),pi=mons.indexOf(cmo);
   let g='';for(let i=0;i<first;i++)g+='<span></span>';const cnt={};MEMS.forEach(m=>{if(+m[4].split('.')[0]===cmo){const d=+m[4].split('.')[1];cnt[d]=(cnt[d]||0)+1}});const key=d=>`${String(cmo).padStart(2,'0')}.${String(d).padStart(2,'0')}`;
   for(let d=1;d<=n;d++)g+=days.has(d)?`<button class="hd${fd===key(d)?' sel':''}" data-d="${d}" aria-pressed="${fd===key(d)}" aria-label="${cmo}月${d}日，${cnt[d]} 颗">${d}<i class="cd"></i></button>`:`<span class="nd">${d}</span>`;
-  C.innerHTML=`<div class="ch"><button class="pv" ${pi>=mons.length-1?'disabled':''} aria-label="上个月">‹</button><b>${cy} 年 ${cmo} 月</b><button class="nx" ${pi<=0?'disabled':''} aria-label="下个月">›</button></div><div class="wk">${'日一二三四五六'.split('').map(x=>`<span>${x}</span>`).join('')}</div><div class="gd">${g}</div><p class="tip">${fd?`${+fd.split('.')[0]} 月 ${+fd.split('.')[1]} 日 · ${MEMS.filter(m=>m[4]===fd).length} 颗<button class="clr">看全部</button>`:`本月 <b>${MEMS.filter(m=>+m[4].split('.')[0]===cmo).length}</b> 颗 · 点有糖的日子看那天`}</p>`}
+  C.innerHTML=`<div class="ch"><button class="pv" ${pi>=mons.length-1?'disabled':''} aria-label="上个月">‹</button><b>${cy} 年 ${cmo} 月</b><button class="nx" ${pi<=0?'disabled':''} aria-label="下个月">›</button></div><div class="wk">${'一二三四五六日'.split('').map(x=>`<span>${x}</span>`).join('')}</div><div class="gd">${g}</div><p class="tip">${fd?`${+fd.split('.')[0]} 月 ${+fd.split('.')[1]} 日 · ${MEMS.filter(m=>m[4]===fd).length} 颗<button class="clr">看全部</button>`:`本月 <b>${MEMS.filter(m=>+m[4].split('.')[0]===cmo).length}</b> 颗 · 点有糖的日子看那天`}</p>`}
  drawCal();
  C.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b||b.disabled)return;const pi=mons.indexOf(cmo);
   if(b.classList.contains('pv')){cmo=mons[pi+1];drawCal();return}if(b.classList.contains('nx')){cmo=mons[pi-1];drawCal();return}
@@ -549,4 +558,4 @@ function frame(now){const raw=(now-last)/1000,dt=Math.min(.05,raw);last=now;cons
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[["[aria-label=\"搜索记忆\"]", "push:msrch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=63"></script></body></html>
+</script><script>window.__DEMO_MAP=[["[aria-label=\"搜索记忆\"]", "push:msrch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=64"></script></body></html>

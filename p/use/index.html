@@ -166,6 +166,15 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-eve
 .cal .tip b{font:13px WK;color:var(--ch);font-weight:400}
 .cal .tip button{font:12.5px WK;color:#2f6e58;padding:4px 8px}
 .cal .tip button.sel{border-radius:12px;background:#c9ebdc}
+
+/* 09:46 全站日历统一＝糖粉选中：选中段铺糖粉点点，两头手绘圈；今天薄荷字（小点大小仍=当天用量） */
+.cal .d{position:relative;isolation:isolate;border-radius:0}
+.cal .d.rg,.cal .d.cur{background:transparent;box-shadow:none;color:var(--ink)}
+.cal .d.rg::before,.cal .d.cur::before{content:"";position:absolute;inset:5px -1px;z-index:-1;background-color:rgba(196,232,218,.6);background-image:radial-gradient(circle,#fffdf8 0 1.1px,transparent 1.7px),radial-gradient(circle,#fffdf8 0 .8px,transparent 1.3px);background-size:6px 6px,5px 5px;background-position:0 0,3px 2px}
+.cal .d.cur::after{content:"";position:absolute;inset:4px 6px;border:1.6px solid var(--ch);border-radius:50% 46% 52% 48%;transform:rotate(-8deg)}
+.cal .d.cur i{background:#7fc8ad;box-shadow:inset 0 0 0 1px rgba(91,58,44,.45)}
+.cal .d.td{box-shadow:none;color:#2f6e58}
+.cal .tip button.sel{background:transparent;text-decoration:none;color:var(--ch);font-weight:700}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
 <img class="drizzle" src="today-bg.png" alt="">
@@ -227,8 +236,8 @@ function agg(){const ALL=allCalls(),r2=x=>Math.round(x/100)/100;const c=NM.map(n
  return {c,t:r2(ALL.reduce((a,x)=>a+(x[3]==null?0:x[3]+x[4]),0)),u:ALL.filter(x=>x[3]==null).length,m:ALL.filter(x=>x[3]!=null&&x[5]==null&&x[1]!='向量索引').length}}
 function rangeLabel(){const f=d=>`${d.getMonth()+1}月${d.getDate()}日`;return span()?`${f(rs)} – ${f(re)} · ${days().length} 天`:`${f(rs)} 周${WD[rs.getDay()]}`+(+rs==+TODAY?' · 今天':'')}
 function dayTotal(d){if(d>TODAY)return -1;return genDay(d).reduce((a,c)=>a+(c[3]==null?0:c[3]+c[4]),0)}
-function cal(){const y=calM.getFullYear(),m=calM.getMonth(),first=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
- let h=`<div class="mh"><button id="cp">‹</button><span>${y}年${m+1}月</span><button id="cn">›</button></div><div class="gr">`+[...WD].map(w=>`<div class="wk">${w}</div>`).join('');
+function cal(){const y=calM.getFullYear(),m=calM.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();
+ let h=`<div class="mh"><button id="cp">‹</button><span>${y}年${m+1}月</span><button id="cn">›</button></div><div class="gr">`+[...'一二三四五六日'].map(w=>`<div class="wk">${w}</div>`).join('');
  for(let i=0;i<first;i++)h+='<div></div>';
  for(let d=1;d<=n;d++){const dt=new Date(y,m,d),t=dayTotal(dt),x=t<0,sz=x?0:Math.max(3,Math.min(10,Math.sqrt(t)/14)),end=+dt==+rs||+dt==+re,inr=dt>rs&&dt<re;
   h+=`<div class="d${x?' x':''}${end?' cur':''}${inr?' rg':''}${+dt==+TODAY?' td':''}" data-d="${d}">${d}${x?'':`<i style="width:${sz}px;height:${sz}px"></i>`}</div>`}
@@ -321,4 +330,4 @@ function draw(){if(!span()){const g=genDay(rs);CL.length=0;g.forEach(c=>CL.push(
 $('#csh .cbg').onclick=()=>sheet(0);
 $('#pv').onclick=()=>setDay(DD(rs,-1));
 draw();addEventListener('resize',draw);
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=63"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=64"></script></body></html>
