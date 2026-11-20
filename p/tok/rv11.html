@@ -1,0 +1,171 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>普通行 · 精修样张 11</title>
+<!-- 普通行 rv10（文字三档：普通轻、数据档只把数字局部放大、事件档表现性排版——引导小字/大数字/单位错位/花体沿液面波线走；去掉三条短线等额外装饰：文字本身就是装饰）。 -->
+<!-- 普通行 rv9（事件档学「强调文字 12 技巧」：放大加粗换 ZK、关键数字变薄荷 BalooX、小料上方三条短线）。前身 rv8（事件档的薄荷色块像高亮框被否，去掉；事件档只多一句花体 + 小料放大一号）。前身 rv7（直吸管诡异 → 小料之间改成一串往上冒的小气泡，左右轻轻摆）。前身 rv6（小料重生简化版：等粗描边、平涂、一小块亮面，无反光；焦糖滴像巧克力豆尖头被换成奶球）。前身 rv5（小料和吸管改用 §1.5 生图：彩铅水粉，切 PNG）。前身 rv4（学 kkiracore 的舒适：装饰住在边上、中间安静；同一行分两档）。基于 rv3（rv2 吸管太粗糙，改代码画条纹吸管）：器皿三级最底一级。没有底，靠 小料图标 + 菜单点线引线 + 时间 排成一行；换色表示状态（新 / 普通 / 过去）。 -->
+<style>
+@font-face{font-family:Script;src:url(../hlt/script.ttf)}
+@font-face{font-family:BalooX;src:url(../hlt/baloo800.ttf)}
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:WK;src:url(wk.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+body{font-family:WK,system-ui,sans-serif;color:#5b3a2c}
+.app{width:min(100%,412px);margin:0 auto;padding:48px 24px 96px}
+h1{font:28px/1 ZK;display:flex;align-items:baseline;gap:8px}
+h1 small{font:24px/1 Script;color:#3f9a80}
+.lab{font-size:12px;color:#8a5c46;opacity:.8;margin:32px 0 8px;letter-spacing:.1em}
+/* 段头：ZK 大字 + 花体 + 右侧日期，下面双细线 + 中间小菱 */
+.hd{display:flex;align-items:baseline;gap:8px;padding:0 0 8px}
+.hd b{font:20px/1 ZK;font-weight:400}
+.hd i{font:20px/1 Script;color:#3f9a80;font-style:normal}
+.hd em{margin-left:auto;font:12px/1 BalooX;letter-spacing:.12em;font-style:normal;color:#8a5c46}
+.rule{position:relative;height:4px;border-top:.6px solid #8a5c46;border-bottom:.6px solid #8a5c46;opacity:.55;margin-bottom:4px}
+.rule:after{content:"";position:absolute;left:50%;top:-4px;width:6px;height:6px;margin-left:-3px;background:#3f9a80;transform:rotate(45deg)}
+/* 行 */
+.r{display:grid;grid-template-columns:24px 1fr auto;column-gap:12px;align-items:center;padding:8px 0;position:relative}
+.r .ic{width:24px;height:24px;display:grid;place-items:center}
+.r .ic svg{display:block;overflow:visible}
+.r .t{display:flex;align-items:baseline;min-width:0}
+.r .t span{font-size:15px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 1 auto}
+/* 吸管串：左边一根细薄荷吸管把小料串起来，像沉在杯里一颗颗往下 */
+.list{position:relative}
+.list>.straw2{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.r .ic{position:relative;z-index:1;border-radius:50%;background:#f6fbf8;box-shadow:0 0 0 1px rgba(138,92,70,.18)}
+.r .s{grid-column:2/4;font-size:11px;line-height:16px;color:#8a5c46;opacity:.7;margin-top:0;letter-spacing:.04em}
+.r .tm{font:13px/20px BalooX;letter-spacing:.06em;color:#5b3a2c}
+.r .tm small{font:11px WK;margin-left:2px;opacity:.7}
+/* 状态换色 */
+.r.new .t span{color:#2f7e68}
+.r.new .tm{color:#3f9a80}
+.r.new .ic{box-shadow:0 0 0 1.4px #3f9a80}.r.new .tm:after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:#3f9a80;margin-left:6px;vertical-align:2px}
+.r.old{opacity:.48}
+.r.warn .t span,.r.warn .tm{color:#b4614f}
+/* 密集版：一行一条 */
+.dense .r{padding:6px 0}
+.dense .r .s{display:none}
+.dense .r .t span{font-size:14px}
+.foot{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:12px;font:12px/1 WK;color:#8a5c46;letter-spacing:.1em}
+.foot:before,.foot:after{content:"";width:40px;border-top:.6px solid #8a5c46;opacity:.5}
+.note{font-size:12px;line-height:20px;color:#8a5c46;margin-top:8px}
+
+/* rv4：段的上沿＝奶盖液面波线（替双细线小菱），下沿＝一排珍珠；装饰只住在边上 */
+.rule{height:8px;border:0;opacity:1;margin-bottom:2px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8'%3E%3Cpath d='M0 5Q6 1 12 5T24 5' fill='none' stroke='%238a5c46' stroke-width='.9' opacity='.6'/%3E%3C/svg%3E") repeat-x 0 0/24px 8px}
+.rule:after{display:none}
+.hd{position:relative}
+.foot{margin-top:8px;flex-direction:column;gap:8px}
+.foot:before{content:"";width:100%;height:9px;border:0;opacity:1;background:radial-gradient(circle at 4.5px 4.5px,#fff8 0 1px,#5b3a2c 1.4px 3.6px,transparent 4px) repeat-x 0 0/15px 9px;-webkit-mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);opacity:.8}
+.foot:after{display:none}
+/* 极低对比底纹：吸管边几颗小气泡，只有凑近才看见 */
+.list>svg.straw .bub{fill:none;stroke:#3f9a80;stroke-width:.7;opacity:.35}
+/* 事件档：同一行，多一层液体渐变 + 一句花体 + 吸管上斜插一片薄荷叶出框 */
+.r.ev{margin:4px 0;padding:10px 0}
+.r.ev:before{display:none}
+.r.ev>*{position:relative;z-index:1}
+.r.ev .t span{color:#2f7e68;font-size:16px}
+.r.ev .sc{grid-column:2/4;font:17px/1.1 Script;color:#3f9a80;margin-top:2px}
+.r.ev .lf{position:absolute;left:14px;top:2px;z-index:2;pointer-events:none}
+
+/* rv5：生图小料（白边模切贴纸）32px，吸管生图三段拼：顶段斜口 + 中段竖向平铺 + 底端 */
+.r{grid-template-columns:32px 1fr auto}
+.r .s{grid-column:2/4}
+.r .ic,.r.new .ic{width:32px;height:32px;background:none;box-shadow:none;border-radius:0}
+.r .ic img{width:32px;height:32px;display:block}
+.r.new .ic:after{content:"";position:absolute;right:-2px;top:-1px;width:7px;height:7px;border-radius:50%;background:#3f9a80;box-shadow:0 0 0 1.5px #fbf6ea}
+.r.old .ic img{filter:grayscale(.5)}
+.straw2{position:absolute;width:8px;pointer-events:none;z-index:0}
+.straw2 i{position:absolute;left:0;width:8px;display:block;background-size:8px auto}
+.straw2 .tp{top:0;height:38px;background:url(rv-straw-top.png) no-repeat 0 0/8px auto}
+.straw2 .md{top:38px;bottom:5px;background:url(rv-straw-mid.png) repeat-y 0 0/8px auto}
+.straw2 .en{bottom:0;height:5px;background:url(rv-straw-end.png) no-repeat 0 100%/8px auto}
+.straw2 .bb{position:absolute;border:1px solid #8a5c46;border-radius:50%;background:rgba(251,246,234,.7);opacity:.55}
+.r.ev .lf{display:none}
+.r.ev .sc{line-height:1.3}.r.ev .s{margin-top:2px}
+.r.ev .ic img{width:38px;height:38px;margin:-3px}
+
+.r.ev .t span{font:18px/24px ZK;color:#5b3a2c}
+.r.ev .t b{font:20px/24px BalooX;color:#3f9a80;font-weight:400;margin:0 2px}
+.r.ev .ic:before{content:"";position:absolute;left:50%;top:-13px;width:20px;height:9px;margin-left:-10px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='9'%3E%3Cpath d='M3 2 6 8M10 1V7.5M17 2 14 8' stroke='%238a5c46' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat}
+
+/* rv10：文字三档。文字本身就是装饰，不再往旁边加星星短线 */
+.r.ev .ic:before{display:none}
+.r .t b{font:19px/20px BalooX;font-weight:400;color:#5b3a2c;margin:0 3px;letter-spacing:.02em}
+.r .t b+u,.r .t u{text-decoration:none;font-size:12px;opacity:.75}
+.r.ev{align-items:end;padding:6px 0 4px}
+.r.ev .t{flex-direction:column;align-items:flex-start}
+.r.ev .ld{font:13px/16px WK;letter-spacing:.15em;color:#8a5c46;margin-left:2px}
+.r.ev .big{display:flex;align-items:flex-end;line-height:1}
+.r.ev .big b{font:30px/28px BalooX;color:#3f9a80;margin:0;letter-spacing:.01em}
+.r.ev .big u{display:inline-block;font:18px/18px ZK;color:#5b3a2c;text-decoration:none;opacity:1;margin:0 0 0 5px;transform:translateY(2px) rotate(-4deg)}
+.r.ev .big{align-items:baseline}
+.r.ev .tm{align-self:end;line-height:28px}
+.r.ev .ic{align-self:center}
+.r.ev .sc{grid-column:2/4;margin:2px 0 2px -2px;height:26px;overflow:visible}
+.r.ev .sc svg{display:block;overflow:visible}
+.r.ev .sc text{font:17px Script;fill:#3f9a80}
+</style>
+<div class="app">
+<h1>普通行 <small>plain row</small></h1>
+<p class="note">没有底、没有框。文字分三档：普通轻、数据档放大数字、事件档文字本身当装饰。</p>
+
+<div class="lab">默认 · 今天的记录</div>
+<div class="hd"><b>今天</b><i>today</i><em>11/20</em></div>
+<div class="rule"></div>
+<div id="a" class="list"></div>
+<div class="foot">全部记录 ›</div>
+
+<div class="lab">状态 · 新 / 普通 / 过去 / 提醒 · 再加两档文字</div>
+<div id="b" class="list"></div>
+
+<div class="lab">密集版 · 流水一屏很多条</div>
+<div class="hd"><b>昨天</b><i>yesterday</i><em>11/19</em></div>
+<div class="rule"></div>
+<div id="c" class="list dense"></div>
+</div>
+<script>
+const INK='#5b3a2c',C='#8a5c46',MI='#3f9a80',ML='#9fd6c3',CR='#fbf6ea',BE='#e3a08f',CA='#e6bf7a';
+// 小料图标：全部代码画，店里的东西
+const IC={
+ ice:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><rect x="-7" y="-7" width="14" height="14" rx="3.5" fill="${ML}" fill-opacity=".55" stroke="${c}" stroke-width="1.2"/><path d="M-3.5 3.5 3.5-3.5" stroke="${c}" stroke-width=".8" opacity=".6"/></svg>`,
+ pearl:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><circle r="6.5" fill="${INK}"/><circle r="8.5" fill="none" stroke="${c}" stroke-width=".6" stroke-dasharray="1.2 1.6"/></svg>`,
+ leaf:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><path d="M-7 7C-7-2-2-7 7-7 7 2 2 7-7 7Z" fill="${ML}" stroke="${c}" stroke-width="1.2" stroke-linejoin="round"/><path d="M-7 7 3-3" stroke="${c}" stroke-width=".8"/></svg>`,
+ bead:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><circle r="4" fill="${MI}"/><circle r="7.5" fill="none" stroke="${c}" stroke-width="1"/><path d="M0-10V-8.5M0 8.5V10M-10 0H-8.5M8.5 0H10" stroke="${c}" stroke-width="1" stroke-linecap="round"/></svg>`,
+ square:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><rect x="-7" y="-5" width="14" height="10" rx="1.5" fill="#7a4a36" stroke="${c}" stroke-width="1"/><path d="M0-5V5M-7 0H7" stroke="${CR}" stroke-width=".7" opacity=".55"/></svg>`,
+ drop:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><path d="M0-8C3-3 6 0 6 3A6 6 0 0 1-6 3C-6 0-3-3 0-8Z" fill="${CA}" stroke="${c}" stroke-width="1.2" stroke-linejoin="round"/></svg>`,
+ cup:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><path d="M-6-5H6L4.5 8H-4.5Z" fill="${CR}" stroke="${c}" stroke-width="1.2" stroke-linejoin="round"/><path d="M-5.6-1H5.6" stroke="${c}" stroke-width=".8"/><path d="M1-5 4-9.5" stroke="${c}" stroke-width="1.2" stroke-linecap="round"/></svg>`
+};
+const LF=`<svg class="lf" width="22" height="16" viewBox="0 0 22 16"><path d="M2 14C4 5 10 1 20 2 18 10 11 15 2 14Z" fill="#9fd6c3" stroke="#8a5c46" stroke-width="1.1" stroke-linejoin="round"/><path d="M2 14 13 6" stroke="#8a5c46" stroke-width=".8"/></svg>`;
+let wid=0;
+function row(o){const c=o.st==='new'||o.ev?MI:o.st==='warn'?'#b4614f':C;
+ return `<div class="r ${o.st||''} ${o.ev?'ev':''}">${o.ev?LF:''}<div class="ic"><img src="rs-${{cup:'cup',ice:'ice',pearl:'pearl',leaf:'leaf',bead:'bead',square:'square',drop:'drop'}[o.ic]}.png" alt=""></div><div class="t">${o.big?`<div class="ld">${o.ld}</div><div class="big"><b>${o.big}</b><u>${o.u}</u></div>`:`<span>${o.t}</span>`}</div><div class="tm">${o.tm}</div>${o.ev?`<div class="sc"><svg width="220" height="26"><path id="w${++wid}" d="M2 18Q40 12 80 16T160 15T240 14" fill="none"/><path class="ul" d="" fill="none" stroke="#8a5c46" stroke-width=".7" opacity=".35"/><text><textPath href="#w${wid}">${o.ev}</textPath></text></svg></div>`:''}${o.s?`<div class="s">${o.s}</div>`:''}</div>`}
+const A=[
+ {ic:'cup',t:'和小薄荷聊了一会儿',tm:'21:20',s:'中转站 3 · 18 条',st:'new'},
+ {ic:'pearl',ld:'今天走满',big:'8,000',u:'步',tm:'20:48',ev:'a whole cup today!'},
+ {ic:'ice',t:'喝了<b>250</b><u>ml</u> 水',tm:'09:12'},
+ {ic:'bead',t:'静息心率<b>72</b>',tm:'10:40'},
+ {ic:'leaf',t:'记住了一件小事',tm:'14:05',s:'喜欢薄荷多一点'},
+ {ic:'drop',t:'额度用到八成',tm:'16:30',s:'中转站 1',st:'warn'}
+];
+const B=[
+ {ic:'cup',t:'新单已开',tm:'刚刚',s:'新 · 薄荷色 + 时间后小圆点',st:'new'},
+ {ic:'pearl',t:'这杯好了',tm:'21:16',s:'普通 · 可可墨色'},
+ {ic:'square',t:'这单作废',tm:'20:02',s:'过去 · 整行淡到一半',st:'old'},
+ {ic:'drop',t:'key 快过期了',tm:'19:40',s:'提醒 · 莓果色，只换字色不加底',st:'warn'},
+ {ic:'bead',t:'数据档<b>72</b>',tm:'10:40',s:'数据档 · 只把数字局部放大，可可色'},
+ {ic:'pearl',ld:'一整杯',big:'1',u:'杯',tm:'20:48',ev:'just filled up!',s:'事件档 · 引导小字 + 薄荷大数字 + 单位错位 + 花体沿液面'}
+];
+const Cc=[['ice','喝了一杯水','08:30'],['pearl','走到 3,000 步','09:58'],['cup','和小薄荷聊了一会儿','12:14'],['leaf','记住了一件小事','13:40'],['bead','心率回到 68','15:22'],['ice','喝了一杯水','17:05'],['square','这单作废','20:11'],['pearl','走到 8,000 步','22:47']].map(([ic,t,tm])=>({ic,t,tm}));
+document.getElementById('a').innerHTML=A.map(row).join('');
+document.getElementById('b').innerHTML=B.map(row).join('');
+document.getElementById('c').innerHTML=Cc.map(row).join('');
+// 条纹吸管：可可细描边、薄荷/奶白斜纹、上端斜切口、下端插进最后一颗小料后面
+let sid=0;
+function straw(el){const ics=[...el.querySelectorAll('.ic')];if(ics.length<2)return;
+ const b=el.getBoundingClientRect();let h='';
+ for(let i=0;i<ics.length-1;i++){const a=ics[i].getBoundingClientRect(),c=ics[i+1].getBoundingClientRect();
+  const x=a.left-b.left+a.width/2,y0=a.bottom-b.top+5,y1=c.top-b.top-4,n=Math.max(2,Math.min(4,Math.round((y1-y0)/11)));
+  for(let k=0;k<n;k++){const f=(k+.5)/n,y=y0+(y1-y0)*f,dx=Math.sin((i*3+k)*1.9)*4,r=[2,3,2.5,3.5][(i+k)%4];
+   h+=`<span class="bb" style="left:${x+dx-r}px;top:${y-r}px;width:${2*r}px;height:${2*r}px"></span>`}}
+ el.insertAdjacentHTML('afterbegin',`<div class="straw2" style="left:0;top:0;width:100%;height:100%">${h}</div>`)}
+function trimUL(){document.querySelectorAll(".r.ev .sc svg").forEach(s=>{const L=s.querySelector("text").getComputedTextLength();const n=Math.max(2,Math.round(L/40));let d="M2 23";for(let k=0;k<n;k++){const w=L/n;d+=`q${w/4} -3 ${w/2} 0t${w/2} 0`;}s.querySelector(".ul").setAttribute("d",d)})}
+function drawStraws(){trimUL();document.querySelectorAll('.list>.straw2').forEach(n=>n.remove());document.querySelectorAll('.list').forEach(straw)}
+Promise.all([document.fonts.ready,...[...document.images].map(i=>i.complete?1:new Promise(r=>i.onload=i.onerror=r))]).then(drawStraws);addEventListener('resize',drawStraws);
+</script>
