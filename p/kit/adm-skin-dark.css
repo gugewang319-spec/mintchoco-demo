@@ -1,0 +1,12 @@
+/* 皮肤 · 黑巧：沿用薄荷巧克力的皮，只改变量。 */
+@import url(adm-skin-mint.css);
+:root{
+ --ink:#f4e6d4;--ink2:#cdb29c;--co:#c9a07e;--mint:#8fd0b6;--mint2:#6fb99c;--mintd:#a6e3cb;--caramel:#6b4a3a;--choc:#b98a62;--cream-on:#2c1b14;--danger:#f0a48c;
+ --row-bg:#5a4034;--row-on:#3f6b5b;--fld-bg:#2f1f18;--menu-bg:#4a3228;
+ --page-bg:repeating-linear-gradient(90deg,#3a2820 0,#3a2820 18px,#433028 18px,#433028 36px) #3e2b23;
+ --adm-color-primary:#b98a62;--adm-color-text:#f4e6d4;--adm-color-text-secondary:#cdb29c;--adm-color-weak:#cdb29c;--adm-color-border:#c9a07e;--adm-color-background:#5a4034;--adm-color-box:#2f1f18;
+}
+.b2,.b3.mt,.ct2 .adm-capsule-tabs-tab-active,.hd .adm-nav-bar-back-arrow,.plate b{--text-color:#2c1b14;color:#2c1b14}
+.b2.adm-button-danger{--text-color:#9a3f27}
+.st{background:#4a342b}.rows.err .adm-list-item{background:#5a3328}
+.adm-dialog-body{background:#4a3228}.mc-bell{background:#4a3228!important;color:var(--ink)!important}
