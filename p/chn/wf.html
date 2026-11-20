@@ -1,0 +1,97 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>渠道 · 构图灰稿</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#e9ecea;font-family:system-ui,"PingFang SC","Noto Sans SC",sans-serif;color:#555}
+.app{position:relative;width:412px;margin:0 auto;height:715px;overflow:hidden;background:#f4f5f4}
+.v{position:absolute;inset:0;display:none}.v.on{display:block}
+.sw{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:60;display:flex;gap:6px}
+.sw b{white-space:nowrap;font:12px/1 system-ui;color:#e0336a;background:#fff;border:1px solid #e0336a;border-radius:4px;padding:5px 10px;cursor:pointer}.sw b.on{background:#e0336a;color:#fff}
+.g{position:absolute;inset:0;pointer-events:none;z-index:50;display:none;background:repeating-linear-gradient(0deg,rgba(255,0,80,.07) 0 1px,transparent 1px 8px)}
+body.grid .g{display:block}
+.hd{position:absolute;top:48px;left:24px;right:24px;height:40px;display:flex;align-items:center;gap:16px;z-index:5}
+.ci{width:36px;height:36px;border-radius:50%;background:#d6d9d7;flex:none}
+.hd h1{font-size:22px;font-weight:700;color:#444}.hd .sp{margin-left:auto}
+.nav{position:absolute;bottom:16px;left:16px;right:16px;height:64px;border-radius:32px;background:#dfe2e0;z-index:20}
+.x{position:absolute;background:#d3d6d4;border-radius:6px}
+.d{background:#a9adaa}.k{background:#888c89}
+.ln{position:absolute;border-top:2px solid #888}
+.dash{position:absolute;border:1.5px dashed #b4b8b5;border-radius:6px}
+.t{position:absolute;font-size:13px;color:#777;line-height:1.4}
+.big{position:absolute;font-weight:800;color:#333;line-height:1;letter-spacing:-.02em}
+.n{position:absolute;z-index:30;display:inline-flex;width:18px;height:18px;border-radius:50%;background:#e0336a;color:#fff;font:11px/1 system-ui;align-items:center;justify-content:center}
+.lg{position:absolute;left:0;right:0;bottom:88px;z-index:40;margin:0 16px;padding:8px 12px;background:rgba(255,255,255,.92);border:1px solid #e0336a;border-radius:8px;font:11px/1.6 system-ui;color:#c0295a}
+.lg p{display:flex;gap:6px}.lg p i{font-style:normal;flex:none;width:14px;height:14px;border-radius:50%;background:#e0336a;color:#fff;text-align:center;line-height:14px;font-size:9px;margin-top:2px}
+.hl{position:absolute;inset:0;z-index:45;pointer-events:none;border:0}
+.fade{position:absolute;left:0;right:0;height:60px;background:linear-gradient(#f4f5f400,#f4f5f4)}
+</style>
+<div class="sw"><b data-v="a" class="on">A 巨轨</b><b data-v="b">B 竖链</b><b data-v="c">C 出单机</b><b id="gr">网格</b></div>
+<div class="app">
+<div class="g"></div>
+
+<!-- A 巨轨横贯：轨出血两边，单子又长又大，选中的垂得最长挡在前面；今日数写在轨尾挂牌上；选中单往下直接接成它的钥匙和模型 -->
+<section class="v on" id="a">
+ <div class="hd"><span class="ci"></span><h1>渠道</h1><span class="ci sp"></span></div>
+ <div class="ln" style="left:-10px;right:-10px;top:120px;border-top-width:6px;border-color:#777"></div>
+ <div class="x" style="left:-30px;top:126px;width:92px;height:200px;opacity:.6"></div>
+ <div class="x" style="left:70px;top:126px;width:92px;height:220px"></div>
+ <div class="x d" style="left:150px;top:118px;width:128px;height:330px;border-radius:6px 6px 14px 14px;z-index:3;box-shadow:0 6px 0 #c6c9c7"></div>
+ <div class="x" style="left:286px;top:126px;width:92px;height:210px"></div>
+ <div class="x" style="left:386px;top:126px;width:92px;height:190px;opacity:.6"></div>
+ <div class="x k" style="left:300px;top:96px;width:96px;height:56px;transform:rotate(6deg);z-index:4"></div>
+ <div class="big" style="left:306px;top:108px;font-size:28px;color:#fff;transform:rotate(6deg);z-index:5">1,284</div>
+ <div class="t" style="left:168px;top:150px;z-index:4;color:#fff;font-size:20px;font-weight:700;writing-mode:vertical-rl;letter-spacing:4px">备用渠道</div>
+ <div class="x" style="left:24px;top:470px;width:364px;height:44px;background:#e3e5e4"></div>
+ <div class="x" style="left:24px;top:520px;width:364px;height:44px;background:#e3e5e4"></div>
+ <div class="x" style="left:24px;top:570px;width:364px;height:44px;background:#e3e5e4"></div>
+ <div class="ln" style="left:214px;top:448px;width:0;height:22px;border-top:0;border-left:2px dashed #999"></div>
+ <span class="n" style="left:8px;top:110px">1</span><span class="n" style="left:150px;top:100px">2</span><span class="n" style="left:380px;top:88px">3</span><span class="n" style="left:8px;top:470px">4</span>
+ <div class="lg"><p><i>1</i>主角：挂单轨出血两边，单子大到占屏一半，左右滑</p><p><i>2</i>选中那张垂最长、挡在前面；没选的往后退淡</p><p><i>3</i>今日出单写在轨尾挂牌上（信息长在物件上）</p><p><i>4</i>选中单的钥匙和模型直接接在它下面；上密下疏</p></div>
+ <div class="nav"></div>
+</section>
+
+<!-- B 竖链：左侧一根从页顶淋酱垂下的长链，单子夹在链上一张张往下排；右侧留白放大数字和选中渠道 -->
+<section class="v" id="b">
+ <div class="hd"><span class="ci"></span><h1>渠道</h1><span class="ci sp"></span></div>
+ <div class="ln" style="left:76px;top:-10px;width:0;height:700px;border-top:0;border-left:5px solid #777"></div>
+ <div class="x" style="left:28px;top:116px;width:150px;height:64px;transform:rotate(-4deg)"></div>
+ <div class="x d" style="left:28px;top:192px;width:196px;height:86px;transform:rotate(2deg);z-index:3;box-shadow:0 6px 0 #c6c9c7"></div>
+ <div class="x" style="left:28px;top:292px;width:150px;height:64px;transform:rotate(-3deg)"></div>
+ <div class="x" style="left:28px;top:368px;width:150px;height:64px;transform:rotate(3deg)"></div>
+ <div class="x" style="left:28px;top:444px;width:150px;height:64px;transform:rotate(-2deg)"></div>
+ <div class="dash" style="left:28px;top:520px;width:150px;height:48px"></div>
+ <div class="big" style="left:224px;top:124px;font-size:clamp(36px,11vw,46px)">1,284</div>
+ <div class="x" style="left:224px;top:180px;width:120px;height:12px;background:#e3e5e4"></div>
+ <div class="x" style="left:224px;top:300px;right:24px;width:auto;height:40px;background:#e3e5e4"></div>
+ <div class="x" style="left:224px;top:348px;right:24px;width:auto;height:40px;background:#e3e5e4"></div>
+ <div class="x" style="left:224px;top:396px;right:24px;width:auto;height:40px;background:#e3e5e4"></div>
+ <div class="ln" style="left:224px;top:236px;width:16px;border-top:2px dashed #999"></div>
+ <span class="n" style="left:62px;top:60px">1</span><span class="n" style="left:206px;top:186px">2</span><span class="n" style="left:220px;top:108px">3</span><span class="n" style="left:62px;top:530px">4</span>
+ <div class="lg"><p><i>1</i>主角：一根链从页顶淋酱垂下贯穿全屏，单子夹在链上往下排</p><p><i>2</i>选中那张向右甩出，拉一根线连到右边详情</p><p><i>3</i>右侧大留白放今日出单大字；详情在它下面</p><p><i>4</i>链尾挂空夹子＝新渠道</p></div>
+ <div class="nav"></div>
+</section>
+
+<!-- C 出单机：页顶一台出单机（窄轨压在机器上沿），吐出一条长纸卷贯穿全页，今天的每次调用就是卷上的小票；数字在机器显示窗 -->
+<section class="v" id="c">
+ <div class="hd"><span class="ci"></span><h1>渠道</h1><span class="ci sp"></span></div>
+ <div class="ln" style="left:24px;right:24px;top:110px;border-top-width:4px"></div>
+ <div class="x" style="left:30px;top:114px;width:52px;height:56px"></div><div class="x d" style="left:88px;top:114px;width:52px;height:72px"></div><div class="x" style="left:146px;top:114px;width:52px;height:56px"></div><div class="x" style="left:204px;top:114px;width:52px;height:56px"></div><div class="x" style="left:262px;top:114px;width:52px;height:56px"></div><div class="dash" style="left:320px;top:114px;width:52px;height:56px"></div>
+ <div class="x k" style="left:40px;top:206px;width:332px;height:120px;border-radius:20px 20px 8px 8px"></div>
+ <div class="x" style="left:72px;top:226px;width:150px;height:56px;background:#d3d6d4"></div>
+ <div class="big" style="left:82px;top:236px;font-size:36px">1,284</div>
+ <div class="x" style="left:96px;top:326px;width:220px;height:420px;background:#e6e8e7;border-radius:0"></div>
+ <div class="x" style="left:108px;top:344px;width:196px;height:60px"></div>
+ <div class="x d" style="left:108px;top:414px;width:196px;height:60px"></div>
+ <div class="x" style="left:108px;top:484px;width:196px;height:60px"></div>
+ <div class="x" style="left:108px;top:554px;width:196px;height:60px;opacity:.6"></div>
+ <span class="n" style="left:8px;top:104px">1</span><span class="n" style="left:24px;top:200px">2</span><span class="n" style="left:80px;top:330px">3</span>
+ <div class="lg"><p><i>1</i>上沿窄轨挂各渠道小单（缩小，点开在原地放大）</p><p><i>2</i>主角：出单机横在页上部，今日出单在显示窗</p><p><i>3</i>吐出一条长纸卷贯穿全页，卷上一格格就是每次调用的小票（等回复/回好了/没发出去），往下滚＝往回翻</p></div>
+ <div class="nav"></div>
+</section>
+</div>
+<script>
+const S=document.querySelectorAll('.sw b[data-v]');S.forEach(b=>b.onclick=()=>{S.forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.v').forEach(v=>v.classList.toggle('on',v.id===b.dataset.v));history.replaceState(0,'','#'+b.dataset.v)});
+const h=location.hash.slice(1);if(h)[...S].find(b=>b.dataset.v===h)?.click();
+const A=document.querySelector(".app"),fit=()=>A.style.zoom=Math.min(1,innerWidth/412,innerHeight/715);fit();addEventListener("resize",fit);
+gr.onclick=()=>document.body.classList.toggle('grid');
+</script>
+</html>
