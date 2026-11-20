@@ -12,7 +12,7 @@ function App() {
     <NavBar backArrow={false}>设置</NavBar>
 
     <List mode="card" header="本周用量 · 第 46 周">
-      <List.Item description="比上周同一时候，到了七成" extra={<span className="k-big">128.4<small> 万</small></span>} onClick={soon('用量')}>tokens</List.Item>
+      <List.Item description="比上周同一时候，到了七成" extra={<span className="k-big">128.4<small> 万</small></span>} onClick={go('use.html')}>tokens</List.Item>
       <List.Item extra="96.1 万">聊天</List.Item>
       <List.Item extra="32.3 万">记忆整理</List.Item>
       <List.Item><ProgressBar percent={70} text="70%" /></List.Item>
