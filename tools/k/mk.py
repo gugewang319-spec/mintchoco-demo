@@ -5,7 +5,7 @@ TPL='''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name=
 <style>@font-face{{font-family:WK;src:url(k-wk.ttf)}}</style>
 <link rel="stylesheet" href="../kit/mck-adm.css"><link rel="stylesheet" href="k-base.css"></head>
 <body><div id="root"></div><script src="../ui.js"></script><script src="../kit/mck.js"></script><script src="{p}.js"></script></body></html>'''
-for p,t in [('chn','渠道')]:
+for p,t in [('chn','渠道'),('set','设置')]:
   open(K+p+'.html','w').write(TPL.format(t=t,p=p))
 txt=''.join(open(f).read() for f in glob.glob(R+'tools/k/*.js*'))+'确定取消撤销「」，。'
 ch=''.join(sorted(set(c for c in txt if ord(c)>127)))+''.join(chr(i) for i in range(32,127))

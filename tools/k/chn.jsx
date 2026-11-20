@@ -130,7 +130,7 @@ function Home({ CH, onOpen, onNew }) {
   const n = { all: CH.length, bad: CH.filter(isBad).length, off: CH.filter(c => c.off).length }
   const rows = CH.map((c, i) => [c, i]).filter(([c]) => (tab === 'all' || (tab === 'bad' ? isBad(c) : c.off)) && (!q || (c.n + c.h).toLowerCase().includes(q.toLowerCase())))
   return <>
-    <NavBar onBack={() => {}}>渠道</NavBar>
+    <NavBar onBack={() => { location.href = 'set.html' }}>渠道</NavBar>
     <List mode="card" header="今日">
       <List.Item extra="1,284">出单</List.Item>
       <List.Item extra="1.8 秒">平均耗时</List.Item>
