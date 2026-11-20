@@ -56,9 +56,8 @@ h1 small{font:24px/1 Script;color:#3f9a80}
 /* 极低对比底纹：吸管边几颗小气泡，只有凑近才看见 */
 .list>svg.straw .bub{fill:none;stroke:#3f9a80;stroke-width:.7;opacity:.35}
 /* 事件档：同一行，多一层液体渐变 + 一句花体 + 吸管上斜插一片薄荷叶出框 */
-.r.ev{margin:4px -24px 4px 0;padding:10px 24px 10px 0}
-.r.ev:before{content:"";position:absolute;left:12px;right:0;top:2px;bottom:2px;border-radius:0 0 0 14px;background:linear-gradient(90deg,rgba(159,214,195,.55),rgba(159,214,195,.18) 70%,rgba(159,214,195,0));z-index:0}
-.r.ev:after{content:"";position:absolute;left:12px;right:0;top:2px;height:5px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='5'%3E%3Cpath d='M0 1Q4 4.5 8 1T16 1' fill='none' stroke='%233f9a80' stroke-width='.8'/%3E%3C/svg%3E") repeat-x 0 0/16px 5px;-webkit-mask:linear-gradient(90deg,#000 50%,transparent);mask:linear-gradient(90deg,#000 50%,transparent);z-index:0}
+.r.ev{margin:4px 0;padding:10px 0}
+.r.ev:before{content:"";position:absolute;left:12px;right:-8px;top:2px;bottom:2px;border-radius:0 14px 14px 0;background:linear-gradient(90deg,rgba(159,214,195,.55),rgba(159,214,195,.22) 75%,rgba(159,214,195,.08));z-index:0}
 .r.ev>*{position:relative;z-index:1}
 .r.ev .t span{color:#2f7e68;font-size:16px}
 .r.ev .sc{grid-column:2/4;font:17px/1.1 Script;color:#3f9a80;margin-top:2px}
