@@ -35,7 +35,7 @@ body{color:var(--k-ink)}
 /* 按钮：全部平涂 */
 .adm-button{--border-width:var(--k-lw);--border-color:var(--k-co);--border-radius:8px;font-family:var(--adm-font-family)}
 .adm-button::before{display:none}
-.b1{--background-color:var(--k-choc);--text-color:var(--k-cream-on);--border-radius:12px;height:50px;letter-spacing:.14em;font:400 18px/1 var(--k-ff-title)!important;background-image:linear-gradient(90deg,transparent calc(14% - 1px),#3a2219 calc(14% - 1px) 14%,transparent 14% calc(86% - 1px),#3a2219 calc(86% - 1px) 86%,transparent 86%)}
+.b1{--background-color:var(--k-choc);--text-color:var(--k-cream-on);--border-radius:12px;height:50px;letter-spacing:.14em;font:400 18px/1 var(--k-ff-title)!important}
 .b1.adm-button-disabled{opacity:1;--background-color:#a28476;--text-color:rgba(253,246,232,.75);background-image:none}
 .b2s{border:var(--k-lw) solid var(--k-co);border-radius:8px;overflow:hidden}
 .b2{--background-color:var(--k-mint2);--text-color:var(--k-ink);height:42px;font-size:var(--k-f3)}

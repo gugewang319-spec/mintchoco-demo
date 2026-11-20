@@ -28,3 +28,6 @@
 .st.ld{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;padding:16px;font-size:var(--k-f4)}
 .err{margin-top:10px}
 .b2.solo{margin-top:6px;padding:0 18px}
+
+/* 行第一条上边线别被列表裁掉 */
+.rows .adm-list-body{overflow:visible}
