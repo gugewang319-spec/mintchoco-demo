@@ -18,3 +18,4 @@ body{padding-bottom:24px}
 .k-on{background:var(--adm-color-box)}
 .k-big{font-size:22px;color:var(--adm-color-text)}.k-big small{font-size:13px}
 .k-add .adm-list-item-content-main{color:var(--adm-color-primary)}.k-mute{color:var(--adm-color-weak)}
+.k-time{font-size:13px;font-variant-numeric:tabular-nums}.k-url{word-break:break-all;font-size:14px}.adm-capsule-tabs{margin:4px 12px 0}

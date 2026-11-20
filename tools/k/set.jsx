@@ -21,7 +21,7 @@ function App() {
     <List mode="card" header="服务">
       <List.Item onClick={go('chn.html')} description="13 个模型" extra={<Space style={{ '--gap': '6px' }}><Tag color="danger" fill="outline">备用超时</Tag><span>3 条</span></Space>}>渠道和模型</List.Item>
       <List.Item onClick={go('snd.html')} description="默认：晚风" extra="3 种">声音</List.Item>
-      <List.Item onClick={soon('健康')} description="10:52 同步" extra="6,284 步">健康</List.Item>
+      <List.Item onClick={go('hlt.html')} description="10:52 同步" extra="6,284 步">健康</List.Item>
     </List>
 
     <List mode="card" header="网关工具">
