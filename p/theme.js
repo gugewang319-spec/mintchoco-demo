@@ -1,4 +1,4 @@
-/* Mint Choco 主题：按页把装字的块穿成饮品卡（只加 class 和两个装饰子元素，不改结构）。 */
+/* Mint Choco 主题：按页把装字的块穿成甜点糖片（实色面 + 白描边 + 角落贴纸）（只加 class 和两个装饰子元素，不改结构）。 */
 (function(){
   const pg=(location.pathname.match(/\/p\/([^/]+)\//)||[])[1]||'';
   const KINDS=['latte','soda','cocoa','boba'];
@@ -11,27 +11,26 @@
     role:[['section.sheet',{k:'latte'}]],
     chn:[['.kpi',{k:'cocoa',pad:1}]],
     snd:[['.info',{k:'latte',pad:1}],['.say',{k:'soda',pad:1}],['#tracks',{k:'soda',pad:1}],['.chs',{k:'cocoa',pad:1}]],
-    srch:[['button.hit',{pad:1}]],
-    msrch:[['button.hit',{pad:1}]],
+    srch:[['button.hit',{pad:1,nowm:1}]],
+    msrch:[['button.hit',{pad:1,nowm:1,nost:1}]],
     conn:[['#card',{k:'latte'}]],
   };
-  const TOP={latte:0,soda:0,cocoa:2,boba:4};
+  const FILL={latte:'var(--mc-f2)',soda:'var(--mc-f1)',cocoa:'var(--mc-f2)',boba:'var(--mc-f3)'};
+  const STK=['leaf','heart','cherry'],WM=['mint choco','sweet notes','fresh mint','choco & cream'];let cnt=0;
   function dress(el,k,o){
-    if(el.classList.contains('mc-dk'))return;
-    el.classList.add('mc-dk','mc-'+k);if(o.pad)el.classList.add('mc-pad');if(o.r)el.classList.add('mc-r');if(o.mini)el.classList.add('mc-mini');
-    if(getComputedStyle(el).position==='static')el.style.position='relative';
+    if(el.dataset.mcp)return;el.dataset.mcp=1;
+    const S=el.style,imp=(a,v)=>S.setProperty(a,v,'important');
+    imp('-webkit-backdrop-filter','none');imp('backdrop-filter','none');
+    if(o.mini){el.classList.add('mc-mini');return}
+    const n=cnt++;el.classList.add('mc-pl','mc-'+STK[n%3]);if(o.pad)el.classList.add('mc-pad');
+    if(getComputedStyle(el).position==='static')S.position='relative';
     // 页面里有带 id / !important 的旧皮，用行内 important 盖住（只盖皮，不碰尺寸位置）
-    const S=el.style,imp=(k,v)=>S.setProperty(k,v,'important');
-    imp('background','linear-gradient(160deg,rgba(255,255,255,.74),rgba(236,248,242,.56))');
-    imp('border','1px solid rgba(255,255,255,.95)');
-    imp('box-shadow','inset 0 1px 0 #fff,0 0 0 .6px rgba(138,92,70,.22),0 12px 24px -18px rgba(74,48,39,.55)');
-    imp('backdrop-filter','none');imp('-webkit-backdrop-filter','none');imp('overflow','hidden');
-    imp('border-radius',o.mini?'14px 14px 14px 5px':(o.r?'20px 20px 7px 20px':'20px 20px 20px 7px'));
+    imp('background',FILL[k]);imp('border','2px solid #fff');
+    imp('box-shadow','0 0 0 1.2px rgba(138,92,70,.55),0 6px 14px -8px rgba(74,48,39,.35)');
+    imp('border-radius','16px');
     for(const c of el.children){if(getComputedStyle(c).position==='static')c.style.position='relative'}
-    const l=document.createElement('i');l.className='mc-liq';l.setAttribute('aria-hidden','true');
-    const t=document.createElement('i');t.className='mc-tp';t.setAttribute('aria-hidden','true');
-    for(let i=0;i<TOP[k];i++)t.appendChild(document.createElement('i'));
-    el.prepend(t);el.prepend(l);
+    if(!o.nost){const st=document.createElement('i');st.className='mc-st';st.setAttribute('aria-hidden','true');el.prepend(st)}
+    if(o.pad&&!o.nowm){const w=document.createElement('i');w.className='mc-wm';w.setAttribute('aria-hidden','true');w.textContent=WM[n%4];el.prepend(w)}
   }
   function run(){document.documentElement.classList.add('mc-'+pg);
     const list=MAP[pg];if(!list)return;
@@ -42,7 +41,7 @@
       });
     });
   }
-  const css=document.createElement('link');css.rel='stylesheet';css.href=(document.currentScript&&document.currentScript.src||'').replace(/theme\.js.*$/,'theme.css');document.head.appendChild(css);
+  const css=document.createElement('link');css.rel='stylesheet';css.href=(document.currentScript&&document.currentScript.src||'').replace(/theme\.js.*$/,'theme.css?v=2');document.head.appendChild(css);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
   // 列表是脚本后渲染的：再穿几次，并盯着 DOM 变化
   let n=0;const iv=setInterval(()=>{run();if(++n>8)clearInterval(iv)},250);

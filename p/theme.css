@@ -1,48 +1,32 @@
 /* Mint Choco 主题（theme 分支）——全站统一的一层皮。
-   标杆：今天页饮品卡（.glass.dk：奶油玻璃面 + 杯底液面 + 一样小料 + 薄荷点小标签）。
-   规矩：装字的块一律是饮品卡，不留光秃秃的字、不留白纸卡/纸片便签/3D 牌；
-   一种饮品对应一样小料：拿铁=奶泡、薄荷苏打=气泡、热可可=棉花糖、珍珠奶茶=珍珠。
-   只换皮不动结构；随滚动移动的面不用实时模糊（性能规矩）。 */
-:root{--mc-ink:#4a3027;--mc-ch:#5b3a2c;--mc-cocoa:#8a5c46;--mc-mint3:#2f6e58;--mc-mintb:#3f9a80}
-.mc-dk{isolation:isolate;overflow:hidden!important;
-  background:linear-gradient(160deg,rgba(255,255,255,.74),rgba(236,248,242,.56))!important;
-  border:1px solid rgba(255,255,255,.95)!important;border-radius:20px 20px 20px 7px!important;
-  box-shadow:inset 0 1px 0 #fff,0 0 0 .6px rgba(138,92,70,.22),0 12px 24px -18px rgba(74,48,39,.55)!important;
-  -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-.mc-dk.mc-r{border-radius:20px 20px 7px 20px!important}
-.mc-dk::before,.mc-dk::after{display:none!important}
-.mc-dk>:not(.mc-liq):not(.mc-tp){z-index:3}
-.mc-pad{padding:12px 14px calc(var(--mc-h,18px) + 12px)!important;box-sizing:border-box}
-.mc-liq{position:absolute;left:0;right:0;bottom:0;height:var(--mc-h,26%);z-index:1;pointer-events:none;background:var(--mc-l)}
-.mc-liq::before{content:"";position:absolute;left:0;right:0;top:-7px;height:8px;background:var(--mc-wave) repeat-x 0 0/56px 8px;animation:mcwv var(--mc-wd,6s) linear infinite}
-@keyframes mcwv{to{background-position:56px 0}}
-.mc-tp{position:absolute;z-index:2;pointer-events:none}
-/* 拿铁：奶泡层 */
-.mc-latte{--mc-h:16px;--mc-l:linear-gradient(180deg,rgba(214,176,140,.26),rgba(180,132,98,.34));--mc-wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 1 28 4 T56 4 V8 H0Z' fill='rgba(214,176,140,.26)'/%3E%3C/svg%3E");--mc-wd:7s}
-.mc-latte .mc-tp{left:0;right:0;bottom:calc(var(--mc-h) - 2px);height:7px;background:radial-gradient(circle at 6px 4px,rgba(255,252,244,.95) 0 3px,transparent 3.6px) 0 0/13px 8px repeat-x;opacity:.9}
-/* 薄荷苏打：气泡 */
-.mc-soda{--mc-h:18px;--mc-l:linear-gradient(180deg,rgba(166,217,196,.32),rgba(120,196,168,.44));--mc-wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='rgba(166,217,196,.32)'/%3E%3C/svg%3E");--mc-wd:5.2s}
-.mc-soda .mc-tp{right:14px;bottom:2px;width:46px;height:var(--mc-h);background:radial-gradient(circle at 8px 75%,transparent 2.6px,rgba(255,255,255,.95) 3px,transparent 3.8px),radial-gradient(circle at 24px 40%,transparent 3.6px,rgba(255,255,255,.95) 4px,transparent 4.8px),radial-gradient(circle at 38px 70%,transparent 2px,rgba(255,255,255,.95) 2.4px,transparent 3.2px)}
-/* 热可可：棉花糖 */
-.mc-cocoa{--mc-h:18px;--mc-l:linear-gradient(180deg,rgba(150,98,72,.30),rgba(110,70,52,.40));--mc-wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 0 28 4 T56 4 V8 H0Z' fill='rgba(150,98,72,.30)'/%3E%3C/svg%3E");--mc-wd:6.2s}
-.mc-cocoa .mc-tp{right:16px;bottom:calc(var(--mc-h) - 7px);width:34px;height:13px}
-.mc-cocoa .mc-tp i{position:absolute;width:13px;height:11px;border-radius:4px;background:linear-gradient(160deg,#fffdf7,#f1e6d6);box-shadow:inset -1px -1px 0 rgba(138,92,70,.25),0 0 0 .6px rgba(138,92,70,.4)}
-.mc-cocoa .mc-tp i:nth-child(1){left:0;top:2px;transform:rotate(-12deg)}
-.mc-cocoa .mc-tp i:nth-child(2){left:17px;top:0;transform:rotate(16deg)}
-/* 珍珠奶茶：珍珠沉底 */
-.mc-boba{--mc-h:22px;--mc-l:linear-gradient(180deg,rgba(214,170,128,.32),rgba(190,140,100,.42));--mc-wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='8'%3E%3Cpath d='M0 4 Q14 1 28 4 T56 4 V8 H0Z' fill='rgba(214,170,128,.32)'/%3E%3C/svg%3E");--mc-wd:7.4s}
-.mc-boba .mc-tp{right:12px;bottom:5px;width:52px;height:12px}
-.mc-boba .mc-tp i{position:absolute;bottom:0;width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a57658 0 14%,#4b2c1f 60%);box-shadow:0 0 0 .6px rgba(60,35,25,.5)}
-.mc-boba .mc-tp i:nth-child(1){left:0}.mc-boba .mc-tp i:nth-child(2){left:13px;bottom:3px}.mc-boba .mc-tp i:nth-child(3){left:27px}.mc-boba .mc-tp i:nth-child(4){left:40px;bottom:2px}
+   2026-11-20 17:47 饮品卡（玻璃杯面）被否：满屏玻璃怪。改「甜点糖片」：
+   学「绿·小手账」的做法（一套色板管所有元素；面＝实色 + 2px 白描边 + 淡色柔影；
+   图标＝白色粗描边贴纸感；角落一枚小贴纸；角落一行很淡的英文小字），
+   不学它的拼贴（胶带、纸片、格子）。贴纸全来自甜点店：薄荷叶、巧克力心、樱桃。
+   装字的面实色不透明；不用 backdrop-filter；不动结构。 */
+:root{--mc-ink:#4a3027;--mc-cocoa:#8a5c46;--mc-mint3:#2f6e58;
+  --mc-f1:#d9f0e5;--mc-f2:#f1e3d6;--mc-f3:#cfe9de;--mc-sh:74,48,39;
+  --mc-leaf:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2230%22%20height%3D%2230%22%20viewBox%3D%220%200%2030%2030%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%3E%3Cpath%20d%3D%22M5%2023C5%2012%2013%205%2025%205c0%2012-8%2019-20%2018z%22/%3E%3C/g%3E%3Cpath%20d%3D%22M5%2023C5%2012%2013%205%2025%205c0%2012-8%2019-20%2018z%22%20fill%3D%22%238fd1b4%22%20stroke%3D%22%238a5c46%22%20stroke-width%3D%221.3%22/%3E%3Cpath%20d%3D%22M7%2021%2019%2011M12%2016.5l-.5-4M15.5%2013.5l4%20.3%22%20fill%3D%22none%22%20stroke%3D%22%238a5c46%22%20stroke-width%3D%221.1%22/%3E%3C/svg%3E");--mc-heart:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2230%22%20height%3D%2230%22%20viewBox%3D%220%200%2030%2030%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M15%2025%206%2016c-3-3-2-8%202-9%203-1%205%201%207%203%202-2%204-4%207-3%204%201%205%206%202%209z%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%3Cpath%20d%3D%22M15%2025%206%2016c-3-3-2-8%202-9%203-1%205%201%207%203%202-2%204-4%207-3%204%201%205%206%202%209z%22%20fill%3D%22%236e4535%22%20stroke%3D%22%234a3027%22%20stroke-width%3D%221.2%22/%3E%3Cpath%20d%3D%22M8.5%2011.5c.5-1.5%201.8-2.2%203-2%22%20fill%3D%22none%22%20stroke%3D%22%23a9785e%22%20stroke-width%3D%221.3%22/%3E%3C/svg%3E");--mc-cherry:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2230%22%20height%3D%2230%22%20viewBox%3D%220%200%2030%2030%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%3E%3Cpath%20d%3D%22M13%2019C14%2012%2017%207%2023%204%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2221%22%20r%3D%225.5%22/%3E%3C/g%3E%3Cpath%20d%3D%22M13%2019C14%2012%2017%207%2023%204%22%20fill%3D%22none%22%20stroke%3D%22%238a5c46%22%20stroke-width%3D%221.4%22/%3E%3Cpath%20d%3D%22M19%207c2-2%205-2%206%200-2%201-4%201-6%200z%22%20fill%3D%22%238fd1b4%22%20stroke%3D%22%238a5c46%22%20stroke-width%3D%221%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2221%22%20r%3D%225.5%22%20fill%3D%22%23d8605a%22%20stroke%3D%22%238a5c46%22%20stroke-width%3D%221.3%22/%3E%3Cpath%20d%3D%22M9.5%2019.5c.4-1%201.2-1.5%202-1.6%22%20fill%3D%22none%22%20stroke%3D%22%23f3b3a8%22%20stroke-width%3D%221.3%22/%3E%3C/svg%3E")}
+.mc-pl{isolation:isolate;overflow:visible!important;color:var(--mc-ink)}
+.mc-pl>:not(.mc-st):not(.mc-wm){z-index:2}
+.mc-pl::before,.mc-pl::after{display:none!important}
+.mc-pad{padding:12px 14px 20px!important;box-sizing:border-box}
+/* 角落贴纸：同一个家族，同样白描边 + 可可线，各自轻轻歪一点 */
+.mc-st{position:absolute;z-index:4;top:-9px;right:12px;width:26px;height:26px;pointer-events:none;
+  background:var(--mc-s) center/contain no-repeat;filter:drop-shadow(0 1.5px 1.5px rgba(var(--mc-sh),.22));transform:rotate(var(--mc-rot,8deg))}
+.mc-leaf .mc-st{--mc-s:var(--mc-leaf);--mc-rot:-6deg}
+.mc-heart .mc-st{--mc-s:var(--mc-heart);--mc-rot:10deg}
+.mc-cherry .mc-st{--mc-s:var(--mc-cherry);--mc-rot:4deg}
+/* 角落淡英文小字 */
+.mc-wm{position:absolute;z-index:1;right:13px;bottom:5px;pointer-events:none;font:italic 10px/1 Georgia,"Times New Roman",serif;letter-spacing:.08em;color:rgba(138,92,70,.36);white-space:nowrap}
+/* 小按钮：薄荷实色 + 白描边 + 可可细线，不渐变不高光 */
+.mc-mini{background:#bfe5d3!important;border:2px solid #fff!important;border-radius:12px!important;
+  box-shadow:0 0 0 1.2px var(--mc-cocoa),0 3px 6px -3px rgba(var(--mc-sh),.3)!important;color:var(--mc-ink)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 /* 小标签：薄荷点 + 站酷小字（今天页「他现在」同款） */
 .mc-lb{display:flex!important;align-items:center;gap:7px;font-family:ZK,sans-serif!important;font-size:13px!important;letter-spacing:.16em!important;color:var(--mc-cocoa)!important;background:none!important;border:0!important;box-shadow:none!important}
-.mc-lb::before{content:"";flex:none;width:6px;height:6px;border-radius:3px;background:var(--mc-mint3);box-shadow:0 0 0 3px rgba(63,154,128,.18)}
-@media (prefers-reduced-motion:reduce){.mc-liq::before{animation:none}}
+.mc-lb::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--mc-mint3);box-shadow:0 0 0 2px #fff,0 0 0 3.2px rgba(138,92,70,.5)}
 
 /* —— 按页微调 —— */
-.mc-set .cmp.mc-dk{top:278px!important;left:30px!important;right:30px!important;max-width:calc(100% - 60px);white-space:normal!important;padding:9px 13px calc(var(--mc-h) + 7px)!important;font-size:13.5px!important;line-height:1.45!important}
-.mc-mini{--mc-h:9px!important;border-radius:14px 14px 14px 5px!important;padding-bottom:6px!important}
-.mc-mini .mc-tp{display:none}
-.mc-snd .say.mc-dk{top:188px!important;left:16px!important;width:172px!important;color:var(--mc-ink)!important;border-bottom:1px solid rgba(255,255,255,.95)!important}
-.mc-snd .info.mc-dk{left:16px!important;width:172px!important}
-.mc-snd .say.mc-dk{top:170px!important;font-size:15px!important;line-height:1.6!important;padding:9px 12px calc(var(--mc-h) + 8px)!important}
+.mc-set .cmp.mc-pl{top:278px!important;left:30px!important;right:30px!important;max-width:calc(100% - 60px);white-space:normal!important;padding:9px 13px 18px!important;font-size:13.5px!important;line-height:1.45!important}
+.mc-snd .say.mc-pl{top:170px!important;left:16px!important;width:172px!important;font-size:15px!important;line-height:1.6!important;padding:9px 12px 18px!important}
+.mc-snd .info.mc-pl{left:16px!important;width:172px!important}

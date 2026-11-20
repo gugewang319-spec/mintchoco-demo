@@ -71,4 +71,4 @@
 })();
 
 /* theme 分支：全站主题层（今天页不加载 pfix，保持标杆原样） */
-(function(){var s=document.createElement('script');s.src=(document.currentScript&&document.currentScript.src||'../pfix.js').replace(/pfix\.js.*$/,'theme.js?v=1');document.head.appendChild(s)})();
+(function(){var s=document.createElement('script');s.src=(document.currentScript&&document.currentScript.src||'../pfix.js').replace(/pfix\.js.*$/,'theme.js?v=2');document.head.appendChild(s)})();
