@@ -69,3 +69,6 @@
     addEventListener('pointerup',up,{passive:true});addEventListener('pointercancel',up,{passive:true})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
 })();
+
+/* theme 分支：全站主题层（今天页不加载 pfix，保持标杆原样） */
+(function(){var s=document.createElement('script');s.src=(document.currentScript&&document.currentScript.src||'../pfix.js').replace(/pfix\.js.*$/,'theme.js?v=1');document.head.appendChild(s)})();
