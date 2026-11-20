@@ -2,9 +2,11 @@
 <style>
 @font-face{font-family:Script;src:url(../hlt/script.ttf)}
 @font-face{font-family:BalooX;src:url(../hlt/baloo800.ttf)}
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:WK;src:url(wk.ttf)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
-body{font-family:system-ui,"PingFang SC","Noto Sans SC",sans-serif;color:#4a2e24}
+body{font-family:WK,system-ui,"PingFang SC","Noto Sans SC",sans-serif;color:#4a2e24}
 .app{width:min(100%,412px);margin:0 auto;padding:48px 16px 96px}
 h1{font:800 28px/1 BalooX,system-ui;display:flex;align-items:baseline;gap:8px}
 h1 small{font:24px/1 Script;color:#2f7a64}
@@ -79,11 +81,11 @@ function render(){
   ${right-22>tx+118?`<circle cx="${right-14}" cy="${ay+66}" r="13" fill="${ML}" opacity="${v.gray?.2:.55}"/><circle cx="${right-14}" cy="${ay+66}" r="16" fill="none" stroke="${tc}" stroke-width=".4" opacity=".4"/>`:""}
   ${right-22>tx+118?`<path d="M${right-22} ${ay+58}l12 12M${right-10} ${ay+63}v7h-7" fill="none" stroke="${tc}" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>`:""}
   <text x="${right-4}" y="${ay+1}" text-anchor="end" font-family="BalooX" font-size="5.6" letter-spacing="1.2" fill="${tc}" opacity=".75">${v.en}  /  SLIP ${v.no}</text>
-  <text x="${tx}" y="${ay+82}" font-family="'Noto Serif SC','Songti SC','Source Han Serif SC',serif" font-weight="900" font-size="25" letter-spacing="3" fill="${tc}">${v.big}</text>
+  <text x="${tx}" y="${ay+82}" font-family="ZK" font-size="26" letter-spacing="3" fill="${tc}">${v.big}</text>
   <path d="M${tx} ${ay+94}H${right}" stroke="${tc}" stroke-width=".7" stroke-dasharray="1 3" opacity=".7"/>
   ${spark((tx+right)/2,ay+94,4,v.sub)}
-  ${(()=>{const cw=(right-tx)/3;return v.info.map((f,k)=>{const x=tx+k*cw;return (k?`<path d="M${x-5} ${ay+100}V${ay+114}" stroke="${tc}" stroke-width=".5" opacity=".5"/>`:'')+`<text x="${x}" y="${ay+103}" font-size="5.2" fill="${tc}" opacity=".7"><tspan font-weight="700">${f[0]}</tspan><tspan font-family="BalooX" dx="2">/ ${f[1].toUpperCase()}</tspan></text><text x="${x}" y="${ay+114}" font-size="${Math.min(10,cw/5.2)}" font-weight="700" fill="${tc}" font-family="BalooX,system-ui">${f[2]}</text>`}).join('')})()}
-  ${MICRO.map((m,i)=>`<text x="${tx}" y="${ay+125+i*6.4}" font-size="4.8" fill="${tc}" opacity=".55" font-family="Georgia,serif" font-style="italic" textLength="${right-tx-18}" lengthAdjust="spacingAndGlyphs">${m}</text>`).join('')}
+  ${(()=>{const cw=(right-tx)/3;return v.info.map((f,k)=>{const x=tx+k*cw;return (k?`<path d="M${x-5} ${ay+100}V${ay+114}" stroke="${tc}" stroke-width=".5" opacity=".5"/>`:'')+`<text x="${x}" y="${ay+103}" font-size="5.6" fill="${tc}" opacity=".75" font-family="WK"><tspan>${f[0]}</tspan><tspan font-family="BalooX" dx="2">/ ${f[1].toUpperCase()}</tspan></text><text x="${x}" y="${ay+114}" font-size="${Math.min(10,cw/5.2)}" fill="${tc}" font-family="BalooX,ZK">${f[2]}</text>`}).join('')})()}
+  ${MICRO.map((m,i)=>`<text x="${tx}" y="${ay+125+i*6.4}" font-size="4.8" fill="${tc}" opacity=".55" font-family="WK" textLength="${right-tx-18}" lengthAdjust="spacingAndGlyphs">${m}</text>`).join('')}
   ${seal(M+S/2,48,v.stubInk,v.ring,v.done?"done":v.gray?"void":"open",id)}
   <text transform="translate(${M+S/2+8} ${H-14}) rotate(-90)" font-family="BalooX" font-size="26" letter-spacing="2" fill="${v.stubInk}">${v.no}</text>
   <text x="${M+S/2}" y="90" text-anchor="middle" font-family="BalooX" font-size="7" letter-spacing="1" fill="${v.stubInk}">11/20</text>
