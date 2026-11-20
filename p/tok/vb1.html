@@ -1,0 +1,92 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>杯套签条 · 精修样张</title>
+<style>
+@font-face{font-family:Script;src:url(../hlt/script.ttf)}
+@font-face{font-family:BalooX;src:url(../hlt/baloo800.ttf)}
+@font-face{font-family:WK;src:url(../hlt/wk.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;font-family:WK,system-ui,"PingFang SC","Noto Sans SC",sans-serif;color:#5b3a2c}
+html{background:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+.app{width:min(100%,412px);margin:0 auto;padding:48px 24px 96px}
+h1{font:800 28px/1 BalooX,system-ui;color:#5b3a2c;display:flex;align-items:baseline;gap:8px}
+h1 small{font:24px/1 Script;color:#3f9a80}
+.lead{font-size:13px;color:#8a5c46;margin:8px 0 32px;line-height:1.6}
+.lab{font:13px/1 system-ui;color:#8a5c46;opacity:.75;margin:24px 0 8px;letter-spacing:.05em}
+.sl{position:relative;margin-bottom:16px}
+.sl svg{display:block;overflow:visible}
+.sl .tx{position:absolute;left:26px;right:56px;font-size:14px;line-height:20px;color:#5b3a2c}
+.sl .tg{position:absolute;left:14px;top:3px;font:17px/1 Script;color:#fbf6ea;white-space:nowrap}
+.row0{display:flex;align-items:center;gap:8px;font-size:14px;color:#5b3a2c;padding:6px 0}
+.row0 svg{flex:none}.row0 .tm{margin-left:auto;font:12px BalooX,system-ui;color:#8a5c46;opacity:.7}
+.cmp{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;font-size:12px;color:#8a5c46;margin-top:8px}
+.cmp b{font:12px/1 system-ui;background:#5b3a2c;color:#fbf6ea;border-radius:4px;padding:3px 5px}
+</style>
+<div class="app">
+<h1>杯套签条 <small>sleeve tag</small></h1>
+<p class="lead">精修样张：同一个剪影，叠六层细节。只换糖浆色和尾巴小料。</p>
+
+<div class="lab">普通行 · 没有底（对照）</div>
+<div class="row0"><svg width="18" height="18" viewBox="0 0 18 18"><ellipse cx="9" cy="10" rx="6" ry="5.5" fill="#5b3a2c"/><ellipse cx="7" cy="8.2" rx="1.6" ry="1" fill="#fbf6ea" opacity=".5"/></svg>喝了一杯水<span class="tm">09:12</span></div>
+<div class="row0"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 15C5 12 3 9.5 3 7.2 3 5.4 4.4 4 6.1 4c1.2 0 2.3.7 2.9 1.7C9.6 4.7 10.7 4 11.9 4 13.6 4 15 5.4 15 7.2 15 9.5 13 12 9 15z" fill="#c4e8da" stroke="#8a5c46" stroke-width="1.2"/></svg>心率回到 72<span class="tm">10:40</span></div>
+
+<div class="lab">杯套签条 · 五种出杯</div>
+<div id="list"></div>
+
+<div class="lab">六层是什么</div>
+<div class="cmp">
+<b>1</b>剪影：左缺口 + 右箭头，可可 1.3 描边
+<b>2</b>内衬：往里缩 4 的细虚线，跟外框同形（套娃）
+<b>3</b>面纹：极淡斜格纹，只在色面里
+<b>4</b>名签：单独一片丝带压在左上，带折角影
+<b>5</b>尾巴：小料硬币冲出右尖，状态看它
+<b>6</b>点缀：一颗小星/一滴糖浆，只压一个角
+</div>
+</div>
+<script>
+const C='#8a5c46',INK='#5b3a2c',PAPER='#fbf6ea';
+const S={
+ empty:{tag:'empty',face:'none',band:'#d9cbbd',dash:true,txt:'空杯 · 还没有内容'},
+ member:{tag:'member',face:'#c4e8da',band:'#3f9a80',txt:'普通签条：这一条有身份，需要被看见'},
+ making:{tag:'brewing',face:'#e4efe9',band:'#8a5c46',fill:.46,txt:'制作中 · 糖浆从左往右灌'},
+ done:{tag:'done',face:'#c4e8da',band:'#3f9a80',txt:'做好了 · 薄荷糖浆配一枚勾'},
+ fail:{tag:'oops',face:'#f3d6cc',band:'#c9786a',txt:'做坏了 · 点尾巴重做一杯'},
+ over:{tag:'overflow',face:'#f5e4c3',band:'#c99a48',drip:true,txt:'额度快满 · 焦糖往下滴，这一行字故意写长一点看看两行'}
+};
+function shape(w,h,t,inset){const i=inset||0,L=10,A=18;return `M${i} ${t+i}H${w-A-i*0.4}L${w-i*1.6} ${t+h/2}L${w-A-i*0.4} ${t+h-i}H${i}L${L+i*0.6} ${t+h/2}Z`}
+function tail(k,cx,cy){
+ const coin=`<circle cx="${cx}" cy="${cy+1.5}" r="13" fill="${INK}" opacity=".18"/><circle cx="${cx}" cy="${cy}" r="13" fill="${PAPER}" stroke="${C}" stroke-width="1.3"/><circle cx="${cx}" cy="${cy}" r="9.5" fill="none" stroke="${C}" stroke-width=".8" stroke-dasharray="1.5 2"/>`;
+ const g={
+  empty:`<circle cx="${cx}" cy="${cy}" r="4" fill="none" stroke="${C}" stroke-width="1.2"/>`,
+  member:`<path d="M${cx-4} ${cy+3}c0-5 3-8 8-8-1 5-4 8-8 8z" fill="#3f9a80"/><path d="M${cx-4} ${cy+3}l5-5" stroke="${PAPER}" stroke-width=".8"/>`,
+  making:`<g><circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${C}" stroke-width="1.4" stroke-dasharray="7 4"><animateTransform attributeName="transform" type="rotate" from="0 ${cx} ${cy}" to="360 ${cx} ${cy}" dur="2.4s" repeatCount="indefinite"/></circle></g>`,
+  done:`<path d="M${cx-5} ${cy}l3.5 3.5 6.5-7" stroke="#3f9a80" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+  fail:`<path d="M${cx-4} ${cy-4}l8 8M${cx+4} ${cy-4}l-8 8" stroke="#c9786a" stroke-width="2" stroke-linecap="round"/>`,
+  over:`<path d="M${cx} ${cy-6}v7" stroke="#c99a48" stroke-width="2.2" stroke-linecap="round"/><circle cx="${cx}" cy="${cy+5}" r="1.3" fill="#c99a48"/>`
+ };return coin+g[k];}
+function tagRib(tx,w,col){const h=18;return `<path d="M${tx+4} ${h+2}l-4 5v-5z" fill="${INK}" opacity=".55"/><path d="M${tx} 2H${tx+w}l-5 ${h/2}l5 ${h/2}H${tx}Z" fill="${col}" stroke="${C}" stroke-width="1.1"/><path d="M${tx+3} 5H${tx+w-5}" stroke="${PAPER}" stroke-width=".7" opacity=".55"/>`}
+function render(){
+ const box=document.getElementById('list'),W=box.clientWidth;box.innerHTML='';
+ Object.entries(S).forEach(([k,s],n)=>{
+  const two=s.txt.length*14>W-100;const H=two?62:46,T=14,w=W-4;
+  const id='p'+n;
+  const tagW=s.tag.length*8+22;
+  let svg=`<svg width="${W}" height="${T+H+(s.drip?20:8)}" viewBox="0 0 ${W} ${T+H+(s.drip?20:8)}">
+  <defs><pattern id="${id}" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V10" stroke="${INK}" stroke-width=".6" opacity=".07"/></pattern>
+  <clipPath id="c${id}"><path d="${shape(w,H,T)}"/></clipPath></defs>
+  <path d="${shape(w,H,T+2)}" fill="${INK}" opacity=".10"/>
+  <path d="${shape(w,H,T)}" fill="${s.face==='none'?'rgba(251,246,234,.35)':PAPER}" stroke="${C}" stroke-width="1.3" ${s.dash?'stroke-dasharray="5 4"':''}/>`;
+  if(s.face!=='none'){const fw=s.fill?w*s.fill:w;svg+=`<g clip-path="url(#c${id})"><rect x="0" y="${T}" width="${fw}" height="${H}" fill="${s.face}"/><rect x="0" y="${T}" width="${fw}" height="${H}" fill="url(#${id})"/>${s.fill?`<path d="M${fw} ${T}q4 ${H/4} 0 ${H/2}t0 ${H/2}" stroke="${C}" stroke-width=".8" fill="none" opacity=".5"/>`:''}</g>`}
+  svg+=`<path d="${shape(w,H,T,4)}" fill="none" stroke="${C}" stroke-width=".7" stroke-dasharray="2 2.5" opacity=".55"/>`;
+  svg+=`<circle cx="${18}" cy="${T+H/2}" r="1.6" fill="${C}" opacity=".6"/>`;
+  if(s.drip)svg+=`<path d="M${w*.28} ${T+H-1}q5 12 0 15q-5-3 0-15zM${w*.5} ${T+H-1}q3.5 8 0 10q-3.5-2 0-10z" fill="#e6bf7a" stroke="${C}" stroke-width="1"/>`;
+  svg+=tagRib(10,tagW,s.band);
+  svg+=tail(k,w-30,T+H/2);
+  if(k==='done'||k==='member')svg+=`<path d="M${w-58} ${T-2}l1.6 3.6 3.6 1.6-3.6 1.6-1.6 3.6-1.6-3.6-3.6-1.6 3.6-1.6z" fill="${PAPER}" stroke="${C}" stroke-width="1"/>`;
+  svg+='</svg>';
+  const d=document.createElement('div');d.className='sl';
+  d.innerHTML=svg+`<span class="tg">${s.tag}</span><span class="tx" style="top:${T+(H-(two?40:20))/2}px">${s.txt}</span>`;
+  box.appendChild(d);
+ });
+}
+render();addEventListener('resize',render);
+</script>
+</html>
