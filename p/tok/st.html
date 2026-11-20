@@ -1,0 +1,53 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>状态对照 · 灰稿</title>
+<style>
+@font-face{font-family:BalooX;src:url(../hlt/baloo800.ttf)}
+@font-face{font-family:Script;src:url(../hlt/script.ttf)}
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:WK;src:url(wk.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#f4f5f4}
+body{font-family:WK,sans-serif;color:#4a2e24}
+.app{width:min(100%,412px);margin:0 auto;padding:40px 16px 80px}
+h1{font:28px/1 ZK;margin-bottom:24px;display:flex;align-items:baseline;gap:8px}h1 small{font:22px Script;color:#2f7a64}
+.hd,.row{display:grid;grid-template-columns:76px repeat(3,1fr);gap:8px;align-items:center}
+.hd{font:12px WK;color:#888;padding-bottom:8px;border-bottom:1px dashed #bbb}
+.hd span{text-align:center}
+.row{padding:12px 0;border-bottom:1px dashed #d4d4d4}
+.k{display:flex;flex-direction:column;align-items:center;gap:4px;font:14px ZK}
+.c{display:flex;justify-content:center}
+.c svg{width:100%;max-width:96px;height:auto;overflow:visible}
+.na{color:#bbb;font:12px WK;text-align:center}
+</style>
+<div class="app">
+<h1>状态对照 <small>states</small></h1>
+<div class="hd"><span></span><span>签条</span><span>普通行</span><span>小票</span></div>
+<div id="t"></div>
+</div>
+<script>
+const G='#999',GL='#e4e6e5',INK='#5b3a2c';
+const S=[
+ {n:'空',c:'#bfae9e',t:'#ece4da',m:'empty',has:[1,1,0]},
+ {n:'进行中',c:'#8a5c46',t:'#e9dccd',m:'spin',has:[1,1,1]},
+ {n:'成功',c:'#3f9a80',t:'#c4e8da',m:'ok',has:[1,1,1]},
+ {n:'失败',c:'#c9786a',t:'#f3d6cc',m:'x',has:[1,1,1]},
+ {n:'警告',c:'#c99a48',t:'#f5e4c3',m:'bang',has:[1,1,0]},
+ {n:'选中',c:'#2f7a64',t:'#d7f2e8',m:'sel',has:[1,1,1]},
+];
+function mark(m,x,y,r,c){
+ const ring=`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="${c}" stroke-width="1.4"/>`;
+ if(m==='empty')return `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${c}" stroke-width="1.4" stroke-dasharray="2.5 2.5"/>`;
+ if(m==='spin')return ring+`<path d="M${x-r*.5} ${y}a${r*.5} ${r*.5} 0 1 1 ${r*.5} ${r*.5}" fill="none" stroke="${c}" stroke-width="1.6" stroke-linecap="round"/>`;
+ if(m==='ok')return ring+`<path d="M${x-r*.45} ${y}l${r*.3} ${r*.35} ${r*.6} -${r*.7}" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`;
+ if(m==='x')return ring+`<path d="M${x-r*.38} ${y-r*.38}l${r*.76} ${r*.76}M${x+r*.38} ${y-r*.38}l-${r*.76} ${r*.76}" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>`;
+ if(m==='bang')return ring+`<path d="M${x} ${y-r*.5}v${r*.55}" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/><circle cx="${x}" cy="${y+r*.45}" r="1.1" fill="${c}"/>`;
+ if(m==='sel')return `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/><circle cx="${x}" cy="${y}" r="${r*.4}" fill="#fff"/>`;
+}
+function sleeve(s){const sel=s.m==='sel';const fill=s.m==='spin'?`<path d="M2 10H46L52 21L46 32H2L8 21Z" fill="${s.t}"/>`:'';
+ return `<svg viewBox="0 0 96 36"><path d="M2 10H84L94 21L84 32H2L8 21Z" fill="${s.m==='spin'||s.m==='empty'?GL:s.t}" stroke="${sel?s.c:G}" stroke-width="${sel?2.2:1.2}" ${s.m==='empty'?'stroke-dasharray="3 3"':''}/>${fill}<path d="M8 1H40L44 10H5Z" fill="${s.c}"/><rect x="16" y="18" width="34" height="5" rx="2.5" fill="${G}" opacity=".5"/>${mark(s.m,76,21,6.5,s.c)}</svg>`}
+function rowv(s){const sel=s.m==='sel';
+ return `<svg viewBox="0 0 96 36">${sel?`<rect x="0" y="4" width="96" height="28" rx="6" fill="none" stroke="${s.c}" stroke-width="2"/>`:''}${mark(s.m,12,18,7,s.c)}<rect x="26" y="11" width="${s.m==='empty'?28:44}" height="5" rx="2.5" fill="${G}" opacity="${s.m==='empty'?.3:.6}"/><rect x="26" y="21" width="22" height="4" rx="2" fill="${G}" opacity=".35"/>${s.m==='ok'||s.m==='bang'||s.m==='x'?`<text x="88" y="23" text-anchor="end" font-family="BalooX" font-size="12" fill="${s.c}">72</text>`:''}</svg>`}
+function ticket(s){const sel=s.m==='sel';
+ return `<svg viewBox="0 0 96 40"><rect x="1" y="2" width="72" height="36" rx="3" fill="${s.t}" stroke="${sel?s.c:G}" stroke-width="${sel?2.2:1.2}"/><rect x="76" y="2" width="19" height="36" rx="3" fill="${s.c}" opacity=".85"/><path d="M5 8h20v24H5z" fill="${G}" opacity=".35"/><rect x="30" y="14" width="34" height="6" rx="3" fill="${INK}" opacity=".55"/><rect x="30" y="25" width="22" height="3.5" rx="1.75" fill="${G}" opacity=".5"/>${mark(s.m,85.5,13,5.5,s.c)}</svg>`}
+document.getElementById('t').innerHTML=S.map(s=>`<div class="row" role="group" aria-label="${s.n}"><div class="k"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">${mark(s.m,17,17,14,s.c)}</svg>${s.n}</div>${[sleeve,rowv,ticket].map((f,i)=>`<div class="c">${s.has[i]?f(s):'<span class="na" aria-label="不用">—</span>'}</div>`).join('')}</div>`).join('');
+</script>
+</html>
