@@ -1,0 +1,118 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>杯套签条 · 精修样张 3</title>
+<style>
+@font-face{font-family:Script;src:url(../hlt/script.ttf)}
+@font-face{font-family:BalooX;src:url(../hlt/baloo800.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+body{font-family:system-ui,"PingFang SC","Noto Sans SC",sans-serif;color:#5b3a2c}
+.app{width:min(100%,412px);margin:0 auto;padding:48px 20px 96px}
+h1{font:800 28px/1 BalooX,system-ui;display:flex;align-items:baseline;gap:8px}
+h1 small{font:24px/1 Script;color:#3f9a80}
+.lab{font-size:12px;color:#8a5c46;opacity:.8;margin:28px 0 4px;letter-spacing:.1em}
+.sl{position:relative;margin-bottom:10px}
+.sl svg{display:block;overflow:visible}
+.sl .tx{position:absolute;font-size:14px;line-height:20px;color:#5b3a2c;letter-spacing:.02em}
+.sl .tg{position:absolute;font:italic 700 11px/16px Georgia,serif;color:#fbf6ea;text-align:center;letter-spacing:.06em;text-shadow:0 1px 0 rgba(91,58,44,.35)}
+.sl .ft{position:absolute;text-align:center;left:0;right:0}
+.ft b{display:block;font:800 20px/1 BalooX;letter-spacing:.08em;color:#5b3a2c}
+.ft i{display:block;font:20px/1.3 Script;color:#8a5c46;margin-top:4px}
+</style>
+<div class="app">
+<h1>杯套签条 <small>sleeve tag</small></h1>
+<div class="lab">普通 · 五种出杯</div>
+<div id="list"></div>
+<div class="lab">高亮 · 满杯通知</div>
+<div id="big"></div>
+</div>
+<script>
+const C='#8a5c46',INK='#5b3a2c',P='#fbf6ea',CAR='#e6bf7a',CARD='#c99a48';
+const S=[
+ {k:'empty',tag:'empty cup',band:['#d9cbbd','#bfae9e'],tint:'#ece4da',dia:'#d9cbbd',txt:'空杯 · 还没有内容',ic:'empty'},
+ {k:'member',tag:'Mint Choco',band:['#7cc4ad','#3f9a80'],tint:'#c4e8da',dia:'#9fd6c3',txt:'普通签条：这一条有身份，需要被看见',ic:'leaf',star:1},
+ {k:'making',tag:'brewing',band:['#b07a5e','#8a5c46'],tint:'#e9dccd',dia:'#d6c0aa',txt:'制作中 · 糖浆从左往右灌',ic:'spin',fill:.5},
+ {k:'done',tag:'done',band:['#7cc4ad','#3f9a80'],tint:'#c4e8da',dia:'#9fd6c3',txt:'做好了 · 薄荷糖浆配一枚勾',ic:'pearl',star:1},
+ {k:'fail',tag:'oops',band:['#e3a08f','#c9786a'],tint:'#f3d6cc',dia:'#e9b5a7',txt:'做坏了 · 点尾巴重做一杯',ic:'x'},
+ {k:'over',tag:'overflow',band:['#f0cf8f','#c99a48'],tint:'#f5e4c3',dia:'#ecd09c',txt:'额度快满 · 焦糖往下滴，这一行字故意写长一点看看两行',ic:'bang',drip:1,star:1}
+];
+let uid=0;
+function sprig(x,y,sc,rot){return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${sc})"><path d="M0 14C1 6 4 0 10-6" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/><path d="M0 14C1 6 4 0 10-6" fill="none" stroke="#5aa98f" stroke-width="1.2" stroke-linecap="round"/><path d="M3 4C-8 4-13-4-12-12C-3-12 4-6 3 4Z" fill="url(#gmint)" stroke="${INK}" stroke-width="1.2" stroke-linejoin="round"/><path d="M3 4C-3-1-7-6-10-10" fill="none" stroke="#2f7a64" stroke-width=".8"/><path d="M7-2C9-12 17-16 25-14C24-6 17 0 7-2Z" fill="url(#gmint)" stroke="${INK}" stroke-width="1.2" stroke-linejoin="round"/><path d="M7-2C13-6 18-10 22-13" fill="none" stroke="#2f7a64" stroke-width=".8"/></g>`}
+function straw(x,y,len,rot,id){return `<g transform="translate(${x} ${y}) rotate(${rot})"><rect x="-4" y="${-len}" width="8" height="${len}" rx="1.5" fill="url(#sw${id})" stroke="${INK}" stroke-width="1.2"/><path d="M-4 ${-len+3}h8" stroke="${INK}" stroke-width=".7" opacity=".5"/></g>`}
+function body(x0,x1,t,h,c){ // left notch, crimped right edge like a cup sleeve
+ const r=c,m=t+h/2,n=7,k=Math.max(3,Math.round(h/16)),st=h/k,b=st/2;
+ let d=`M${x0+r} ${t}H${x1}`;for(let i=0;i<k;i++)d+=`A${b} ${b} 0 0 1 ${x1} ${t+st*(i+1)}`;
+ return d+`H${x0+r}Q${x0} ${t+h} ${x0} ${t+h-r}V${m+n}L${x0+n} ${m}L${x0} ${m-n}V${t+r}Q${x0} ${t} ${x0+r} ${t}Z`}
+function icon(k,cx,cy){
+ switch(k){
+ case'empty':return `<circle cx="${cx}" cy="${cy}" r="6" fill="none" stroke="${P}" stroke-width="1.6" stroke-dasharray="3 2.5"/>`;
+ case'leaf':return `<path d="M${cx-6} ${cy+5}c0-8 5-12 12-12-1 8-6 12-12 12z" fill="#d7f2e8" stroke="${INK}" stroke-width="1.1"/><path d="M${cx-6} ${cy+5}l8-8" stroke="#3f9a80" stroke-width="1"/>`;
+ case'spin':return `<circle cx="${cx}" cy="${cy}" r="6" fill="none" stroke="${P}" stroke-width="2" stroke-dasharray="9 5"><animateTransform attributeName="transform" type="rotate" from="0 ${cx} ${cy}" to="360 ${cx} ${cy}" dur="2.4s" repeatCount="indefinite"/></circle>`;
+ case'pearl':return `<circle cx="${cx-3}" cy="${cy+2}" r="4.5" fill="#5b3a2c" stroke="${INK}"/><circle cx="${cx+4}" cy="${cy-1}" r="4.5" fill="#6d4636" stroke="${INK}"/><circle cx="${cx+2.5}" cy="${cy-2.5}" r="1.3" fill="${P}" opacity=".7"/><circle cx="${cx-4.5}" cy="${cy+.5}" r="1.3" fill="${P}" opacity=".6"/>`;
+ case'x':return `<path d="M${cx-5} ${cy-5}l10 10M${cx+5} ${cy-5}l-10 10" stroke="${P}" stroke-width="2.4" stroke-linecap="round"/>`;
+ case'bang':return `<path d="M${cx} ${cy-7}v8" stroke="${P}" stroke-width="2.6" stroke-linecap="round"/><circle cx="${cx}" cy="${cy+5}" r="1.6" fill="${P}"/>`;
+ }}
+function defs(id){return `<linearGradient id="gcar" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5d9a0"/><stop offset="1" stop-color="${CARD}"/></linearGradient><linearGradient id="gmint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9e6d4"/><stop offset="1" stop-color="#5aa98f"/></linearGradient><pattern id="sw${id}" width="8" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)"><rect width="8" height="10" fill="${P}"/><rect width="8" height="5" fill="#7cc4ad"/></pattern>`}
+function cup(x,y,id,k){ // small topping cup
+ return `<path d="M${x+2} ${y+38}h26" stroke="${INK}" stroke-width="3" opacity=".18" stroke-linecap="round"/><path d="M${x+1} ${y+6}L${x+4} ${y+34}Q${x+15} ${y+38} ${x+26} ${y+34}L${x+29} ${y+6}Z" fill="url(#b${id})" stroke="${INK}" stroke-width="1.3" stroke-linejoin="round"/><path d="M${x+5} ${y+12}L${x+7} ${y+30}" stroke="${P}" stroke-width="1" opacity=".4" stroke-linecap="round"/><rect x="${x-2}" y="${y+1}" width="34" height="7" rx="3.5" fill="${P}" stroke="${INK}" stroke-width="1.3"/><path d="M${x+2} ${y+4.5}h26" stroke="${C}" stroke-width=".7" stroke-dasharray="1.5 2" opacity=".6"/>`}
+function tagRow(s,W){
+ const id='u'+(uid++),T=24,two=s.txt.length*14.3>W-120,H=two?66:50,x0=10,x1=W-26,G=W;
+ const tagX=26,tagW=Math.max(84,s.tag.length*7.6+28);
+ let o=`<svg width="${G}" height="${T+H+(s.drip?22:10)}"><defs>${defs(id)}
+ <linearGradient id="f${id}" x1="0" x2="1"><stop offset=".25" stop-color="${P}"/><stop offset="1" stop-color="${s.tint}"/></linearGradient>
+ <linearGradient id="m${id}" x1="0" x2="1"><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".95"/></linearGradient>
+ <mask id="k${id}"><rect x="0" y="0" width="${G}" height="200" fill="url(#m${id})"/></mask>
+ <pattern id="d${id}" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="translate(${x1%20} ${T+2})"><rect x="1.5" y="1.5" width="17" height="13" rx="2.5" fill="${s.dia}" opacity=".55"/><path d="M4 12.5V4.5Q4 4 4.5 4H16" fill="none" stroke="#fff" stroke-width=".8" opacity=".5"/></pattern>
+ <linearGradient id="b${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s.band[0]}"/><stop offset="1" stop-color="${s.band[1]}"/></linearGradient>
+ <clipPath id="c${id}"><path d="${body(x0,x1,T,H,8)}"/></clipPath></defs>`;
+ const B=body(x0,x1,T,H,8);
+ o+=`<path d="${body(x0,x1,T+3,H,8)}" fill="${INK}" opacity=".16"/>`;
+ o+=`<path d="${B}" fill="url(#f${id})"/>`;
+ o+=`<g clip-path="url(#c${id})"><rect x="0" y="${T}" width="${G}" height="${H}" fill="url(#d${id})" mask="url(#k${id})"/>`;
+ if(s.fill){const fx=x0+(x1-x0)*s.fill;o+=`<rect x="0" y="${T}" width="${fx}" height="${H}" fill="${s.tint}" opacity=".75"/><path d="M${fx} ${T}q5 ${H/4} 0 ${H/2}t0 ${H/2}" stroke="${C}" stroke-width="1" fill="none" opacity=".55"/>`}
+ {let w=`M0 ${T+H}V${T+H-6}`;for(let x=0;x<G;x+=16)w+=`q4 -3 8 0t8 0`;o+=`<path d="${w}V${T+H}Z" fill="${s.band[1]}" opacity=".3"/>`;}o+=`</g>`;
+ o+=`<path d="${B}" fill="none" stroke="${INK}" stroke-width="1.4" ${s.k==='empty'?'stroke-dasharray="6 4"':''}/>`;
+ o+=`<path d="${body(x0+4,x1-4,T+4,H-12,5)}" fill="none" stroke="${C}" stroke-width=".7" opacity=".35"/>`;
+ // left gem
+ o+=`<circle cx="${x0+1}" cy="${T+H/2}" r="5.5" fill="url(#gmint)" stroke="${INK}" stroke-width="1.2"/><circle cx="${x0+1}" cy="${T+H/2}" r="2.6" fill="none" stroke="${P}" stroke-width=".8" opacity=".7"/>`;
+ // drip under right
+ 
+ if(s.drip)o+=`<path d="M${W*.3} ${T+H-1}q6 14 0 18q-6-4 0-18zM${W*.48} ${T+H-1}q4 9 0 12q-4-3 0-12z" fill="url(#gcar)" stroke="${INK}" stroke-width="1.1"/>`;
+ // tail badge
+ const bx=x1-18,by=T+H/2-20;
+ o+=cup(bx,by,id);
+ o+=icon(s.ic,bx+15,by+21);
+ if(s.star)o+=sprig(x1-58,T+2,.9,-8);
+ o+=straw(tagX+tagW-18,T-2,30,28,id);
+ o+=`<path d="M${tagX} ${T-10}H${tagX+tagW}l-6 9.5 6 9.5H${tagX}Z" fill="url(#b${id})" stroke="${INK}" stroke-width="1.3" stroke-linejoin="round"/><path d="M${tagX+3} ${T-7}H${tagX+tagW-8}l-4 6.5 4 6.5H${tagX+3}Z" fill="none" stroke="${P}" stroke-width=".7" opacity=".6"/><path d="M${tagX+5} ${T-5}H${tagX+tagW-5}" stroke="#fff" stroke-width=".8" opacity=".45"/>`;
+ 
+ o+='</svg>';
+ const d=document.createElement('div');d.className='sl';
+ d.innerHTML=o+`<span class="tg" style="left:${tagX+3}px;width:${tagW-6}px;top:${T-8}px">${s.tag}</span><span class="tx" style="left:${x0+20}px;right:${W-x1+40}px;top:${T+(H-5-(two?40:20))/2}px">${s.txt}</span>`;
+ return d;}
+function bigRow(W){
+ const id='u'+(uid++),T=30,H=94,x0=10,x1=W-14;
+ let o=`<svg width="${W}" height="${T+H+16}"><defs>${defs(id)}
+ <linearGradient id="f${id}" x1="0" x2="1"><stop offset=".2" stop-color="${P}"/><stop offset="1" stop-color="#c4e8da"/></linearGradient>
+ <linearGradient id="m${id}" x1="0" x2="1"><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
+ <mask id="k${id}"><rect width="${W}" height="300" fill="url(#m${id})"/></mask>
+ <pattern id="d${id}" width="24" height="19" patternUnits="userSpaceOnUse"><rect x="1.5" y="1.5" width="21" height="16" rx="3" fill="#9fd6c3" opacity=".6"/><path d="M4.5 15V5Q4.5 4.5 5 4.5H19" fill="none" stroke="#fff" stroke-width=".9" opacity=".5"/></pattern>
+ <clipPath id="c${id}"><path d="${body(x0,x1,T,H,4)}"/></clipPath></defs>
+ <path d="${body(x0,x1,T+3,H,4)}" fill="${INK}" opacity=".16"/>
+ <path d="${body(x0,x1,T,H,4)}" fill="url(#f${id})"/>
+ <g clip-path="url(#c${id})"><rect width="${W}" height="${T+H}" fill="url(#d${id})" mask="url(#k${id})"/>
+ ${(()=>{let w=`M0 ${T+H}V${T+H-14}`;for(let x=0;x<W;x+=24)w+=`q6 -5 12 0t12 0`;return `<path d="${w}V${T+H}Z" fill="#7cc4ad" opacity=".55"/><path d="${w.replace(/V[\d.]+Z?$/,'')}" fill="none" stroke="${INK}" stroke-width=".7" opacity=".35"/>`})()}
+ <g opacity=".2" stroke="${INK}" fill="none" stroke-width="1.4" stroke-linejoin="round"><path d="M${x0+22} ${T+18}h40l-5 64h-30z"/><path d="M${x0+18} ${T+18}h48"/><path d="M${x0+24} ${T+40}h36"/><circle cx="${x0+34}" cy="${T+70}" r="3"/><circle cx="${x0+44}" cy="${T+72}" r="3"/><circle cx="${x0+50}" cy="${T+66}" r="3"/></g></g>
+ <path d="${body(x0,x1,T,H,4)}" fill="none" stroke="${INK}" stroke-width="1.4"/>
+ <path d="${body(x0+4,x1-4,T+4,H-22,3)}" fill="none" stroke="${C}" stroke-width=".7" opacity=".35"/>
+ ${straw(x1-62,T+14,46,24,id)}
+ ${sprig(x1-52,T+4,1.4,-10)}${sprig(x0+12,T+H-8,.8,200)}
+ <circle cx="${x0+1}" cy="${T+H/2}" r="6" fill="url(#gmint)" stroke="${INK}" stroke-width="1.2"/>
+ </svg>`;
+ const d=document.createElement('div');d.className='sl';
+ d.innerHTML=o+`<div class="ft" style="top:${T+20}px"><b>FULL CUP</b><i>today's goal, done!</i></div>`;
+ return d;}
+function render(){
+ uid=0;const L=document.getElementById('list'),Bg=document.getElementById('big'),W=L.clientWidth;
+ L.innerHTML='';Bg.innerHTML='';S.forEach(s=>L.appendChild(tagRow(s,W)));Bg.appendChild(bigRow(W));}
+render();addEventListener('resize',render);
+</script>
+</html>
