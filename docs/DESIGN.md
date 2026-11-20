@@ -194,14 +194,11 @@ No text, no letters, no watermark, no cast shadow, no photorealism, no 3D render
 
 #### 聊天列表 `p/list`
 
-> 2026-11-20 05:50 茶茶定稿样张 `p/list/vb12.html`（8876bad，生成脚本 `tools/list/mkvb12.py`，液面 `p/list/lq2.js`）。下面是新版；尚未并进 index.html。旧版（奶盖/冰块/珍珠剖面）作废。
-
-- **结构**：今天一张大卡（页顶下方，上移贴近标题）+ 本周每天一组「他/我」两杯 + 更早轮流；卡 = 今天页装奶茶的玻璃杯，杯里有会晃的液面（lq2.js，devicemotion 倾斜 ±.05，屏外不算、30 帧）。
-- **卡片**：奶白渐变玻璃 `linear-gradient(170deg,rgba(255,253,248,.78),rgba(255,250,242,.52))`，圆角 22/22/26/26；轮廓 = 今天页饮品卡同款 1px 白边 + 顶部白高光 + 柔投影（❌ 可可实线描边）；滚动卡不加实时 backdrop-filter。
-- **字**：墨色文楷 16/1.6 直接写在杯里，不随液面换色；他/我 = 薄荷 ZK 小标签 + 荧光笔①（盖字下半）；日期 Baloo。❌ 玻璃字加粗/描边/白唇/光晕、❌ 换色字、❌ 写了又擦的模糊字。
-- **水位**：各杯原液面，别为字改水位；液体颜色不加深；热可可/珍珠最低 .5。
-- **今天大卡**：顶上代码画 SVG 巧克力淋面 + 7 条细颈圆头酱滴，三条长滴轮流掉进奶茶、液面砸涟漪（LQpoke）；轮次 = Baloo 大数字 + ZK「轮」+ Script「rounds」+ 棉花糖贴纸。❌ 淋面贴图、❌ 巧克力计数牌。新增绝对定位元素要写 `.tod.dk>.xxx{position:absolute!important}`，否则被 `.dk>*` 改成文档流把卡撑长。
-- **背景**：保留 index 奶茶底；9 颗冒泡 `.bgb`；冰块/小装饰 `.wan` 13–21 秒随意漂。
+- **主角**：一杯奶茶的剖面：最上面一层奶盖 = 今天；中间一摞冰块 = 本周（每块一天，日期在顶面、星期竖排在侧面、最后一句在正面）；杯底珍珠 = 更早的几周（每颗一周，日期范围 + 天数 + 一句）。奶盖顶上有动态滴落的巧克力酱。
+- **能点什么**：奶盖（今天）、每块冰块、每颗珍珠、「今天聊了 6 轮 ›」虚线链接、页头的搜索圆钮和筛选圆钮。
+- **就地反应**：点奶盖，奶盖上的酱晃一下，300ms 后进聊天室；冰块、珍珠被点时往下一沉再浮回（只动图片层，字不动）；酱汁是黏稠滤镜（模糊 + 阈值），每次只有两条在动：慢垂、尖端一掐、缩回。
+- **转场**：点奶盖 push 聊天室；搜索圆钮 push 搜索页。筛选圆钮目前无动作（**待定**：要不要保留）。
+- 冰块、珍珠是生图版（`ice.png`、`pearl.png`、`pearls.png`）；三版 SVG 重画（list3–list5）都被否，不要再改回代码画。
 
 #### 聊天室 `p/room`
 
@@ -435,9 +432,9 @@ No text, no letters, no watermark, no cast shadow, no photorealism, no 3D render
 | 原型交互 | PPST 功能 | 前端组件 | 后端 | 猫猫老师网关的对应功能 | 状态 |
 | --- | --- | --- | --- | --- | --- |
 | 按渠道分栏列模型、窗口大小 | 模型列表 | `ModelsScreen` | `GET /api/models`（`model_configs`：model_name、context_window、max_output_tokens、stream_supported、supports_vision） | 「Models」与「当前模型」 | 有 |
-| 拉新的 + 「新」圈 | 从上游拉取并登记 | `AddModelsScreen` | `GET /api/channels/{id}/models/available`（`models[]`：id、owned_by、registered、context_window / max_output_tokens 各带 status = trusted / missing / invalid / conflict，只有 trusted 有 value；**不含**看图、流式）、`POST /api/channels/{id}/models/batch`（窗口、输出必填正整数，前端传；stream_supported 默认 true；看图不收，默认 false；重复的进 skipped） | 无（它手填 Models） | 有（11-20 核实 palimpsest integration/sprint-1 b750f76；原型：选完先「确认参数」，可信的预填，缺的手选，输出 < 窗口才能登记） |
+| 拉新的 + 「新」圈 | 从上游拉取并登记 | `AddModelsScreen` | `GET /api/channels/{id}/models/available`、`POST /api/channels/{id}/models/batch` | 无（它手填 Models） | 有 |
 | 窗口、输出左右搓；看图、流式勾选；存好 | 改模型参数 | `ModelDetail` | `PATCH /api/models/{id}` | 无 | 有（真实代码里看图 / 流式是开关，原型改成勾） |
-| 溢杯（输出 ≥ 窗口） | 上限校验 | `AddModelsScreen` 有同类提示（旧前端 modelImport.ts 禁止 output ≥ context） | 后端**不拦**（batch 只验正整数，库里也无大小约束；available 解析器只把 > 标 conflict，= 仍 trusted），是后端缺口 | 无 | 有（前端） |
+| 溢杯（输出 ≥ 窗口） | 上限校验 | `AddModelsScreen` 有同类提示 | 后端校验**待确认** | 无 | 有（前端） |
 | 备用链：加、去掉、排序 | 跨模型备用 | `ModelDetail`（点序号往前挪一位） | `GET / PUT /api/models/{id}/fallbacks`（`model_config_fallbacks`） | 无（公开版只有多 key 轮换） | 有 |
 | 备用链「试一下」 | 试跑备用链 | — | 无测试接口 | 「对话测试」可间接验证当前模型 | **仅演示** |
 | 本店加料：能看图 n 杯、流式 n 杯 | 能力计数 | 前端计算 | 同模型字段 | 无 | 有 |
