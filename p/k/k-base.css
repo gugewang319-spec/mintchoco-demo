@@ -17,3 +17,4 @@ body{padding-bottom:24px}
 .k-st{font-size:13px;color:var(--adm-color-success)}.k-st.cool{color:var(--adm-color-warning)}.k-st.bad{color:var(--adm-color-danger)}
 .k-on{background:var(--adm-color-box)}
 .k-big{font-size:22px;color:var(--adm-color-text)}.k-big small{font-size:13px}
+.k-add .adm-list-item-content-main{color:var(--adm-color-primary)}.k-mute{color:var(--adm-color-weak)}
