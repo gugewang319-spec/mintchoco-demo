@@ -55,8 +55,8 @@ body{color:var(--ink);font:var(--f3)/1.5 var(--ff-body);background:var(--page-bg
 .fld label{font:var(--f4)/1 var(--ff-body);color:var(--ink2);padding-left:2px}
 .in{width:100%;height:46px;padding:0 14px;font:var(--f3)/1 var(--ff-body);transition:box-shadow .2s,border-color .2s}
 textarea.in{height:auto;min-height:84px;padding:11px 14px;line-height:1.6;resize:none}
-.key{position:relative}.key .in{padding-right:96px;letter-spacing:.12em}
-.key .tail{position:absolute;right:12px;top:50%;transform:translateY(-50%);font:var(--f4)/1 var(--ff-body);pointer-events:none}
+.key{position:relative}.key .in{padding-right:48px}.key .in[type=password]{letter-spacing:.12em}
+.key .eye{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:38px;display:grid;place-items:center;border-radius:var(--r2)}.key .eye svg{width:20px;height:20px;fill:none;stroke-width:1.5;stroke-linecap:round}.key .eye .off{display:none}.key.show .eye .on{display:none}.key.show .eye .off{display:block}
 .fld .hint{font:var(--f4)/1.5 var(--ff-body);color:var(--ink2);padding-left:2px}
 .in::placeholder{color:var(--ink3)}
 

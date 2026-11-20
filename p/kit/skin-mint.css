@@ -6,7 +6,7 @@
  --ink:#5b3a2c;--ink2:#8a6a58;--ink3:#b39a8a;--co:#8a5c46;
  --mint:#c4e8da;--mint2:#a6d9c4;--accent-d:#2f6e58;--caramel:#c9a07e;--danger:#b8573c;
  --choc1:#7d503c;--choc2:#5f3b2c;--cream-on:#fdf6e8;
- --row-bg:rgba(196,232,218,.62);--fld-bg:rgba(196,232,218,.45);--menu-bg:#cdeadd;--row-bg-on:rgba(150,210,186,.72);--row-bar:#8a5c46;--row-line:rgba(138,92,70,.55);
+ --row-bg:#cbe9dc;--fld-bg:#dcf1e8;--menu-bg:#cdeadd;--row-bg-on:#a9dcc6;--row-bar:#8a5c46;--row-line:rgba(138,92,70,.55);
  --page-bg:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px) #e4f3ed;
  /* 形状 */
  --r1:4px;--r2:8px;--r3:12px;--lw:1.2px;
@@ -59,7 +59,7 @@
 /* 输入：浅薄荷底 + 可可细边，聚焦时薄荷深边 */
 .in{background:var(--fld-bg);border:var(--lw) solid var(--row-line);border-radius:var(--r2);box-shadow:inset 0 2px 0 rgba(138,92,70,.06)}
 .in:focus{border-color:var(--accent-d);box-shadow:0 0 0 3px rgba(166,217,196,.7)}
-.key .tail{color:var(--accent-d);background:var(--mint2);padding:4px 7px;border-radius:var(--r1)}
+.key .eye svg{stroke:var(--co)}.key .eye:active{background:var(--row-bg-on)}
 .fld label::before{content:"✦ ";color:var(--caramel)}
 
 /* 小选单：字段只写当前值 + 小箭头；菜单是薄荷糖片，选中那行薄荷深一档 + 可可小勾 */
@@ -81,10 +81,10 @@
 .fp i{color:var(--accent-d)}
 
 /* 状态 */
-.state{border:var(--lw) dashed var(--row-line);border-radius:var(--r3);background:rgba(196,232,218,.32)}
+.state{border:var(--lw) dashed var(--row-line);border-radius:var(--r3);background:#d6eee3}
 .ld i{background:radial-gradient(circle at 35% 30%,#9a6a52,var(--choc2))}
 .ld i:nth-child(2){background:radial-gradient(circle at 35% 30%,#e3f5ed,var(--mint2))}
-.err{border-style:solid;border-color:rgba(184,87,60,.5);background:rgba(242,201,188,.42)}
+.err{border-style:solid;border-color:rgba(184,87,60,.5);background:#f1d9cf}
 .err .s{color:var(--danger)}
 
 /* 反馈组件换皮（覆盖 ui.js 的玻璃版）：出餐铃 = 薄荷糖牌；警告窗 = 薄荷底卡 + 巧克力顶边 */
