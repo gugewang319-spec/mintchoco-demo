@@ -59,6 +59,7 @@
 /* 输入：浅薄荷底 + 可可细边，聚焦时薄荷深边 */
 .in{background:var(--fld-bg);border:var(--lw) solid var(--row-line);border-radius:var(--r2);box-shadow:inset 0 2px 0 rgba(138,92,70,.06)}
 .in:focus{border-color:var(--accent-d);box-shadow:0 0 0 3px rgba(166,217,196,.7)}
+.key .tail{color:var(--accent-d);background:var(--mint2);padding:4px 7px;border-radius:var(--r1)}
 .fld label::before{content:"✦ ";color:var(--caramel)}
 
 /* 小选单：字段只写当前值 + 小箭头；菜单是薄荷糖片，选中那行薄荷深一档 + 可可小勾 */

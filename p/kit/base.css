@@ -55,6 +55,9 @@ body{color:var(--ink);font:var(--f3)/1.5 var(--ff-body);background:var(--page-bg
 .fld label{font:var(--f4)/1 var(--ff-body);color:var(--ink2);padding-left:2px}
 .in{width:100%;height:46px;padding:0 14px;font:var(--f3)/1 var(--ff-body);transition:box-shadow .2s,border-color .2s}
 textarea.in{height:auto;min-height:84px;padding:11px 14px;line-height:1.6;resize:none}
+.key{position:relative}.key .in{padding-right:96px;letter-spacing:.12em}
+.key .tail{position:absolute;right:12px;top:50%;transform:translateY(-50%);font:var(--f4)/1 var(--ff-body);pointer-events:none}
+.fld .hint{font:var(--f4)/1.5 var(--ff-body);color:var(--ink2);padding-left:2px}
 .in::placeholder{color:var(--ink3)}
 
 /* —— 就地小选单：贴着字段下沿浮出的小菜单，不推开下面的内容；点外面收起 —— */

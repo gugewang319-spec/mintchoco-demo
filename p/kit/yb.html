@@ -45,6 +45,7 @@
  <div class="grp"><span class="no">03</span><span class="rib"><h2>填写</h2><span class="ct">改了才能存</span></span><span class="end"></span></div>
  <div class="fld"><label>名字</label><input class="in" id="f1" value="小鲸鱼中转"></div>
  <div class="fld"><label>地址</label><input class="in" id="f2" value="https://example.local/v1" inputmode="url"></div>
+ <div class="fld"><label>钥匙 API Key</label><div class="key"><input class="in" id="f4" type="password" value="demo-key-123" autocomplete="off" spellcheck="false"><span class="tail">末四位 -123</span></div><span class="hint">存好后只露末四位，不再显示全文；要换就整把重新粘贴</span></div>
  <div class="fld"><label>格式</label>
  <div class="pick" id="fmt"><button class="cur"><span class="v"><span>OpenAI</span><svg viewBox="0 0 10 10" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="m2 3.5 3 3 3-3"/></svg></span></button>
  <div class="opts"><button class="opt on"><span>OpenAI</span><small>/chat/completions</small><svg class="ck" viewBox="0 0 14 14" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 7.5 3 3 6-7"/></svg></button><button class="opt"><span>Anthropic</span><small>/v1/messages</small><svg class="ck" viewBox="0 0 14 14" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 7.5 3 3 6-7"/></svg></button><button class="opt"><span>Gemini</span><small>:generateContent</small><svg class="ck" viewBox="0 0 14 14" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 7.5 3 3 6-7"/></svg></button></div></div></div>
@@ -82,9 +83,9 @@ function pick(el,cb){const c=el.querySelector('.cur'),v=el.querySelector('.v spa
  el.querySelectorAll('.opt').forEach(o=>o.onclick=()=>{el.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));o.classList.add('on');v.textContent=o.querySelector('span').textContent;el.classList.remove('open');cb&&cb(o)})}
 document.addEventListener('click',e=>{if(!e.target.closest('.pick'))document.querySelectorAll('.pick.open').forEach(p=>p.classList.remove('open'))});
 pick($('#skin'),o=>{$('#skinlink').href=o.dataset.s;MC.toast('换成「'+o.querySelector('span').textContent+'」了')});
-const save=$('#save'),fs=['#f1','#f2','#f3'].map($);let base=fs.map(f=>f.value),fmt0='OpenAI';
+const save=$('#save'),fs=['#f1','#f2','#f4','#f3'].map($);let base=fs.map(f=>f.value),fmt0='OpenAI';
 const dirty=()=>fs.some((f,i)=>f.value!==base[i])||$('#fmt .v span').textContent!==fmt0;
-const upd=()=>save.disabled=!dirty();fs.forEach(f=>f.oninput=upd);pick($('#fmt'),upd);
+const upd=()=>{save.disabled=!dirty();const k=$('#f4').value;$('.key .tail').textContent=k?'末四位 '+k.slice(-4):'还没填'};fs.forEach(f=>f.oninput=upd);pick($('#fmt'),upd);
 save.onclick=()=>{const old=base,of=fmt0;base=fs.map(f=>f.value);fmt0=$('#fmt .v span').textContent;upd();
  MC.toast('存好了',{undo:()=>{base=old;fmt0=of;upd()}})};
 $('#tst').onclick=()=>MC.toast('模型拉好了，新来 2 杯',{undo:()=>MC.toast('撤回了')});
