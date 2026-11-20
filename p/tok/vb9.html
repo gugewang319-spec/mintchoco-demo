@@ -1,0 +1,98 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>小票 · vb9</title>
+<style>
+@font-face{font-family:Script;src:url(../hlt/script.ttf)}
+@font-face{font-family:BalooX;src:url(../hlt/baloo800.ttf)}
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:WK;src:url(wk.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+body{font-family:WK,system-ui,"PingFang SC","Noto Sans SC",sans-serif;color:#4a2e24}
+.app{width:min(100%,412px);margin:0 auto;padding:48px 16px 96px}
+h1{font:800 28px/1 BalooX,system-ui;display:flex;align-items:baseline;gap:8px}
+h1 small{font:24px/1 Script;color:#2f7a64}
+.lab{font-size:12px;color:#8a5c46;opacity:.8;margin:28px 0 10px;letter-spacing:.1em}
+.tk{margin-bottom:20px;position:relative}.tk:first-child{margin-top:28px}.ii{outline:none}.tip{position:absolute;font:12px/1.5 WK;color:#4a2e24;background:#fbf6ea;box-shadow:0 2px 8px rgba(36,20,15,.25);padding:6px 10px;border-radius:8px;white-space:nowrap;opacity:0;transform:translateY(4px);transition:.18s;pointer-events:none}.tip.on{opacity:1;transform:none}.tip:after{content:'';position:absolute;left:var(--ax,14px);bottom:-5px;border:5px solid transparent;border-bottom:0;border-top-color:#fbf6ea}.ii{cursor:pointer}.tk svg{display:block;overflow:visible}
+</style>
+<div class="app">
+<h1>小票 <small>receipt</small></h1>
+<div id="list"></div>
+</div>
+<script>
+const CO='#4a2e24',CR='#fbf6ea',MI='#2f7a64',ML='#9fd6c3',CA='#d9b26a';
+const V=[
+ {big:'等它回复',ch:'等',ring:'MINT CHOCO ✦ MINT CHOCO ✦',no:'0057',mi:['21:20 发出，带着前面 12 条上下文。','这个渠道平时 30 秒内会回。','等太久可以去渠道页换一条线路。'],info:[['渠道','Channel','中转站 3'],['发出','Sent','21:20'],['模型','Model','gpt-4o']],en:'WAITING',g:[ML,CR],arch:MI,ink:CO,sub:MI,stub:CO,stubInk:CR},
+ {big:'回好了',ch:'好',ring:'MINT CHOCO ✦ MINT CHOCO ✦',no:'0056',mi:['回了 236 字，用掉 1,840 tokens。','1.2 秒出第一个字。','已存进今天的记录。'],info:[['渠道','Channel','中转站 1'],['用时','Time','4′12″'],['模型','Model','claude']],en:'REPLIED',g:['#e6cdb0',CR],arch:CO,ink:CO,sub:MI,stub:ML,stubInk:CO,done:1},
+ {big:'没发出去',ch:'停',ring:'MINT CHOCO ✦ MINT CHOCO ✦',tip:'去渠道页换个 key 就能重发',no:'0055',mi:['中转站 2 的 key 过期了，消息没送到。','去渠道页换个 key 就能重发。','这条不算用量。'],info:[['渠道','Channel','中转站 2'],['原因','Reason','key 过期'],['模型','Model','gpt-4o']],en:'FAILED',g:['#24140f','#6a4434'],arch:'#6d4636',ink:CR,sub:ML,stub:CR,stubInk:CO,gray:1}
+];
+const MICRO=['Freshly shaken mint, dark cocoa and a little crushed ice.','Keep this slip until your cup is called at the counter.','Thank you for waiting at Mint Choco, open till late.'];
+function cframe(x,y,w,h,r){return `M${x+r} ${y}H${x+w-r}A${r} ${r} 0 0 0 ${x+w} ${y+r}V${y+h-r}A${r} ${r} 0 0 0 ${x+w-r} ${y+h}H${x+r}A${r} ${r} 0 0 0 ${x} ${y+h-r}V${y+r}A${r} ${r} 0 0 0 ${x+r} ${y}Z`}
+function cupIcon(cx,cy,c,k){
+ let o=`<g fill="none" stroke="${c}" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"><path d="M${cx-6} ${cy-3}L${cx-4.6} ${cy+8}H${cx+4.6}L${cx+6} ${cy-3}"/><path d="M${cx-7} ${cy-3}H${cx+7}"/><path d="M${cx-6} ${cy-3}Q${cx-6} ${cy-9} ${cx} ${cy-9}Q${cx+6} ${cy-9} ${cx+6} ${cy-3}"/><path d="M${cx+1.5} ${cy-9}L${cx+4} ${cy-14}"/><path d="M${cx-4.9} ${cy+2}H${cx+4.9}" stroke-width=".6"/></g><circle cx="${cx-1.6}" cy="${cy+5}" r=".9" fill="${c}"/><circle cx="${cx+1.8}" cy="${cy+4.2}" r=".9" fill="${c}"/>`;
+ if(k==='done')o+=`<path d="M${cx+5} ${cy+6}l2.2 2.2 4-4.6" fill="none" stroke="${c}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+ if(k==='void')o+=`<path d="M${cx-9} ${cy+9}L${cx+9} ${cy-11}" stroke="${c}" stroke-width="1.1" stroke-linecap="round"/>`;
+ if(k==='open')o+=`<path d="M${cx+8} ${cy-8}l.8 1.6 1.6.8-1.6.8-.8 1.6-.8-1.6-1.6-.8 1.6-.8z" fill="${c}"/>`;
+ return o}
+function seal(cx,cy,c,txt,k,id){
+ let t='';for(let i=0;i<72;i++){const a=i/72*Math.PI*2,r1=i%6?27.4:26.4,r2=28.6;t+=`M${(cx+Math.cos(a)*r1).toFixed(2)} ${(cy+Math.sin(a)*r1).toFixed(2)}L${(cx+Math.cos(a)*r2).toFixed(2)} ${(cy+Math.sin(a)*r2).toFixed(2)}`}
+ const R=20.6,L=(2*Math.PI*R-4).toFixed(1);
+ return `<g transform="rotate(-8 ${cx} ${cy})"><path id="rp${id}" d="M${cx-R} ${cy}a${R} ${R} 0 1 1 ${2*R} 0a${R} ${R} 0 1 1 ${-2*R} 0" fill="none"/>
+ <circle cx="${cx}" cy="${cy}" r="30.4" fill="none" stroke="${c}" stroke-width="1.1"/>
+ <path d="${t}" stroke="${c}" stroke-width=".5"/>
+ <circle cx="${cx}" cy="${cy}" r="25" fill="none" stroke="${c}" stroke-width=".5"/>
+ <text font-family="BalooX" font-size="5.4" fill="${c}" dy="1.9"><textPath href="#rp${id}" textLength="${L}" lengthAdjust="spacing">${txt}</textPath></text>
+ <circle cx="${cx}" cy="${cy}" r="15.6" fill="none" stroke="${c}" stroke-width="1.1"/>
+ <circle cx="${cx}" cy="${cy}" r="13.8" fill="none" stroke="${c}" stroke-width=".4"/>
+ ${cupIcon(cx,cy+1,c,k)}</g>`}
+function spark(x,y,r,c){return `<path d="M${x} ${y-r}Q${x+r*.18} ${y-r*.18} ${x+r} ${y}Q${x+r*.18} ${y+r*.18} ${x} ${y+r}Q${x-r*.18} ${y+r*.18} ${x-r} ${y}Q${x-r*.18} ${y-r*.18} ${x} ${y-r}Z" fill="${c}"/>`}
+function render(){
+ const L=document.getElementById('list'),W=L.clientWidth;L.innerHTML='';
+ V.forEach((v,n)=>{
+  const H=172,S=78,M=W-S,id='v'+n,tc=v.ink;
+  let mk='';for(let x=6;x<W;x+=12){mk+=`<circle cx="${x}" cy="0" r="3.6"/><circle cx="${x}" cy="${H}" r="3.6"/>`}
+  mk+=`<circle cx="${M}" cy="0" r="8"/><circle cx="${M}" cy="${H}" r="8"/>`;
+  const ax=16,ay=18,aw=80,ah=H-36,ar=aw/2;
+  const arch=`M${ax} ${ay+ah}V${ay+ar}A${ar} ${ar} 0 0 1 ${ax+aw} ${ay+ar}V${ay+ah}Z`;
+  const tx=ax+aw+12, right=M-14, ts=Math.min(38,(M-(ax+aw-22)-16)/5.3), ms=Math.min(9.5,(right-tx-8)/14.5);
+  let o=`<svg role="img" aria-label="${v.big}，${v.info.map(f=>f[0]+' '+f[2]).join('，')}" width="${W}" height="${H+8}" viewBox="0 -2 ${W} ${H+8}"><defs>
+   <mask id="m${id}"><rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/><g fill="#000">${mk}</g></mask>
+   <linearGradient id="g${id}" x1="0" x2="1"><stop offset="0" stop-color="${v.g[0]}"/><stop offset=".62" stop-color="${v.g[1]}"/></linearGradient>
+   <clipPath id="a${id}"><path d="${arch}"/></clipPath>
+   <filter id="gr${id}"><feColorMatrix type="saturate" values=".15"/></filter>
+</defs>
+  <g mask="url(#m${id})">
+   <rect x="1" y="3" width="${W}" height="${H}" fill="${CO}" opacity=".18"/>
+   <rect x="0" y="0" width="${M}" height="${H}" fill="url(#g${id})"/>
+   <rect x="${M}" y="0" width="${S}" height="${H}" fill="${v.stub}"/>
+  </g>
+  <path d="${cframe(8,8,M-16,H-16,8)}" fill="none" stroke="${tc}" stroke-width=".8" opacity=".6"/>
+  <path d="${cframe(11.5,11.5,M-23,H-23,4.5)}" fill="none" stroke="${tc}" stroke-width=".45" opacity=".45"/>
+  ${[[8,8],[M-8,8],[8,H-8],[M-8,H-8]].map(([x,y])=>spark(x,y,3.4,tc)+`<circle cx="${x+(x<M/2?6:-6)}" cy="${y+(y<H/2?6:-6)}" r=".9" fill="${tc}" opacity=".6"/>`).join('')}
+  <path d="M${M} 10V${H-10}" stroke="${v.stub===CR?CO:CR}" stroke-width="1.4" stroke-dasharray="2 4" stroke-linecap="round" opacity=".7"/>
+  <path d="${arch}" fill="${v.arch}"/>
+  <g clip-path="url(#a${id})">
+   <circle cx="${ax+aw/2}" cy="${ay+ar}" r="${ar*.62}" fill="${CR}" opacity=".12"/>
+   <image href="../menu/drink.png" x="${ax+6}" y="${ay+ah-128}" width="68" height="133" ${v.gray?`filter="url(#gr${id})" opacity=".55"`:''}/>
+  </g>
+  <path d="${arch}" fill="none" stroke="${CR}" stroke-width=".8" transform="translate(${ax+aw/2} ${ay+ah/2}) scale(.9) translate(${-(ax+aw/2)} ${-(ay+ah/2)})" opacity=".7"/>
+  <ellipse cx="${ax+aw/2+6}" cy="${ay+34}" rx="52" ry="16" transform="rotate(-18 ${ax+aw/2+6} ${ay+34})" fill="none" stroke="${tc}" stroke-width=".8" stroke-dasharray="3 3" opacity=".7"/>
+  ${spark(ax+aw+2,ay+14,9,v.done?MI:CA)}${spark(ax+aw-12,ay+2,3.5,tc)}
+  <text x="${ax+aw-22}" y="${ay+46}" font-family="Script" font-size="${ts}" fill="${tc}" stroke="${v.g[0]}" stroke-width="5" paint-order="stroke" stroke-linejoin="round">Mint Choco</text>
+  ${right-22>tx+118?`<circle cx="${right-14}" cy="${ay+66}" r="13" fill="${ML}" opacity="${v.gray?.2:.55}"/><circle cx="${right-14}" cy="${ay+66}" r="16" fill="none" stroke="${tc}" stroke-width=".4" opacity=".4"/>`:""}
+  ${right-22>tx+118?`<path d="M${right-22} ${ay+58}l12 12M${right-10} ${ay+63}v7h-7" fill="none" stroke="${tc}" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>`:""}
+  <text x="${tx}" y="${ay+82}" font-family="ZK" font-size="26" letter-spacing="3" fill="${tc}">${v.big}</text>
+  <path d="M${tx} ${ay+94}H${right}" stroke="${tc}" stroke-width=".7" stroke-dasharray="1 3" opacity=".7"/>
+  ${spark((tx+right)/2,ay+94,4,v.sub)}
+  ${(()=>{const W=right-tx,P=[0,.42,.7],C=[.42,.28,.3];return v.info.map((f,k)=>{const x=tx+P[k]*W,cw=C[k]*W;return (k?`<path d="M${x-6} ${ay+100}V${ay+114}" stroke="${tc}" stroke-width=".5" opacity=".5"/>`:'')+`<text x="${x}" y="${ay+103}" font-size="5.6" fill="${tc}" opacity=".75" font-family="WK">${f[0]}</text><text x="${x}" y="${ay+114}" font-size="${Math.min(10,(cw-10)/4.6)}" fill="${tc}" font-family="BalooX,ZK" class="val">${f[2]}</text>`}).join('')})()}
+  ${v.tip?(()=>{const x=0,y=0;return `<g class="ii" data-ay="${ay+110}" role="button" tabindex="0" aria-label="怎么办" data-x="${x}" data-y="${y}"><circle cx="${x}" cy="${y}" r="7" fill="transparent"/><circle cx="${x}" cy="${y}" r="3.6" fill="none" stroke="${tc}" stroke-width=".6"/><circle cx="${x}" cy="${y-1.6}" r=".45" fill="${tc}"/><path d="M${x} ${y-.5}v2.4" stroke="${tc}" stroke-width=".7" stroke-linecap="round"/></g>`})():''}
+  ${seal(M+S/2,48,v.stubInk,v.ring,v.done?"done":v.gray?"void":"open",id)}
+  <text transform="translate(${M+S/2+8} ${H-14}) rotate(-90)" font-family="BalooX" font-size="26" letter-spacing="2" fill="${v.stubInk}">${v.no}</text>
+  <text x="${M+S/2}" y="90" text-anchor="middle" font-family="BalooX" font-size="7" letter-spacing="1" fill="${v.stubInk}">11/20</text>
+  <path d="M${M+S/2-10} 94H${M+S/2+10}" stroke="${v.stubInk}" stroke-width=".5" opacity=".6"/>
+  </svg>`;
+  const d=document.createElement('div');d.className='tk';d.innerHTML=o+(v.tip?`<div class="tip" role="tooltip">${v.tip}</div>`:'');L.appendChild(d);
+  const ii=d.querySelector('.ii');if(ii){const vb=d.querySelectorAll('.val')[1].getBBox(),ix=vb.x+vb.width+6,iy=+ii.dataset.ay-3.2;ii.setAttribute('transform',`translate(${ix} ${iy})`);const tp=d.querySelector('.tip'),sv=d.querySelector('svg'),k=sv.getBoundingClientRect().width/W;const L0=ix*k-16;tp.style.left=L0+'px';tp.style.bottom=((H+6-iy)*k+12)+'px';const tg=e=>{e.stopPropagation();tp.classList.toggle('on');const mx=d.clientWidth-tp.offsetWidth-4,l=Math.min(L0,mx);tp.style.left=l+'px';tp.style.setProperty('--ax',(L0-l+12)+'px')};ii.onclick=tg;ii.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')tg(e)};addEventListener('click',()=>tp.classList.remove('on'))}
+ });
+}
+render();addEventListener('resize',render);
+</script>
+</html>
