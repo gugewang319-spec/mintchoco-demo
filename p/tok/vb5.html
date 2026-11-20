@@ -1,0 +1,79 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>小票 · vb5</title>
+<style>
+@font-face{font-family:Script;src:url(../hlt/script.ttf)}
+@font-face{font-family:BalooX;src:url(../hlt/baloo800.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+body{font-family:system-ui,"PingFang SC","Noto Sans SC",sans-serif;color:#4a2e24}
+.app{width:min(100%,412px);margin:0 auto;padding:48px 16px 96px}
+h1{font:800 28px/1 BalooX,system-ui;display:flex;align-items:baseline;gap:8px}
+h1 small{font:24px/1 Script;color:#2f7a64}
+.lab{font-size:12px;color:#8a5c46;opacity:.8;margin:28px 0 10px;letter-spacing:.1em}
+.tk{margin-bottom:20px}.tk svg{display:block;overflow:visible}
+</style>
+<div class="app">
+<h1>小票 <small>receipt</small></h1>
+<div class="lab">三张同版换色 · 开单 / 出杯 / 作废</div>
+<div id="list"></div>
+</div>
+<script>
+const CO='#4a2e24',CR='#fbf6ea',MI='#2f7a64',ML='#9fd6c3',CA='#d9b26a';
+const V=[
+ {big:'新单已开',ch:'开',ring:'FRESH ORDER · MINT CHOCO · ',no:'0057',meta:'No.0057 · 中转站 3 · 21:20',g:[ML,CR],arch:MI,ink:CO,sub:MI,stub:CO,stubInk:CR},
+ {big:'这杯好了',ch:'好',ring:'ORDER UP · ENJOY YOUR CUP · ',no:'0056',meta:'No.0056 · 中转站 1 · 用时 4′12″',g:[CR,CR],arch:CO,ink:CO,sub:MI,stub:ML,stubInk:CO,done:1},
+ {big:'这单作废',ch:'退',ring:'VOID · KEY EXPIRED · ',no:'0055',meta:'No.0055 · 中转站 2 · key 过期',g:['#3b241c',CO],arch:'#6d4636',ink:CR,sub:ML,stub:CR,stubInk:CO,gray:1}
+];
+const MICRO=['Freshly shaken mint, dark cocoa and a little crushed ice.','Keep this slip until your cup is called at the counter.','Thank you for waiting at Mint Choco, open till late.'];
+function curl(x,y,sx,sy,c){return `<path transform="translate(${x} ${y}) scale(${sx} ${sy})" d="M0 14V4Q0 0 4 0H14M3 9c0-4 2-6 6-6M6 6c2 0 3 1 3 3s-2 2-2 0" fill="none" stroke="${c}" stroke-width="1" stroke-linecap="round"/>`}
+function spark(x,y,r,c){return `<path d="M${x} ${y-r}Q${x+r*.18} ${y-r*.18} ${x+r} ${y}Q${x+r*.18} ${y+r*.18} ${x} ${y+r}Q${x-r*.18} ${y+r*.18} ${x-r} ${y}Q${x-r*.18} ${y-r*.18} ${x} ${y-r}Z" fill="${c}"/>`}
+function render(){
+ const L=document.getElementById('list'),W=L.clientWidth;L.innerHTML='';
+ V.forEach((v,n)=>{
+  const H=172,S=78,M=W-S,id='v'+n,tc=v.ink;
+  let mk='';for(let x=6;x<W;x+=12){mk+=`<circle cx="${x}" cy="0" r="3.6"/><circle cx="${x}" cy="${H}" r="3.6"/>`}
+  mk+=`<circle cx="${M}" cy="0" r="8"/><circle cx="${M}" cy="${H}" r="8"/>`;
+  const ax=16,ay=18,aw=80,ah=H-36,ar=aw/2;
+  const arch=`M${ax} ${ay+ah}V${ay+ar}A${ar} ${ar} 0 0 1 ${ax+aw} ${ay+ar}V${ay+ah}Z`;
+  const tx=ax+aw+12, right=M-14, ts=Math.min(38,(M-(ax+aw-22)-16)/5.3), ms=Math.min(9.5,(right-tx-8)/14.5);
+  let o=`<svg width="${W}" height="${H+8}" viewBox="0 -2 ${W} ${H+8}"><defs>
+   <mask id="m${id}"><rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/><g fill="#000">${mk}</g></mask>
+   <linearGradient id="g${id}" x1="0" x2="1"><stop offset="0" stop-color="${v.g[0]}"/><stop offset=".62" stop-color="${v.g[1]}"/></linearGradient>
+   <clipPath id="a${id}"><path d="${arch}"/></clipPath>
+   <filter id="gr${id}"><feColorMatrix type="saturate" values=".15"/></filter>
+   <path id="r${id}" d="M${M+S/2} ${46}m-24 0a24 24 0 1 1 48 0a24 24 0 1 1 -48 0"/></defs>
+  <g mask="url(#m${id})">
+   <rect x="1" y="3" width="${W}" height="${H}" fill="${CO}" opacity=".18"/>
+   <rect x="0" y="0" width="${M}" height="${H}" fill="url(#g${id})"/>
+   <rect x="${M}" y="0" width="${S}" height="${H}" fill="${v.stub}"/>
+  </g>
+  <rect x="8" y="8" width="${M-16}" height="${H-16}" fill="none" stroke="${tc}" stroke-width=".7" opacity=".55"/>
+  <rect x="11" y="11" width="${M-22}" height="${H-22}" fill="none" stroke="${tc}" stroke-width=".5" stroke-dasharray="1 2.5" opacity=".5"/>
+  ${curl(M-12,12,-1,1,tc)}${curl(M-12,H-12,-1,-1,tc)}
+  <path d="M${M} 10V${H-10}" stroke="${v.stub===CR?CO:CR}" stroke-width="1.4" stroke-dasharray="2 4" stroke-linecap="round" opacity=".7"/>
+  <path d="${arch}" fill="${v.arch}"/>
+  <g clip-path="url(#a${id})">
+   <circle cx="${ax+aw/2}" cy="${ay+ar}" r="${ar*.62}" fill="${CR}" opacity=".12"/>
+   <image href="../menu/drink.png" x="${ax+6}" y="${ay+ah-128}" width="68" height="133" ${v.gray?`filter="url(#gr${id})" opacity=".55"`:''}/>
+  </g>
+  <path d="${arch}" fill="none" stroke="${CR}" stroke-width=".8" transform="translate(${ax+aw/2} ${ay+ah/2}) scale(.9) translate(${-(ax+aw/2)} ${-(ay+ah/2)})" opacity=".7"/>
+  <ellipse cx="${ax+aw/2+6}" cy="${ay+34}" rx="52" ry="16" transform="rotate(-18 ${ax+aw/2+6} ${ay+34})" fill="none" stroke="${tc}" stroke-width=".8" stroke-dasharray="3 3" opacity=".7"/>
+  ${spark(ax+aw+2,ay+14,9,v.done?MI:CA)}${spark(ax+aw-12,ay+2,3.5,tc)}
+  <text x="${ax+aw-22}" y="${ay+46}" font-family="Script" font-size="${ts}" fill="${tc}" stroke="${v.g[0]===CR?CR:v.g[0]}" stroke-width="5" paint-order="stroke" stroke-linejoin="round">Mint Choco</text>
+  <text x="${tx}" y="${ay+82}" font-family="'Noto Serif SC','Songti SC','Source Han Serif SC',serif" font-weight="900" font-size="25" letter-spacing="3" fill="${tc}">${v.big}</text>
+  <path d="M${tx} ${ay+94}H${right}" stroke="${tc}" stroke-width=".7" stroke-dasharray="1 3" opacity=".7"/>
+  ${spark((tx+right)/2,ay+94,4,v.sub)}
+  <text x="${tx}" y="${ay+108}" font-size="${ms}" letter-spacing=".3" fill="${tc}" font-weight="600">${v.meta}</text>
+  ${MICRO.map((m,i)=>`<text x="${tx}" y="${ay+120+i*7}" font-size="5.2" fill="${tc}" opacity=".55" font-family="Georgia,serif" font-style="italic">${m}</text>`).join('')}
+  <circle cx="${M+S/2}" cy="46" r="29" fill="none" stroke="${v.stubInk}" stroke-width=".8" opacity=".8"/>
+  <circle cx="${M+S/2}" cy="46" r="17" fill="none" stroke="${v.stubInk}" stroke-width="1.2"/>
+  <text font-size="6.2" letter-spacing="1.1" fill="${v.stubInk}" font-weight="700"><textPath href="#r${id}">${v.ring}</textPath></text>
+  <text x="${M+S/2}" y="${46+7}" text-anchor="middle" font-family="'Noto Serif SC','Songti SC',serif" font-weight="900" font-size="20" fill="${v.stubInk}">${v.ch}</text>
+  <text transform="translate(${M+S/2+8} ${H-14}) rotate(-90)" font-family="BalooX" font-size="26" letter-spacing="2" fill="${v.stubInk}">${v.no}</text>
+  <text transform="translate(${M+S/2-14} ${H-14}) rotate(-90)" font-size="6" letter-spacing="2" fill="${v.stubInk}" opacity=".7" font-weight="700">ONE CUP · KEEP</text>
+  </svg>`;
+  const d=document.createElement('div');d.className='tk';d.innerHTML=o;L.appendChild(d);
+ });
+}
+render();addEventListener('resize',render);
+</script>
+</html>
