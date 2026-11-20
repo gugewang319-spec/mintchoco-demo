@@ -1,0 +1,110 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>普通行 · 精修样张 3</title>
+<!-- 普通行 rv3（rv2 吸管太粗糙，改代码画条纹吸管）：器皿三级最底一级。没有底，靠 小料图标 + 菜单点线引线 + 时间 排成一行；换色表示状态（新 / 普通 / 过去）。 -->
+<style>
+@font-face{font-family:Script;src:url(../hlt/script.ttf)}
+@font-face{font-family:BalooX;src:url(../hlt/baloo800.ttf)}
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:WK;src:url(wk.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
+body{font-family:WK,system-ui,sans-serif;color:#5b3a2c}
+.app{width:min(100%,412px);margin:0 auto;padding:48px 24px 96px}
+h1{font:28px/1 ZK;display:flex;align-items:baseline;gap:8px}
+h1 small{font:24px/1 Script;color:#3f9a80}
+.lab{font-size:12px;color:#8a5c46;opacity:.8;margin:32px 0 8px;letter-spacing:.1em}
+/* 段头：ZK 大字 + 花体 + 右侧日期，下面双细线 + 中间小菱 */
+.hd{display:flex;align-items:baseline;gap:8px;padding:0 0 8px}
+.hd b{font:20px/1 ZK;font-weight:400}
+.hd i{font:20px/1 Script;color:#3f9a80;font-style:normal}
+.hd em{margin-left:auto;font:12px/1 BalooX;letter-spacing:.12em;font-style:normal;color:#8a5c46}
+.rule{position:relative;height:4px;border-top:.6px solid #8a5c46;border-bottom:.6px solid #8a5c46;opacity:.55;margin-bottom:4px}
+.rule:after{content:"";position:absolute;left:50%;top:-4px;width:6px;height:6px;margin-left:-3px;background:#3f9a80;transform:rotate(45deg)}
+/* 行 */
+.r{display:grid;grid-template-columns:24px 1fr auto;column-gap:12px;align-items:center;padding:8px 0;position:relative}
+.r .ic{width:24px;height:24px;display:grid;place-items:center}
+.r .ic svg{display:block;overflow:visible}
+.r .t{display:flex;align-items:baseline;min-width:0}
+.r .t span{font-size:15px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 1 auto}
+/* 吸管串：左边一根细薄荷吸管把小料串起来，像沉在杯里一颗颗往下 */
+.list{position:relative}
+.list>svg.straw{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.r .ic{position:relative;z-index:1;border-radius:50%;background:#f6fbf8;box-shadow:0 0 0 1px rgba(138,92,70,.18)}
+.r .s{grid-column:2/4;font-size:11px;line-height:16px;color:#8a5c46;opacity:.7;margin-top:0;letter-spacing:.04em}
+.r .tm{font:13px/20px BalooX;letter-spacing:.06em;color:#5b3a2c}
+.r .tm small{font:11px WK;margin-left:2px;opacity:.7}
+/* 状态换色 */
+.r.new .t span{color:#2f7e68}
+.r.new .tm{color:#3f9a80}
+.r.new .ic{box-shadow:0 0 0 1.4px #3f9a80}.r.new .tm:after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:#3f9a80;margin-left:6px;vertical-align:2px}
+.r.old{opacity:.48}
+.r.warn .t span,.r.warn .tm{color:#b4614f}
+/* 密集版：一行一条 */
+.dense .r{padding:6px 0}
+.dense .r .s{display:none}
+.dense .r .t span{font-size:14px}
+.foot{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:12px;font:12px/1 WK;color:#8a5c46;letter-spacing:.1em}
+.foot:before,.foot:after{content:"";width:40px;border-top:.6px solid #8a5c46;opacity:.5}
+.note{font-size:12px;line-height:20px;color:#8a5c46;margin-top:8px}
+</style>
+<div class="app">
+<h1>普通行 <small>plain row</small></h1>
+<p class="note">没有底、没有框。一根薄荷吸管串起小料，每颗小料是一条记录；状态只换颜色。</p>
+
+<div class="lab">默认 · 今天的记录</div>
+<div class="hd"><b>今天</b><i>today</i><em>11/20</em></div>
+<div class="rule"></div>
+<div id="a" class="list"></div>
+<div class="foot">全部记录 ›</div>
+
+<div class="lab">三种状态 · 新 / 普通 / 过去 · 另有一条提醒色</div>
+<div id="b" class="list"></div>
+
+<div class="lab">密集版 · 流水一屏很多条</div>
+<div class="hd"><b>昨天</b><i>yesterday</i><em>11/19</em></div>
+<div class="rule"></div>
+<div id="c" class="list dense"></div>
+</div>
+<script>
+const INK='#5b3a2c',C='#8a5c46',MI='#3f9a80',ML='#9fd6c3',CR='#fbf6ea',BE='#e3a08f',CA='#e6bf7a';
+// 小料图标：全部代码画，店里的东西
+const IC={
+ ice:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><rect x="-7" y="-7" width="14" height="14" rx="3.5" fill="${ML}" fill-opacity=".55" stroke="${c}" stroke-width="1.2"/><path d="M-3.5 3.5 3.5-3.5" stroke="${c}" stroke-width=".8" opacity=".6"/></svg>`,
+ pearl:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><circle r="6.5" fill="${INK}"/><circle r="8.5" fill="none" stroke="${c}" stroke-width=".6" stroke-dasharray="1.2 1.6"/></svg>`,
+ leaf:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><path d="M-7 7C-7-2-2-7 7-7 7 2 2 7-7 7Z" fill="${ML}" stroke="${c}" stroke-width="1.2" stroke-linejoin="round"/><path d="M-7 7 3-3" stroke="${c}" stroke-width=".8"/></svg>`,
+ bead:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><circle r="4" fill="${MI}"/><circle r="7.5" fill="none" stroke="${c}" stroke-width="1"/><path d="M0-10V-8.5M0 8.5V10M-10 0H-8.5M8.5 0H10" stroke="${c}" stroke-width="1" stroke-linecap="round"/></svg>`,
+ square:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><rect x="-7" y="-5" width="14" height="10" rx="1.5" fill="#7a4a36" stroke="${c}" stroke-width="1"/><path d="M0-5V5M-7 0H7" stroke="${CR}" stroke-width=".7" opacity=".55"/></svg>`,
+ drop:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><path d="M0-8C3-3 6 0 6 3A6 6 0 0 1-6 3C-6 0-3-3 0-8Z" fill="${CA}" stroke="${c}" stroke-width="1.2" stroke-linejoin="round"/></svg>`,
+ cup:(c)=>`<svg width="20" height="20" viewBox="-10 -10 20 20"><path d="M-6-5H6L4.5 8H-4.5Z" fill="${CR}" stroke="${c}" stroke-width="1.2" stroke-linejoin="round"/><path d="M-5.6-1H5.6" stroke="${c}" stroke-width=".8"/><path d="M1-5 4-9.5" stroke="${c}" stroke-width="1.2" stroke-linecap="round"/></svg>`
+};
+function row(o){const c=o.st==='new'?MI:o.st==='warn'?'#b4614f':C;
+ return `<div class="r ${o.st||''}"><div class="ic">${IC[o.ic](c)}</div><div class="t"><span>${o.t}</span></div><div class="tm">${o.tm}</div>${o.s?`<div class="s">${o.s}</div>`:''}</div>`}
+const A=[
+ {ic:'cup',t:'和小薄荷聊了一会儿',tm:'21:20',s:'中转站 3 · 18 条',st:'new'},
+ {ic:'ice',t:'喝了一杯水',tm:'09:12',s:'250 ml'},
+ {ic:'bead',t:'心率回到 72',tm:'10:40',s:'静息'},
+ {ic:'leaf',t:'记住了一件小事',tm:'14:05',s:'喜欢薄荷多一点'},
+ {ic:'drop',t:'额度用到八成',tm:'16:30',s:'中转站 1',st:'warn'}
+];
+const B=[
+ {ic:'cup',t:'新单已开',tm:'刚刚',s:'新 · 薄荷色 + 时间后小圆点',st:'new'},
+ {ic:'pearl',t:'这杯好了',tm:'21:16',s:'普通 · 可可墨色'},
+ {ic:'square',t:'这单作废',tm:'20:02',s:'过去 · 整行淡到一半',st:'old'},
+ {ic:'drop',t:'key 快过期了',tm:'19:40',s:'提醒 · 莓果色，只换字色不加底',st:'warn'}
+];
+const Cc=[['ice','喝了一杯水','08:30'],['pearl','走到 3,000 步','09:58'],['cup','和小薄荷聊了一会儿','12:14'],['leaf','记住了一件小事','13:40'],['bead','心率回到 68','15:22'],['ice','喝了一杯水','17:05'],['square','这单作废','20:11'],['pearl','走到 8,000 步','22:47']].map(([ic,t,tm])=>({ic,t,tm}));
+document.getElementById('a').innerHTML=A.map(row).join('');
+document.getElementById('b').innerHTML=B.map(row).join('');
+document.getElementById('c').innerHTML=Cc.map(row).join('');
+// 条纹吸管：可可细描边、薄荷/奶白斜纹、上端斜切口、下端插进最后一颗小料后面
+let sid=0;
+function straw(el){const ics=el.querySelectorAll('.ic');if(ics.length<2)return;
+ const b=el.getBoundingClientRect(),f=ics[0].getBoundingClientRect(),l=ics[ics.length-1].getBoundingClientRect();
+ const x=f.left-b.left+f.width/2,y0=f.top-b.top+f.height/2,y1=l.bottom-b.top+12,w=5,id='sp'+(sid++);
+ const svg=`<svg class="straw" width="${b.width}" height="${b.height}"><defs><pattern id="${id}" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="8" height="8" fill="#fbf6ea"/><rect width="8" height="3.2" fill="#9fd6c3"/></pattern><linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".0"/><stop offset=".35" stop-color="#fff" stop-opacity=".0"/><stop offset="1" stop-color="#5b3a2c" stop-opacity=".12"/></linearGradient></defs>
+ <path d="M${x-w/2} ${y0}H${x+w/2}V${y1-3}L${x-w/2} ${y1}Z" fill="url(#${id})"/><path d="M${x-w/2} ${y0}H${x+w/2}V${y1-3}L${x-w/2} ${y1}Z" fill="url(#${id}g)"/>
+ <path d="M${x-w/2} ${y0}V${y1}M${x+w/2} ${y0}V${y1-3}" fill="none" stroke="#8a5c46" stroke-width=".9"/>
+ <ellipse cx="${x}" cy="${y1-1.5}" rx="${w/2}" ry="1.2" transform="rotate(-31 ${x} ${y1-1.5})" fill="#e8f5ef" stroke="#8a5c46" stroke-width=".7"/></svg>`;
+ el.insertAdjacentHTML('afterbegin',svg)}
+function drawStraws(){document.querySelectorAll('.list>svg.straw').forEach(n=>n.remove());document.querySelectorAll('.list').forEach(straw)}
+document.fonts.ready.then(drawStraws);addEventListener('resize',drawStraws);
+</script>
