@@ -76,8 +76,7 @@ function render(){
   <ellipse cx="${ax+aw/2+6}" cy="${ay+34}" rx="52" ry="16" transform="rotate(-18 ${ax+aw/2+6} ${ay+34})" fill="none" stroke="${tc}" stroke-width=".8" stroke-dasharray="3 3" opacity=".7"/>
   ${spark(ax+aw+2,ay+14,9,v.done?MI:CA)}${spark(ax+aw-12,ay+2,3.5,tc)}
   <text x="${ax+aw-22}" y="${ay+46}" font-family="Script" font-size="${ts}" fill="${tc}" stroke="${v.g[0]}" stroke-width="5" paint-order="stroke" stroke-linejoin="round">Mint Choco</text>
-  <circle cx="${tx+92}" cy="${ay+70}" r="30" fill="${ML}" opacity="${v.gray?.2:.5}"/>
-  <circle cx="${tx+92}" cy="${ay+70}" r="34" fill="none" stroke="${tc}" stroke-width=".4" opacity=".4"/>
+  ${right-22>tx+118?`<circle cx="${right-14}" cy="${ay+66}" r="13" fill="${ML}" opacity="${v.gray?.2:.55}"/><circle cx="${right-14}" cy="${ay+66}" r="16" fill="none" stroke="${tc}" stroke-width=".4" opacity=".4"/>`:""}
   ${right-22>tx+118?`<path d="M${right-22} ${ay+58}l12 12M${right-10} ${ay+63}v7h-7" fill="none" stroke="${tc}" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>`:""}
   <text x="${right-4}" y="${ay+1}" text-anchor="end" font-family="BalooX" font-size="5.6" letter-spacing="1.2" fill="${tc}" opacity=".75">${v.en}  /  SLIP ${v.no}</text>
   <text x="${tx}" y="${ay+82}" font-family="'Noto Serif SC','Songti SC','Source Han Serif SC',serif" font-weight="900" font-size="25" letter-spacing="3" fill="${tc}">${v.big}</text>
