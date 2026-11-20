@@ -57,12 +57,17 @@ body{color:var(--ink);font:var(--f3)/1.5 var(--ff-body);background:var(--page-bg
 textarea.in{height:auto;min-height:84px;padding:11px 14px;line-height:1.6;resize:none}
 .in::placeholder{color:var(--ink3)}
 
-/* —— 就地小选单 —— */
+/* —— 就地小选单：贴着字段下沿浮出的小菜单，不推开下面的内容；点外面收起 —— */
 .pick{position:relative}
+.pick.open{z-index:20}
+.sec:has(.pick.open){z-index:30}.fld:has(.pick.open){z-index:30}
 .pick .cur{width:100%}
-.pick .opts{display:grid;gap:4px;overflow:hidden;max-height:0;opacity:0;transition:max-height .38s cubic-bezier(.3,1,.4,1),opacity .25s,margin .3s}
-.pick.open .opts{max-height:260px;opacity:1;margin-top:6px}
-.opt{display:flex;align-items:center;gap:10px;width:100%;min-height:42px;padding:0 14px;text-align:left;font:var(--f3)/1 var(--ff-body)}
+.pick .opts{position:absolute;left:0;top:calc(100% + 4px);min-width:min(100%,240px);max-width:100%;display:grid;padding:4px;opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .16s,transform .2s cubic-bezier(.3,1,.4,1)}
+.pick.open .opts{opacity:1;transform:none;pointer-events:auto}
+.opt{display:flex;align-items:center;gap:10px;width:100%;min-height:38px;padding:0 10px;text-align:left;font:var(--f3)/1.2 var(--ff-body);white-space:nowrap}
+.opt small{font:var(--f4)/1 var(--ff-body);color:var(--ink2)}
+.opt .ck{margin-left:auto;width:14px;height:14px;opacity:0}
+.opt.on .ck{opacity:1}
 
 /* —— 筛选胶囊 —— */
 .flt{display:flex;flex-wrap:wrap;gap:6px}

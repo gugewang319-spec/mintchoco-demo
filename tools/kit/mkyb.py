@@ -7,6 +7,7 @@ LEAF='<svg class="ico" viewBox="0 0 16 16" fill="#a6d9c4" stroke="#5b8a74" strok
 STAR='<svg class="ico" viewBox="0 0 16 16" fill="#f6e3b8" stroke="#a9825f" stroke-width="1" stroke-linejoin="round"><path d="M8 1.8 9.8 6l4.4.4-3.3 2.9 1 4.4L8 11.4l-3.9 2.3 1-4.4L1.8 6.4 6.2 6Z"/></svg>'
 def I(d):return f'<svg viewBox="0 0 20 20" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{d}</svg>'
 BACK=I('<path d="M12.5 4 6.5 10l6 6"/>');PLUS=I('<path d="M10 4v12M4 10h12"/>');SRCH=I('<circle cx="8.8" cy="8.8" r="5"/><path d="m12.6 12.6 3.6 3.6"/>');PEN=I('<path d="m4 16 1-4 8-8 3 3-8 8Z"/>');BIN=I('<path d="M4.5 6h11M8 6V4h4v2M6 6l1 10h6l1-10"/>')
+CK='<svg class="ck" viewBox="0 0 14 14" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 7.5 3 3 6-7"/></svg>'
 CHEV='<svg viewBox="0 0 10 10" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="m2 3.5 3 3 3-3"/></svg>'
 WARN='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#8a5c46" stroke-width="1.3" stroke-linejoin="round"><path d="M12 3 22 20H2Z" fill="#f6d7cb"/><path d="M12 9.5v5" stroke="#b8573c" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.3" r="1.2" fill="#b8573c" stroke="none"/></svg>'
 def dec(src,st,cls='sway',o='50% 90%',a='4deg'):return f'<img class="dec {cls}" src="{src}" alt="" style="{st};--o:{o};--a:{a}">'
@@ -23,8 +24,8 @@ body=f'''
 <section class="sec">
  {dec('../set/sprig.png','right:-96px;top:-34px;width:200px;opacity:.9','sway d2','100% 50%','2deg')}
  {grp('00','换皮','两套','')}
- <div class="pick" id="skin"><button class="cur"><span>皮肤</span><span class="v"><span>薄荷巧克力</span>{CHEV}</span></button>
- <div class="opts"><button class="opt on" data-s="skin-mint.css">薄荷巧克力</button><button class="opt" data-s="skin-dark.css">黑巧</button></div></div>
+ <div class="fld"><label>皮肤</label><div class="pick" id="skin"><button class="cur"><span class="v"><span>薄荷巧克力</span>{CHEV}</span></button>
+ <div class="opts"><button class="opt on" data-s="skin-mint.css"><span>薄荷巧克力</span>{CK}</button><button class="opt" data-s="skin-dark.css"><span>黑巧</span>{CK}</button></div></div></div>
 </section>
 
 <section class="sec">
@@ -55,8 +56,8 @@ body=f'''
  <div class="fld"><label>名字</label><input class="in" id="f1" value="小鲸鱼中转"></div>
  <div class="fld"><label>地址</label><input class="in" id="f2" value="https://example.local/v1" inputmode="url"></div>
  <div class="fld"><label>格式</label>
- <div class="pick" id="fmt"><button class="cur"><span>请求格式</span><span class="v"><span>OpenAI</span>{CHEV}</span></button>
- <div class="opts"><button class="opt on">OpenAI</button><button class="opt">Anthropic</button><button class="opt">Gemini</button></div></div></div>
+ <div class="pick" id="fmt"><button class="cur"><span class="v"><span>OpenAI</span>{CHEV}</span></button>
+ <div class="opts"><button class="opt on"><span>OpenAI</span><small>/chat/completions</small>{CK}</button><button class="opt"><span>Anthropic</span><small>/v1/messages</small>{CK}</button><button class="opt"><span>Gemini</span><small>:generateContent</small>{CK}</button></div></div></div>
  <div class="fld"><label>备注</label><textarea class="in" id="f3" placeholder="写给自己看的，可不填"></textarea></div>
  <button class="b1" id="save" disabled><span>保存</span></button>
 </section>
@@ -91,9 +92,10 @@ JS=r'''
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 $$('.row').forEach(r=>r.onclick=()=>r.classList.toggle('on'));
 $$('.fp').forEach(f=>f.onclick=()=>{$$('.fp').forEach(x=>x.classList.remove('on'));f.classList.add('on')});
-function pick(el,cb){const c=el.querySelector('.cur'),v=el.querySelector('.v span');c.onclick=()=>el.classList.toggle('open');
- el.querySelectorAll('.opt').forEach(o=>o.onclick=()=>{el.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));o.classList.add('on');v.textContent=o.textContent;setTimeout(()=>el.classList.remove('open'),180);cb&&cb(o)})}
-pick($('#skin'),o=>{$('#skinlink').href=o.dataset.s;MC.toast('换成「'+o.textContent+'」了')});
+function pick(el,cb){const c=el.querySelector('.cur'),v=el.querySelector('.v span');c.onclick=e=>{e.stopPropagation();document.querySelectorAll('.pick.open').forEach(p=>p!==el&&p.classList.remove('open'));el.classList.toggle('open')};
+ el.querySelectorAll('.opt').forEach(o=>o.onclick=()=>{el.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));o.classList.add('on');v.textContent=o.querySelector('span').textContent;el.classList.remove('open');cb&&cb(o)})}
+document.addEventListener('click',e=>{if(!e.target.closest('.pick'))document.querySelectorAll('.pick.open').forEach(p=>p.classList.remove('open'))});
+pick($('#skin'),o=>{$('#skinlink').href=o.dataset.s;MC.toast('换成「'+o.querySelector('span').textContent+'」了')});
 const save=$('#save'),fs=['#f1','#f2','#f3'].map($);let base=fs.map(f=>f.value),fmt0='OpenAI';
 const dirty=()=>fs.some((f,i)=>f.value!==base[i])||$('#fmt .v span').textContent!==fmt0;
 const upd=()=>save.disabled=!dirty();fs.forEach(f=>f.oninput=upd);pick($('#fmt'),upd);

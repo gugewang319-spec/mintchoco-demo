@@ -6,7 +6,7 @@
  --ink:#5b3a2c;--ink2:#8a6a58;--ink3:#b39a8a;--co:#8a5c46;
  --mint:#c4e8da;--mint2:#a6d9c4;--accent-d:#2f6e58;--caramel:#c9a07e;--danger:#b8573c;
  --choc1:#7d503c;--choc2:#5f3b2c;--cream-on:#fdf6e8;
- --row-bg:rgba(196,232,218,.62);--row-bg-on:rgba(150,210,186,.72);--row-bar:#8a5c46;--row-line:rgba(138,92,70,.55);
+ --row-bg:rgba(196,232,218,.62);--fld-bg:rgba(196,232,218,.45);--menu-bg:#cdeadd;--row-bg-on:rgba(150,210,186,.72);--row-bar:#8a5c46;--row-line:rgba(138,92,70,.55);
  --page-bg:repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px) #e4f3ed;
  /* 形状 */
  --r1:4px;--r2:8px;--r3:12px;--lw:1.2px;
@@ -40,7 +40,7 @@
 .b1{border:var(--lw) solid var(--co);border-radius:var(--r3);background:linear-gradient(90deg,transparent calc(14% - 1px),rgba(38,20,13,.4) calc(14% - 1px) 14%,rgba(255,232,210,.16) 14% calc(14% + 1px),transparent calc(14% + 1px) calc(86% - 1px),rgba(38,20,13,.4) calc(86% - 1px) 86%,rgba(255,232,210,.16) 86% calc(86% + 1px),transparent calc(86% + 1px)),linear-gradient(var(--choc1),var(--choc2));box-shadow:inset 0 1px 0 rgba(255,232,210,.3),inset 0 -2px 0 rgba(38,20,13,.28),0 8px 14px -10px rgba(74,48,39,.5);transition:transform .16s,opacity .25s,filter .25s}
 .b1::before{content:"";position:absolute;inset:4px 18%;border:1.3px dotted rgba(201,160,126,.75);border-radius:5px}
 .b1 span{color:var(--cream-on);text-shadow:0 1px 0 rgba(38,20,13,.35)}
-.b1[disabled]{opacity:.42}
+.b1[disabled]{background:linear-gradient(#a98a7b,#94766a);box-shadow:inset 0 1px 0 rgba(255,232,210,.25)}.b1[disabled] span{color:rgba(253,246,232,.7);text-shadow:none}.b1[disabled]::before{border-color:rgba(253,246,232,.35)}
 /* 二级：薄荷排块（几格连在一起，格间刻槽） */
 .b2s{border:var(--lw) solid var(--co);border-radius:var(--r2);overflow:hidden;background:linear-gradient(var(--mint),var(--mint2));box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 rgba(47,110,88,.18)}
 .b2+.b2{box-shadow:inset 1.2px 0 0 rgba(138,92,70,.55),inset 2.4px 0 0 rgba(255,255,255,.45)}
@@ -57,19 +57,20 @@
 .b4.dg{color:var(--danger)}.b4.dg::before{background:#f2c9bc}
 
 /* 输入：浅薄荷底 + 可可细边，聚焦时薄荷深边 */
-.in{background:rgba(237,248,243,.72);border:var(--lw) solid var(--row-line);border-radius:var(--r2);box-shadow:inset 0 2px 0 rgba(138,92,70,.06)}
+.in{background:var(--fld-bg);border:var(--lw) solid var(--row-line);border-radius:var(--r2);box-shadow:inset 0 2px 0 rgba(138,92,70,.06)}
 .in:focus{border-color:var(--accent-d);box-shadow:0 0 0 3px rgba(166,217,196,.7)}
 .fld label::before{content:"✦ ";color:var(--caramel)}
 
-/* 小选单 */
-.pick .cur{position:relative;display:flex;align-items:center;gap:10px;height:46px;padding:0 12px 0 14px;background:rgba(237,248,243,.72);border:var(--lw) solid var(--row-line);border-radius:var(--r2);text-align:left}
-.pick .cur .v{margin-left:auto;display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;background:var(--mint2);font:var(--f4)/1 var(--ff-body);box-shadow:inset 0 0 0 1px rgba(47,110,88,.35)}
-.pick .cur svg{width:10px;height:10px;stroke:var(--ink);transition:transform .3s}
+/* 小选单：字段只写当前值 + 小箭头；菜单是薄荷糖片，选中那行薄荷深一档 + 可可小勾 */
+.pick .cur{position:relative;display:flex;align-items:center;gap:10px;height:46px;padding:0 14px;background:var(--fld-bg);border:var(--lw) solid var(--row-line);border-radius:var(--r2);text-align:left}
+.pick .cur .v{flex:1;display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--ink);font:var(--f3)/1 var(--ff-body)}
+.pick .cur svg{width:10px;height:10px;stroke:var(--co);transition:transform .25s}
+.pick.open .cur{border-color:var(--accent-d)}
 .pick.open .cur svg{transform:rotate(180deg)}
-.opt{background:var(--row-bg);border:var(--lw) solid transparent;border-radius:var(--r2)}
-.opt::before{content:"";width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 1.2px var(--co)}
-.opt.on{border-color:var(--row-line);background:var(--row-bg-on)}
-.opt.on::before{background:radial-gradient(circle at 35% 30%,#fff 0 12%,var(--accent-d) 20%);box-shadow:none}
+.pick .opts{background:var(--menu-bg);border:var(--lw) solid var(--co);border-radius:var(--r2);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 20px -12px rgba(74,48,39,.55)}
+.opt{border-radius:5px;color:var(--ink)}
+.opt:active,.opt.on{background:var(--row-bg-on)}
+.opt .ck{stroke:var(--co)}
 
 /* 筛选：选中薄荷胶囊，其余只有字和小点 */
 .fp{color:var(--ink2);border-radius:99px}

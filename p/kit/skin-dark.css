@@ -5,10 +5,9 @@
  --mint:#8fd0b6;--mint2:#6fb99c;--accent-d:#a6e3cb;--caramel:#e0b98f;--danger:#f0a48c;
  --choc1:#b98a62;--choc2:#946746;--cream-on:#2c1b14;
  --row-bg:rgba(120,84,64,.42);--row-bg-on:rgba(79,151,127,.45);--row-bar:#c9a07e;--row-line:rgba(201,160,126,.5);
- --page-bg:repeating-linear-gradient(90deg,#3a2820 0,#3a2820 18px,#433028 18px,#433028 36px) #3e2b23;
+ --fld-bg:rgba(44,27,20,.55);--menu-bg:#4a3228;--page-bg:repeating-linear-gradient(90deg,#3a2820 0,#3a2820 18px,#433028 18px,#433028 36px) #3e2b23;
 }
-.in,.pick .cur{background:rgba(44,27,20,.55)}
-.pick .cur .v,.fp.on{color:#2c1b14}
+.fp.on{color:#2c1b14}
 .plate b{color:#2c1b14}
 .state{background:rgba(120,84,64,.25)}
 .err{background:rgba(184,87,60,.22)}
