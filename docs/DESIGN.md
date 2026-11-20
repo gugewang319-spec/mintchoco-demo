@@ -435,9 +435,9 @@ No text, no letters, no watermark, no cast shadow, no photorealism, no 3D render
 | 原型交互 | PPST 功能 | 前端组件 | 后端 | 猫猫老师网关的对应功能 | 状态 |
 | --- | --- | --- | --- | --- | --- |
 | 按渠道分栏列模型、窗口大小 | 模型列表 | `ModelsScreen` | `GET /api/models`（`model_configs`：model_name、context_window、max_output_tokens、stream_supported、supports_vision） | 「Models」与「当前模型」 | 有 |
-| 拉新的 + 「新」圈 | 从上游拉取并登记 | `AddModelsScreen` | `GET /api/channels/{id}/models/available`、`POST /api/channels/{id}/models/batch` | 无（它手填 Models） | 有 |
+| 拉新的 + 「新」圈 | 从上游拉取并登记 | `AddModelsScreen` | `GET /api/channels/{id}/models/available`（`models[]`：id、owned_by、registered、context_window / max_output_tokens 各带 status = trusted / missing / invalid / conflict，只有 trusted 有 value；**不含**看图、流式）、`POST /api/channels/{id}/models/batch`（窗口、输出必填正整数，前端传；stream_supported 默认 true；看图不收，默认 false；重复的进 skipped） | 无（它手填 Models） | 有（11-20 核实 palimpsest integration/sprint-1 b750f76；原型：选完先「确认参数」，可信的预填，缺的手选，输出 < 窗口才能登记） |
 | 窗口、输出左右搓；看图、流式勾选；存好 | 改模型参数 | `ModelDetail` | `PATCH /api/models/{id}` | 无 | 有（真实代码里看图 / 流式是开关，原型改成勾） |
-| 溢杯（输出 ≥ 窗口） | 上限校验 | `AddModelsScreen` 有同类提示 | 后端校验**待确认** | 无 | 有（前端） |
+| 溢杯（输出 ≥ 窗口） | 上限校验 | `AddModelsScreen` 有同类提示（旧前端 modelImport.ts 禁止 output ≥ context） | 后端**不拦**（batch 只验正整数，库里也无大小约束；available 解析器只把 > 标 conflict，= 仍 trusted），是后端缺口 | 无 | 有（前端） |
 | 备用链：加、去掉、排序 | 跨模型备用 | `ModelDetail`（点序号往前挪一位） | `GET / PUT /api/models/{id}/fallbacks`（`model_config_fallbacks`） | 无（公开版只有多 key 轮换） | 有 |
 | 备用链「试一下」 | 试跑备用链 | — | 无测试接口 | 「对话测试」可间接验证当前模型 | **仅演示** |
 | 本店加料：能看图 n 杯、流式 n 杯 | 能力计数 | 前端计算 | 同模型字段 | 无 | 有 |

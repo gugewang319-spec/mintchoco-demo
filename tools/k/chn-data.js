@@ -22,3 +22,8 @@ export const WO=['32K','128K','200K','256K','1M'],OO=['4K','8K','16K','32K','64K
 export const worst=c=>c.off?'off':c.k.some(x=>x[1]=='bad')?'bad':c.k.some(x=>x[1]=='cool')?'cool':'';
 export const EP={OpenAI:'/v1/chat/completions',Anthropic:'/v1/messages',Gemini:'/v1beta/models/{模型}:generateContent'}
 export const FM=['OpenAI','Anthropic','Gemini'],RT=[1,2,3,4,5]
+// 上游 GET /api/channels/{id}/models/available 的演示返回：窗口/输出带 status（trusted|missing|invalid|conflict），只有 trusted 有值；不含看图/流式
+const T=(w,o)=>({w:{status:'trusted',value:w},o:{status:'trusted',value:o}}),MS={status:'missing',value:null}
+export const UPM={'gpt-5.1-nano':T('128K','16K'),'gpt-4o-mini':T('128K','16K'),'o4-mini':T('200K','64K'),'gemini-2.5-flash-lite':T('1M','64K'),
+ 'deepseek-r1':{w:{status:'trusted',value:'128K'},o:{status:'conflict',value:null}},'qwen3-coder':{w:MS,o:MS},'grok-4':{w:MS,o:MS}}
+export const upMeta=u=>UPM[u]||T('128K','16K')

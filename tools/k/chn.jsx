@@ -4,10 +4,12 @@
 import React, { useState, useMemo } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ConfigProvider, NavBar, Form, Input, Button, List, Popover, SearchBar, Checkbox, CheckList, Dialog, CapsuleTabs, ErrorBlock, Tag, Space } from 'antd-mobile'
-import { CH as CH0, UP, WO, OO, EP, FM, RT, worst } from './chn-data.js'
+import { CH as CH0, UP, WO, OO, EP, FM, RT, worst, upMeta } from './chn-data.js'
 
 const kv = x => parseInt(x) * (/M/.test(x) ? 1024 : 1)
-const guessW = u => /gemini/.test(u) ? '1M' : /claude|o3|o4|glm/.test(u) ? '200K' : /qwen|kimi|grok/.test(u) ? '256K' : '128K'
+const SL = { missing: '待确认', invalid: '上游给的数不对', conflict: '上游数字冲突' }
+const metaTxt = u => { const m = upMeta(u), f = (x, n) => x.status === 'trusted' ? `${n} ${x.value}` : n + SL[x.status]; return f(m.w, '窗口') + ' · ' + f(m.o, '输出') }
+const okWO = (w, o) => w && o && kv(o) < kv(w)
 const ST = { cool: ['冷却中', 'warning'], bad: ['有钥匙超时', 'danger'], off: ['停用', 'default'] }
 const pack = d => JSON.stringify(d)
 const Ico = ({ d }) => <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: d }} />
@@ -42,10 +44,10 @@ function Detail({ c, isNew, onBack, onSave, onHang, onRip }) {
   const [D, setD] = useState(base)
   const [nk, setNk] = useState(''), [eye, setEye] = useState(false)
   const [open, setOpen] = useState(-1), [taste, setTaste] = useState(-1)
-  const [q, setQ] = useState(''), [pull, setPull] = useState(false), [pq, setPq] = useState(''), [sel, setSel] = useState([])
+  const [q, setQ] = useState(''), [pull, setPull] = useState(false), [pq, setPq] = useState(''), [sel, setSel] = useState([]), [cf, setCf] = useState(null)
   const set = k => v => setD(d => ({ ...d, [k]: v }))
   const dirty = pack(D) !== pack(base) || !!nk.trim()
-  const ready = isNew ? D.n.trim() && D.h.trim() && nk.trim() : dirty
+  const ready = (isNew ? D.n.trim() && D.h.trim() && nk.trim() : dirty) && D.m.every(x => okWO(x.w, x.o))
   const setFmt = f => setD(d => ({ ...d, f, p: (!d.p.trim() || Object.values(EP).includes(d.p.trim())) ? EP[f] : d.p }))
   const setM = (j, patch) => setD(d => ({ ...d, m: d.m.map((x, i) => i === j ? { ...x, ...patch } : x) }))
   const back = async () => {
@@ -60,7 +62,11 @@ function Detail({ c, isNew, onBack, onSave, onHang, onRip }) {
   }
   const upKey = j => setD(d => { const k = [...d.k]; const [x] = k.splice(j, 1); k.unshift(x); return { ...d, k } })
   const delM = j => { const old = D.m, nm = D.m[j].n; setOpen(-1); setD(d => ({ ...d, m: d.m.filter((_, i) => i !== j) })); MC.toast(`已移除 ${nm}，记得保存`, { undo: () => setD(d => ({ ...d, m: old })) }) }
-  const addPulled = () => { setD(d => ({ ...d, m: [...d.m, ...sel.map(u => ({ n: u, w: guessW(u), o: '16K', v: /gpt|claude|gemini|o3|o4|grok/.test(u) ? 1 : 0, s: 1, nw: 1 }))] })); MC.toast(`已添加 ${sel.length} 个，记得保存`); setSel([]); setPull(false); setPq('') }
+  // 第二步：确认每个模型的窗口和输出（上游可信的预填，缺的要手填），看图默认关、流式默认开
+  const toConfirm = () => setCf(sel.map(u => { const m = upMeta(u); return { n: u, w: m.w.value, o: m.o.value } }))
+  const setCfi = (i, patch) => setCf(c => c.map((x, j) => j === i ? { ...x, ...patch } : x))
+  const cfOk = cf && cf.every(x => okWO(x.w, x.o))
+  const addPulled = () => { setD(d => ({ ...d, m: [...d.m, ...cf.map(x => ({ n: x.n, w: x.w, o: x.o, v: 0, s: 1, nw: 1 }))] })); MC.toast(`已添加 ${cf.length} 个，记得保存`); setCf(null); setSel([]); setPull(false); setPq('') }
   const rip = async () => { if (await Dialog.confirm({ title: `删除「${c.n}」？`, content: `它的 ${c.k.length} 把钥匙和 ${c.m.length} 个模型会一起删除，正在用它的入口会断开。`, confirmText: '删除', cancelText: '取消' })) onRip() }
   const has = new Set(D.m.map(x => x.n))
   const ups = UP.filter(u => !pq || u.toLowerCase().includes(pq.toLowerCase()))
@@ -85,11 +91,17 @@ function Detail({ c, isNew, onBack, onSave, onHang, onRip }) {
     </Form>
 
     {!isNew && <>
-      <List mode="card" header={<div className="k-hd"><span>模型 {D.m.length}</span><Button size="mini" fill="none" color="primary" onClick={() => { setPull(!pull); setSel([]); setPq('') }}>{pull ? '收起' : '从上游拉取'}</Button></div>}>
-        {pull && <>
+      <List mode="card" header={<div className="k-hd"><span>模型 {D.m.length}</span><Button size="mini" fill="none" color="primary" onClick={() => { setPull(!pull); setSel([]); setPq(''); setCf(null) }}>{pull ? '收起' : '从上游拉取'}</Button></div>}>
+        {pull && !cf && <>
           <List.Item><SearchBar placeholder="搜索上游模型" value={pq} onChange={setPq} /></List.Item>
-          <List.Item><CheckList multiple value={sel} onChange={setSel}>{ups.map(u => <CheckList.Item key={u} value={u} disabled={has.has(u)} description={has.has(u) ? '已添加' : null}>{u}</CheckList.Item>)}</CheckList></List.Item>
-          <List.Item><Button block color="primary" fill="outline" disabled={!sel.length} onClick={addPulled}>添加 {sel.length} 个</Button></List.Item>
+          <List.Item><CheckList multiple value={sel} onChange={setSel}>{ups.map(u => <CheckList.Item key={u} value={u} disabled={has.has(u)} description={has.has(u) ? '已添加' : metaTxt(u)}>{u}</CheckList.Item>)}</CheckList></List.Item>
+          <List.Item><Button block color="primary" fill="outline" disabled={!sel.length} onClick={toConfirm}>下一步：确认 {sel.length} 个</Button></List.Item>
+        </>}
+        {pull && cf && <>
+          <List.Item description="窗口和输出从上游读取，缺的请手动选；看图默认关，登记后再改。">确认参数</List.Item>
+          {cf.map((x, i) => <List.Item key={x.n} description={!x.w || !x.o ? '还有没选的' : !okWO(x.w, x.o) ? '输出要小于窗口' : null}
+            extra={<Space><Pick value={x.w || '窗口'} onChange={w => setCfi(i, { w })} options={WO} /><Pick value={x.o || '输出'} onChange={o => setCfi(i, { o })} options={OO} /></Space>}>{x.n}</List.Item>)}
+          <List.Item><Space block justify="between" style={{ width: '100%' }}><Button onClick={() => setCf(null)}>上一步</Button><Button color="primary" disabled={!cfOk} onClick={addPulled}>登记 {cf.length} 个</Button></Space></List.Item>
         </>}
         {D.m.length > 5 && <List.Item><SearchBar placeholder="搜索模型" value={q} onChange={setQ} /></List.Item>}
         {ms.map(([m, j]) => [
@@ -97,7 +109,7 @@ function Detail({ c, isNew, onBack, onSave, onHang, onRip }) {
             description={`窗口 ${m.w} · 输出 ${m.o}${m.v ? ' · 看图' : ''}${m.s ? ' · 流式' : ''}`}>{m.n}{m.nw ? <Tag color="success" fill="outline" style={{ marginLeft: 6 }}>新</Tag> : null}</List.Item>,
           open === j && <React.Fragment key={'ed' + j}>
             <List.Item extra={<Pick value={m.w} onChange={w => setM(j, { w })} options={WO} />}>上下文窗口</List.Item>
-            <List.Item extra={<Pick value={m.o} onChange={o => setM(j, { o })} options={OO} />} description={kv(m.o) >= kv(m.w) ? '输出不能大于窗口' : null}>最大输出</List.Item>
+            <List.Item extra={<Pick value={m.o} onChange={o => setM(j, { o })} options={OO} />} description={kv(m.o) >= kv(m.w) ? '输出要小于窗口' : null}>最大输出</List.Item>
             <List.Item><Space><Checkbox checked={!!m.v} onChange={v => setM(j, { v: v ? 1 : 0 })}>能看图</Checkbox><Checkbox checked={!!m.s} onChange={v => setM(j, { s: v ? 1 : 0 })}>流式</Checkbox></Space></List.Item>
             <List.Item><Space><Button size="small" onClick={() => setTaste(taste === j ? -1 : j)}>{taste === j ? '结束测试' : '测试'}</Button><Button size="small" color="danger" fill="outline" onClick={() => delM(j)}>移除</Button></Space></List.Item>
             {taste === j && <Taste model={m.n} ch={D.n} />}
