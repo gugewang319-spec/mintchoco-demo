@@ -59,7 +59,7 @@ body{color:var(--k-ink)}
 .fm .adm-input,.fm .adm-text-area,.pickf{background:var(--k-fld-bg);border:var(--k-lw) solid var(--k-co);border-radius:8px;box-sizing:border-box}
 .fm .adm-input{height:44px;padding:0 12px}
 .fm .adm-text-area{padding:10px 12px}
-.fm .adm-input:focus-within,.fm .adm-text-area:focus-within,.pickf.open{border-color:var(--k-mintd);outline:2px solid var(--k-mint2);outline-offset:0}
+.fm .adm-input:focus-within,.fm .adm-text-area:focus-within,.pickf.is-open{border-color:var(--k-mintd);outline:2px solid var(--k-mint2);outline-offset:0}
 .fm .adm-form-item-child-inner .adm-input-element[type=password]{letter-spacing:.12em}
 .fm .adm-form-item-horizontal .adm-list-item-content-extra,.fm .adm-list-item-content-extra{position:absolute;right:4px;bottom:12px;padding:0}
 .eye svg{stroke:var(--k-co)}

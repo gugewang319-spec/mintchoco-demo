@@ -20,7 +20,7 @@
 /* 小选单字段 */
 .pickf{display:flex;align-items:center;width:100%;height:44px;padding:0 12px;box-sizing:border-box;font:inherit;font-size:var(--k-f3);text-align:left;cursor:pointer}
 .pickf span{flex:1}
-.pickf .chev{width:10px;height:10px;transition:transform .25s}.pickf.open .chev{transform:rotate(180deg)}
+.pickf .chev{width:10px;height:10px;transition:transform .25s}.pickf.is-open .chev{transform:rotate(180deg)}
 .opt{display:flex;align-items:center;gap:10px;min-width:180px}
 .opt small{font-size:var(--k-f4)}
 .opt .tick{margin-left:auto;width:14px;height:14px;opacity:0}.opt.on .tick{opacity:1}

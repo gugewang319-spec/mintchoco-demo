@@ -16,7 +16,7 @@ export function Pick({ value, options, onChange }) {
   return <Popover.Menu visible={open} onVisibleChange={setOpen} trigger="click" placement="bottom-start" mode="light"
     actions={options.map(o => ({ key: o.v, text: <span className={'opt' + (o.v === value ? ' on' : '')}><span>{o.v}</span>{o.sub && <small>{o.sub}</small>}<svg className="tick" viewBox="0 0 14 14" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m2.5 7.5 3 3 6-7"/></svg></span> }))}
     onAction={a => { onChange(a.key); setOpen(false) }}>
-    <button type="button" className={'pickf' + (open ? ' open' : '')}><span>{value}</span><Chev /></button>
+    <button type="button" className={'pickf' + (open ? ' is-open' : '')}><span>{value}</span><Chev /></button>
   </Popover.Menu>
 }
 
