@@ -16,10 +16,10 @@ css='''
 .jd .tin{position:absolute;right:-6px;top:58px;width:92px;height:92px;background:url(jd-tin.png) center/contain no-repeat;rotate:5deg;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .jd.mr .tin{right:auto;left:-6px;rotate:-6deg}
 .jd .tin b{font:800 19px/1 Baloo;color:var(--ch)}.jd .tin small{font:11px/1 ZK;color:var(--cocoa);margin-top:3px;letter-spacing:.1em}
-.jd .prl{position:absolute;right:20px;top:160px;display:flex;flex-direction:column;align-items:center;gap:7px;z-index:2}
-.jd.mr .prl{right:auto;left:22px}
-.jd .prl i{display:block;width:var(--d,22px);height:var(--d,22px);border-radius:50%;background:radial-gradient(circle at 34% 30%,#c49a7c 0 10%,#7a4c35 46%,#3e2519 100%);box-shadow:inset -2px -3px 4px rgba(30,16,10,.35)}
-.jd .prl em{font:11px/1 Baloo;color:var(--cocoa);font-style:normal;margin-top:2px}
+.jd .prl{position:absolute;right:4px;top:156px;width:74px;z-index:2}
+.jd.mr .prl{right:auto;left:4px}
+.jd .prl img{position:absolute;display:block}
+.jd .prl em{position:absolute;left:0;right:0;text-align:center;font:11px/1 Baloo;color:var(--cocoa);font-style:normal}
 .jd .strip{margin:0 0 2px}
 .jd .r{display:flex;align-items:center;gap:8px;min-height:34px}
 .jd .r .tm{display:flex;flex-direction:column;font:600 13px/1.25 Baloo;color:var(--ch);white-space:nowrap;position:static}.jd .r .tm small{display:block;position:static;font:11px/1.2 ZK;color:rgba(74,48,39,.55);margin:1px 0 0}
@@ -36,11 +36,13 @@ new=r'''function render(){const N=+rng;const g=[];let tot=0;
   const st=D[x.n].filter(r=>r[0]==='steps').reduce((a,r)=>a+ +r[3].replace(/[+,]/g,''),0);
   const sl=D[x.n].find(r=>r[0]==='sleep');const slh=sl?+sl[3].split('<')[0]:0;
   const full=Math.min(9,Math.floor(st/1000)),rem=(st%1000)/1000;
-  let pr='';for(let i=0;i<full;i++)pr+=`<i style="--d:${22-i*1.2}px"></i>`;if(rem>.15&&full<9)pr+=`<i style="--d:${Math.max(7,(22-full*1.2)*rem).toFixed(1)}px"></i>`;
+  const PS=[[14,0,-8],[38,16,12],[10,38,20],[36,56,-14],[14,78,6],[40,96,-20],[12,118,14],[38,136,-6],[16,158,10],[38,176,0]],PI=[2,6,3,7,5];
+  let pr='',k2=0;for(let i=0;i<full;i++){const q=PS[i];pr+=`<img src="jd-pr${PI[(i+k)%5]}.png" alt="" style="left:${q[0]}px;top:${q[1]}px;width:28px;rotate:${q[2]}deg">`;k2=q[1]+28}
+  if(rem>.15&&full<9){const q=PS[full],w=Math.max(12,28*Math.sqrt(rem));pr+=`<img src="jd-pr${PI[(full+k)%5]}.png" alt="" style="left:${q[0]+(28-w)/2}px;top:${q[1]+(28-w)/2}px;width:${w.toFixed(1)}px">`;k2=q[1]+28}
   const mr=k%2?' mr':'';
   return `<section class="day jd${mr}" data-l="${lab}">
  <div class="plq"><b>${lab}</b><small>周${WK[d.getDay()]}${x.n===0?' · 今天':x.n===1?' · 昨天':''}</small></div>
- ${kd&&kd!=='steps'?'':`<div class="tin" aria-label="当天 ${st} 步"><b>${st.toLocaleString('en')}</b><small>步</small></div><div class="prl" aria-hidden="true">${pr}<em>×1k</em></div>`}
+ ${kd&&kd!=='steps'?'':`<div class="tin" aria-label="当天 ${st} 步"><b>${st.toLocaleString('en')}</b><small>步</small></div><div class="prl" aria-hidden="true">${pr}<em style="top:${k2+6}px">1 颗 = 1k 步</em></div>`}
  <div class="pp">${k===0?'<img class="stk2" src="st-star.png" alt="" style="left:-14px;bottom:-14px;width:32px;rotate:-14deg">':''}${slh>=7?`<img class="stk2" src="st-moon.png" alt="睡够了" style="${mr?'left':'right'}:-12px;bottom:-16px;width:44px;rotate:10deg">`:''}
  <div class="strip">${x.h.map(r=>`<i class="pn p-${r[0]}" style="left:${hx(r[1])}%"></i>`).join('')}</div><div class="sax"><span>0</span><span>6</span><span>12</span><span>18</span><span>24</span></div>${
   x.h.map(r=>`<div class="r" aria-label="${r[1]} ${r[2]} ${r[3].replace(/<[^>]+>/g,'')}${r[4]}">${IC[r[0]]}<span class="tm">${r[5]?`${r[1].slice(0,2)}–${String(+r[1].slice(0,2)+1).padStart(2,'0')} 时<small>${r[5].match(/(\d+) 笔/)[1]} 笔</small>`:r[1]}</span><span class="ld"></span><span class="vl">${r[3]}<small>${r[4]}</small></span></div>`).join('')}</div></section>`}).join('');
