@@ -9,3 +9,4 @@
 
 - 底部导航：图标沿用项目原有手绘图标（p/list），底栏 CSS 手写；描边+硬投影的做法参考 SillyTavern 主题 Momonga Fluffy Sky（POPKO），未使用其图片和代码。
 - 聊天室样张 room.html：气泡框、名牌、薄荷叶、星点、横幅燕尾手写 SVG/CSS；蝴蝶结、角花、月桂沿用本样张聊天卡的图形（月桂为 Wikimedia CC0，见上）；做法参考直播聊天挂件（kyri vgen.co/kyri、Mila @milaeshop、streamwidgetshop.com），未使用其图片和代码。
+- img/（choc、cup、cake、jar、bowc、bowm、bowtop）：本项目自己 AI 生图（DESIGN.md §1.5 模板），抠图缩放，非第三方素材。

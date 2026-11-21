@@ -75,6 +75,47 @@ background:linear-gradient(160deg,#6f4835,#4b2e21) padding-box,linear-gradient(1
 .pl svg{width:16px;height:16px}
 .fd{flex:1;height:38px;border-radius:12px;background:#fffaf1;border:1.2px solid #d8c0a0;font:14px/38px WK,serif;color:#b59a85;padding:0 12px}
 .sd{height:38px;flex:none;padding:0 15px;border:1.4px solid #3f271d;border-radius:10px;background:var(--choc);color:#fbeedb;font:14px/1 ZK,sans-serif;letter-spacing:.12em}
+
+/* 三版：整页外框 + 生图物件 + 输入栏同气泡做法（照茶茶 GPT 概念图） */
+body{background:repeating-linear-gradient(90deg,#bcdcd1 0 24px,#c9e5db 24px 48px)}
+.pane{position:fixed;left:10px;right:10px;top:62px;bottom:40px;border-radius:30px;background:repeating-linear-gradient(90deg,#d5efe5 0 24px,#eaf8f2 24px 48px);
+box-shadow:0 0 0 5px #fbf3e4,0 0 0 6.2px #9b6f55,0 2px 2px 6px rgba(110,70,45,.25),0 10px 22px 6px rgba(70,110,95,.28)}
+.pane::after{content:"";position:absolute;inset:4px;border:.9px solid #c9a063;border-radius:26px;pointer-events:none;z-index:6}
+.scr{position:absolute;inset:0;overflow-y:auto;border-radius:30px;scrollbar-width:none}
+.scr::-webkit-scrollbar{display:none}
+.scr{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 70px,#000 calc(100% - 96px),transparent calc(100% - 50px));mask-image:linear-gradient(180deg,transparent 0,#000 70px,#000 calc(100% - 96px),transparent calc(100% - 50px))}
+.lace{position:absolute;left:18px;right:18px;height:12px;pointer-events:none;z-index:5;background:radial-gradient(circle at 7px 0,#fbf3e4 5.6px,#c9a063 5.8px,#c9a063 6.6px,transparent 7.2px) 0 0/14px 12px repeat-x}
+.lace.t{top:5px}
+.lace.b{bottom:5px;transform:scaleY(-1)}
+.btop{position:fixed;z-index:8;left:50%;top:16px;width:80px;margin-left:-40px;pointer-events:none}
+.bbot{position:fixed;z-index:8;left:50%;bottom:6px;width:112px;margin-left:-56px;pointer-events:none}
+.ro{position:fixed;z-index:9;top:18px;width:54px;height:63px;border:0;background:none;padding:0}
+.ro.l{left:6px}.ro.r{right:6px}
+.ro>svg:first-child{width:100%;height:100%;overflow:visible;filter:drop-shadow(1px 3px 3px rgba(70,50,40,.25))}
+.ro .ri{position:absolute;left:17px;top:12px;width:20px;height:20px}
+.who{padding:108px 0 0;text-align:center}
+.who b{display:block;font:400 18px/1.2 ZK,sans-serif;color:var(--choc);letter-spacing:.08em}
+.who small{display:block;margin-top:5px;font:11px/1 ZK,sans-serif;color:#8a6a5a;letter-spacing:.1em}
+.who small::before{content:"";display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--mint3);margin-right:5px;vertical-align:1px}
+.flow{padding:16px 22px 110px 20px}
+.ob{position:absolute;z-index:5;pointer-events:none;height:auto}
+.ob.bowc{width:70px;left:-14px;top:-30px;transform:rotate(-16deg)}
+.m.first .nm{left:50px}
+.ob.choc{width:70px;right:-22px;bottom:-24px}
+.ob.cup{width:62px;left:-30px;bottom:-22px}
+.ob.cake{width:76px;right:-24px;bottom:-24px}
+.ob.bowm{width:64px;left:-28px;bottom:-16px;transform:rotate(-8deg)}
+.ev .ob.jar{width:44px;right:-10px;bottom:-12px;z-index:4}
+.ev .crn{position:absolute;z-index:4;left:50%;top:-32px;width:30px;height:20px;margin-left:-15px;overflow:visible}
+.ev .lb{top:-14px}
+.ev .band p{padding-right:16px}
+.ip{position:absolute;z-index:7;left:12px;right:12px;bottom:16px;height:60px;padding:0 12px 0 16px;display:flex;align-items:center;gap:8px;background:none;border:0;box-shadow:none;border-radius:0;isolation:isolate}
+.ip>svg.fr{position:absolute;left:0;top:0;z-index:-1;overflow:visible;pointer-events:none;filter:var(--sh)}
+.pl{width:38px;height:38px;border:0;background:none;border-radius:0;padding:0}
+.pl svg{width:38px;height:38px;overflow:visible}
+.fd{height:36px;border-radius:9px;background:#fffaf1;border:1px solid #d6bc98;box-shadow:inset 0 1px 2px rgba(120,80,50,.12);line-height:36px}
+.sd{position:relative;height:36px;padding:0 16px;border:2.2px solid transparent;border-radius:9px;background:linear-gradient(160deg,#6f4835,#4b2e21) padding-box,linear-gradient(135deg,#f6e2b8,#e0bb80 50%,#b98b52) border-box;box-shadow:0 0 0 1.1px var(--cocoa);filter:drop-shadow(1px 2px 1.5px rgba(74,48,39,.3))}
+.sd::before{content:"";position:absolute;inset:2px;border:.8px dashed #c99a62;border-radius:6px}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <linearGradient id="mt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcf3e9"/><stop offset=".6" stop-color="#b3e0cd"/><stop offset="1" stop-color="#93cbb5"/></linearGradient>
@@ -131,42 +172,50 @@ background:linear-gradient(160deg,#6f4835,#4b2e21) padding-box,linear-gradient(1
 <path d="M34 3H4l8 15-8 15h30Z" fill="url(#rbd)" stroke-width="1.2"/><path d="M34 33 25 39.5V33Z" fill="#5f9f87" stroke-width="1"/>
 <path d="M32 7H11.5M32 29H11.5" fill="none" stroke="#c9a063" stroke-width=".7" stroke-dasharray="2 1.6"/>
 <path d="M30 5.2H8" stroke="#fff" stroke-width="1" opacity=".8"/></g></symbol>
+<symbol id="ros" viewBox="0 0 60 70" overflow="visible"><g stroke="#8a5c46" stroke-linejoin="round">
+<path d="M22 40 12 66l7-3 4 7 9-24z" fill="url(#rbd)" stroke-width="1.1"/><path d="M38 40l10 26-7-3-4 7-9-24z" fill="url(#rbd)" stroke-width="1.1"/>
+<path d="M30 3.5l3.4 2.6 4.2-.8 2 3.8 4.1 1.2.3 4.3 3.3 2.7-1.4 4 1.9 3.8-3 3 .3 4.3-4 1.6-1.4 4-4.3-.2-3 3-3.8-2-4 1.5-2.5-3.5-4.3-.4-.9-4.2-3.6-2.3.9-4.2-2.4-3.6 2.7-3.3-.3-4.3 3.9-1.8 1.1-4.1 4.3.1z" fill="url(#cb)" stroke-width="1.1"/>
+<circle cx="30" cy="24" r="14.5" fill="#fffaf1" stroke-width="1"/><circle cx="30" cy="24" r="12" fill="none" stroke="#c9a063" stroke-width=".8" stroke-dasharray="2 1.6"/></g></symbol>
+<symbol id="crown" viewBox="0 0 40 26" overflow="visible"><g stroke="#8a5c46" stroke-linejoin="round"><path d="M8 22 5 8l8 6 7-11 7 11 8-6-3 14z" fill="url(#gd)" stroke-width="1.1"/><path d="M9.5 18.5h21" stroke="#9c7240" stroke-width=".8"/>
+<g fill="url(#bt2)" stroke-width=".8"><circle cx="5" cy="7.5" r="2.2"/><circle cx="20" cy="3" r="2.5"/><circle cx="35" cy="7.5" r="2.2"/></g><circle cx="20" cy="15" r="1.8" fill="#a6d8c3" stroke-width=".7"/></g></symbol>
 </defs></svg>
-<header class="hd">
-<button class="rb" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg></button>
-<div class="tt"><h1>小薄荷</h1><i>in session</i><small>在线 · 第 6 轮</small></div>
-<button class="rb" aria-label="更多"><svg viewBox="0 0 24 24" fill="#5b3a2c"><circle cx="6" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18" cy="12" r="1.8"/></svg></button>
-</header>
-
+<button class="ro l" aria-label="返回"><svg viewBox="0 0 60 70"><use href="#ros"/></svg><svg class="ri" viewBox="0 0 24 24"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="#5b3a2c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<button class="ro r" aria-label="更多"><svg viewBox="0 0 60 70"><use href="#ros"/></svg><svg class="ri" viewBox="0 0 24 24"><g fill="#5b3a2c"><circle cx="6" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="18" cy="12" r="1.9"/></g></svg></button>
+<div class="pane">
+<div class="scr">
+<div class="who"><b>小薄荷</b><small>在线 · 第 6 轮</small></div>
 <main class="flow">
 <div class="day"><i></i><b>11/22</b>周日 · 晚上<i></i></div>
 
-<div class="m"><span class="nm"><i></i>小薄荷<i></i></span>
-<div class="bb"><svg class="fr" aria-hidden="true"></svg>晚上好呀。今天的薄荷奶茶给你多放了一点<em>巧克力碎</em>，要不要先尝一口？<svg class="or sp"><use href="#spk"/></svg><svg class="or bow"><use href="#bow"/></svg></div>
+<div class="m first"><span class="nm"><i></i>小薄荷<i></i></span>
+<div class="bb"><svg class="fr" aria-hidden="true"></svg>晚上好呀。今天的薄荷奶茶给你多放了一点<em>巧克力碎</em>，要不要先尝一口？<svg class="or sp"><use href="#spk"/></svg><img class="ob bowc" src="img/bowc.png" alt=""><img class="ob choc" src="img/choc.png" alt=""></div>
 <div class="tm">19:40</div></div>
 
 <div class="m me"><span class="nm"><i></i>茶茶<i></i></span>
-<div class="bb"><svg class="fr" aria-hidden="true"></svg>要！薄荷也多一点，今天好累。<svg class="or lf"><use href="#leaf"/></svg></div>
+<div class="bb"><svg class="fr" aria-hidden="true"></svg>要！薄荷也多一点，今天好累。<svg class="or sp"><use href="#spk"/></svg><img class="ob cup" src="img/cup.png" alt=""></div>
 <div class="tm">19:41</div></div>
 
-<div class="ev"><span class="lb"><i></i>新记忆<i></i></span>
+<div class="ev"><svg class="crn" viewBox="0 0 40 26"><use href="#crown"/></svg><span class="lb"><i></i>新记忆<i></i></span>
 <svg class="tail l"><use href="#tail"/></svg><svg class="tail r"><use href="#tail"/></svg>
-<div class="band"><svg class="wl l" viewBox="-2 -4 24 46"><use href="#wh"/></svg><svg class="wl r" viewBox="-2 -4 24 46"><use href="#wh"/></svg><p>记住了：你喜欢薄荷多一点<small>放进记忆罐 · 可以随时修改</small></p></div></div>
+<div class="band"><svg class="wl l" viewBox="-2 -4 24 46"><use href="#wh"/></svg><svg class="wl r" viewBox="-2 -4 24 46"><use href="#wh"/></svg><p>记住了：你喜欢薄荷多一点<small>放进记忆罐 · 可以随时修改</small></p></div><img class="ob jar" src="img/jar.png" alt=""></div>
 
 <div class="m"><span class="nm"><i></i>小薄荷<i></i></span>
-<div class="bb"><svg class="fr" aria-hidden="true"></svg>那就先坐一会儿。累的时候不用回很长，我在这边慢慢陪你。<svg class="or sp"><use href="#spk"/></svg><svg class="or bow"><use href="#bow"/></svg></div>
+<div class="bb"><svg class="fr" aria-hidden="true"></svg>那就先坐一会儿。累的时候不用回很长，我在这边慢慢陪你。<svg class="or sp"><use href="#spk"/></svg><img class="ob cake" src="img/cake.png" alt=""></div>
 <div class="tm">19:42</div></div>
 
 <div class="m me"><span class="nm"><i></i>茶茶<i></i></span>
-<div class="bb"><svg class="fr" aria-hidden="true"></svg>嗯，再给我讲讲今天店里的事吧，一个很长的故事也可以，我想听你慢慢说。<svg class="or lf"><use href="#leaf"/></svg></div>
+<div class="bb"><svg class="fr" aria-hidden="true"></svg>嗯，再给我讲讲今天店里的事吧，一个很长的故事也可以，我想听你慢慢说。<svg class="or sp"><use href="#spk"/></svg><img class="ob bowm" src="img/bowm.png" alt=""></div>
 <div class="tm">19:43</div></div>
 </main>
-
-<div class="ip">
-<button class="pl" aria-label="更多"><svg viewBox="0 0 16 16" fill="none" stroke="#3f271d" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></button>
+</div>
+<div class="lace t"></div><div class="lace b"></div>
+<div class="ip"><svg class="fr" aria-hidden="true"></svg>
+<button class="pl" aria-label="更多"><svg viewBox="0 0 24 24"><use href="#cl" fill="#a6d8c3" stroke="#8a5c46" stroke-width="1.3" paint-order="stroke"/><path d="M12 8v8M8 12h8" stroke="#3f271d" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <div class="fd">写点什么…</div>
 <button class="sd">发送</button>
 </div>
+</div>
+<img class="btop" src="img/bowtop.png" alt=""><img class="bbot" src="img/bowm.png" alt="">
 <script>
 (function(){
 function shape(x,y,w,h,r){return `M${x+r} ${y}H${x+w-r}A${r} ${r} 0 0 0 ${x+w} ${y+r}V${y+h-r}A${r} ${r} 0 0 0 ${x+w-r} ${y+h}H${x+r}A${r} ${r} 0 0 0 ${x} ${y+h-r}V${y+r}A${r} ${r} 0 0 0 ${x+r} ${y}Z`}
@@ -175,10 +224,10 @@ function cn(x,y,sx,sy,k){return `<g transform="translate(${x} ${y}) scale(${sx*k
 <path d="M1.5 20C1.5 9 9 1.5 20 1.5"/><path d="M20 1.5c7 0 10 3 9 6.4-.8 2.4-4 2.6-4.4.6-.3-1.3 1.1-2 2-1.2"/><path d="M1.5 20c0 7 3 10 6.4 9 2.4-.8 2.6-4 .6-4.4-1.3-.3-2 1.1-1.2 2"/>
 <g transform="translate(7.6 7.6) rotate(-45)" stroke-width=".9"><path d="M0-4.6c-1.6 1.6-1.6 3.8 0 5.4 1.6-1.6 1.6-3.8 0-5.4z" fill="#d9b27a"/><path d="M-.6.6c-1.2-1.4-3.4-1.4-3.8 0 .6 1.2 2.4 1.4 3.4.4M.6.6c1.2-1.4 3.4-1.4 3.8 0-.6 1.2-2.4 1.4-3.4.4M-2.2 1.6h4.4"/></g></g>`}
 function draw(bb){
-  const me=bb.parentNode.classList.contains('me');
+  const me=bb.parentNode.classList.contains('me'),ip=bb.classList.contains('ip');
   const W=bb.offsetWidth,H=bb.offsetHeight,s=bb.querySelector('svg.fr');s.setAttribute('width',W);s.setAttribute('height',H);
   const B=5,iw=W-2*B,ih=H-2*B,k=.6,q=B+4;
-  const band=me?'url(#cb)':'url(#mb)',paper=me?'url(#pm)':'url(#pp)',inl=me?'#8cc7b0':'#c9a98a';
+  const band=(me||ip)?'url(#cb)':'url(#mb)',paper=me?'url(#pm)':'url(#pp)',inl=me?'#8cc7b0':'#c9a98a';
   const c1=me?cn(W-q,q,-1,1,k)+cn(q,H-q,1,-1,k):cn(q,q,1,1,k)+cn(W-q,H-q,-1,-1,k);
   s.innerHTML=`
   <path d="${shape(0,0,W,H,8)}" fill="${band}" stroke="#9b6f55" stroke-width="1.15"/>
@@ -189,7 +238,7 @@ function draw(bb){
   <rect x="${B+3.6}" y="${B+3.6}" width="${iw-7.2}" height="${ih-7.2}" rx="2.5" fill="none" stroke="${inl}" stroke-width=".75"/>
   ${c1}`;
 }
-const all=[...document.querySelectorAll('.bb')];const go=()=>all.forEach(draw);
+const all=[...document.querySelectorAll('.bb,.ip')];const go=()=>all.forEach(draw);
 (document.fonts?document.fonts.ready:Promise.resolve()).then(go);go();new ResizeObserver(go).observe(document.body);
 })();
 </script>
