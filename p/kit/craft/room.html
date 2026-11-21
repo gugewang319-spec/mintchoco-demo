@@ -106,6 +106,38 @@ background:linear-gradient(160deg,#6f4835,#4b2e21) padding-box,linear-gradient(1
 .me .bb::before{border-color:#fffaf1}
 .ip{background:#fffaf1;border:1.4px solid #8a5c46;border-radius:22px;box-shadow:0 1px 1.5px rgba(110,70,45,.25),2px 6px 12px rgba(110,70,45,.18);padding:0 10px 0 9px}
 .ip::before{content:"";position:absolute;inset:4px;border:1.3px dashed #9fd2bd;border-radius:18px;pointer-events:none;z-index:-1}
+
+/* 07:45 按 Gemini 急救三步：去描边去虚线、背景条纹调淡、一方气泡加深、写实贴纸换扁平小叶、名牌微倾斜 */
+body{background:repeating-linear-gradient(90deg,#e4f5ef 0 24px,#dcf1e9 24px 48px)}
+.bb::before,.ip::before{display:none}
+.bb{background:#fffdf8;border:0;border-radius:24px;padding:16px 18px 13px;color:#4a3728;box-shadow:0 6px 18px rgba(60,120,100,.13);z-index:1}
+.me .bb{background:#5fa98f;color:#fffaf1}
+.me .bb em{color:#fff3c9}
+.nm{z-index:0;top:-22px;left:18px;height:auto;padding:5px 12px 14px;border:0;border-radius:10px;background:#6b4535;color:#fffaf1;box-shadow:none;filter:none;font:12px/1 ZK,sans-serif;letter-spacing:.08em;transform:rotate(-2deg)}
+.nm::before{display:none}
+.me .nm{right:18px;left:auto;background:#cfeadf;color:#2f5a4b;transform:rotate(2deg)}
+.m.first .nm{left:18px}
+.m{margin-top:22px}
+.sprout{position:absolute;z-index:2;top:-11px;width:26px;height:14px;pointer-events:none}
+.m:not(.me) .sprout{right:22px}
+.me .sprout{left:22px}
+.dots{position:absolute;z-index:0;bottom:-10px;display:flex;gap:4px;align-items:flex-start}
+.m:not(.me) .dots{right:14px}.me .dots{left:14px;flex-direction:row-reverse}
+.dots b{display:block;width:8px;height:8px;border-radius:50%;background:#fffdf8;box-shadow:0 2px 5px rgba(60,120,100,.12)}
+.dots b+b{width:5px;height:5px;margin-top:6px}
+.me .dots b{background:#5fa98f}
+.ev{filter:none;width:82%}
+.ev .band{border:0;border-radius:22px;background:linear-gradient(135deg,#7cc3aa,#5aa38a);box-shadow:0 6px 18px rgba(60,120,100,.18);padding:16px 18px 13px}
+.ev .band::before,.ev .band::after{display:none}
+.ev p{color:#fffaf1}.ev p small{color:#e4f5ef}
+.ev .band p{padding-right:0}
+.ev .lb{z-index:0;top:-22px;left:50%;height:auto;padding:5px 12px 14px;border:0;border-radius:10px;background:#6b4535;color:#fffaf1;box-shadow:none;transform:translateX(-50%) rotate(-2deg)}
+.ev .band{z-index:1}
+.ip{background:#fffdf8;border:0;border-radius:24px;box-shadow:0 6px 18px rgba(60,120,100,.16)}
+.fd{border:0;background:#eef8f4;box-shadow:none}
+.sd{border:0;border-radius:12px;background:#6b4535;box-shadow:none;filter:none;color:#fffaf1}
+.sd::before{display:none}
+.tm{color:#7aa596}.tm::before{background:#9fd2bd}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <linearGradient id="mt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcf3e9"/><stop offset=".6" stop-color="#b3e0cd"/><stop offset="1" stop-color="#93cbb5"/></linearGradient>
@@ -168,6 +200,7 @@ background:linear-gradient(160deg,#6f4835,#4b2e21) padding-box,linear-gradient(1
 <circle cx="30" cy="24" r="14.5" fill="#fffaf1" stroke-width="1"/><circle cx="30" cy="24" r="12" fill="none" stroke="#c9a063" stroke-width=".8" stroke-dasharray="2 1.6"/></g></symbol>
 <symbol id="crown" viewBox="0 0 40 26" overflow="visible"><g stroke="#8a5c46" stroke-linejoin="round"><path d="M8 22 5 8l8 6 7-11 7 11 8-6-3 14z" fill="url(#gd)" stroke-width="1.1"/><path d="M9.5 18.5h21" stroke="#9c7240" stroke-width=".8"/>
 <g fill="url(#bt2)" stroke-width=".8"><circle cx="5" cy="7.5" r="2.2"/><circle cx="20" cy="3" r="2.5"/><circle cx="35" cy="7.5" r="2.2"/></g><circle cx="20" cy="15" r="1.8" fill="#a6d8c3" stroke-width=".7"/></g></symbol>
+<symbol id="sprout" viewBox="0 0 30 16"><path d="M15 16C15 10 13 7 7 5c2 6 5 8 8 8" fill="#8fcbb3"/><path d="M15 16c0-6 2-10 9-12-1 7-5 10-9 10" fill="#6fb59c"/><path d="M15 16V9" stroke="#5a9c84" stroke-width="1.2" stroke-linecap="round"/></symbol>
 </defs></svg>
 <header class="hd">
 <button class="rb" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg></button>
@@ -178,24 +211,24 @@ background:linear-gradient(160deg,#6f4835,#4b2e21) padding-box,linear-gradient(1
 <main class="flow">
 <div class="day"><i></i><b>11/22</b>周日 · 晚上<i></i></div>
 
-<div class="m first"><span class="nm"><i></i>小薄荷<i></i></span>
-<div class="bb"><svg class="fr" aria-hidden="true"></svg>晚上好呀。今天的薄荷奶茶给你多放了一点<em>巧克力碎</em>，要不要先尝一口？<svg class="or sp"><use href="#spk"/></svg><img class="ob bowc" src="img/bowc.png" alt=""><img class="ob choc" src="img/choc.png" alt=""></div>
+<div class="m first"><span class="nm">小薄荷</span>
+<div class="bb"><svg class="fr" aria-hidden="true"></svg>晚上好呀。今天的薄荷奶茶给你多放了一点<em>巧克力碎</em>，要不要先尝一口？<svg class="sprout" viewBox="0 0 30 16"><use href="#sprout"/></svg><i class="dots"><b></b><b></b></i></div>
 <div class="tm">19:40</div></div>
 
-<div class="m me"><span class="nm"><i></i>茶茶<i></i></span>
-<div class="bb"><svg class="fr" aria-hidden="true"></svg>要！薄荷也多一点，今天好累。<svg class="or sp"><use href="#spk"/></svg><img class="ob cup" src="img/cup.png" alt=""></div>
+<div class="m me"><span class="nm">茶茶</span>
+<div class="bb"><svg class="fr" aria-hidden="true"></svg>要！薄荷也多一点，今天好累。<svg class="sprout" viewBox="0 0 30 16"><use href="#sprout"/></svg><i class="dots"><b></b><b></b></i></div>
 <div class="tm">19:41</div></div>
 
-<div class="ev"><svg class="crn" viewBox="0 0 40 26"><use href="#crown"/></svg><span class="lb"><i></i>新记忆<i></i></span>
-<svg class="tail l"><use href="#tail"/></svg><svg class="tail r"><use href="#tail"/></svg>
-<div class="band"><svg class="wl l" viewBox="-2 -4 24 46"><use href="#wh"/></svg><svg class="wl r" viewBox="-2 -4 24 46"><use href="#wh"/></svg><p>记住了：你喜欢薄荷多一点<small>放进记忆罐 · 可以随时修改</small></p></div><img class="ob jar" src="img/jar.png" alt=""></div>
+<div class="ev"><span class="lb">新记忆</span>
 
-<div class="m"><span class="nm"><i></i>小薄荷<i></i></span>
-<div class="bb"><svg class="fr" aria-hidden="true"></svg>那就先坐一会儿。累的时候不用回很长，我在这边慢慢陪你。<svg class="or sp"><use href="#spk"/></svg><img class="ob cake" src="img/cake.png" alt=""></div>
+<div class="band"><p>记住了：你喜欢薄荷多一点<small>放进记忆罐 · 可以随时修改</small></p></div></div>
+
+<div class="m"><span class="nm">小薄荷</span>
+<div class="bb"><svg class="fr" aria-hidden="true"></svg>那就先坐一会儿。累的时候不用回很长，我在这边慢慢陪你。<svg class="sprout" viewBox="0 0 30 16"><use href="#sprout"/></svg><i class="dots"><b></b><b></b></i></div>
 <div class="tm">19:42</div></div>
 
-<div class="m me"><span class="nm"><i></i>茶茶<i></i></span>
-<div class="bb"><svg class="fr" aria-hidden="true"></svg>嗯，再给我讲讲今天店里的事吧，一个很长的故事也可以，我想听你慢慢说。<svg class="or sp"><use href="#spk"/></svg><img class="ob bowm" src="img/bowm.png" alt=""></div>
+<div class="m me"><span class="nm">茶茶</span>
+<div class="bb"><svg class="fr" aria-hidden="true"></svg>嗯，再给我讲讲今天店里的事吧，一个很长的故事也可以，我想听你慢慢说。<svg class="sprout" viewBox="0 0 30 16"><use href="#sprout"/></svg><i class="dots"><b></b><b></b></i></div>
 <div class="tm">19:43</div></div>
 </main>
 <div class="ip"><svg class="fr" aria-hidden="true"></svg>
