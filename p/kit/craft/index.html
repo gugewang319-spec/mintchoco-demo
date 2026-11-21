@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>聊天卡 · 描图样张</title>
+<style>
+/* 2026-11-22 描图样张：照茶茶给的概念图，用 SVG 一层层画（背后两层错位卡、外框薄荷带、奶油内页、框中框、角花、
+   斜纹条、蕾丝、日期巧克力牌 + 缎带、来源小牌、标题分隔、邮戳、底栏时间牌、页点、云朵计数牌、书签）。
+   卡片外框随宽高由脚本重画，字是真文字，能换行。 */
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:WK;src:url(wk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:Script;src:url(script.ttf)}
+:root{--ink:#4a3027;--cocoa:#8a5c46;--choc:#5b3a2b;--gold:#c9a063;--cream:#f8efdf;--cream2:#f1e4cd;--mint:#bfe3d4;--mint2:#9fd3bf;--mint3:#5fae93}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:repeating-linear-gradient(90deg,#d5efe5 0 24px,#eaf8f2 24px 48px);font-family:WK,serif;color:var(--ink);overflow-x:hidden}
+.top{padding:40px 22px 0;display:flex;align-items:flex-end;gap:6px}
+.top h1{font-family:ZK,sans-serif;font-weight:400;font-size:30px;color:var(--choc);letter-spacing:.04em}
+.top i{font:28px/1 Script,cursive;color:var(--mint3);transform:rotate(-6deg) translateY(-12px);display:block}
+.list{padding:70px 26px 80px 20px}
+.cc{position:relative;padding:62px 24px 74px;min-height:250px}
+.cc>svg.fr{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.cc .in{position:relative;z-index:2}
+.cc h3{font-family:ZK,sans-serif;font-weight:400;font-size:22px;line-height:1.36;color:var(--choc);letter-spacing:.02em;margin-top:10px}
+.cc .dv{display:block;width:100%;height:16px;margin:8px 0 6px}
+.cc p{font-size:14.5px;line-height:1.75;color:#5d4335}
+/* 日期巧克力牌 */
+.plq{position:absolute;z-index:4;left:6px;top:-54px;width:118px;height:118px}
+.plq svg{position:absolute;inset:0;overflow:visible}
+.plq b{position:absolute;left:0;right:0;top:27px;text-align:center;font:800 29px/1 Baloo,sans-serif;color:#fbeedb;letter-spacing:.01em}
+.plq small{position:absolute;left:0;right:0;top:63px;text-align:center;font:11.5px/1 ZK,sans-serif;color:#f3e2c8;letter-spacing:.04em}
+/* 来源小牌 */
+.tag{position:absolute;z-index:4;right:16px;top:12px;height:24px;padding:0 12px 0 22px;border-radius:12px 4px 12px 4px;background:var(--cream);box-shadow:0 0 0 1.3px var(--cocoa),inset 0 0 0 2.5px #fff9ee;font:700 13px/24px Baloo,sans-serif;color:var(--choc);letter-spacing:.04em}
+.tag::before{content:"";position:absolute;left:10px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--choc)}
+/* 底栏 */
+.ft{position:absolute;z-index:3;left:22px;right:100px;bottom:17px;display:flex;align-items:center;gap:12px}
+.tm{position:relative;height:26px;padding:0 22px;border-radius:13px;background:#fbf3e4;box-shadow:0 0 0 1.2px var(--gold),0 0 0 3px #fbf3e4,0 0 0 4.2px var(--cocoa);font:700 16px/26px Baloo,sans-serif;color:var(--choc)}
+.tm::before,.tm::after{content:"✦";position:absolute;top:0;font-size:9px;color:var(--gold)}
+.tm::before{left:8px}.tm::after{right:8px}
+.dots{display:flex;gap:4px;align-items:center}
+.dots i{width:9px;height:9px;border-radius:2.5px;background:#ead9c0;box-shadow:inset 0 0 0 1px #d8c0a0}
+.dots i.on{background:var(--mint2);box-shadow:inset 0 0 0 1px var(--mint3)}
+.dots em{font-style:normal;font-size:10px;color:#cdb393;letter-spacing:1px}
+.bdg{position:absolute;z-index:5;right:-6px;bottom:-10px;width:108px;height:92px}
+.bdg svg{position:absolute;inset:0;overflow:visible}
+.bdg b{position:absolute;left:0;right:0;top:20px;text-align:center;font:800 32px/1 Baloo,sans-serif;color:#fbeedb}
+.bdg small{position:absolute;left:0;right:0;top:63px;text-align:center;font:11px/1 ZK,sans-serif;color:var(--choc);letter-spacing:.06em}
+.bm{position:absolute;z-index:1;left:28px;bottom:-34px;width:24px;height:44px;overflow:visible}
+@media (prefers-reduced-motion:no-preference){
+  .bow{transform-origin:59px 104px;animation:sw 5.5s ease-in-out infinite}
+  .bm{transform-origin:12px 0;animation:sw 6.5s ease-in-out infinite -2s}
+  @keyframes sw{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><!-- 月桂枝：Wikimedia Commons「Laurel-left.svg」，CC0（公有领域） --><symbol id="lr" viewBox="0 0 244 307"><g transform="translate(-263.27531 -152.27393)"><path d="m 356.80566,162.27393 c -9.20019,8.06543 -15.58105,18.26562 -22.40625,27.77734 -6.11816,7.57519 -13.94433,12.57031 -20.87988,19.08447 3.74414,-7.76172 3.88086,-17.0332 9.19141,-24.16308 7.55664,-13.1836 21.56933,-17.82178 34.09472,-22.69873 l 0,0 z"/><path d="m 306.49219,190.35986 c 4.47461,-5.5625 10.14746,-9.42822 16.53125,-11.06054 -12.39551,8.51513 -11.58887,23.7749 -15.51856,36.46045 -1.25293,4.69091 -3.42871,9.01269 -4.51269,13.82128 l 0.31543,0.25098 c 2.0625,-5.43603 5.6875,-10.57226 10.21191,-15.00781 8.80371,-8.12695 21.82715,-13.1919 26.1416,-25.21387 -0.19726,16.70606 -14.13379,29.83985 -27.46875,39.22901 -5.49902,4.82421 -10.80175,10.32226 -13.83008,16.52392 -0.29687,-4.21484 0.62305,-8.44678 0.32325,-12.96191 -1.4502,-14.5835 -2.50391,-31.22901 7.80664,-42.04151 l 0,0 z"/><path d="m 281.41211,240.22754 c -0.37305,-14.77832 5.76074,-26.8418 14.4043,-37.85303 0.25097,-0.12549 0.42968,-0.37646 0.75293,-0.31592 -9.51465,14.4585 -1.64356,32.67041 -2.07715,49.11036 l -1.25489,16.83203 c 0.18653,0.12207 0.18653,0.62793 0.62793,0.43359 0.5625,-1.87598 0.68457,-3.88086 1.06055,-5.81055 2.24121,-13.57714 14.03223,-23.21093 24.33106,-32.59375 2.19921,-2.4541 4.14355,-4.9458 5.27343,-7.82568 -0.84082,6.76025 -2.95996,13.57861 -5.76464,19.83057 -8.01563,15.63183 -22.82325,28.458 -25.52833,46.35449 -1.3125,-17.15039 -12.98925,-29.97266 -11.82519,-48.16211 l 0,0 z"/><path d="m 274.21387,261.24316 c 1.06543,-4.62207 1.87988,-9.40527 3.8916,-13.64648 -3.81152,19.53711 9.3291,33.61426 13.63965,50.54883 1.80371,6.33398 2.24511,13.13672 4.82422,19.08008 0.24023,0.12988 0.44921,-0.1211 0.59765,-0.31153 -6.41797,-17.98926 2.84668,-34.70605 12.15625,-48.79101 2.26367,-3.81641 3.56836,-8.06641 4.69434,-12.45313 0.98926,8.1416 -1.06934,17.51758 -2.25195,25.97071 -2.26368,10.75585 -5.64258,20.95605 -8.58399,31.39257 -1.93555,6.52149 -1.42676,13.87891 -0.43262,20.71192 L 301.81641,333 c -6.8252,-12.58594 -20.33985,-22.40234 -24.35352,-36.15234 -3.30273,-10.96192 -5.49805,-23.66016 -3.24902,-35.6045 l 0,0 z"/><path d="m 273.59766,299.40137 c 1.50293,20.70801 23.77148,31.65039 34.09375,48.79394 2.44238,3.50782 4.56152,7.38867 7.82519,10.3252 -0.50976,-2.20606 -2.56836,-4.0625 -3.32422,-6.32227 -3.61133,-7.19043 -4.92773,-15.75879 -4.05957,-24.44922 1,-10.57714 5.43653,-20.39257 3.74317,-31.51757 9.07031,19.55664 6.31543,43.96679 11.38672,65.1582 1.32812,4.63476 4.01074,8.77344 5.76855,13.20312 -18.63574,-12.69238 -44.04687,-24.76855 -52.31445,-48.03027 -3.48438,-8.02051 -3.87305,-17.9502 -3.11914,-27.16113 l 0,0 z"/><path d="m 284.72949,346.95508 c 10.39063,23.50586 36.41406,25.45312 53.86231,39.7666 3.21093,2.8457 6.57519,5.26562 10.20019,6.9541 l 0.18653,-0.18945 c -4.00586,-3.62207 -8.63965,-7.74707 -11.44434,-12.44141 -10.21191,-14.19922 -6.62012,-34.08984 -14.27148,-49.36133 6.95214,8.31641 13.27441,16.96094 17.47168,26.39551 6.24316,15.40137 8.6289,32.79688 23.07519,44.43897 -15.63379,-5.15235 -33.94922,-3.71289 -47.74805,-13.33936 -15.0664,-9.25976 -28.51269,-24.96582 -31.33203,-42.22363 l 0,0 z"/><path d="m 311.43457,390.80664 c 16.66016,18.94775 43.88281,12.62549 66.0752,17.58447 3.13476,0.42774 6.0039,1.6836 9.32617,1.17383 -2.64551,-1.67383 -6.31641,-1.49219 -9.2041,-3.01367 -17.39551,-6.11133 -19.94727,-24.94385 -29.39063,-37.64307 12.06445,8.01172 22.20703,18.81739 33.33692,29.2876 8,7.00781 17.62988,10.24219 27.77636,12.30469 -2.43847,0.89062 -5.63476,0.64648 -8.25195,1.33203 -18.22852,4.48242 -38.48047,11.80859 -57.81152,5.25 -12.56739,-3.95703 -25.53321,-13.89453 -31.85645,-26.27588 l 0,0 z"/><path d="m 457.84082,415.57471 c 13.4208,6.6289 27.47754,15.76758 39.57617,27.45508 -2.03906,2.32812 -4.67969,4.50585 -7.16699,6.51367 -11.65918,-12.5625 -24.57129,-24.6543 -39.02832,-31.7168 -2.65299,-1.06199 -5.30599,-1.99055 -7.95898,-2.37305 -14.47464,-3.28304 -23.58204,7.4336 -34.41309,13.51368 -12.62109,8.8125 -30.77246,12.95117 -46.02539,6.87109 -8.20313,-3.11133 -16.15039,-7.69336 -22.08984,-15.14063 12.0039,8.26954 29.88183,9.13672 43.5332,3.76563 18.31836,-7.94531 37.35351,-18.01758 59.43652,-13.20117 7.66804,1.32616 7.43972,1.1141 14.13672,4.3125 z"/></g></symbol><!-- 四叶草：Wikimedia Commons「Four-leaf clover.svg」（源自 Openclipart，作者 Firkin），CC0 --><symbol id="cl" viewBox="0 0 1214 1676"><path transform="translate(1318.3 817.01)" d="m-496.19 858.59c-2.9013-0.7806-6.1353-3.3054-16.35-12.764-66.394-61.48-130.32-152.55-174.37-248.42-98.101-213.49-111.97-461.3-40.725-727.46 1.4964-5.59 2.669-10.215 2.6057-10.279-0.40194-0.40191-13.618 15.935-20.663 25.542-30.264 41.271-52.674 84.338-94.44 181.5-28.877 67.175-40.429 91.868-55.789 119.25-45.427 80.981-94.852 112.37-161.71 102.71-107.09-15.472-156.23-77.395-139.96-176.36 3.7044-22.54 13.605-54.787 21.813-71.047 1.1199-2.2185 1.0135-2.303-1.4703-1.167-94.468 43.206-181.16-101.85-121.38-203.11 53.106-89.949 196.4-112.79 403.1-64.262 54.731 12.85 119.47 32.636 171.66 52.464 2.4968 0.94857 2.5643 1.021-2.5497-2.7339-35.394-25.988-78.493-48.307-131.7-68.2-27.856-10.415-47.715-16.904-113.85-37.2-40.025-12.283-63.623-20.153-84.668-28.237-107.91-41.455-153.45-93.22-165.97-188.66-12.379-94.397 35.364-145.45 137.39-146.91 26.076-0.37303 56.633 2.7254 80.1 8.1221 3.8526 0.88598 3.7181 1.2327 1.1624-2.9962-65.28-108.02 83.407-222.51 201.79-155.38 118.14 66.992 157.05 298.09 101.82 604.77-0.82788 4.597-1.4471 8.4163-1.376 8.4874 0.18276 0.18279 5.7862-13.966 8.1565-20.596 11.836-33.103 20.292-72.999 25.18-118.8 3.9676-37.178 5.5151-67.424 7.375-144.15 2.2268-91.86 5.1012-128.84 13.047-167.85 16.117-79.126 52.824-122.8 116.4-138.48 109.34-26.969 182.11 10.11 209.09 106.53 7.4899 26.771 11.623 62.321 10.45 89.881l-0.2376 5.5814 3.75-3.5923c82.483-79.015 225.65 37.344 201.26 163.58-21.817 112.95-163.41 193.61-399.11 227.38-51.235 7.3396-111.75 12.633-163.65 14.315-7.4716 0.2421-7.8255 0.0258 4.05 2.4756 41.323 8.5245 88.702 11.026 151.05 7.9739 21.712-1.0627 37.864-2.1838 81.9-5.6848 70.586-5.6117 104.87-7.1145 134.25-5.8845 106.98 4.4787 155.91 42.34 174.56 135.08 16.355 81.336-17.289 138.85-97.883 167.33-22.786 8.0517-59.468 15.303-77.483 15.316-2.8022 0.003-2.7499 0.14991 1.1754 3.3177 75.978 61.317 2.7974 195.11-110.77 202.51-134.6 8.7722-250.03-178.49-295.09-478.73-0.54933-3.6603-1.0227-6.6303-1.052-6.6-0.16836 0.1743-5.6392 21.082-8.1827 31.272-8.2026 32.86-14.883 64.281-20.406 95.983-43.382 248.99-6.7999 479.53 106.67 672.21 38.087 64.676 89.283 129.15 133.48 168.09 9.6188 8.4754 10.67 9.9677 10.254 14.559-0.5568 6.14-6.9644 10.853-12.669 9.3178z"/></symbol></defs></svg>
+<div class="top"><h1>今日对话</h1><i>conversation</i></div>
+<div class="list">
+  <article class="cc">
+    <svg class="fr" aria-hidden="true"></svg>
+    <div class="plq" aria-hidden="true">
+      <svg viewBox="0 0 118 118">
+        
+        <!-- 顶花 -->
+        <path d="M40 16c6-3 12-2 16-6 1-2 2-5 3-7 1 2 2 5 3 7 4 4 10 3 16 6" fill="none" stroke="var(--cocoa)" stroke-width="3.4" stroke-linecap="round"/>
+        <path d="M40 16c6-3 12-2 16-6 1-2 2-5 3-7 1 2 2 5 3 7 4 4 10 3 16 6" fill="none" stroke="#e2bf86" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M59 2l3 6-3 7-3-7z" fill="#e2bf86" stroke="var(--cocoa)" stroke-width="1"/>
+        <!-- 牌身：可可外线 + 金色边 + 巧克力面 + 内细金线 -->
+        <rect x="4" y="13" width="110" height="86" rx="17" fill="#e7c896" stroke="var(--cocoa)" stroke-width="1.4"/>
+        <rect x="8" y="17" width="102" height="78" rx="13" fill="var(--choc)" stroke="#a87a55" stroke-width="1"/>
+        <rect x="13" y="22" width="92" height="68" rx="9" fill="none" stroke="#c99a62" stroke-width=".8" stroke-dasharray="14 3 2 3"/>
+        <use href="#lr" x="12" y="54" width="17" height="26" fill="#e6c07f"/><use href="#lr" x="-106" y="54" width="17" height="26" fill="#e6c07f" transform="scale(-1 1)"/>
+        <!-- 缎带蝴蝶结 -->
+        <g class="bow">
+          <path d="M57 103 34 118l4-10-12-2z" fill="var(--mint2)" stroke="var(--cocoa)" stroke-width="1.1" stroke-linejoin="round"/>
+          <path d="M61 103 84 118l-4-10 12-2z" fill="var(--mint2)" stroke="var(--cocoa)" stroke-width="1.1" stroke-linejoin="round"/>
+          <path d="M57 100C46 92 30 92 24 97c0 6 3 10 7 11 9 1 18-3 26-6z" fill="var(--mint)" stroke="var(--cocoa)" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M61 100c11-8 27-8 33-3 0 6-3 10-7 11-9 1-18-3-26-6z" fill="var(--mint)" stroke="var(--cocoa)" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M28 99c8-3 18-2 26 2M90 99c-8-3-18-2-26 2" fill="none" stroke="#fff9ee" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="59" cy="102" r="9" fill="#d9ad6a" stroke="var(--cocoa)" stroke-width="1.2"/>
+          <circle cx="59" cy="102" r="6.4" fill="none" stroke="#b8894d" stroke-width=".8"/>
+          <g fill="#b8894d"><circle cx="57" cy="100" r="2"/><circle cx="61" cy="100" r="2"/><circle cx="57" cy="104" r="2"/><circle cx="61" cy="104" r="2"/></g>
+        </g>
+      </svg>
+      <b>11/22</b><small>周日 · 今天</small>
+    </div>
+    <div class="tag">Telegram</div>
+    <div class="in">
+      <h3>一个很长的标题也应该保持阅读秩序</h3>
+      <svg class="dv" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <p>这一段包含更长的演示内容，用来检查窄屏两行截断与整体层级。</p>
+    </div>
+    <div class="ft"><span class="tm">19:42</span><span class="dots"><i class="on"></i><i></i><i></i><i></i><em>···</em></span></div>
+    <div class="bdg" aria-hidden="true">
+      <svg viewBox="0 0 108 92">
+        <path d="M20 62c-11 0-15-12-8-19-4-10 4-20 14-17 3-11 18-15 27-8 8-8 22-6 26 4 11-3 20 6 16 16 8 6 5 23-8 24z" fill="var(--choc)" stroke="var(--cocoa)" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M22 57c-7-1-10-8-5-13-2-7 3-14 11-12 3-8 14-11 21-5 6-6 17-5 20 3 8-2 14 4 12 12 6 4 3 14-5 15z" fill="none" stroke="#c99a62" stroke-width=".9" stroke-dasharray="10 2 2 2"/>
+        <use href="#lr" x="20" y="28" width="17" height="27" fill="#e6c07f"/><use href="#lr" x="-88" y="28" width="17" height="27" fill="#e6c07f" transform="scale(-1 1)"/>
+        <path d="M5 66 21 61v17L8 80l5-8z" fill="var(--mint2)" stroke="var(--cocoa)" stroke-width="1.1" stroke-linejoin="round"/>
+        <path d="M103 66 87 61v17l13 2-5-8z" fill="var(--mint2)" stroke="var(--cocoa)" stroke-width="1.1" stroke-linejoin="round"/>
+        <path d="M19 59c22 5 48 5 70 0v17c-22 5-48 5-70 0z" fill="#fbf3e4" stroke="var(--cocoa)" stroke-width="1.2" stroke-linejoin="round"/>
+        <g fill="var(--gold)"><circle cx="28" cy="68.5" r="1.3"/><circle cx="80" cy="68.5" r="1.3"/></g>
+      </svg>
+      <b>6</b><small>轮对话</small>
+    </div>
+    <svg class="bm" viewBox="0 0 24 44" aria-hidden="true"><path d="M1 0h22v44l-11-8-11 8z" fill="var(--choc)" stroke="var(--cocoa)" stroke-width="1.2" stroke-linejoin="round"/><path d="M4 2h16v35l-8-6-8 6z" fill="none" stroke="#c99a62" stroke-width=".8"/><path d="M12 13l1.6 3.6 3.6 1.4-3.6 1.4L12 23l-1.6-3.6L6.8 18l3.6-1.4z" fill="#e2bf86"/></svg>
+  </article>
+</div>
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+// 四角内凹的卡形（票根角）
+function shape(x,y,w,h,r){return `M${x+r} ${y}H${x+w-r}A${r} ${r} 0 0 0 ${x+w} ${y+r}V${y+h-r}A${r} ${r} 0 0 0 ${x+w-r} ${y+h}H${x+r}A${r} ${r} 0 0 0 ${x} ${y+h-r}V${y+r}A${r} ${r} 0 0 0 ${x+r} ${y}Z`}
+function curl(x,y,sx,sy){return `<path transform="translate(${x} ${y}) scale(${sx} ${sy})" d="M0 0c4 0 6 2 6 5 0-3 3-4 5-2M0 0c0 4 2 6 5 6-3 0-4 3-2 5M2 2l4 4" fill="none" stroke="#8a5c46" stroke-width="1.1" stroke-linecap="round"/>`}
+function draw(cc){
+  const W=cc.offsetWidth,H=cc.offsetHeight,s=cc.querySelector('svg.fr');s.setAttribute('width',W);s.setAttribute('height',H);
+  const B=7,P=B+1,iw=W-2*P,ih=H-2*P,fy=H-P-46; // 外带宽、内页、底栏分隔线
+  let lace='';for(let x=P+120;x<W-P-4;x+=10)lace+=`<path d="M${x} ${P+20}a5 5 0 0 0 10 0" fill="#fbf4e6" stroke="#dcc6a6" stroke-width=".7"/><circle cx="${x+5}" cy="${P+22}" r="1" fill="#dcc6a6"/>`;
+  let dia='';for(let x=P+10;x<W-P;x+=14)dia+=`<path d="M${x} ${H-3.5}l4-3.5 4 3.5-4 3.5z" fill="#d6efe5" opacity=".9"/>`;
+  s.innerHTML=`
+  <defs>
+    <pattern id="st" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><rect width="16" height="16" fill="#f4e9d6"/><rect width="7" height="16" fill="#7b5442"/></pattern>
+    <pattern id="ms" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><rect width="9" height="9" fill="none"/><rect width="4" height="9" fill="#a9d9c6"/></pattern>
+    <clipPath id="pg"><path d="${shape(P,P,iw,ih,7)}"/></clipPath>
+  </defs>
+  <!-- 背后两层错位卡 -->
+  <path d="${shape(9,11,W,H,10)}" fill="#a7d6c3" stroke="#8a5c46" stroke-width="1.3"/>
+  <path d="${shape(4.5,5.5,W,H,10)}" fill="#c6e8da" stroke="#8a5c46" stroke-width="1.3"/>
+  <path d="${shape(8.5,9.5,W-8,H-8,8)}" fill="none" stroke="#fff" stroke-width=".9" stroke-dasharray="3 3" opacity=".8"/>
+  <!-- 主卡：薄荷外带 -->
+  <path d="${shape(0,0,W,H,10)}" fill="var(--mint)" stroke="#8a5c46" stroke-width="1.4"/>
+  <path d="${shape(3,3,W-6,H-6,9)}" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="4 3"/>
+  ${dia}
+  <!-- 奶油内页 -->
+  <path d="${shape(P,P,iw,ih,7)}" fill="var(--cream)" stroke="#8a5c46" stroke-width="1.2"/>
+  <g clip-path="url(#pg)">
+    <rect x="${P+118}" y="${P}" width="${iw}" height="20" fill="url(#st)"/>
+    <rect x="${P+118}" y="${P+19.5}" width="${iw}" height="1" fill="#8a5c46" opacity=".55"/>
+    ${lace}
+    <path d="M${P} ${fy-34}L${P+34} ${fy}H${P}Z" fill="url(#ms)" opacity=".85"/>
+    <rect x="${P}" y="${fy}" width="${iw}" height="${ih}" fill="var(--cream2)"/>
+  </g>
+  <!-- 框中框 -->
+  <rect x="${P+6}" y="${P+26}" width="${iw-12}" height="${fy-P-30}" rx="3" fill="none" stroke="#c9a98a" stroke-width=".8" stroke-dasharray="1 2.4"/>
+  <line x1="${P}" y1="${fy}" x2="${W-P}" y2="${fy}" stroke="#8a5c46" stroke-width="1"/>
+  <line x1="${P+6}" y1="${fy+3}" x2="${W-P-6}" y2="${fy+3}" stroke="#c9a98a" stroke-width=".7" stroke-dasharray="3 2"/>
+  ${curl(P+9,P+29,1,1)}${curl(W-P-9,P+29,-1,1)}${curl(P+9,fy-6,1,-1)}${curl(W-P-9,fy-6,-1,-1)}
+  <!-- 邮戳 -->
+  <g transform="translate(${W-P-64} ${fy-50})" opacity=".55" fill="none" stroke="#c9ad8c" stroke-width="1">
+    <circle r="24"/><circle r="19" stroke-dasharray="2 2"/>
+    <path d="M-62 -6c8-5 14 5 22 0s14 5 22 0M-64 2c8-5 14 5 22 0s14 5 22 0M-60 10c8-5 14 5 22 0s14 5 22 0M20 -12c8-5 14 5 22 0s14 5 22 0M22 -4c8-5 14 5 22 0"/>
+    <use href="#cl" x="-10" y="-13" width="19" height="26" fill="#a9d6c2" stroke="none"/>
+  </g>`;
+  const dv=cc.querySelector('.dv');const w=300;
+  dv.innerHTML=`<line x1="0" y1="8" x2="${w*.40}" y2="8" stroke="#c9a063" stroke-width=".9"/><line x1="${w*.60}" y1="8" x2="${w}" y2="8" stroke="#c9a063" stroke-width=".9"/>
+  <path d="M${w*.36} 8l3-3 3 3-3 3z M${w*.62} 8l3-3 3 3-3 3z" fill="#c9a063"/>
+  <g transform="translate(${w/2} 8)"><path d="M-1 0c-6-6-12-6-13-2s5 6 13 2zM1 0c6-6 12-6 13-2s-5 6-13 2z" fill="var(--mint)" stroke="#8a5c46" stroke-width=".9"/><path d="M-1 1l-5 6M1 1l5 6" stroke="#8a5c46" stroke-width=".9"/><circle r="2" fill="#d9ad6a" stroke="#8a5c46" stroke-width=".7"/></g>`;
+}
+const all=[...document.querySelectorAll('.cc')];
+const go=()=>all.forEach(draw);
+(document.fonts?document.fonts.ready:Promise.resolve()).then(go);go();
+new ResizeObserver(go).observe(document.body);
+})();
+</script>
+</body></html>
