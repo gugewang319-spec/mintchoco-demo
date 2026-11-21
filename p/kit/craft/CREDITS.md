@@ -7,4 +7,4 @@
 - 麦穗、皇冠顶饰、绸带、分隔线蝴蝶结：手写 SVG。
 - 四叶草（金扣、邮戳）：Tabler Icons「clover-filled」，MIT 许可（Copyright (c) 2020-2026 Paweł Kuna）。https://github.com/tabler/tabler-icons
 
-- 底部导航：图标沿用项目原有手绘图标（p/list），底栏和蝴蝶结手写。
+- 底部导航：图标沿用项目原有手绘图标（p/list），底栏 CSS 手写；描边+硬投影的做法参考 SillyTavern 主题 Momonga Fluffy Sky（POPKO），未使用其图片和代码。
