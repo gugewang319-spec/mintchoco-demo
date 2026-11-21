@@ -30,7 +30,7 @@ body{background:repeating-linear-gradient(90deg,#d6eee4 0 24px,#ebf7f1 24px 48px
 .list{padding:84px clamp(18px,6vw,28px) 90px clamp(14px,4.5vw,22px)}
 
 /* ---------- 卡片骨架 ---------- */
-.cc{--r:11px;--P:8px;--FT:58px;position:relative;isolation:isolate;display:block;color:inherit;text-decoration:none;
+.cc{--r:11px;--P:6px;--FT:58px;position:relative;isolation:isolate;display:block;color:inherit;text-decoration:none;
   padding:calc(var(--P) + 56px) calc(var(--P) + 20px) calc(var(--FT) + 34px) calc(var(--P) + 18px);min-height:258px;
   transition:translate .18s ease,filter .18s ease;-webkit-tap-highlight-color:transparent;outline:none}
 .cc:hover{translate:0 -1px}.cc:active{translate:0 1px}
@@ -49,33 +49,34 @@ body{background:repeating-linear-gradient(90deg,#d6eee4 0 24px,#ebf7f1 24px 48px
 .ed.nt::before{-webkit-mask:var(--nm);mask:var(--nm)}
 
 /* 1 back plate：最远的一层，带极淡的薄荷圆点 */
-.pl3{--r0:12px;--r:12px;inset:15px -12px -14px 11px;
-  --fill:radial-gradient(circle,#ffffff99 1.1px,transparent 1.4px) 0 0/8px 8px,linear-gradient(#cfe9de,#c4e3d6)}
+.pl3{--r0:10px;--r:10px;inset:12px -13px -13px 12px;
+  --fill:linear-gradient(#f6ecd8,#ecdcc0)}
 .pl3::after{content:"";position:absolute;inset:4px;border:.8px dashed #fffaf099;border-radius:7px}
 /* 2 secondary offset plate */
-.pl2{--r0:11px;--r:11px;inset:7px -6px -7px 5px;--fill:linear-gradient(#d4ede3,#c3e4d6)}
-.pl2::after{content:"";position:absolute;inset:3.5px;border:.8px dashed #fffaf0b3;border-radius:7px}
+.pl2{--r0:10px;--r:10px;inset:6px -6.5px -6.5px 6px;--fill:linear-gradient(#cfeadf,#bde1d2)}
+.pl2::after{content:"";position:absolute;inset:2.5px;border:.8px dashed #fffaf0;border-radius:7px}
 /* 3 主卡外框：薄荷带 + 底部菱形花边 */
-.frm{--r0:11px;inset:0;filter:drop-shadow(0 1px .5px rgba(91,58,43,.22)) drop-shadow(1px 4px 5px rgba(91,58,43,.1));
+.frm{--r0:9px;--r:9px;inset:0;filter:drop-shadow(0 1px .5px rgba(91,58,43,.22)) drop-shadow(1px 4px 5px rgba(91,58,43,.1));
   --fill:
    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='17'%3E%3Cpath d='M1.5 8.5l5-4.5 5 4.5-5 4.5z' fill='%23eef8f3' stroke='%2386c4ac' stroke-width='.7'/%3E%3Ccircle cx='12.5' cy='8.5' r='.9' fill='%2386c4ac'/%3E%3C/svg%3E") 4px calc(100% - 1px)/13px 17px repeat-x,
-   linear-gradient(#d0ebe0,#c2e3d5 60%,#bcdfd1)}
-.frm::after{content:"";position:absolute;inset:3.5px;border:1px dashed #fffaf0;border-radius:8px;opacity:.9}
+   linear-gradient(transparent calc(100% - 18px),#d7ede3 calc(100% - 18px)),linear-gradient(#fbf4e6,#f1e4cc)}
+.frm::after{content:"";position:absolute;left:3px;right:3px;top:3px;bottom:20px;border:.9px solid var(--antique-gold);border-radius:6px;opacity:.75}
 .frm i.hl{position:absolute;left:12px;right:12px;top:1.6px;height:1px;background:#f4fbf8}
 /* 4 奶油内页 */
-.ppr{--r0:8px;--r:8px;left:var(--P);right:var(--P);top:var(--P);bottom:17px;
+.ppr{--r0:6px;--r:6px;left:var(--P);right:var(--P);top:var(--P);bottom:17px;
   --fill:
    linear-gradient(180deg,#fffdf7 0,transparent 30%),
    repeating-linear-gradient(97deg,rgba(160,120,80,.018) 0 1px,transparent 1px 5px),
    radial-gradient(120% 90% at 30% 20%,var(--cream),var(--paper) 70%,#f1e3cb)}
 /* 框中框：可可点线，留出底栏 */
-.ppr::after{content:"";position:absolute;left:6px;right:6px;top:27px;bottom:calc(var(--FT) - 1px);border:1px dotted #c7a587;border-radius:3px}
+.ppr::after{content:"";position:absolute;left:6px;right:6px;top:16px;bottom:calc(var(--FT) - 1px);border:1px dotted #c7a587;border-radius:3px}
 /* 顶部斜纹带 + 下方一道可可细线 + 蕾丝 */
-.strip{left:126px;right:var(--se,110px);top:var(--P);height:13px;
-  background:repeating-linear-gradient(130deg,#6e4a38 0 5.5px,#f4e9d6 5.5px 12px);border-bottom:1px solid rgba(79,50,38,.55)}
-.strip::before,.strip::after{content:"";position:absolute;top:0;bottom:0;width:6px;background:linear-gradient(90deg,var(--paper),transparent)}
-.strip::before{left:0}.strip::after{right:0;transform:scaleX(-1)}
-.lace{left:126px;right:calc(var(--P) + 4px);top:calc(var(--P) + 14px);height:7px;
+.band{--r0:5px;left:108px;right:8px;top:-17px;height:28px;border-radius:7px 7px 0 0;background:var(--cocoa-line);clip-path:inset(0 0 9px 0 round 7px 7px 0 0)}
+.band::before{content:"";position:absolute;inset:1.15px 1.15px 0;border-radius:6px 6px 0 0;background:linear-gradient(#bfe2d3,#a9d5c2)}
+.band::after{content:"";position:absolute;left:4px;right:4px;top:3.5px;border-top:.8px dashed #fffaf0}
+.strip{left:122px;width:clamp(56px,24vw,96px);top:-10px;height:10px;border-radius:1px;box-shadow:0 0 0 1px rgba(79,50,38,.6);
+  background:repeating-linear-gradient(120deg,#5e3d2f 0 6px,#f7eedd 6px 13px)}
+.lace{left:calc(var(--P) + 2px);right:calc(var(--P) + 2px);top:calc(var(--P) + 1px);height:7px;
   background:radial-gradient(circle at 50% 0,#fffaf0 3.6px,#c5a184 3.7px 4.4px,transparent 4.5px) 0 0/11px 7px repeat-x,
              radial-gradient(circle at 50% 2.6px,transparent 1px,#cfb093 1.1px 1.5px,transparent 1.6px) 0 0/11px 7px repeat-x}
 /* 左下薄荷斜纹角 */
@@ -83,13 +84,12 @@ body{background:repeating-linear-gradient(90deg,#d6eee4 0 24px,#ebf7f1 24px 48px
   background:repeating-linear-gradient(45deg,#a9d7c5 0 4px,#eaf6f0 4px 8.5px)}
 .diag::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent calc(50% - .7px),rgba(138,92,70,.55) calc(50% - .7px) calc(50% + .3px),transparent calc(50% + .3px))}
 /* 底栏信息栏：奶茶底 + 可可线 + 金色虚线 */
-.ftb{left:var(--P);right:var(--P);bottom:17px;height:var(--FT);
-  background:linear-gradient(#efe3cd,#eadcc3);border-top:1px solid var(--cocoa-soft);border-radius:0 0 4px 4px}
-.ftb::before{content:"";position:absolute;left:6px;right:6px;top:2.5px;border-top:.8px dashed var(--antique-gold)}
+.ftb{--r0:7px;--r:7px;left:-5px;right:-5px;bottom:17px;height:var(--FT);--fill:linear-gradient(#f7eedd,#eee0c6)}
+.ftb::after{content:"";position:absolute;left:9px;right:9px;top:3.5px;bottom:3.5px;border-top:.8px dashed var(--antique-gold);border-bottom:.8px solid #d8bd93}
 /* 角花 */
 .orn{width:13px;height:17px;overflow:visible}
-.orn.a{left:calc(var(--P) + 8px);top:calc(var(--P) + 29px);rotate:-45deg}
-.orn.b{right:calc(var(--P) + 8px);top:calc(var(--P) + 29px);rotate:45deg}
+.orn.a{left:calc(var(--P) + 8px);top:calc(var(--P) + 18px);rotate:-45deg}
+.orn.b{right:calc(var(--P) + 8px);top:calc(var(--P) + 18px);rotate:45deg}
 .orn.c{left:calc(var(--P) + 8px);bottom:calc(17px + var(--FT) + 4px);rotate:-135deg}
 .orn.d{right:calc(var(--P) + 8px);bottom:calc(17px + var(--FT) + 4px);rotate:135deg}
 /* 邮戳：极淡，贴在正文右下，不压字（正文在它左边收行） */
@@ -103,6 +103,7 @@ body{background:repeating-linear-gradient(90deg,#d6eee4 0 24px,#ebf7f1 24px 48px
 .in{position:relative;z-index:2}
 .cc h3{font-family:ZK,sans-serif;font-weight:400;font-size:clamp(22px,6.4vw,26px);line-height:1.4;color:var(--cocoa-ink);
   letter-spacing:.02em;-webkit-text-stroke:.4px var(--cocoa-ink);max-width:19em;text-wrap:pretty}
+.nw{white-space:nowrap}
 .dv{display:flex;align-items:center;gap:7px;height:20px;margin:8px 4px 6px}
 .dv i{flex:1;height:.9px;background:linear-gradient(90deg,transparent,var(--antique-gold) 18%)}
 .dv i:last-child{background:linear-gradient(270deg,transparent,var(--antique-gold) 18%)}
@@ -112,20 +113,20 @@ body{background:repeating-linear-gradient(90deg,#d6eee4 0 24px,#ebf7f1 24px 48px
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* ---------- 日期牌 DatePlaque ---------- */
-.plq{position:absolute;z-index:4;left:calc(var(--P) - 4px);top:-70px;width:132px;height:112px;transform:rotate(-4deg);transform-origin:50% 60%}
+.plq{position:absolute;z-index:4;left:calc(var(--P) - 4px);top:-66px;width:132px;height:112px;transform:rotate(-1.5deg);transform-origin:50% 60%}
 .plq svg{position:absolute;inset:0;overflow:visible;filter:drop-shadow(0 1px 1px rgba(91,58,43,.28)) drop-shadow(1px 4px 4px rgba(91,58,43,.16))}
 .plq b{position:absolute;left:0;right:0;top:28px;text-align:center;font:800 29px/1 Baloo,sans-serif;color:#fbf0de;letter-spacing:.01em}
 .plq small{position:absolute;left:0;right:0;top:61px;text-align:center;font:11.5px/1 ZK,sans-serif;color:#f1e0c6;letter-spacing:.04em}
 /* ---------- 来源签 SourceTag：挂在斜纹带尾端 ---------- */
-.tag{position:absolute;z-index:4;right:calc(var(--P) + 6px);top:calc(var(--P) - 2px);height:25px;padding:0 13px 0 23px;
+.tag{position:absolute;z-index:4;right:calc(var(--P) + 6px);top:-19px;height:25px;padding:0 13px 0 23px;
   border-radius:13px 4px 13px 4px;background:linear-gradient(170deg,#fffbf2,#f1e3cb);
   box-shadow:0 0 0 1.2px var(--cocoa-soft),inset 0 0 0 2.6px #fffaf0,inset 0 0 0 3.3px #e3cfb1,1px 2px 2px rgba(79,50,38,.2);
   font:700 13px/25px Baloo,sans-serif;color:var(--cocoa-ink);letter-spacing:.04em;pointer-events:none}
 .tag::before{content:"";position:absolute;left:10px;top:9.5px;width:6px;height:6px;border-radius:50%;background:var(--cocoa-ink);box-shadow:0 0 0 1.5px #fffaf0,0 0 0 2.3px var(--mint-mid)}
 .tag::after{content:"";position:absolute;left:-7px;top:11px;width:8px;height:1.2px;background:var(--cocoa-soft)}
 /* ---------- 底栏内容 ConversationMeta ---------- */
-.ft{position:absolute;z-index:3;left:calc(var(--P) + 12px);right:112px;bottom:calc(17px + (var(--FT) - 31px)/2 - 1px);display:flex;align-items:center;gap:12px;pointer-events:none}
-.tm{position:relative;display:block;width:112px;height:31px;flex:none}
+.ft{position:absolute;z-index:3;left:calc(var(--P) + 8px);right:112px;bottom:calc(17px + (var(--FT) - 31px)/2 - 1px);display:flex;align-items:center;gap:12px;pointer-events:none}
+.tm{position:relative;display:block;width:clamp(104px,33vw,128px);height:31px;flex:none}
 .tm svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(1px 1.5px 1px rgba(79,50,38,.22))}
 .tm b{position:absolute;inset:0;text-align:center;font:700 16px/31px Baloo,sans-serif;color:var(--cocoa-ink);letter-spacing:.03em}
 .dots{display:flex;gap:4px;align-items:center;min-width:0;overflow:hidden}
@@ -153,11 +154,11 @@ body{background:repeating-linear-gradient(90deg,#d6eee4 0 24px,#ebf7f1 24px 48px
     <div class="deco" aria-hidden="true">
       <div class="lay ed nt pl3"></div>
       <div class="lay ed nt pl2"></div>
-      <div class="lay ear"></div>
+            <div class="lay band"></div>
       <div class="lay ed nt frm"><i class="hl"></i></div>
       <div class="lay ed nt ppr"></div>
       <div class="lay diag"></div>
-      <div class="lay ftb"></div>
+      <div class="lay ed nt ftb"></div>
       <div class="lay strip"></div>
       <div class="lay lace"></div>
       <svg class="lay orn a" viewBox="0 0 17 22"><use href="#fl" width="17" height="22.4" fill="#a87a45" stroke="#fbf4e6" stroke-width="40" paint-order="stroke"/></svg><svg class="lay orn b" viewBox="0 0 17 22"><use href="#fl" width="17" height="22.4" fill="#a87a45" stroke="#fbf4e6" stroke-width="40" paint-order="stroke"/></svg><svg class="lay orn c" viewBox="0 0 17 22"><use href="#fl" width="17" height="22.4" fill="#a87a45" stroke="#fbf4e6" stroke-width="40" paint-order="stroke"/></svg><svg class="lay orn d" viewBox="0 0 17 22"><use href="#fl" width="17" height="22.4" fill="#a87a45" stroke="#fbf4e6" stroke-width="40" paint-order="stroke"/></svg>
@@ -168,12 +169,10 @@ body{background:repeating-linear-gradient(90deg,#d6eee4 0 24px,#ebf7f1 24px 48px
         <defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6e2b8"/><stop offset=".5" stop-color="#e0bb80"/><stop offset="1" stop-color="#b98b52"/></linearGradient><linearGradient id="ch" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#6f4835"/><stop offset="1" stop-color="#4b2e21"/></linearGradient><linearGradient id="mt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcf3e9"/><stop offset=".6" stop-color="#b3e0cd"/><stop offset="1" stop-color="#93cbb5"/></linearGradient><linearGradient id="mt2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a6d8c3"/><stop offset="1" stop-color="#7fbea5"/></linearGradient><radialGradient id="bt" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#f3d496"/><stop offset="1" stop-color="#b8894d"/></radialGradient></defs>
         <!-- 顶饰：两侧卷边 + 小皇冠 -->
         <g fill="none" stroke-linecap="round">
-          <path d="M57 21c-7 0-11-5-18-3.5-5 1.2-5.5 7-1 7.6 3 .4 3.8-2.8 1.6-3.6M75 21c7 0 11-5 18-3.5 5 1.2 5.5 7 1 7.6-3 .4-3.8-2.8-1.6-3.6" stroke="#8a5c46" stroke-width="4"/>
-          <path d="M57 21c-7 0-11-5-18-3.5-5 1.2-5.5 7-1 7.6 3 .4 3.8-2.8 1.6-3.6M75 21c7 0 11-5 18-3.5 5 1.2 5.5 7 1 7.6-3 .4-3.8-2.8-1.6-3.6" stroke="#e6c07f" stroke-width="2"/>
+          <path d="M57 21c-7 0-11-5-18-3.5-5 1.2-5.5 7-1 7.6 3 .4 3.8-2.8 1.6-3.6M75 21c7 0 11-5 18-3.5 5 1.2 5.5 7 1 7.6-3 .4-3.8-2.8-1.6-3.6" stroke="#8a5c46" stroke-width="2.8"/>
+          <path d="M57 21c-7 0-11-5-18-3.5-5 1.2-5.5 7-1 7.6 3 .4 3.8-2.8 1.6-3.6M75 21c7 0 11-5 18-3.5 5 1.2 5.5 7 1 7.6-3 .4-3.8-2.8-1.6-3.6" stroke="#e6c07f" stroke-width="1.2"/>
         </g>
-        <path d="M56 21.5 54 10.5l6 4.6 6-9 6 9 6-4.6-2 11z" fill="url(#gd)" stroke="#8a5c46" stroke-width="1.1" stroke-linejoin="round"/>
-        <path d="M57.5 18.5h17" stroke="#9c7240" stroke-width=".8"/>
-        <g fill="url(#bt2)" stroke="#8a5c46" stroke-width=".8"><circle cx="54" cy="9.6" r="2"/><circle cx="66" cy="5" r="2.3"/><circle cx="78" cy="9.6" r="2"/></g>
+        <path d="M66 3.5 69 12.5 66 21.5 63 12.5z" fill="url(#gd)" stroke="#8a5c46" stroke-width="1" stroke-linejoin="round"/><path d="M58.5 13.5h15" stroke="#8a5c46" stroke-width="2.6" stroke-linecap="round"/><path d="M58.5 13.5h15" stroke="#e6c07f" stroke-width="1.2" stroke-linecap="round"/><circle cx="66" cy="12.5" r="1.6" fill="#fff3d6" stroke="#8a5c46" stroke-width=".7"/>
         <!-- 牌身 -->
         <rect x="6" y="21" width="120" height="68" rx="13" fill="url(#gd)" stroke="#8a5c46" stroke-width="1.3"/>
         <rect x="10" y="25" width="112" height="60" rx="10" fill="url(#ch)" stroke="#8d6142" stroke-width="1"/><path d="M13 46V36a9 9 0 0 1 9-9h50" fill="none" stroke="#9a6d52" stroke-width="1.2" stroke-linecap="round" opacity=".8"/>
@@ -213,7 +212,7 @@ body{background:repeating-linear-gradient(90deg,#d6eee4 0 24px,#ebf7f1 24px 48px
     </div>
     <div class="tag">Telegram</div>
     <div class="in">
-      <h3>一个很长的标题也应该保持阅读秩序</h3>
+      <h3>一个很长的标题也应该<span class="nw">保持阅读秩序</span></h3>
       <div class="dv" aria-hidden="true"><i></i><b></b><svg viewBox="-15 -8 30 20" aria-hidden="true"><g stroke="#5b3a2b" stroke-width=".8" stroke-linejoin="round"><path d="M-1.5 1.5-5 10l1.6-1 1 1.8L.4 2zM1.5 1.5 5 10l-1.6-1-1 1.8L-.4 2z" fill="#86c4ac"/><path d="M-2 0C-6-5.5-13-7.5-14.6-4S-12 3.6-2 1.4zM2 0C6-5.5 13-7.5 14.6-4S12 3.6 2 1.4z" fill="#a9d7c5"/><path d="M-3.5.2C-6.5-2.6-10-3.6-11-2.4s1.6 3 7.5 2.6zM3.5.2C6.5-2.6 10-3.6 11-2.4s-1.6 3-7.5 2.6z" fill="#6fa892" stroke="none"/><rect x="-2.6" y="-2.2" width="5.2" height="4.4" rx="1.6" fill="#8a5c46"/></g></svg><b></b><i></i></div>
       <p>这一段包含更长的演示内容，用来检查窄屏两行截断与整体层级。</p>
     </div>
