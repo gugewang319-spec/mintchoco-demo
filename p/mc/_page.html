@@ -1,0 +1,15 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>页名</title>
+<link rel="stylesheet" href="../mc/mc.css?v=1">
+<style>
+/* 只写本页的场景（L2–L6）和布局。组件样式不许在这里重写，要改去 ../mc/mc.css */
+</style></head><body>
+<div class="vp"><div class="app" id="app">
+<img class="drizzle" src="../mc/img/drizzle.png" alt="">
+<!-- 本页主角物件（占屏六成以上、可出血）+ 信息长在主角身上 -->
+</div></div>
+<script src="../ui.js?v=57"></script>
+<script src="../mc/mc.js?v=1"></script>
+<script>
+document.getElementById('app').prepend(MC.head({title:'页名',en:'english',back:'返回'}));
+MC.nav('设置');
+</script></body></html>

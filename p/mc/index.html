@@ -1,0 +1,64 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>组件库</title>
+<link rel="stylesheet" href="mc.css?v=1">
+<style>
+.wrap{padding:132px 22px 140px}
+.blk{margin-bottom:30px}
+.blk>h2{font:20px/1.2 ZK;font-weight:400;margin-bottom:10px;display:flex;align-items:baseline;gap:8px}
+.blk>h2 em{font:15px/1 Script;color:var(--mint-d);font-style:normal}
+.row-tags{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:4px 2px 0}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw span{width:44px;height:44px;border-radius:12px;border:1.3px solid var(--ink);display:grid;place-items:end center;font:10px/1 WK;padding-bottom:3px}
+.cards{padding:14px 16px}
+.btns{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+#rollDemo{margin:0 auto}
+</style></head><body>
+<div class="vp"><div class="app" id="app"><div class="wrap">
+
+<section class="blk"><h2>六态<em>states</em></h2><div class="sw" id="sw"></div></section>
+
+<section class="blk"><h2>签条<em>tag</em></h2><div class="row-tags" id="tags" role="listbox" aria-label="签条"></div></section>
+
+<section class="blk soft cards"><h2>普通行<em>row</em></h2><div id="rows"></div><div class="sep"></div><div id="chips"></div></section>
+
+<section class="blk"><h2>小票<em>receipt</em></h2><div id="rollDemo"></div></section>
+
+<section class="blk soft cards"><h2>按钮<em>button</em></h2>
+ <div class="btns"><button class="go">加进来 <b>3</b> 个</button><button class="go" disabled>加进来 <b>0</b> 个</button><button class="tx">拉新的 ›</button><button class="tx danger">撕掉 ›</button></div>
+ <div class="btns" id="stamps"></div>
+ <div class="btns" style="margin-top:10px"><button class="tx" id="tB">响一下出餐铃</button><button class="tx danger" id="cB">弹警告</button></div>
+</section>
+
+<section class="blk soft cards"><h2>表单<em>form</em></h2>
+ <div class="f"><label for="a1">名字</label><input id="a1" placeholder="给它起个名字"></div>
+ <div class="f"><label for="a2">地址</label><input id="a2" class="mono" placeholder="api.example.com"></div>
+ <div class="f"><label>格式</label><div class="seg-pick" id="fmt"><button class="on">OpenAI</button><button>Anthropic</button><button>Gemini</button></div></div>
+ <div class="err">已经有叫「主渠道」的了</div>
+ <label class="q" style="margin-top:8px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8a5c46" stroke-width="1.5" stroke-linecap="round"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3l3.6 3.6"/></svg><input placeholder="在 10 个里找" aria-label="找"></label>
+ <button class="pr on"><span class="bx"></span><span class="nmx">claude-sonnet-4-5-20250929</span></button>
+ <button class="pr"><span class="bx"></span><span class="nmx">gemini-2.5-flash-lite</span></button>
+ <button class="pr" disabled><span class="bx"></span><span class="nmx">gpt-4o-mini</span><span class="hv">已有</span></button>
+ <div class="ld" id="ld"></div>
+</section>
+
+</div></div></div>
+<script src="../ui.js?v=57"></script>
+<script src="mc.js?v=1"></script>
+<script>
+document.getElementById('app').prepend(MC.head({title:'组件库',en:'kit',back:'返回',right:[{icon:'search',label:'找'}]}));
+MC.nav('设置');
+const NAME={ok:'能用',making:'连接中',fail:'坏了',warn:'快用完',empty:'空'};
+document.getElementById('sw').innerHTML=Object.entries(MC.STATES).map(([k,s])=>`<span style="background:linear-gradient(${s.tint},${s.band[0]})">${NAME[k]}</span>`).join('');
+const tags=document.getElementById('tags');
+[['ok','能用的',3,1],['making','连接中',2],['fail','坏掉的',1],['warn','快用完',2],['empty','空的',0]].forEach(([s,n,k,sel])=>tags.appendChild(MC.tag({name:n,state:s,count:k,unit:'把',sel:!!sel})));
+tags.appendChild(MC.tag({add:1,name:'新建'}));
+document.getElementById('rows').innerHTML=[MC.row({cup:'ok',k:'钥匙 1',sub:'••••7f2a',v:'今天 412 次',vs:'ok'}),MC.row({cup:'fail',k:'钥匙 2',sub:'••••c09e',v:'用完了',vs:'bad'}),MC.row({cup:'warn',k:'一个特别特别长的名字会自己省略号收起来',sub:'••••e2d1',v:'剩一成'}),MC.row({cup:'empty',k:'还没有钥匙'})].join('');
+document.getElementById('chips').innerHTML=MC.chips([['gpt-4o-mini',1],['claude-sonnet-4-5-20250929',1,1],['deepseek-chat',0]]);
+MC.roll(document.getElementById('rollDemo'),[{st:'making',t:'等它回复',c:'奶盖中转',m:'claude-haiku-4-5',tm:'21:24'},{st:'ok',t:'回好了',c:'主渠道',m:'claude-sonnet-4-5-20250929',tm:'21:20'},{st:'fail',t:'没发出去',c:'备用渠道',m:'gpt-4o',tm:'21:12',tip:'这把 key 过期了，换一把就能重发'},{st:'warn',t:'额度快没了',c:'焦糖站',m:'o4-mini',tm:'20:30'}]);
+const st=document.getElementById('stamps');st.innerHTML=MC.stamp('存')+MC.stamp('开');
+const [s1,s2]=st.querySelectorAll('.sv');s2.classList.remove('mute');s1.onclick=s2.onclick=e=>{const b=e.currentTarget;if(b.classList.contains('inked')){b.classList.remove('inked');b.classList.add('mute');return}if(b.classList.contains('mute')){b.classList.remove('mute');return}b.classList.add('inked')};
+document.getElementById('ld').innerHTML=MC.markSVG('making')+'正在问上游有哪些模型…';
+document.getElementById('tB').onclick=()=>MC.toast('存好了',{undo:()=>MC.toast('撤回了')});
+document.getElementById('cB').onclick=()=>MC.confirm({title:'撕掉这张单？',body:'和它的钥匙会一起拿掉，<b>撕了就得重新接</b>。',ok:'撕掉'});
+document.querySelectorAll('#fmt button').forEach(b=>b.onclick=()=>document.querySelectorAll('#fmt button').forEach(x=>x.classList.toggle('on',x===b)));
+document.querySelectorAll('.pr:not([disabled])').forEach(b=>b.onclick=()=>b.classList.toggle('on'));
+</script></body></html>

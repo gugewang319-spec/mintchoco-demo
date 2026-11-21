@@ -1,54 +1,21 @@
 <!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>渠道 · 出单机样稿</title>
+<link rel="stylesheet" href="../mc/mc.css?v=1">
 <style>
-@font-face{font-family:ZK;src:url(vc-zk.ttf)}
-@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
-@font-face{font-family:BalooX;src:url(baloo800.ttf)}
-@font-face{font-family:WK;src:url(vc-wk.ttf)}
-@font-face{font-family:Script;src:url(script.ttf)}
-:root{--ch:#5b3a2c;--ink:#5b3a2c;--cocoa:#8a5c46;--P:#fbf6ea}
-*{box-sizing:border-box;margin:0;padding:0}button{font:inherit;background:none;border:0;color:inherit;cursor:pointer}
-html,body{height:100%}body{overflow:hidden;color:var(--ink);font-family:WK,sans-serif}
-.vp{position:fixed;inset:0;overflow:hidden;background-color:#e4f3ed;background-image:radial-gradient(110% 50% at 15% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 60%),repeating-linear-gradient(90deg,#d7eee5 0,#d7eee5 18px,#edf8f3 18px,#edf8f3 36px)}
-.app{position:absolute;left:0;right:0;margin:0 auto;top:0;bottom:0;width:min(100%,412px);overflow-x:hidden;overflow-y:auto;scrollbar-width:none}
-.app::-webkit-scrollbar{display:none}
-.drizzle{position:absolute;left:0;top:0;width:100%;z-index:25;pointer-events:none}
-.glass{background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.85);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 8px 18px -12px rgba(74,48,39,.45)}
-.lhead{position:absolute;left:0;right:0;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:58px 18px 0}
-.lf{display:flex;align-items:flex-end;gap:12px}
-.pb{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ch)}
-.ttl{position:relative}.ttl h1{font:32px/1 ZK;color:var(--ch);letter-spacing:.06em;position:relative;z-index:1;font-weight:400}
-.ttl .sc{position:absolute;left:52px;top:-14px;font:22px/1 Script;color:rgba(63,154,128,.55);transform:rotate(-8deg);white-space:nowrap}
+/* 本页只写场景和布局；组件样式全在 ../mc/mc.css */
 /* 挂单轨 */
 .railw{position:relative;margin-top:122px;height:212px}
 .rod{position:absolute;left:-6px;right:-6px;top:10px;height:10px;border-radius:5px;background:linear-gradient(#f3e3c6,#d8b98a);border:1.3px solid var(--ink);z-index:3}
 .rod::after{content:"";position:absolute;left:6px;right:6px;top:2px;height:1.2px;background:rgba(255,255,255,.7);border-radius:1px}
 .track{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;z-index:4}.track::-webkit-scrollbar{display:none}
 .tin{position:relative;display:flex;gap:10px;padding:0 24px;height:100%;width:max-content}
-.tg{position:relative;width:62px;flex:none;cursor:pointer;transform-origin:50% 14px;animation:sw 4s ease-in-out infinite alternate;outline:none}
-.tg svg{display:block;overflow:visible}
-.tg .nm{position:absolute;left:0;right:0;top:30px;margin:0 auto;writing-mode:vertical-rl;font:17px/1 ZK;letter-spacing:4px;color:var(--ink);height:84px;display:flex;align-items:flex-start;justify-content:center}
-.tg .cp{position:absolute;left:50%;width:22px;margin-left:-11px;pointer-events:none}
-.tg .kc{position:absolute;left:0;right:0;text-align:center;font:13px/1 BalooX;color:var(--ink)}
-.tg .kc small{font:10px/1 WK;color:var(--cocoa);margin-left:1px}
-.tg.sel{z-index:2}
-@keyframes sw{from{rotate:-.8deg}to{rotate:.8deg}}
-.tg:nth-child(2n){animation-duration:4.8s}.tg:nth-child(3n){animation-duration:5.6s;animation-delay:-1s}
-.tg.add .nm{color:var(--cocoa);font-size:15px}
-/* 选中渠道的详情：普通行 */
-.det{position:relative;margin:0 6px;padding:16px 26px 18px;background:radial-gradient(closest-side,rgba(252,250,244,.86) 62%,rgba(252,250,244,0))}
+/* 选中渠道详情 */
+.det{position:relative;margin:0 6px;padding:16px 26px 18px}
 .det h2{display:flex;align-items:baseline;gap:8px;font:20px/1.2 ZK;font-weight:400}
-.det h2 em{font:16px/1 Script;color:#3f9a80;font-style:normal}
-.det h2 .ed{margin-left:auto;font:13px/1.2 WK;color:var(--cocoa);border-bottom:1.1px dashed var(--cocoa);padding:6px 0 2px}
-.rw{display:flex;align-items:center;gap:10px;min-height:40px;font-size:14px}
-.rw img{width:22px;flex:none}
-.rw .k{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rw .k small{display:block;font-size:11px;color:var(--cocoa);opacity:.85}
-.rw .v{font:13px/1 BalooX;white-space:nowrap}.rw .v.bad{color:#c9786a}.rw .v.ok{color:#3f9a80}
-.sep{height:10px;margin:2px 0;background:radial-gradient(circle,#c9b6a5 1.2px,transparent 1.6px) 0 50%/10px 10px repeat-x;opacity:.8}
-.mods{display:flex;flex-wrap:wrap;gap:6px 8px;padding:6px 0 2px}
-.mods span{font:12px/1 Baloo;font-weight:600;padding:6px 10px 6px 8px;border-radius:14px;background:rgba(196,232,218,.75);color:#2f6e58;display:inline-flex;align-items:center;gap:5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mods span i{width:6px;height:6px;border-radius:3px;background:#3f9a80;flex:none}
-.mods span.off{background:rgba(233,220,205,.8);color:#8a5c46}.mods span.off i{background:#bfae9e}
+.det h2 em{font:16px/1 Script;color:var(--mint-d);font-style:normal}
+.det h2 .ed{margin-left:auto;font:13px/1.2 WK;color:var(--cocoa);border-bottom:1.1px dashed var(--cocoa);padding:6px 0 2px;position:relative}
+.det h2 .ed::before{content:'';position:absolute;inset:-8px -14px}
+.pull{margin-top:8px;padding:8px 0 4px}
+.pl2{max-height:220px;overflow-y:auto;scrollbar-width:none}
 /* 出单机 + 纸卷 */
 .mach{position:relative;margin:18px auto 0;width:340px;height:222px;z-index:6}
 .mach>img{position:absolute;left:0;top:0;width:340px;display:block}
@@ -56,91 +23,22 @@ html,body{height:100%}body{overflow:hidden;color:var(--ink);font-family:WK,sans-
 .win small{font:10px/1 WK;color:var(--cocoa);letter-spacing:.3em;margin-bottom:3px}
 .win b{font:25px/1 BalooX;color:var(--ink);letter-spacing:.02em}
 .mach .pl{position:absolute;width:20px}
-.roll{position:relative;margin:-68px auto 0;width:208px;z-index:7;padding-bottom:140px}
-.roll svg.paper{position:absolute;left:0;top:0;overflow:visible}
-.roll .lead{height:68px}.seg{position:relative;height:96px;padding:16px 40px 0 16px}
-.seg .st{font:19px/1.2 ZK;letter-spacing:.04em}
-.seg .mt{margin-top:6px;font-size:11.5px;color:var(--cocoa);display:flex;gap:6px;white-space:nowrap}
-.seg .mt span{overflow:hidden;text-overflow:ellipsis}
-.seg .tm{position:absolute;right:12px;top:52px;font:12px/1 BalooX;color:var(--ink);opacity:.8}
-.seg .cp{position:absolute;right:10px;top:12px;width:24px}
-.seg .mk{position:absolute;right:13px;top:26px;width:18px;height:18px;overflow:visible}
-.seg.fail .st{color:#b0604f}
-.seg .ii{display:inline-grid;place-items:center;width:28px;height:28px;margin:-6px -6px -6px -2px;vertical-align:middle;cursor:pointer}
-.seg .tip{position:absolute;left:8px;right:8px;top:74px;z-index:9;font:12px/1.5 WK;background:var(--P);border:1.3px solid var(--ink);padding:6px 10px;border-radius:10px;opacity:0;transform:translateY(4px);transition:.18s;pointer-events:none}
-.seg .tip.on{opacity:1;transform:none}
-.seg.new{animation:out 1.2s cubic-bezier(.3,1.2,.5,1) both}
-@keyframes out{from{transform:translateY(-30px);opacity:0}to{transform:none;opacity:1}}
-.seg.dim{opacity:.55}
-.more{display:block;margin:6px auto 0;font:13px/1.2 WK;color:var(--cocoa);border-bottom:1.1px dashed var(--cocoa);padding:6px 0 2px}
-/* 底栏 */
-.navfade{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:38;pointer-events:none;-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent);background:linear-gradient(to top,rgba(228,243,237,.9),rgba(228,243,237,0))}
-.pnav{position:fixed;z-index:40;left:16px;right:16px;max-width:408px;margin:0 auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));height:62px;padding:5px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;border-radius:31px;background:rgba(252,250,244,.62);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 26px -14px rgba(74,48,39,.45)}
-.pill{position:absolute;z-index:0;top:5px;height:52px;border-radius:26px;background:rgba(196,232,218,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
-.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:26px;color:#7a5a4c;text-align:center}
-.tab span{font-size:11px;line-height:1.2}.tab.on{color:#4a3027}.tab.on>span{font-weight:600}
-.tab .dot{position:absolute;top:-1px;left:19px;width:7px;height:7px;border-radius:4px;background:#3f9a80;box-shadow:0 0 0 2px rgba(252,250,244,.95)}
-.pnav,.pnav *{font-family:"OPPO Sans","HarmonyOS Sans SC","PingFang SC","Noto Sans CJK SC","Source Han Sans SC",system-ui,sans-serif}
-
-/*V=52 新单「挂上去」也换成同款店章「开」（开单；「挂」不吉利已换掉）：三样（名字、地址、密钥）没填齐时淡着，填齐了抬起来。V=51 保存改成薄荷油墨店章「存」：没改时淡淡悬着；有改动时章抬起来、墨色变实，轻轻上下浮；点一下「啪」盖在单子上，留下印子，再改就又抬起来*/.sv.st{width:84px;height:84px;margin:12px auto 0;display:block;color:#2f6e58;transition:none}.sv.st:active{scale:1}.sv.st .sl{position:absolute;inset:0;display:block;rotate:-10deg;transform-origin:50% 50%;transition:opacity .25s,translate .3s cubic-bezier(.3,1.3,.5,1),scale .3s cubic-bezier(.3,1.3,.5,1)}.sv.st svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.sv.st b{position:absolute;inset:0;display:grid;place-items:center;font:700 27px/1 ZK;color:currentColor;padding-bottom:2px}.sv.st::after{content:'';position:absolute;left:18px;right:18px;bottom:-6px;height:8px;border-radius:50%;background:radial-gradient(closest-side,rgba(47,110,88,.22),transparent);transition:opacity .25s,scale .3s}.sv.st:not(.mute):not(.inked) .sl{translate:0 -7px;scale:1.04;animation:svb 2.4s ease-in-out .3s infinite alternate}@keyframes svb{to{translate:0 -10px}}.sv.st.mute .sl{opacity:.3;translate:0 -7px}.sv.st.mute{opacity:1}.sv.st.inked .sl{opacity:.8;mix-blend-mode:multiply;animation:svk .34s cubic-bezier(.2,1.2,.4,1) both}.sv.st.inked::after{opacity:0}.sv.st:not(.mute):active .sl{translate:0 -2px;scale:.97;animation:none}@keyframes svk{0%{scale:1.3;translate:0 -14px;opacity:.5}55%{scale:.94;translate:0 0;opacity:.9}100%{scale:1;translate:0 0;opacity:.8}}@media (prefers-reduced-motion:reduce){.sv.st .sl{animation:none!important}}
-.f{display:flex;align-items:center;gap:10px;min-height:44px;border-bottom:1.1px dashed rgba(138,92,70,.45)}
-.f label{flex:none;width:44px;font-size:13px;color:var(--cocoa)}
-.f input{flex:1;min-width:0;border:0;background:none;outline:0;font:15px/1.4 WK;color:var(--ink);padding:8px 0}
-.f input::placeholder{color:#b9a596}
-.f input.mono{font:600 14px/1.4 Baloo,WK}
-.fmt{display:flex;gap:6px;flex-wrap:wrap}
-.fmt button,.mods button.ch{font:12px/1 Baloo;font-weight:600;padding:7px 11px;border-radius:14px;background:rgba(233,220,205,.7);color:#8a5c46}
-.fmt button.on{background:rgba(196,232,218,.9);color:#2f6e58}
-.tx{font:13px/1.2 WK;color:var(--cocoa);border-bottom:1.1px dashed var(--cocoa);padding:8px 0 2px;white-space:nowrap}
-.tx.danger{color:#b0604f;border-color:#b0604f}
-.acts{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
-.det .sv.st{margin:14px auto 0;position:relative}[hidden]{display:none!important}
-.mods span.nw::after{content:"新";font:10px/1 ZK;color:#fbf6ea;background:#3f9a80;border-radius:6px;padding:2px 4px;margin-left:2px}
-.mods span{cursor:default}
-.pull{margin-top:8px;padding:8px 0 4px}
-.pull .q{display:flex;align-items:center;gap:8px;border-bottom:1.1px dashed rgba(138,92,70,.45);min-height:40px}
-.pull .q input{flex:1;border:0;background:none;outline:0;font:14px/1.4 Baloo,WK;color:var(--ink)}
-.pull .ld{display:flex;align-items:center;gap:8px;min-height:44px;font-size:13px;color:var(--cocoa)}
-.pr{display:flex;align-items:center;gap:10px;width:100%;min-height:40px;text-align:left;font:600 13.5px/1.3 Baloo,WK;color:var(--ink)}
-.pr .bx{flex:none;width:18px;height:18px;border-radius:5px;border:1.3px solid var(--ink);display:grid;place-items:center;background:var(--P)}
-.pr.on .bx{background:#7cc4ad}.pr.on .bx::after{content:"";width:8px;height:4px;border:2px solid var(--ink);border-top:0;border-right:0;rotate:-45deg;translate:0 -1px}
-.pr .nmx{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pr .hv{font:11px WK;color:#8a5c46;opacity:.8}
-.pr[disabled]{opacity:.45}
-.pl2{max-height:220px;overflow-y:auto;scrollbar-width:none}
-.go{font:15px/1 ZK;padding:11px 18px 10px;border-radius:12px;background:linear-gradient(#a6dcc6,#7cc4ad);border:1.3px solid var(--ink);color:var(--ink);box-shadow:0 3px 0 rgba(91,58,44,.25)}
-.go b{font:14px BalooX}.go[disabled]{opacity:.45}
-.err{font-size:12px;color:#b0604f;min-height:0}
-
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+#roll{margin:-68px auto 0;z-index:7;padding-bottom:140px}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
-<img class="drizzle" src="today-bg.png" alt="">
-<header class="lhead"><div class="lf"><button class="pb glass" aria-label="回到设置"><svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="m15 18-6-6 6-6"/></svg></button><div class="ttl"><span class="sc" aria-hidden="true">channel</span><h1>渠道</h1></div></div><button class="pb glass" aria-label="找渠道"><svg width="19" height="19" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3l3.6 3.6"/></svg></button></header>
+<img class="drizzle" src="../mc/img/drizzle.png" alt="">
 <div class="railw"><div class="rod" aria-hidden="true"></div><div class="track"><div class="tin" id="tin" role="listbox" aria-label="渠道"></div></div></div>
-<section class="det" id="det" aria-live="polite"></section>
+<section class="det soft" id="det" aria-live="polite"></section>
 <div class="mach"><img src="printer.png" alt=""><div class="win" aria-label="今日出单 1284 张"><small>今日</small><b>1,284</b></div>
-<img class="pl" src="vc-rs-pearl.png" style="left:-6px;top:196px" alt=""><img class="pl" src="vc-rs-pearl.png" style="left:12px;top:206px;width:15px" alt=""><img class="pl" src="vc-tg-leaf.png" style="right:-8px;top:178px;width:30px;rotate:18deg" alt=""><img class="pl" src="vc-rs-pearl.png" style="right:22px;top:204px;width:16px" alt=""></div>
-<div class="roll" id="roll"></div>
-</div>
-<div class="navfade" aria-hidden="true"></div>
-<nav class="pnav" aria-label="主导航"><span class="pill" aria-hidden="true"></span>
-<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13C5 8.6 8.4 6.6 12 6.6s7 2 9.5 6.4C19 17.3 15.6 19.2 12 19.2S5 17.3 2.5 13Z" fill="#c4e8da"/><circle cx="12" cy="12.9" r="3.3" fill="#5b3a2c"/><circle cx="13.2" cy="11.8" r="0.9" fill="#fbf6ea" stroke="none"/><path d="M8 6.1 7 4.2M12 5.4V3.3M16 6.1l1-1.9"/></svg><span>今天</span></button>
-<button class="tab"><span style="position:relative;display:inline-flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="16.5" rx="2.6" fill="#c4e8da"/><path d="M8.2 3v16.5"/><path d="M13.7 13.4c-1.9-1.3-2.9-2.3-2.9-3.4a1.45 1.45 0 0 1 2.9-.5 1.45 1.45 0 0 1 2.9.5c0 1.1-1 2.1-2.9 3.4Z" fill="#5b3a2c" stroke="none"/><path d="M14.6 19.5v3l1.3-1 1.3 1v-3" fill="#fbf6ea"/></svg><span class="dot"></span></span><span>记忆</span></button>
-<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1 0-1.9-.1-2.8-.4L4.8 19.6l1.3-3.5C4.6 14.8 3.5 13.1 3.5 11.2c0-3.9 3.8-7 8.5-7Z" fill="#c4e8da"/><circle cx="8.6" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="12" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/><circle cx="15.4" cy="11.3" r="1.1" fill="#5b3a2c" stroke="none"/></svg><span>聊天</span></button>
-<button class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 21c.5-3.8 3.6-6.3 7.5-6.3s7 2.5 7.5 6.3Z" fill="#c4e8da"/><circle cx="12" cy="8.6" r="4.6" fill="#c4e8da"/><circle cx="10.3" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><circle cx="13.7" cy="8.4" r="0.75" fill="#5b3a2c" stroke="none"/><ellipse cx="9.4" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/><ellipse cx="14.6" cy="10.3" rx="0.9" ry="0.55" fill="#e7b4a4" stroke="none"/></svg><span>人格</span></button>
-<button class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2" stroke="#5b3a2c" stroke-width="3.2" stroke-dasharray="2.7 3.74"/><circle cx="12" cy="12" r="6.6" fill="#c4e8da" stroke="#5b3a2c" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fbf6ea" stroke="#5b3a2c" stroke-width="1.5"/></svg><span>设置</span></button>
-</nav>
-
-</div>
+<img class="pl" src="../mc/img/pearl.png" style="left:-6px;top:196px" alt=""><img class="pl" src="../mc/img/pearl.png" style="left:12px;top:206px;width:15px" alt=""><img class="pl" src="../mc/img/cup-leaf.png" style="right:-8px;top:178px;width:30px;rotate:18deg" alt=""><img class="pl" src="../mc/img/pearl.png" style="right:22px;top:204px;width:16px" alt=""></div>
+<div id="roll"></div>
+</div></div>
 <script src="../ui.js?v=57"></script>
+<script src="../mc/mc.js?v=1"></script>
 <script>
-const INK='#5b3a2c',C='#8a5c46',P='#fbf6ea';
-const ST={ok:{band:['#7cc4ad','#3f9a80'],tint:'#c4e8da',dia:'#9fd6c3',cup:'mint'},
- making:{band:['#b07a5e','#8a5c46'],tint:'#e9dccd',dia:'#d6c0aa',cup:'cocoa'},
- fail:{band:['#e3a08f','#c9786a'],tint:'#f3d6cc',dia:'#e9b5a7',cup:'berry'},
- warn:{band:['#f0cf8f','#c99a48'],tint:'#f5e4c3',dia:'#ecd09c',cup:'caramel'},
- empty:{band:['#d9cbbd','#bfae9e'],tint:'#ece4da',dia:'#d9cbbd',cup:'empty'}};
+document.getElementById('app').prepend(MC.head({title:'渠道',en:'channel',back:'回到设置',right:[{icon:'search',label:'找渠道'}]}));
+MC.nav('设置');
+const ST=MC.STATES;
 const CH=[
  {n:'主渠道',h:'api.mintchoco.dev',f:'OpenAI',s:'ok',k:3,keys:[['••••7f2a','今天 412 次','ok'],['••••c09e','用完了','bad'],['••••51bd','备用','']],mods:[['gpt-4o-mini',1],['claude-sonnet-4-5-20250929',1],['gemini-2.5-pro',1],['deepseek-chat',0]]},
  {n:'备用渠道',h:'relay.example.com',f:'OpenAI',s:'fail',k:1,keys:[['••••0d3e','过期了','bad']],mods:[['gpt-4o',0]]},
@@ -157,38 +55,22 @@ const SEG=[
  {st:'ok',t:'回好了',c:'主渠道',m:'gpt-4o-mini',tm:'20:41'},
  {st:'ok',t:'回好了',c:'焦糖站',m:'o4-mini',tm:'20:30'},
 ];
-let sel=0,uid=0;
-function tagSVG(c,h,id,add){const s=ST[c.s]||ST.empty,W=62,T=14,x0=4,x1=W-4,r=10,k=4,st=(x1-x0)/k,b=st/2,y1=T+h;
- let d=`M${x0} ${y1}V${T+r}Q${x0} ${T} ${x0+r} ${T}H${x1-r}Q${x1} ${T} ${x1} ${T+r}V${y1}`;for(let i=0;i<k;i++)d+=`A${b} ${b} 0 0 1 ${x1-st*(i+1)} ${y1}`;d+='Z';
- const sh=d.replace(/(-?\d+(\.\d+)?) (-?\d+(\.\d+)?)/g,(m,a,_,y)=>a+' '+(+y+3));
- if(add)return `<svg width="${W}" height="${y1+10}"><path d="${d}" fill="rgba(252,250,244,.5)" stroke="${C}" stroke-width="1.3" stroke-dasharray="5 4"/><rect x="${W/2-7}" y="0" width="14" height="22" rx="3" fill="${C}" stroke="${INK}" stroke-width="1.2"/><path d="M${W/2} ${y1-30}v14M${W/2-7} ${y1-23}h14" stroke="${C}" stroke-width="2" stroke-linecap="round"/></svg>`;
- return `<svg width="${W}" height="${y1+10}"><defs><linearGradient id="f${id}" x1="0" y1="0" x2="0" y2="1"><stop offset=".25" stop-color="${P}"/><stop offset="1" stop-color="${s.tint}"/></linearGradient>
- <linearGradient id="mk${id}" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".9"/></linearGradient><mask id="m${id}"><rect width="${W}" height="${y1+10}" fill="url(#mk${id})"/></mask>
- <pattern id="d${id}" width="16" height="14" patternUnits="userSpaceOnUse" patternTransform="translate(${x0} ${T})"><rect x="1.5" y="1.5" width="13" height="11" rx="2.5" fill="${s.dia}" opacity=".55"/></pattern>
- <linearGradient id="b${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s.band[0]}"/><stop offset="1" stop-color="${s.band[1]}"/></linearGradient><clipPath id="c${id}"><path d="${d}"/></clipPath></defs>
- <path d="${sh}" fill="${INK}" opacity=".16"/><path d="${d}" fill="url(#f${id})" ${c.s==='empty'?'':''}/>
- <g clip-path="url(#c${id})"><rect x="0" y="${T}" width="${W}" height="${h}" fill="url(#d${id})" mask="url(#m${id})"/><rect x="0" y="${T}" width="${W}" height="9" fill="url(#b${id})"/></g>
- <path d="${d}" fill="none" stroke="${INK}" stroke-width="1.4" ${c.s==='empty'?'stroke-dasharray="6 4"':''}/>
- <path d="M${x0+4} ${T+13}H${x1-4}" stroke="${C}" stroke-width=".7" opacity=".4"/>
- <rect x="${W/2-7}" y="0" width="14" height="22" rx="3" fill="url(#b${id})" stroke="${INK}" stroke-width="1.2"/><path d="M${W/2-3} 4v13" stroke="${P}" stroke-width="1" opacity=".6" stroke-linecap="round"/></svg>`}
-function renderTags(){const tin=document.getElementById('tin');tin.innerHTML='';
- CH.forEach((c,i)=>{const h=i===sel?182:160,id='t'+(uid++),e=document.createElement('div');e.className='tg'+(i===sel?' sel':'');e.setAttribute('role','option');e.setAttribute('aria-selected',i===sel);e.tabIndex=0;e.setAttribute('aria-label',c.n+'，'+c.k+' 把钥匙');
-  e.innerHTML=tagSVG(c,h,id)+`<span class="nm">${c.n}</span><img class="cp" src="vc-tg-${ST[c.s].cup}.png" style="top:${h-34}px" alt=""><span class="kc" style="top:${h+0}px">${c.k}<small>把</small></span>`;
-  e.querySelector('.kc').style.top=(h-42)+'px';e.querySelector('.cp').style.top=(h-22)+'px';
-  e.onclick=()=>{sel=i;mode='view';renderTags();renderDet()};e.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();e.click()}};tin.appendChild(e)});
- const a=document.createElement('button');a.className='tg add'+(sel===-1?' sel':'');a.setAttribute('aria-label','新渠道');a.innerHTML=tagSVG({},sel===-1?182:160,'a'+(uid++),1)+`<span class="nm">新渠道</span>`;a.onclick=()=>{sel=-1;mode='new';renderTags();renderDet()};tin.appendChild(a)}
-const STAMP=(w,id)=>`<button class="sv st mute" aria-label="${w=='开'?'开单':'保存'}"><i class="sl"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="${id}" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="50" cy="50" r="43" fill="none" stroke="currentColor" stroke-width=".9"/><circle cx="50" cy="50" r="27" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="1.2 2.6"/><text font-size="8.2" font-weight="700" fill="currentColor"><textPath href="#${id}" textLength="226" lengthAdjust="spacing">MINT CHOCO ✦ ${w=='开'?'NEW ORDER':'ORDER SAVED'} ✦ TEA ATELIER ✦</textPath></text></svg><b>${w}</b></i></button>`;
+let sel=0;
 const UP={OpenAI:['gpt-4o','gpt-4o-mini','gpt-4.1','gpt-4.1-mini','gpt-4.1-nano','o3','o4-mini','gpt-5','gpt-5-mini','text-embedding-3-large'],Anthropic:['claude-opus-4-1-20250805','claude-sonnet-4-5-20250929','claude-haiku-4-5','claude-3-5-haiku-20241022'],Gemini:['gemini-2.5-pro','gemini-2.5-flash','gemini-2.5-flash-lite','gemini-2.0-flash']};
+function renderTags(){const tin=document.getElementById('tin');tin.innerHTML='';
+ CH.forEach((c,i)=>{const e=MC.tag({name:c.n,state:c.s,count:c.k,unit:'把',sel:i===sel});
+  e.onclick=()=>{sel=i;mode='view';renderTags();renderDet()};tin.appendChild(e)});
+ const a=MC.tag({add:1,name:'新渠道',sel:sel===-1});a.onclick=()=>{sel=-1;mode='new';renderTags();renderDet()};tin.appendChild(a)}
 let mode='view';const $=q=>document.querySelector(q),$$=q=>[...document.querySelectorAll(q)];
 const toast=(t,o)=>window.MC&&MC.toast?MC.toast(t,o):0;
 function renderDet(){const d=document.getElementById('det');
  if(mode==='new'||mode==='edit')return renderForm(d);
  const c=CH[sel];
- const rows=c.keys.length?c.keys.map((k,j)=>`<div class="rw"><img src="vc-tg-${k[2]==='bad'?'berry':k[2]==='ok'?'mint':'empty'}.png" alt=""><span class="k">钥匙 ${j+1}<small>${k[0]}</small></span><span class="v ${k[2]}">${k[1]}</span></div>`).join(''):`<div class="rw"><img src="vc-tg-empty.png" alt=""><span class="k">还没有钥匙</span></div>`;
+ const rows=c.keys.length?c.keys.map((k,j)=>MC.row({cup:k[2]==='bad'?'fail':k[2]==='ok'?'ok':'empty',k:'钥匙 '+(j+1),sub:k[0],v:k[1],vs:k[2]})).join(''):MC.row({cup:'empty',k:'还没有钥匙'});
  d.innerHTML=`<h2>${c.n}<em>${c.k?c.k+' keys':'empty'}</em><button class="ed" id="edB">改</button></h2>${rows}
- <div class="rw nk" hidden><img src="vc-tg-empty.png" alt=""><span class="f" style="flex:1;border:0"><input class="mono" id="nkI" placeholder="粘贴密钥" aria-label="新密钥" autocomplete="off" spellcheck="false"></span><button class="tx" id="nkOk">放进去</button></div>
+ <div class="rw nk" hidden><img src="${MC.cup('empty')}" alt=""><span class="f" style="flex:1;border:0"><input class="mono" id="nkI" placeholder="粘贴密钥" aria-label="新密钥" autocomplete="off" spellcheck="false"></span><button class="tx" id="nkOk">放进去</button></div>
  <div class="acts"><button class="tx" id="nkB">＋ 再放一把</button></div>
- <div class="sep"></div><div class="mods" id="mods">${c.mods.map(m=>`<span class="${m[1]?'':'off'}${m[2]?' nw':''}"><i></i>${m[0]}</span>`).join('')}</div>
+ <div class="sep"></div>${MC.chips(c.mods)}
  <div class="acts"><span></span><button class="tx" id="puB">拉新的 ›</button></div><div class="pull" id="pull" hidden></div>`;
  $('#edB').onclick=()=>{mode='edit';renderDet()};
  $('#nkB').onclick=()=>{const r=$('.nk');r.hidden=!r.hidden;if(!r.hidden)$('#nkI').focus()};
@@ -197,10 +79,10 @@ function renderDet(){const d=document.getElementById('det');
  $('#puB').onclick=()=>openPull(c);}
 function openPull(c){const p=$('#pull');if(!p.hidden){p.hidden=true;$('#puB').textContent='拉新的 ›';return}
  p.hidden=false;$('#puB').textContent='收起 ›';
- if(!c.keys.length){p.innerHTML=`<div class="ld"><img src="vc-tg-berry.png" style="width:20px" alt="">先放一把钥匙才能拉</div>`;return}
- p.innerHTML=`<div class="ld"><svg width="18" height="18" viewBox="-9 -9 18 18">${mark('making')}</svg>正在问上游有哪些模型…</div>`;
+ if(!c.keys.length){p.innerHTML=`<div class="ld"><img src="${MC.cup('fail')}" style="width:20px" alt="">先放一把钥匙才能拉</div>`;return}
+ p.innerHTML=`<div class="ld"><svg width="18" height="18" viewBox="-9 -9 18 18">${MC.mark('making')}</svg>正在问上游有哪些模型…</div>`;
  setTimeout(()=>{if(p.hidden)return;
-  if(c.s==='fail'){p.innerHTML=`<div class="ld"><img src="vc-tg-berry.png" style="width:20px" alt="">上游没回话，钥匙可能过期了<button class="tx" id="rt" style="margin-left:auto">再试</button></div>`;$('#rt').onclick=()=>{p.hidden=true;openPull(c)};return}
+  if(c.s==='fail'){p.innerHTML=`<div class="ld"><img src="${MC.cup('fail')}" style="width:20px" alt="">上游没回话，钥匙可能过期了<button class="tx" id="rt" style="margin-left:auto">再试</button></div>`;$('#rt').onclick=()=>{p.hidden=true;openPull(c)};return}
   const have=new Set(c.mods.map(m=>m[0])),list=UP[c.f||'OpenAI'];const pick=new Set();
   p.innerHTML=`<label class="q"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8a5c46" stroke-width="1.5" stroke-linecap="round"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3l3.6 3.6"/></svg><input id="puI" placeholder="在 ${list.length} 个里找" aria-label="在上游里找" autocapitalize="off" spellcheck="false"></label>
   <div class="pl2" id="pl2">${list.map(n=>`<button class="pr${have.has(n)?' on':''}" data-n="${n}" ${have.has(n)?'disabled':''}><span class="bx"></span><span class="nmx">${n}</span>${have.has(n)?'<span class="hv">已有</span>':''}</button>`).join('')}</div>
@@ -209,19 +91,19 @@ function openPull(c){const p=$('#pull');if(!p.hidden){p.hidden=true;$('#puB').te
   $$('#pl2 .pr:not([disabled])').forEach(b=>b.onclick=()=>{const n=b.dataset.n;pick.has(n)?pick.delete(n):pick.add(n);b.classList.toggle('on');upd()});
   $('#puI').oninput=e=>{const q=e.target.value.trim().toLowerCase();$$('#pl2 .pr').forEach(b=>b.hidden=q&&!b.dataset.n.includes(q))};
   $('#puX').onclick=()=>openPull(c);
-  $('#puG').onclick=()=>{const add=[...pick];add.forEach(n=>c.mods.push([n,1,1]));renderDet();toast(`拉进来 ${add.length} 个模型`);printSeg({st:'ok',t:'拉进来 '+add.length+' 个',c:c.n,m:add[0]+(add.length>1?' 等':''),tm:now()})};
+  $('#puG').onclick=()=>{const add=[...pick];add.forEach(n=>c.mods.push([n,1,1]));renderDet();toast(`拉进来 ${add.length} 个模型`);printSeg({st:'ok',t:'拉进来 '+add.length+' 个',c:c.n,m:add[0]+(add.length>1?' 等':''),tm:MC.now()})};
  },900)}
 function renderForm(d){const ed=mode==='edit',c=ed?CH[sel]:{n:'',h:'',f:'OpenAI'};let f=c.f||'OpenAI';
  d.innerHTML=`<h2>${ed?c.n:'新渠道'}<em>${ed?'edit':'new'}</em>${ed?'<button class="ed" id="bk">不改了</button>':''}</h2>
  <div class="f"><label for="fn">名字</label><input id="fn" maxlength="6" value="${c.n}" placeholder="给它起个名字"></div>
  <div class="f"><label for="fh">地址</label><input id="fh" class="mono" value="${c.h||''}" placeholder="api.example.com" inputmode="url" autocapitalize="off" spellcheck="false"></div>
- <div class="f"><label>格式</label><div class="fmt">${Object.keys(UP).map(k=>`<button data-f="${k}" class="${k===f?'on':''}">${k}</button>`).join('')}</div></div>
+ <div class="f"><label>格式</label><div class="seg-pick">${Object.keys(UP).map(k=>`<button data-f="${k}" class="${k===f?'on':''}">${k}</button>`).join('')}</div></div>
  ${ed?'':`<div class="f"><label for="fk">密钥</label><input id="fk" class="mono" placeholder="粘贴第一把密钥" autocomplete="off" spellcheck="false"></div>`}
- <div class="err" id="fe"></div>${STAMP(ed?'存':'开','sr'+(uid++))}
+ <div class="err" id="fe"></div>${MC.stamp(ed?'存':'开')}
  ${ed?'<div class="acts"><span></span><button class="tx danger" id="rip">撕掉这张单 ›</button></div>':''}`;
  const sv=d.querySelector('.sv'),ok=()=>{const a=$('#fn').value.trim(),b=$('#fh').value.trim(),k=ed?'x':$('#fk').value.trim();const dirty=ed?(a!==c.n||b!==(c.h||'')||f!==(c.f||'OpenAI')):true;sv.classList.toggle('mute',!(a&&b&&k&&dirty))};
  $$('#det input').forEach(i=>i.oninput=ok);
- $$('.fmt button').forEach(b=>b.onclick=()=>{f=b.dataset.f;$$('.fmt button').forEach(x=>x.classList.toggle('on',x===b));ok()});
+ $$('.seg-pick button').forEach(b=>b.onclick=()=>{f=b.dataset.f;$$('.seg-pick button').forEach(x=>x.classList.toggle('on',x===b));ok()});
  if(ed){$('#bk').onclick=()=>{mode='view';renderDet()};
   $('#rip').onclick=async()=>{const yes=window.MC&&MC.confirm?await MC.confirm({title:'撕掉这张单？',body:`「${c.n}」和它的 ${c.k} 把钥匙会一起拿掉，<b>撕了就得重新接</b>。`,ok:'撕掉'}):confirm('撕掉？');if(!yes)return;
    const gone=CH.splice(sel,1)[0];sel=Math.max(0,sel-1);mode='view';renderTags();renderDet();toast(`撕掉了「${gone.n}」`,{undo:()=>{CH.splice(CH.indexOf(CH[sel])+1,0,gone);renderTags();renderDet()}})}}
@@ -229,29 +111,13 @@ function renderForm(d){const ed=mode==='edit',c=ed?CH[sel]:{n:'',h:'',f:'OpenAI'
   if(CH.some((x,j)=>x.n===n&&(!ed||j!==sel))){$('#fe').textContent='已经有叫「'+n+'」的了';return}
   sv.classList.add('inked');
   setTimeout(()=>{if(ed){Object.assign(c,{n,h,f});toast('存好了')}else{const k=$('#fk').value.trim();CH.push({n,h,f,s:'making',k:1,keys:[['••••'+k.slice(-4),'连接中','']],mods:[]});sel=CH.length-1;
-    printSeg({st:'making',t:'正在接',c:n,m:h,tm:now()});
+    printSeg({st:'making',t:'正在接',c:n,m:h,tm:MC.now()});
     setTimeout(()=>{const x=CH.find(y=>y.n===n);if(!x)return;x.s='ok';x.keys[0][1]='能用';x.keys[0][2]='ok';SEG[0]={...SEG[0],st:'ok',t:'接上了',nw:0};renderRoll();renderTags();if(mode==='view'&&CH[sel]===x)renderDet()},1800)}
    mode='view';renderTags();renderDet();
    const t=document.querySelector('.tg.sel');t&&t.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'})},380)};
  ok()}
-function now(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
 let cnt=1284;
 function printSeg(x){SEG.forEach(s=>s.nw=0);SEG.unshift({...x,nw:1});cnt++;$('.win b').textContent=cnt.toLocaleString('en');renderRoll()}
-function mark(k){const g=k==='ok'?`<path d="M-5 0-1.5 3.8 5.5-4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`:`<path d="M-4.5-4.5 4.5 4.5M4.5-4.5-4.5 4.5" stroke-linecap="round"/>`;
- if(k==='making')return `<g><circle r="5" fill="none" stroke="${INK}" stroke-width="4.4" stroke-dasharray="8 4.5" stroke-linecap="round"/><circle r="5" fill="none" stroke="${P}" stroke-width="2.4" stroke-dasharray="8 4.5" stroke-linecap="round"/><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2.4s" repeatCount="indefinite"/></g>`;
- return `<g stroke="${INK}" stroke-width="5">${g}</g><g stroke="${P}" stroke-width="2.8">${g}</g>`}
-function renderRoll(){const R=document.getElementById('roll'),W=208,SH=96,N=SEG.length,L=68,H=L+N*SH+40,n=5;
- // 纸卷外形：两侧在每条撕线处有小半圆缺口，底部渐隐
- let d=`M0 0H${W}`;for(let i=1;i<=N;i++){const y=L+i*SH;d+=`V${y-n}A${n} ${n} 0 0 0 ${W} ${y+n}`}d+=`V${H}H0`;for(let i=N;i>=1;i--){const y=L+i*SH;d+=`V${y+n}A${n} ${n} 0 0 0 0 ${y-n}`}d+='Z';
- let tears='';for(let i=1;i<N;i++)tears+=`<path d="M${n+6} ${L+i*SH}H${W-n-6}" stroke="${C}" stroke-width="1.2" stroke-dasharray="2 4" stroke-linecap="round" opacity=".55"/>`;
- let bands='';SEG.forEach((s,i)=>{const t=ST[s.st];bands+=`<rect x="0" y="${L+i*SH}" width="${W}" height="${SH}" fill="url(#rt${s.st})" />`});
- const grads=Object.keys(ST).map(k=>`<linearGradient id="rt${k}" x1="0" x2="1"><stop offset=".55" stop-color="${P}" stop-opacity="0"/><stop offset="1" stop-color="${ST[k].tint}" stop-opacity=".75"/></linearGradient>`).join('');
- R.innerHTML=`<svg class="paper" width="${W}" height="${H}" aria-hidden="true"><defs>${grads}<linearGradient id="pf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdfaf2"/><stop offset="${(H-60)/H}" stop-color="#fdfaf2"/><stop offset="1" stop-color="#fdfaf2" stop-opacity="0"/></linearGradient><linearGradient id="po" x1="0" y1="0" x2="0" y2="1"><stop offset="${(H-90)/H}" stop-color="${INK}"/><stop offset="1" stop-color="${INK}" stop-opacity="0"/></linearGradient><linearGradient id="ps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${INK}" stop-opacity=".22"/><stop offset=".12" stop-color="${INK}" stop-opacity="0"/></linearGradient><clipPath id="pc"><path d="${d}"/></clipPath></defs>
- <path d="${d}" transform="translate(3 3)" fill="${INK}" opacity=".12"/><path d="${d}" fill="url(#pf)"/><g clip-path="url(#pc)">${bands}<rect y="0" width="${W}" height="30" fill="url(#ps)"/><rect y="${L-4}" width="${W}" height="${SH*.4}" fill="url(#ps)" opacity=".5"/></g>${tears}<path d="${d}" fill="none" stroke="url(#po)" stroke-width="1.3"/></svg>`
- +'<div class="lead"></div>'+SEG.map((s,i)=>`<div class="seg ${s.st}${s.nw?' new':''}"><img class="cp" src="vc-tg-${ST[s.st].cup}.png" alt=""><svg class="mk" viewBox="-9 -9 18 18">${mark(s.st)}</svg><div class="st">${s.t}${s.tip?` <button class="ii" aria-label="怎么办"><svg width="14" height="14" viewBox="-7 -7 14 14"><circle r="6" fill="${P}" stroke="${INK}" stroke-width="1.2"/><circle cy="-2.6" r=".85" fill="${INK}"/><path d="M0-.6v3.6" stroke="${INK}" stroke-width="1.3" stroke-linecap="round"/></svg></button>`:''}</div><div class="mt"><span style="flex:none">${s.c}</span><span>${s.m}</span></div><span class="tm">${s.tm}</span>${s.tip?`<div class="tip" role="tooltip">${s.tip}</div>`:''}</div>`).join('')
- +`<button class="more">更早的</button>`;
- R.querySelectorAll('.ii').forEach(b=>b.onclick=e=>{e.stopPropagation();b.closest('.seg').querySelector('.tip').classList.toggle('on')});}
-addEventListener('click',e=>{if(!e.target.closest('.ii'))document.querySelectorAll('.tip.on').forEach(t=>t.classList.remove('on'))});
+function renderRoll(){MC.roll(document.getElementById('roll'),SEG)}
 document.fonts.ready.then(()=>{renderTags();renderDet();renderRoll()});
-const tabs=[...document.querySelectorAll('.tab')],on=tabs[tabs.length-1];on.classList.add('on');const pl=document.querySelector('.pill');if(pl){requestAnimationFrame(()=>{pl.style.left=on.offsetLeft+'px';pl.style.width=on.offsetWidth+'px'})}
 </script></body></html>
