@@ -138,6 +138,20 @@ body{background:repeating-linear-gradient(90deg,#e4f5ef 0 24px,#dcf1e9 24px 48px
 .sd{border:0;border-radius:12px;background:#6b4535;box-shadow:none;filter:none;color:#fffaf1}
 .sd::before{display:none}
 .tm{color:#7aa596}.tm::before{background:#9fd2bd}
+
+/* 07:50 B：气泡、名牌、横幅、输入栏都换生图底（彩铅水彩，DESIGN §1.5），九宫格拉伸，和物件同一画风 */
+.bb{background:none;border-radius:0;box-shadow:none;border:solid transparent;border-width:22px 20px;border-image:url(img/b_char.png) 60 54 fill / 22px 20px round;padding:2px 2px 0;filter:drop-shadow(0 4px 8px rgba(70,110,95,.16))}
+.me .bb{background:none;border-image-source:url(img/b_me.png);color:#3d3a2c}
+.me .bb em{color:var(--cocoa)}
+.nm,.me .nm,.ev .lb{z-index:3;top:-14px;padding:0 4px;height:28px;line-height:28px;border:solid transparent;border-width:0 16px;border-radius:0;background:none;border-image:url(img/b_tag.png) 0 86 fill / 0 16px stretch;color:#fbeedb;font:12.5px/28px ZK,sans-serif;letter-spacing:.1em}
+.me .nm{color:#fbeedb}
+.nm{transform:rotate(-2deg)}.me .nm{transform:rotate(2deg)}
+.ev .lb{transform:translateX(-50%) rotate(-2deg);z-index:3}
+.sprout,.dots{display:none}
+.ev .band{background:none;box-shadow:none;border:solid transparent;border-width:26px 34px;border-image:url(img/b_tag.png) 64 86 fill / 26px 34px stretch;padding:0;filter:drop-shadow(0 4px 8px rgba(70,50,40,.2))}
+.ev .band p{padding:0}
+.ip{background:none;box-shadow:none;border:solid transparent;border-width:20px 18px;border-image:url(img/b_char.png) 60 54 fill / 20px 18px round;padding:0 2px;height:70px;filter:drop-shadow(0 4px 8px rgba(70,110,95,.18))}
+.fd{background:rgba(255,255,255,.55);border:1px dashed #c9a98a}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <linearGradient id="mt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcf3e9"/><stop offset=".6" stop-color="#b3e0cd"/><stop offset="1" stop-color="#93cbb5"/></linearGradient>
