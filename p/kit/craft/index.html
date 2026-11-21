@@ -18,15 +18,15 @@ body{background:repeating-linear-gradient(90deg,#d5efe5 0 24px,#eaf8f2 24px 48px
 .top{padding:52px 22px 0;display:flex;align-items:flex-end;gap:6px}
 .top h1{font-family:ZK,sans-serif;font-weight:400;font-size:30px;color:var(--choc);letter-spacing:.04em}
 .top i{font:28px/1 Script,cursive;color:var(--mint3);transform:rotate(-6deg) translateY(-12px);display:block}
-.list{padding:74px 26px 110px 20px}
-.cc{position:relative;isolation:isolate;padding:66px 24px 118px;min-height:250px}
+.list{padding:92px 26px 110px 20px}
+.cc{position:relative;isolation:isolate;padding:64px 24px 118px;min-height:250px}
 .cc>svg.fr{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;filter:drop-shadow(0 1px 1.2px rgba(110,70,45,.34)) drop-shadow(2px 6px 7px rgba(110,70,45,.26)) drop-shadow(5px 14px 16px rgba(110,70,45,.16))}
 .cc .in{position:relative;z-index:2}
 .cc h3{font-family:ZK,sans-serif;font-weight:400;font-size:24px;line-height:1.38;color:var(--choc);letter-spacing:.02em;-webkit-text-stroke:.45px var(--choc)}
 .cc .dv{display:block;width:100%;height:20px;margin:6px 0 4px}
 .cc p{font-size:14.5px;line-height:1.75;color:#5d4335}
 /* 日期巧克力牌 */
-.plq{position:absolute;z-index:4;left:0;top:-62px;width:132px;height:112px;transform:rotate(-4deg);transform-origin:50% 60%}
+.plq{position:absolute;z-index:4;left:0;top:-80px;width:132px;height:112px;transform:rotate(-4deg);transform-origin:50% 60%}
 .plq svg{position:absolute;inset:0;overflow:visible;filter:drop-shadow(0 1px 1.2px rgba(110,70,45,.34)) drop-shadow(2px 6px 7px rgba(110,70,45,.26)) drop-shadow(5px 14px 16px rgba(110,70,45,.16))}
 .plq b{position:absolute;left:0;right:0;top:28px;text-align:center;font:800 29px/1 Baloo,sans-serif;color:#fbeedb;letter-spacing:.01em}
 .plq small{position:absolute;left:0;right:0;top:61px;text-align:center;font:11.5px/1 ZK,sans-serif;color:#f3e2c8;letter-spacing:.04em}
@@ -183,7 +183,7 @@ function draw(cc){
   <line x1="${P+6}" y1="${fy+3}" x2="${W-P-6}" y2="${fy+3}" stroke="#c9a98a" stroke-width=".7" stroke-dasharray="3 2"/>
   ${cn(P+9,P+31,1,1)}${cn(W-P-9,P+31,-1,1)}${cn(P+9,fy-7,1,-1)}${cn(W-P-9,fy-7,-1,-1)}
   <!-- 邮戳 -->
-  <g transform="translate(${W-P-64} ${fy-48})" opacity=".34" fill="none" stroke="#bfa283" stroke-width=".75" stroke-linecap="round">
+  <g transform="translate(${W-P-64} ${fy-48})" opacity=".58" fill="none" stroke="#bfa283" stroke-width=".75" stroke-linecap="round">
     <circle r="22"/><circle r="17.5" stroke-dasharray="2 2"/>
     <path d="M-58 -5c7-3.5 12 3.5 19 0s12 3.5 19 0M-60 2c7-3.5 12 3.5 19 0s12 3.5 19 0M-56 9c7-3.5 12 3.5 19 0s12 3.5 19 0"/>
     <use href="#cl" x="-9" y="-9" width="18" height="18" fill="#7fc2a8" stroke="none"/>
