@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>聊天室 · 描图样张</title>
+<style>
+/* 2026-11-22 聊天室样张：茶茶给的直播聊天挂件参考（kyri、Mila、streamwidgetshop）只借做法——
+   A 名字小牌压在气泡上沿、两人分薄荷/可可配色；B 气泡两端别小物件；C 普通消息小条，大事用横幅。
+   描边+硬投影同底栏三版。图形全部手写 SVG/CSS。 */
+@font-face{font-family:ZK;src:url(zk.ttf)}
+@font-face{font-family:WK;src:url(wk.ttf)}
+@font-face{font-family:Baloo;src:url(baloo.ttf);font-weight:100 900}
+@font-face{font-family:Script;src:url(script.ttf)}
+:root{--ink:#4a3027;--line:#5b3a2c;--cocoa:#8a5c46;--choc:#5b3a2b;--gold:#c9a063;--cream:#fbf3e4;--mint:#d4efe4;--mint2:#9fd3bf;--mint3:#3f9a80;--msh:#86c2ab;--csh:#d8c09c}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:repeating-linear-gradient(90deg,#d5efe5 0 24px,#eaf8f2 24px 48px);font-family:WK,serif;color:var(--ink);overflow-x:hidden}
+/* 页顶 */
+.hd{position:relative;z-index:10;display:flex;align-items:center;gap:10px;padding:44px 14px 12px}
+.rb{width:38px;height:38px;flex:none;border-radius:50%;border:1px solid rgba(255,255,255,.85);background:rgba(255,255,255,.38);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 1px rgba(255,255,255,.9),0 2px 8px rgba(70,110,95,.18);display:grid;place-items:center}
+.rb svg{width:20px;height:20px}
+.tt{flex:1;text-align:center;position:relative}
+.tt h1{font:400 21px/1.1 ZK,sans-serif;color:var(--choc);letter-spacing:.06em}
+.tt i{position:absolute;left:50%;top:-10px;margin-left:36px;font:19px/1 Script,cursive;color:var(--mint3);transform:rotate(-7deg);white-space:nowrap}
+.tt small{display:block;margin-top:6px;font:11px/1 ZK,sans-serif;color:#8a6a5a;letter-spacing:.1em}
+.tt small::before{content:"";display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--mint3);margin-right:5px;vertical-align:1px}
+/* 聊天流 */
+.flow{padding:14px 18px 120px;display:flex;flex-direction:column;gap:30px}
+.day{align-self:center;display:flex;align-items:center;gap:8px;font:12px/1 ZK,sans-serif;color:var(--cocoa);letter-spacing:.08em}
+.day::before,.day::after{content:"";width:46px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.day::after{transform:scaleX(-1)}
+.day b{font:700 13px/1 Baloo,sans-serif;color:var(--choc);letter-spacing:0}
+.m{position:relative;max-width:80%;margin-top:6px}
+.m.me{align-self:flex-end}
+.bb{position:relative;padding:20px 16px 13px;font-size:14.5px;line-height:1.72;color:#4f382c;background:var(--cream);border:1.6px solid var(--line);border-radius:18px 18px 18px 6px;box-shadow:0 3px 0 var(--csh)}
+.bb::before{content:"";position:absolute;inset:4px;border:1px dashed rgba(138,92,70,.38);border-radius:14px 14px 14px 4px;pointer-events:none}
+.me .bb{background:var(--mint);border-radius:18px 18px 6px 18px;box-shadow:0 3px 0 var(--msh)}
+.me .bb::before{border-color:rgba(63,154,128,.5);border-radius:14px 14px 4px 14px}
+.bb em{font-style:normal;color:var(--mint3)}
+.me .bb em{color:var(--cocoa)}
+/* A 名字小牌 */
+.nm{position:absolute;z-index:3;top:-12px;left:14px;height:23px;padding:0 11px 0 10px;display:flex;align-items:center;gap:5px;font:12px/1 ZK,sans-serif;letter-spacing:.08em;color:#fbeedb;background:var(--choc);border:1.4px solid #3f271d;border-radius:7px 7px 7px 2px;box-shadow:0 2px 0 rgba(63,39,29,.25)}
+.nm::after{content:"";width:5px;height:5px;background:var(--gold);transform:rotate(45deg)}
+.me .nm{left:auto;right:14px;color:#3f271d;background:var(--mint2);border-radius:7px 7px 2px 7px}
+.me .nm::after{background:var(--cream);box-shadow:0 0 0 1px #3f271d}
+/* B 两端小物件 */
+.or{position:absolute;z-index:4;pointer-events:none;overflow:visible;filter:drop-shadow(0 1px .6px rgba(63,39,29,.35))}
+.or.bow{right:-13px;bottom:-11px;width:36px;height:24px;transform:rotate(-8deg)}
+.or.lf{left:-12px;bottom:-9px;width:30px;height:26px;transform:rotate(12deg)}
+.or.sp{right:12px;top:-9px;width:14px;height:14px}
+.tm{margin-top:9px;padding:0 8px;font:600 11px/1 Baloo,sans-serif;color:#9b7c6a;letter-spacing:.04em}
+.me .tm{text-align:right}
+/* C 大事横幅 */
+.ev{position:relative;align-self:center;width:86%;margin:12px 0 4px}
+.ev .lb{position:absolute;z-index:3;left:50%;top:-12px;transform:translateX(-50%);height:22px;padding:0 10px;display:flex;align-items:center;font:11.5px/1 ZK,sans-serif;letter-spacing:.12em;color:#3f271d;background:var(--mint2);border:1.4px solid #3f271d;border-radius:6px}
+.ev .tail{position:absolute;z-index:0;top:10px;width:30px;height:38px;overflow:visible}
+.ev .tail.l{left:-20px}.ev .tail.r{right:-20px;transform:scaleX(-1)}
+.ev .band{position:relative;z-index:1;padding:15px 16px 12px;text-align:center;background:var(--choc);border:1.6px solid #3f271d;border-radius:6px;box-shadow:0 3px 0 rgba(63,39,29,.28)}
+.ev .band::before{content:"";position:absolute;inset:3.5px;border:1px dashed rgba(251,238,219,.5);border-radius:3px}
+.ev p{position:relative;font:400 14px/1.5 ZK,sans-serif;color:#fbeedb;letter-spacing:.06em}
+.ev p small{display:block;font:12px/1.5 WK,serif;color:#e6cfae;letter-spacing:.02em}
+/* 输入栏：同底栏三版 */
+.ip{position:fixed;z-index:20;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));height:58px;display:flex;align-items:center;gap:8px;padding:0 9px;background:var(--cream);border:2px solid var(--line);border-radius:22px;box-shadow:0 4px 0 var(--msh)}
+.pl{width:36px;height:36px;flex:none;border-radius:50%;background:var(--mint2);border:1.4px solid var(--line);display:grid;place-items:center}
+.pl svg{width:16px;height:16px}
+.fd{flex:1;height:38px;border-radius:12px;background:#fffaf1;border:1.2px solid #d8c0a0;font:14px/38px WK,serif;color:#b59a85;padding:0 12px}
+.sd{height:38px;flex:none;padding:0 15px;border:1.4px solid #3f271d;border-radius:10px;background:var(--choc);color:#fbeedb;font:14px/1 ZK,sans-serif;letter-spacing:.12em}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="bow" viewBox="0 0 36 24"><g stroke="#3f271d" stroke-width="1.1" stroke-linejoin="round">
+<path d="M16 13 8.5 22.5l3.6-.4 1.6 2.4L18.5 14Z" fill="#7fc0a8"/><path d="M20 13l7.5 9.5-3.6-.4-1.6 2.4L17.5 14Z" fill="#7fc0a8"/>
+<path d="M18 11.5C13 3 3 2.5 3.4 9.5c.3 5 9 5.5 14.6 2Z" fill="#a8dcc6"/><path d="M18 11.5C23 3 33 2.5 32.6 9.5c-.3 5-9 5.5-14.6 2Z" fill="#a8dcc6"/>
+<path d="M8.5 7.5c2.5-.6 5.5.8 8 3.4M27.5 7.5c-2.5-.6-5.5.8-8 3.4" fill="none" stroke="#5fae93" stroke-width=".8"/>
+<rect x="15.2" y="8.6" width="5.6" height="5.8" rx="2" fill="#8a5c46"/></g></symbol>
+<symbol id="leaf" viewBox="0 0 30 26"><g stroke="#3f271d" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
+<path d="M15 24C15 17 15.5 11 17 5" fill="none"/>
+<path d="M15.6 15C9 16.5 3.5 13.5 2 7.5c6-1.5 11.5 1.5 13.6 7.5Z" fill="#7fc0a8"/>
+<path d="M16.4 11.5C21.5 12 26.5 9 28 3c-6.2-.6-10.8 2.6-11.6 8.5Z" fill="#a8dcc6"/>
+<path d="M4.5 8.5c3.5 1 7 3 10 6M25.5 4.5c-3 1.5-5.8 3.8-8.4 6.4" fill="none" stroke="#3f9a80" stroke-width=".7"/>
+<circle cx="15" cy="24" r="1.6" fill="#8a5c46"/></g></symbol>
+<symbol id="spk" viewBox="0 0 14 14"><path d="M7 .5C7.6 5 9 6.4 13.5 7 9 7.6 7.6 9 7 13.5 6.4 9 5 7.6.5 7 5 6.4 6.4 5 7 .5Z" fill="#c9a063" stroke="#8a6a3c" stroke-width=".6"/></symbol>
+<symbol id="tail" viewBox="0 0 30 38"><g stroke="#3f271d" stroke-width="1.4" stroke-linejoin="round">
+<path d="M30 2H4l8 14-8 14h26Z" fill="#9fd3bf"/><path d="M30 30 22 37V30Z" fill="#5fae93"/>
+<path d="M28 6H11M28 26H11" fill="none" stroke="#fbf3e4" stroke-width=".9" stroke-dasharray="2 2"/></g></symbol>
+</defs></svg>
+
+<header class="hd">
+<button class="rb" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg></button>
+<div class="tt"><h1>小薄荷</h1><i>in session</i><small>在线 · 第 6 轮</small></div>
+<button class="rb" aria-label="更多"><svg viewBox="0 0 24 24" fill="#5b3a2c"><circle cx="6" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18" cy="12" r="1.8"/></svg></button>
+</header>
+
+<main class="flow">
+<div class="day"><b>11/22</b>周日 · 晚上</div>
+
+<div class="m"><span class="nm">小薄荷</span>
+<div class="bb">晚上好呀。今天的薄荷奶茶给你多放了一点<em>巧克力碎</em>，要不要先尝一口？<svg class="or sp"><use href="#spk"/></svg><svg class="or bow"><use href="#bow"/></svg></div>
+<div class="tm">19:40</div></div>
+
+<div class="m me"><span class="nm">茶茶</span>
+<div class="bb">要！薄荷也多一点，今天好累。<svg class="or lf"><use href="#leaf"/></svg></div>
+<div class="tm">19:41</div></div>
+
+<div class="ev"><span class="lb">新记忆</span>
+<svg class="tail l"><use href="#tail"/></svg><svg class="tail r"><use href="#tail"/></svg>
+<div class="band"><p>记住了：你喜欢薄荷多一点<small>放进记忆罐 · 可以随时修改</small></p></div></div>
+
+<div class="m"><span class="nm">小薄荷</span>
+<div class="bb">那就先坐一会儿。累的时候不用回很长，我在这边慢慢陪你。<svg class="or sp"><use href="#spk"/></svg><svg class="or bow"><use href="#bow"/></svg></div>
+<div class="tm">19:42</div></div>
+
+<div class="m me"><span class="nm">茶茶</span>
+<div class="bb">嗯，再给我讲讲今天店里的事吧，一个很长的故事也可以，我想听你慢慢说。<svg class="or lf"><use href="#leaf"/></svg></div>
+<div class="tm">19:43</div></div>
+</main>
+
+<div class="ip">
+<button class="pl" aria-label="更多"><svg viewBox="0 0 16 16" fill="none" stroke="#3f271d" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></button>
+<div class="fd">写点什么…</div>
+<button class="sd">发送</button>
+</div>
+</body></html>
