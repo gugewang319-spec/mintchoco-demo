@@ -57,6 +57,9 @@ MC.row=o=>`<div class="rw"><img src="${MC.cup(o.cup||'empty')}" alt=""><span cla
 /* ── 模型小签 ──  MC.chips([[名, 开?, 新?]]) */
 MC.chips=list=>`<div class="chips">${list.map(m=>`<span class="${m[1]?'':'off'}${m[2]?' nw':''}"><i></i>${m[0]}</span>`).join('')}</div>`;
 
+/* ── 小圆章：MC.seal(字,英文环字,类名,读屏名)，颜色跟 currentColor ── */
+MC.seal=function(w,en,cls,label){const id=MC.uid('se');return `<button class="seal ${cls}" aria-label="${label}"><i class="sl"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="${id}" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="1"/><text font-family="Baloo" font-size="9" font-weight="700" fill="currentColor"><textPath href="#${id}" textLength="226" lengthAdjust="spacing">MINT CHOCO ◆ ${en} ◆</textPath></text></svg><b>${w}</b></i></button>`};
+
 /* ── 店章 ──  MC.stamp('存'|'开')；没改时 .mute 淡着，盖下加 .inked */
 MC.stamp=function(w){const id=MC.uid('sr'),en=w=='开'?'NEW ORDER':'ORDER SAVED';
  return `<button class="sv st mute" aria-label="${w=='开'?'开单':'保存'}"><i class="sl"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="${id}" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="50" cy="50" r="43" fill="none" stroke="currentColor" stroke-width=".9"/><circle cx="50" cy="50" r="27" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="1.2 2.6"/><text font-family="Baloo" font-size="8.2" font-weight="700" fill="currentColor"><textPath href="#${id}" textLength="226" lengthAdjust="spacing">MINT CHOCO ◆ ${en} ◆ TEA ATELIER ◆</textPath></text></svg><b>${w}</b></i></button>`};

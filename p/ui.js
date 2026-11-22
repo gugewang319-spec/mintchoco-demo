@@ -20,12 +20,20 @@ transform:scale(.86);transition:transform .38s cubic-bezier(.3,1.5,.5,1)}
 .mc-dlg h4{font:21px/1.2 ZK,WK,sans-serif;font-weight:400;color:#5b3a2c;letter-spacing:.04em}
 .mc-dlg p{margin:10px 0 0;font:14px/1.7 WK,ZK,sans-serif;color:#6f5446}
 .mc-dlg p b{font-weight:400;color:#b8573c;background:linear-gradient(transparent 62%,rgba(194,102,74,.22) 62% 92%,transparent 92%)}
-/*V=53 弹窗主按钮：位图巧克力大牌换成代码画的细巧克力条（矮一半、两端各一道分格槽、可可描边）*/.mc-dlg .ok{position:relative;display:grid;place-items:center;margin:20px auto 0;width:min(168px,60%);height:44px;border:1.2px solid #8a5c46;border-radius:10px;cursor:pointer;transition:scale .16s;background:linear-gradient(90deg,transparent calc(17% - 1px),rgba(38,20,13,.4) calc(17% - 1px) 17%,rgba(255,232,210,.16) 17% calc(17% + 1px),transparent calc(17% + 1px) calc(83% - 1px),rgba(38,20,13,.4) calc(83% - 1px) 83%,rgba(255,232,210,.16) 83% calc(83% + 1px),transparent calc(83% + 1px)),linear-gradient(#7d503c,#5f3b2c);box-shadow:inset 0 1px 0 rgba(255,232,210,.3),inset 0 -2px 0 rgba(38,20,13,.28),0 8px 14px -10px rgba(74,48,39,.5)}
-.mc-dlg .ok:active{scale:.95}
-
-.mc-dlg .ok span{position:relative;font:17px/1 ZK,WK,sans-serif;color:#fdf6e8;letter-spacing:.12em;text-shadow:0 1px 0 rgba(38,20,13,.35)}
-.mc-dlg .no{display:block;margin:8px auto 0;min-height:40px;padding:0 14px;border:0;background:none;font:14px/1 WK,ZK,sans-serif;color:#8a5c46;text-decoration:underline dashed 1.1px;text-underline-offset:4px;cursor:pointer}
-@media (prefers-reduced-motion:reduce){.mc-bell,.mc-dlg,.mc-mask{transition:none}.mc-bell.on svg{animation:none}}
+/*V67 茶茶：巧克力实心块和下划线字不搭 → 两枚圆章（同渠道页「存」章）：左薄荷「留」= 取消，右莓果 = 确定*/
+.mc-dlg .acts{display:flex;justify-content:center;gap:34px;margin:18px 0 2px}
+.mc-dlg .acts button{position:relative;width:78px;height:78px;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mc-dlg .no{color:#2f7e68}.mc-dlg .ok{color:#b8573c}
+.mc-dlg .acts .sl{position:absolute;inset:0;display:block;transition:translate .25s cubic-bezier(.3,1.3,.5,1),scale .25s}
+.mc-dlg .no .sl{rotate:8deg}.mc-dlg .ok .sl{rotate:-10deg}
+.mc-dlg .acts svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.mc-dlg .acts b{position:absolute;inset:0;display:grid;place-items:center;font:700 25px/1 ZK,WK,sans-serif;color:currentColor;padding-bottom:2px}
+.mc-dlg .acts button::after{content:'';position:absolute;left:16px;right:16px;bottom:-7px;height:7px;border-radius:50%;background:radial-gradient(closest-side,rgba(74,48,39,.18),transparent)}
+.mc-dlg .acts .sl{translate:0 -4px}
+.mc-dlg .acts button:active .sl{translate:0 0;scale:.94}
+.mc-dlg .acts button.inked .sl{translate:0 0;mix-blend-mode:multiply;animation:mcink .3s cubic-bezier(.2,1.2,.4,1) both}
+@keyframes mcink{0%{scale:1.25;opacity:.5}60%{scale:.94}100%{scale:1;opacity:.85}}
+@media (prefers-reduced-motion:reduce){.mc-bell,.mc-dlg,.mc-mask{transition:none}.mc-bell.on svg{animation:none}.mc-dlg .acts .sl{transition:none;animation:none}}
 `;
 const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
 const BELL='<svg viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2v1.6"/><circle cx="12" cy="2.6" r="1" fill="#5b3a2c" stroke="none"/><path d="M5 17.5c0-6 3-9.2 7-9.2s7 3.2 7 9.2Z" fill="#a6d9c4"/><path d="M3.5 17.5h17" stroke-width="1.8"/><path d="M8.5 12.3c.4-1.2 1.1-2 2-2.4" stroke="#fbf6ea" stroke-width="1.3"/></svg>';
@@ -37,14 +45,16 @@ function toast(text,o={}){
  bell.innerHTML=BELL+'<span class="t"></span>'+(o.undo?'<button>撤销</button>':'');bell.querySelector('.t').textContent=text;
  if(o.undo)bell.querySelector('button').onclick=()=>{clearTimeout(tm);bell.classList.remove('on');o.undo()};
  requestAnimationFrame(()=>bell.classList.add('on'));tm=setTimeout(()=>bell.classList.remove('on'),o.ms||3200)}
+let sid=0;
+function seal(w,en,cls,label){const id='mcs'+(++sid);return `<button class="${cls}" aria-label="${label}"><i class="sl"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="${id}" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="50" cy="50" r="43" fill="none" stroke="currentColor" stroke-width=".9"/><circle cx="50" cy="50" r="27" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="1.2 2.6"/><text font-family="Baloo,sans-serif" font-size="8.2" font-weight="700" fill="currentColor"><textPath href="#${id}" textLength="226" lengthAdjust="spacing">MINT CHOCO ◆ ${en} ◆ TEA ATELIER ◆</textPath></text></svg><b>${w}</b></i></button>`}
 function confirm(o){return new Promise(res=>{
  const m=document.createElement('div');m.className='mc-mask';
- m.innerHTML=`<div class="mc-dlg" role="alertdialog" aria-modal="true">${WARN}<h4></h4><p></p><button class="ok"><span></span></button><button class="no"></button></div>`;
+ const okT=o.ok||'确定',noT=o.cancel||'再想想';
+ m.innerHTML=`<div class="mc-dlg" role="alertdialog" aria-modal="true">${WARN}<h4></h4><p></p><div class="acts">${seal(o.noSeal||'留','KEEP IT','no',noT)}${seal(o.seal||okT.slice(0,1),o.en||'TEAR OFF','ok',okT)}</div></div>`;
  m.querySelector('h4').textContent=o.title||'确定吗？';m.querySelector('p').innerHTML=o.body||'';
- m.querySelector('.ok span').textContent=o.ok||'确定';m.querySelector('.no').textContent=o.cancel||'再想想';
  document.body.appendChild(m);requestAnimationFrame(()=>m.classList.add('on'));
  const done=v=>{m.classList.remove('on');setTimeout(()=>m.remove(),280);res(v)};
- m.querySelector('.ok').onclick=()=>done(true);m.querySelector('.no').onclick=()=>done(false);
+ const pick=(c,v)=>{const b=m.querySelector(c);b.onclick=()=>{b.classList.add('inked');setTimeout(()=>done(v),260)}};pick('.ok',true);pick('.no',false);
  m.onclick=e=>{if(e.target===m)done(false)}})}
 window.MC={toast,confirm};
 })();

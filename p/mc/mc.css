@@ -158,3 +158,16 @@ body{overflow:hidden;color:var(--ink);font-family:WK,sans-serif}
 .pnav,.pnav *{font-family:"OPPO Sans","HarmonyOS Sans SC","PingFang SC","Noto Sans CJK SC","Source Han Sans SC",system-ui,sans-serif}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+
+/* ── 小圆章 MC.seal（V67 替下划线文字钮）：薄荷「留」= 不改了，莓果「撕」= 删除 ── */
+.seal{position:relative;width:46px;height:46px;flex:none;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.seal.big{width:64px;height:64px}
+.seal.mint{color:var(--mint-dd)}.seal.berry{color:var(--berry-d)}
+.seal .sl{position:absolute;inset:0;display:block;rotate:-9deg;translate:0 -3px;transition:translate .25s cubic-bezier(.3,1.3,.5,1),scale .25s}
+.seal.mint .sl{rotate:7deg}
+.seal svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.seal b{position:absolute;inset:0;display:grid;place-items:center;font:700 17px/1 ZK;color:currentColor;padding-bottom:1px}
+.seal.big b{font-size:22px}
+.seal::before{content:'';position:absolute;inset:-6px}
+.seal::after{content:'';position:absolute;left:22%;right:22%;bottom:-5px;height:6px;border-radius:50%;background:radial-gradient(closest-side,rgba(74,48,39,.16),transparent)}
+.seal:active .sl{translate:0 0;scale:.93}

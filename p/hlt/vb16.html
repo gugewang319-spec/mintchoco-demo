@@ -272,7 +272,7 @@ function draw(now){const dt=Math.min(50,now-last);last=now;const W=cv.width/DPR,
  for(let i=drops.length-1;i>=0;i--)if(drops[i].a<=0||drops[i].x<-10)drops.splice(i,1);
  if(!RM)requestAnimationFrame(draw)}
 requestAnimationFrame(draw);
-</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=66"></script><div class="wup" id="wup" aria-hidden="true"><div class="wbig" id="wbig"><svg class="wsv" viewBox="0 0 260 524" aria-hidden="true">
+</script><script>window.__DEMO_MAP=[[".pearlbtn", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=67"></script><div class="wup" id="wup" aria-hidden="true"><div class="wbig" id="wbig"><svg class="wsv" viewBox="0 0 260 524" aria-hidden="true">
 <path d="M84 150L90 22Q92 6 108 6H152Q168 6 170 22L176 150Z" fill="#c4e8da" stroke="#8a5c46" stroke-width="1.3"/>
 <path d="M96 146L101 26Q102 16 112 16H148Q158 16 159 26L164 146" fill="none" stroke="rgba(138,92,70,.45)" stroke-width="1" stroke-dasharray="3 3"/>
 <rect x="100" y="34" width="60" height="14" rx="7" fill="#e9d6c2" stroke="#8a5c46" stroke-width="1.2"/>
@@ -292,7 +292,7 @@ requestAnimationFrame(draw);
 <section><small>填进手环 App</small><code id="wurl">https://&lt;你的域名&gt;/api/health/webhook?role_id=r_8c1d42</code><button type="button" class="cpb" id="wcp">复制</button></section>
 <section><small>签名密钥</small><input id="wkey" type="password" autocomplete="off" placeholder="和服务器一致" aria-label="签名密钥"><button type="button" class="cpb" id="wsv" disabled>存</button></section>
 </div><div class="dots" id="wdt"><i class="on"></i><i></i><i></i></div></div>
-<button type="button" class="crown" id="wput" aria-label="放下手环"></button></div></div><script src="../ui.js?v=66"></script><script>
+<button type="button" class="crown" id="wput" aria-label="放下手环"></button></div></div><script src="../ui.js?v=67"></script><script>
 (()=>{const $=q=>document.getElementById(q),k=$('wbk'),up=$('wup'),big=$('wbig'),sc=$('scr'),dt=[...document.querySelectorAll('#wdt i')];
 const fit=()=>big.style.setProperty('--s',Math.min(1,(innerHeight-150)/524,(innerWidth-40)/260).toFixed(3));fit();addEventListener('resize',fit);
 let open=false,busy=false;
