@@ -1,0 +1,65 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>seal vb2 · 代码画圆章</title>
+<link rel="stylesheet" href="mc.css?v=3">
+<style>
+body{overflow:auto}
+.app{padding:70px 18px 60px}
+h1{font:28px/1 ZK;color:var(--ch);letter-spacing:.06em;margin-bottom:6px}
+.sub{font:13px/1.6 WK;color:var(--cocoa);margin-bottom:18px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center;margin:0 0 22px}
+.cap{font:12px/1 WK;color:var(--cocoa);letter-spacing:.2em;text-align:center;margin-top:8px}
+.ref{background:#fdfaf2;border-radius:10px;box-shadow:0 0 0 1.3px rgba(138,92,70,.35);padding:8px}
+.ref img{width:100%;display:block}
+.mine{display:flex;justify-content:center;align-items:center;gap:18px;min-height:120px}
+.sizes{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:14px 10px;margin:0 0 26px;padding:0 10px}
+/* 代码画圆章 */
+.cs{position:relative;width:64px;height:64px;flex:none;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.cs.s46{width:46px;height:46px}.cs.s90{width:96px;height:96px}
+.cs .sl{position:absolute;inset:0;display:block;transition:translate .25s cubic-bezier(.3,1.3,.5,1),scale .25s;translate:0 -2px}
+.cs.keep .sl{rotate:6deg}.cs.tear .sl{rotate:-7deg}
+.cs svg{position:absolute;inset:-14%;width:128%;height:128%;overflow:visible}
+.cs b{position:absolute;inset:0;display:grid;place-items:center;font:22px/1 ZK;color:#5b3a2c;padding-top:2px}
+.cs.s46 b{font-size:17px}.cs.s90 b{font-size:32px}
+.cs.keep b{color:#2f6e58}.cs.tear b{color:#a8574a}
+.cs::after{content:'';position:absolute;left:20%;right:20%;bottom:-6px;height:6px;border-radius:50%;background:radial-gradient(closest-side,rgba(74,48,39,.16),transparent)}
+.cs:active .sl{translate:0 0;scale:.93}
+/* 仿确认框 */
+.dlg{margin:6px auto 0;max-width:300px;padding:22px 20px 18px;background:#fdfaf2;border-radius:16px;box-shadow:0 0 0 1.3px rgba(138,92,70,.55),0 4px 0 rgba(91,58,44,.12)}
+.dlg h4{font:20px/1.3 ZK;color:var(--ch)}
+.dlg p{font:14px/1.7 WK;color:#7a5a4c;margin:8px 0 16px}
+.dlg .acts{display:flex;justify-content:flex-end;gap:20px;padding-right:4px}
+</style></head><body>
+<div class="vp"><div class="app">
+<h1>代码画圆章</h1>
+<div class="sub">左边是生图样子，右边是代码画的。描边同全站可可色，纸纹是代码叠的，放大缩小都不糊。</div>
+<div class="row"><div class="ref"><img src="../../docs/design/hark/inbox/seal-buttons-01.png" alt="生图参考"></div><div class="mine" id="big"></div></div>
+<div class="cap" style="margin:-12px 0 22px">左：生图　右：代码</div>
+<div class="sizes" id="sizes"></div>
+<div class="cap" style="margin:-16px 0 22px">46 / 64 / 96 三个尺寸</div>
+<div class="dlg"><h4>撕掉「海螺」这张单？</h4><p>地址和密钥一起删掉，不能恢复。</p><div class="acts" id="acts"></div></div>
+</div></div>
+<script>
+const C='#8a5c46';let n=0;
+function wavy(cx,cy,r,a,k,ph){let d='';for(let i=0;i<=180;i++){const t=i/180*Math.PI*2,rr=r+a*Math.sin(k*t+ph)+0.8*Math.sin(3*t+1.3);d+=(i?'L':'M')+(cx+rr*Math.cos(t)).toFixed(2)+' '+(cy+rr*Math.sin(t)).toFixed(2)}return d+'Z'}
+function grain(id){return `<filter id="${id}" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="${n}"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .24  0 0 0 0 .18  0 0 0 .55 -.18"/><feComposite in2="SourceGraphic" operator="in"/></filter>`}
+function keep(){const g='g'+(++n),cp='c'+n,lg='l'+n;const edge=wavy(50,50,38,2.6,9,.4);return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs>${grain(g)}<clipPath id="${cp}"><path d="${edge}"/></clipPath><radialGradient id="${lg}" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#d7f1e5"/><stop offset="1" stop-color="#a9dcc6"/></radialGradient></defs>
+<path d="${edge}" fill="url(#${lg})" stroke="${C}" stroke-width="1.3" stroke-linejoin="round"/>
+<circle cx="50" cy="50" r="29.5" fill="none" stroke="#9a6a52" stroke-width="4"/><circle cx="50" cy="50" r="31.8" fill="none" stroke="${C}" stroke-width="1"/><circle cx="50" cy="50" r="27.2" fill="none" stroke="${C}" stroke-width="1"/>
+<circle cx="50" cy="50" r="24.5" fill="none" stroke="#7cc4ad" stroke-width=".8" stroke-dasharray="1 2.6" stroke-linecap="round"/>
+<path d="M27 26 C31 21 37 18.5 43 18" stroke="#fff" stroke-opacity=".75" stroke-width="2" fill="none" stroke-linecap="round"/>
+<rect width="100" height="100" filter="url(#${g})" clip-path="url(#${cp})" opacity=".5"/>
+<g transform="translate(71 9) rotate(28)"><path d="M0 14 C-7 8 -6 1 0 -4 C6 1 7 8 0 14Z" fill="#8fd0b5" stroke="${C}" stroke-width="1.2" stroke-linejoin="round"/><path d="M0 12 L0 -2 M0 4 L-3 1 M0 7 L3 4" stroke="${C}" stroke-width=".8" stroke-linecap="round" fill="none"/></g></svg>`}
+function tear(){const g='g'+(++n),cp='c'+n;const drip='M14.3 38 A37.5 37.5 0 0 1 85.7 38 C83.6 38.6 82.2 37 81 35.4 C79.6 33.8 77.6 34.4 77 36.6 C76.3 39.4 76.6 43.6 74.2 43.8 C71.8 44 72 39.8 71.2 37.4 C70 34.4 66.4 33 62.6 31.6 C58.6 30.2 54.6 29.8 52 30.2 C50.4 30.5 50.6 35.4 48.4 35.6 C46.2 35.8 46.4 31.8 45 30.6 C41.6 29.6 36.4 31 32.4 33 C28.6 34.8 27.4 38.6 24.8 38.8 C22.6 39 22.4 36.2 20.4 35.6 C18.2 35 16.4 37.6 14.3 38Z';return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs>${grain(g)}<clipPath id="${cp}"><circle cx="50" cy="50" r="37.5"/></clipPath></defs>
+<circle cx="50" cy="50" r="37.5" fill="#fbf3e2" stroke="${C}" stroke-width="1.3"/>
+<circle cx="50" cy="50" r="28.5" fill="#fffaf2" stroke="#f0a6a0" stroke-width="4.2"/><circle cx="50" cy="50" r="30.8" fill="none" stroke="${C}" stroke-width=".9" stroke-opacity=".7"/><circle cx="50" cy="50" r="26.2" fill="none" stroke="${C}" stroke-width=".9" stroke-opacity=".7"/>
+<path d="${drip}" fill="#7a4b37" transform="translate(50 50) scale(1) translate(-50 -50)" stroke="${C}" stroke-width="1.1" stroke-linejoin="round" clip-path="url(#${cp})"/>
+<path d="M36 21 C41 18 46 17 50 17" stroke="#c79a80" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+<rect width="100" height="100" filter="url(#${g})" clip-path="url(#${cp})" opacity=".45"/>
+<path d="M88 14c.6 3.4 2.6 5.4 6 6-3.4.6-5.4 2.6-6 6-.6-3.4-2.6-5.4-6-6 3.4-.6 5.4-2.6 6-6Z" fill="#fff8e6" stroke="${C}" stroke-width="1.1" stroke-linejoin="round"/>
+<path d="M93 30c.3 1.8 1.3 2.8 3.1 3.1-1.8.3-2.8 1.3-3.1 3.1-.3-1.8-1.3-2.8-3.1-3.1 1.8-.3 2.8-1.3 3.1-3.1Z" fill="#c99a80" stroke="${C}" stroke-width=".9" stroke-linejoin="round"/></svg>`}
+const btn=(k,w,s)=>`<button class="cs ${k} ${s||''}" aria-label="${w}"><i class="sl">${k==='keep'?keep():tear()}<b>${w}</b></i></button>`;
+document.getElementById('big').innerHTML=btn('keep','留','s90')+btn('tear','撕','s90');
+document.getElementById('sizes').innerHTML=['s46','','s90'].map(s=>btn('keep','留',s)).join('')+['s46',''].map(s=>btn('tear','撕',s)).join('');
+document.getElementById('acts').innerHTML=btn('keep','留','s46')+btn('tear','撕','s46');
+</script></body></html>
