@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>seal vb5 · 茶茶版</title>
+<style>
+/* ====== Hark 原版色号与按钮壳 ====== */
+:root{
+  --cocoa:#8a5c46;            /* 全站可可描边：外框 1.15，内线 .65 且透明 .65 */
+  --hi:rgba(255,255,255,.72); /* 高光短弧与小圆点 */
+  --keep-ink:#2b6652;         /* 「留」字 */
+  --tear-ink:#a8574a;         /* 「撕」字 */
+}
+@font-face{font-family:ZK;src:url(zk.ttf?v=2)} /* 站酷快乐体子集 */
+
+/* 预览背景（模拟你的薄荷条纹底） */
+body{
+  margin:0;min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:36px;
+  background:repeating-linear-gradient(90deg,#edf8f2 0 24px,#e3f3ea 24px 48px);
+  font-family:ZK,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+.row{display:flex;align-items:center;gap:28px}
+
+/* 按钮壳：46 / 64 / 96 三档 */
+.cs{position:relative;width:64px;height:64px;flex:none;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.cs.s46{width:46px;height:46px}
+.cs.s90{width:96px;height:96px}
+
+/* 内层：稍歪着放，按下去往下沉一点 */
+.cs .sl{position:absolute;inset:0;display:block;translate:0 -2px;transition:translate .25s cubic-bezier(.3,1.3,.5,1),scale .25s}
+.cs.keep .sl{rotate:6deg}
+.cs.tear .sl{rotate:-7deg}
+.cs:active .sl{translate:0 0;scale:.93}
+
+/* SVG 比按钮大 28%，给叶子、星星和投影留位置 */
+.cs svg{position:absolute;inset:-14%;width:128%;height:128%;overflow:visible}
+
+/* 字体三档微调（viewBox 100 单位）：46→29、64→27、96→26 */
+/* <use> 里的字不吃 .cs text 选择器，字号要挂在 svg 上让它继承 */
+.cs svg{font-size:27px;user-select:none}
+.cs.s46 svg{font-size:29px}
+.cs.s90 svg{font-size:26px}
+.ink{mix-blend-mode:multiply}
+</style>
+</head>
+<body>
+
+<!-- ====== 共享 SVG 滤镜、渐变与路径定义（页面放一次即可） ====== -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- 1. 外投影：可可色 13% 柔和落地 -->
+    <filter id="seal-shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="2.2" stdDeviation="2.2" flood-color="#8a5c46" flood-opacity="0.13"/>
+    </filter>
+
+    <!-- 2. 代码纸纹（放大缩小不糊） -->
+    <filter id="paper-grain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+      <feComponentTransfer in="gray" result="soft">
+        <feFuncA type="linear" slope="0.14"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="soft" mode="multiply" result="b"/>
+      <feComposite in="b" in2="SourceGraphic" operator="in"/>
+    </filter>
+
+    <!-- 3. 薄荷蜡渐变（左上亮 → 右下暗） -->
+    <linearGradient id="g-mint" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#e4f6ee"/>
+      <stop offset="52%" stop-color="#b4e0cc"/>
+      <stop offset="100%" stop-color="#88c8ad"/>
+    </linearGradient>
+
+    <!-- 薄荷内凹圆面（略柔和，反方向微亮出凹陷感） -->
+    <radialGradient id="g-mint-in" cx="42%" cy="38%" r="65%">
+      <stop offset="0%" stop-color="#c9ebdc"/>
+      <stop offset="68%" stop-color="#b4e0cc"/>
+      <stop offset="100%" stop-color="#96d1b7"/>
+    </radialGradient>
+
+    <!-- 4. 巧克力环渐变 -->
+    <linearGradient id="g-choco" x1="15%" y1="15%" x2="85%" y2="85%">
+      <stop offset="0%" stop-color="#bb8d70"/>
+      <stop offset="55%" stop-color="#8f6049"/>
+      <stop offset="100%" stop-color="#683f2f"/>
+    </linearGradient>
+
+    <!-- 5. 奶油底渐变 -->
+    <linearGradient id="g-cream" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#fffbf2"/>
+      <stop offset="55%" stop-color="#f6e9d0"/>
+      <stop offset="100%" stop-color="#e6d1af"/>
+    </linearGradient>
+
+    <!-- 奶油内凹圆面 -->
+    <radialGradient id="g-cream-in" cx="45%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#fffdf8"/>
+      <stop offset="75%" stop-color="#fbf3e4"/>
+      <stop offset="100%" stop-color="#efe0c5"/>
+    </radialGradient>
+
+    <!-- 6. 草莓圈渐变 -->
+    <linearGradient id="g-berry" x1="15%" y1="15%" x2="85%" y2="85%">
+      <stop offset="0%" stop-color="#fad2cb"/>
+      <stop offset="55%" stop-color="#ee9f97"/>
+      <stop offset="100%" stop-color="#d47b73"/>
+    </linearGradient>
+
+    <!-- 7. 巧克力淋酱渐变 -->
+    <linearGradient id="g-drip" x1="25%" y1="0%" x2="75%" y2="100%">
+      <stop offset="0%" stop-color="#9c674c"/>
+      <stop offset="55%" stop-color="#6c4232"/>
+      <stop offset="100%" stop-color="#56331f"/>
+    </linearGradient>
+
+    <!-- 6 瓣圆润蜡封轮廓（复用给裁切和本体） -->
+    <path id="keep-shape" d="
+      M 50 10.5
+      C 56.5 10.5, 62.2 16.0, 67.8 19.3
+      C 73.4 22.5, 81.0 24.6, 84.2 30.3
+      C 87.5 35.9, 85.5 43.5, 85.5 50
+      C 85.5 56.5, 87.5 64.1, 84.2 69.8
+      C 81.0 75.4, 73.4 77.5, 67.8 80.7
+      C 62.2 84.0, 56.5 89.5, 50 89.5
+      C 43.5 89.5, 37.8 84.0, 32.2 80.7
+      C 26.6 77.5, 19.0 75.4, 15.8 69.8
+      C 12.5 64.1, 14.5 56.5, 14.5 50
+      C 14.5 43.5, 12.5 35.9, 15.8 30.3
+      C 19.0 24.6, 26.6 22.5, 32.2 19.3
+      C 37.8 16.0, 43.5 10.5, 50 10.5 Z"/>
+
+    <!-- ===== 可复用组件 1：「留」字圆章 ===== -->
+    <g id="seal-keep-art" filter="url(#seal-shadow)">
+      <!-- 右上角小薄荷叶（藏在波浪凹槽后方） -->
+      <g>
+        <path d="M 67.2 19.6 C 67.8 12.8, 74.8 8.4, 82.0 9.6 C 81.4 16.8, 75.4 21.8, 67.2 19.6 Z"
+              fill="url(#g-mint)" stroke="var(--cocoa)" stroke-width="1.15" stroke-linejoin="round"/>
+        <!-- 叶脉：内线 0.65 且 0.65 透明 -->
+        <path d="M 68.5 18.8 Q 74.5 14.6 80.2 10.8" fill="none" stroke="var(--cocoa)" stroke-width="0.65" stroke-opacity="0.65" stroke-linecap="round"/>
+        <path d="M 73.2 15.6 L 73.8 12.4 M 75.6 13.9 L 78.2 14.4" fill="none" stroke="var(--cocoa)" stroke-width="0.55" stroke-opacity="0.55" stroke-linecap="round"/>
+        <!-- 叶片微高光 -->
+        <path d="M 70.6 14.6 Q 74.0 11.8 77.8 11.2" fill="none" stroke="var(--hi)" stroke-width="0.9" stroke-linecap="round"/>
+      </g>
+
+      <!-- 主体加纸纹 -->
+      <g filter="url(#paper-grain)">
+        <!-- 外层 6 瓣薄荷蜡封 -->
+        <use href="#keep-shape" fill="url(#g-mint)" stroke="var(--cocoa)" stroke-width="1.15" stroke-linejoin="round"/>
+        <!-- 外缘左上角釉面高光短弧 + 小圆点 -->
+        <path d="M 19.8 33.0 C 22.8 26.8, 28.8 23.4, 34.8 20.6" fill="none" stroke="var(--hi)" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="M 43.2 14.5 Q 50.0 12.6 56.2 14.6" fill="none" stroke="var(--hi)" stroke-width="1.4" stroke-linecap="round"/>
+        <circle cx="17.8" cy="37.4" r="1.0" fill="var(--hi)"/>
+
+        <!-- 中层巧克力圆环（内线 0.65 + 0.65 透明） -->
+        <circle cx="50" cy="50" r="31.2" fill="url(#g-choco)" stroke="var(--cocoa)" stroke-width="0.65" stroke-opacity="0.65"/>
+        <!-- 巧克力环左上微反光 -->
+        <path d="M 27.6 31.8 A 29.2 29.2 0 0 1 45.5 21.2" fill="none" stroke="rgba(255,255,255,.32)" stroke-width="1.0" stroke-linecap="round"/>
+
+        <!-- 内层薄荷印面 -->
+        <circle cx="50" cy="50" r="26.2" fill="url(#g-mint-in)" stroke="var(--cocoa)" stroke-width="0.65" stroke-opacity="0.65"/>
+        <!-- 内凹压痕阴影（顶部内侧半透明深色弧） -->
+        <path d="M 26.6 46.0 A 24.4 24.4 0 0 1 71.8 39.2" fill="none" stroke="#2b6652" stroke-opacity="0.14" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- 底部内侧微亮反光（强化凹陷立体感） -->
+        <path d="M 33.5 69.5 A 24.4 24.4 0 0 0 67.5 68.5" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.1" stroke-linecap="round"/>
+
+        <!-- 文字叠法：先白字下移 0.9 做凹印，再墨色字 multiply -->
+        <text x="50" y="50.9" text-anchor="middle" dominant-baseline="central" font-family="ZK" fill="#ffffff" opacity="0.7">留</text>
+        <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-family="ZK" fill="var(--keep-ink)" class="ink">留</text>
+      </g>
+    </g>
+
+    <!-- ===== 可复用组件 2：「撕」字圆章 ===== -->
+    <g id="seal-tear-art" filter="url(#seal-shadow)">
+      <!-- 右上角两颗四角星 -->
+      <g stroke="var(--cocoa)" stroke-linejoin="round">
+        <path d="M 86.5 11.5 Q 87.2 16.5 92.2 17.2 Q 87.2 17.9 86.5 22.9 Q 85.8 17.9 80.8 17.2 Q 85.8 16.5 86.5 11.5 Z"
+              fill="#fffbf2" stroke-width="0.95"/>
+        <path d="M 92.5 23.8 Q 92.9 26.4 95.5 26.8 Q 92.9 27.2 92.5 29.8 Q 92.1 27.2 89.5 26.8 Q 92.1 26.4 92.5 23.8 Z"
+              fill="#f6e9d0" stroke-width="0.8"/>
+      </g>
+
+      <!-- 主体加纸纹 -->
+      <g filter="url(#paper-grain)">
+        <!-- 外层奶油圆底 -->
+        <circle cx="50" cy="50" r="37" fill="url(#g-cream)" stroke="var(--cocoa)" stroke-width="1.15"/>
+        <!-- 奶油外圈左侧釉面高光 -->
+        <path d="M 21.8 30.8 A 34.2 34.2 0 0 0 16.2 46.0" fill="none" stroke="var(--hi)" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="16.5" cy="50.4" r="1.0" fill="var(--hi)"/>
+
+        <!-- 中层草莓粉圈 -->
+        <circle cx="50" cy="50" r="30.6" fill="url(#g-berry)" stroke="var(--cocoa)" stroke-width="0.65" stroke-opacity="0.65"/>
+
+        <!-- 内层奶油印面 -->
+        <circle cx="50" cy="50" r="26.2" fill="url(#g-cream-in)" stroke="var(--cocoa)" stroke-width="0.65" stroke-opacity="0.65"/>
+        <!-- 内凹压痕阴影 -->
+        <path d="M 26.6 46.5 A 24.4 24.4 0 0 1 71.6 39.5" fill="none" stroke="#8a5c46" stroke-opacity="0.11" stroke-width="2.0" stroke-linecap="round"/>
+
+        <!-- 顶部巧克力淋酱（收窄贴边 + 俏皮单滴，不压顶） -->
+        <path d="
+          M 32.5 17.4
+          A 37 37 0 0 1 67.5 17.4
+          C 68.2 19.6, 66.2 22.3, 63.6 22.1
+          C 61.3 21.9, 60.4 19.9, 58.8 20.6
+          C 57.2 21.3, 57.8 30.4, 54.4 30.6
+          C 51.0 30.8, 51.6 21.6, 49.0 20.7
+          C 45.8 19.5, 41.2 21.6, 36.2 20.5
+          C 33.4 19.8, 31.8 18.7, 32.5 17.4 Z"
+          fill="url(#g-drip)" stroke="var(--cocoa)" stroke-width="0.95" stroke-linejoin="round"/>
+        <!-- 巧克力淋酱顶部反光 + 滴落饱满处高光点 -->
+        <path d="M 38.8 16.5 Q 48.0 14.3 56.5 16.0" fill="none" stroke="var(--hi)" stroke-width="1.35" stroke-linecap="round"/>
+        <circle cx="55.1" cy="27.8" r="1.15" fill="var(--hi)"/>
+
+        <!-- 文字叠法：先白字下移 0.9 做凹印，再墨色字 multiply -->
+        <text x="50" y="50.9" text-anchor="middle" dominant-baseline="central" font-family="ZK" fill="#ffffff" opacity="0.7">撕</text>
+        <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-family="ZK" fill="var(--tear-ink)" class="ink">撕</text>
+      </g>
+    </g>
+  </defs>
+</svg>
+
+<!-- ====== 46 / 64 / 96 三档预览 ====== -->
+<div class="row">
+  <button class="cs keep s46"><span class="sl"><svg viewBox="0 0 100 100"><use href="#seal-keep-art"/></svg></span></button>
+  <button class="cs keep"><span class="sl"><svg viewBox="0 0 100 100"><use href="#seal-keep-art"/></svg></span></button>
+  <button class="cs keep s90"><span class="sl"><svg viewBox="0 0 100 100"><use href="#seal-keep-art"/></svg></span></button>
+</div>
+
+<div class="row">
+  <button class="cs tear s46"><span class="sl"><svg viewBox="0 0 100 100"><use href="#seal-tear-art"/></svg></span></button>
+  <button class="cs tear"><span class="sl"><svg viewBox="0 0 100 100"><use href="#seal-tear-art"/></svg></span></button>
+  <button class="cs tear s90"><span class="sl"><svg viewBox="0 0 100 100"><use href="#seal-tear-art"/></svg></span></button>
+</div>
+
+</body>
+</html>
