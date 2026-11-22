@@ -1,0 +1,94 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>frame vb1 · 代码画框</title>
+<style>
+:root{--cocoa:#8a5c46;--hi:rgba(255,255,255,.72)}
+@font-face{font-family:ZK;src:url(zk.ttf?v=2)}
+@font-face{font-family:WK;src:url(wk.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:repeating-linear-gradient(90deg,#edf8f2 0 24px,#e3f3ea 24px 48px);font-family:WK,sans-serif;color:#5b3a2c}
+.wrap{width:min(100%,412px);margin:0 auto;padding:40px 18px 60px;display:flex;flex-direction:column;gap:26px}
+.fr{position:relative;width:100%}
+.fr svg.bg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.fr .in{position:relative;font:14px/1.7 WK;color:#7a5a4c}
+.fr .in h4{font:20px/1.3 ZK;color:#5b3a2c;margin-bottom:6px}
+.big{height:400px}.big .in{padding:72px 46px 58px}
+.drip{height:92px}.drip .in{padding:36px 28px 0}
+.list{height:96px}.list .in{padding:28px 40px}
+.cap{font:12px/1 WK;letter-spacing:.2em;text-align:center;color:#8a5c46;margin-top:-14px}
+</style></head><body>
+<!-- 共享：纸纹、投影、渐变、叶子、蝴蝶结、星星 -->
+<svg width="0" height="0" style="position:absolute"><defs>
+<filter id="fr-shadow" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="2.4" stdDeviation="2.6" flood-color="#8a5c46" flood-opacity=".13"/></filter>
+<filter id="fr-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch" result="n"/><feColorMatrix type="saturate" values="0" in="n" result="g"/><feComponentTransfer in="g" result="s"><feFuncA type="linear" slope=".14"/></feComponentTransfer><feBlend in="SourceGraphic" in2="s" mode="multiply" result="b"/><feComposite in="b" in2="SourceGraphic" operator="in"/></filter>
+<linearGradient id="fg-mint" x1="15%" y1="0" x2="85%" y2="100%"><stop offset="0" stop-color="#e4f6ee"/><stop offset=".52" stop-color="#b4e0cc"/><stop offset="1" stop-color="#93cfb5"/></linearGradient>
+<linearGradient id="fg-mint-bar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c7ebdb"/><stop offset="1" stop-color="#a5d9c2"/></linearGradient>
+<linearGradient id="fg-cream" x1="15%" y1="0" x2="85%" y2="100%"><stop offset="0" stop-color="#fffbf2"/><stop offset=".6" stop-color="#f8eedb"/><stop offset="1" stop-color="#eedfc3"/></linearGradient>
+<radialGradient id="fg-paper" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#fffdf7"/><stop offset="1" stop-color="#f7efdf"/></radialGradient>
+<linearGradient id="fg-choco" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a87a60"/><stop offset=".55" stop-color="#8a5c46"/><stop offset="1" stop-color="#6c4433"/></linearGradient>
+<linearGradient id="fg-drip" x1="25%" y1="0" x2="75%" y2="100%"><stop offset="0" stop-color="#9c674c"/><stop offset=".55" stop-color="#6c4232"/><stop offset="1" stop-color="#56331f"/></linearGradient>
+<linearGradient id="fg-leaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bde7d3"/><stop offset="1" stop-color="#6cb696"/></linearGradient>
+<linearGradient id="fg-bow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1cdb8"/><stop offset="1" stop-color="#d49f86"/></linearGradient>
+<pattern id="fp-stripe" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><rect width="9" height="9" fill="#c4e8da"/><rect width="4.2" height="9" fill="#d9b49d"/></pattern><symbol id="fr-leaf" viewBox="-12 -12 24 24" overflow="visible"><path d="M0 10 C-7 5 -6.4 -2.6 0 -9 C6.4 -2.6 7 5 0 10Z" fill="url(#fg-leaf)" stroke="#8a5c46" stroke-width="1.1" stroke-linejoin="round"/><path d="M0 8.4 L0 -6.6 M0 -1 L3 -3.6 M0 2.6 L3.4 .2 M0 .8 L-2.8 -1.6 M0 4.4 L-3 2.2" fill="none" stroke="#8a5c46" stroke-width=".6" stroke-opacity=".6" stroke-linecap="round"/><path d="M-3.2 2 C-3.8 -1.6 -2.4 -4.4 -.6 -6.2" fill="none" stroke="var(--hi)" stroke-width=".8" stroke-linecap="round"/></symbol>
+<symbol id="fr-bow" viewBox="-16 -12 32 26" overflow="visible"><path d="M-2 2 L-7 11 L-4.6 10.4 L-3 12.6 L0 3.4 Z M2 2 L7 11 L4.6 10.4 L3 12.6 L0 3.4Z" fill="url(#fg-bow)" stroke="#8a5c46" stroke-width="1" stroke-linejoin="round"/><path d="M-2.4 -.4 C-7 -7 -14 -6 -13.4 -.6 C-12.8 4.4 -6 3.6 -2.4 1.4Z M2.4 -.4 C7 -7 14 -6 13.4 -.6 C12.8 4.4 6 3.6 2.4 1.4Z" fill="url(#fg-bow)" stroke="#8a5c46" stroke-width="1" stroke-linejoin="round"/><path d="M-4 -.2 C-6.6 -2.4 -9.6 -2.6 -11 -1.2 M4 -.2 C6.6 -2.4 9.6 -2.6 11 -1.2" fill="none" stroke="#8a5c46" stroke-width=".6" stroke-opacity=".6" stroke-linecap="round"/><rect x="-2.6" y="-2.4" width="5.2" height="4.8" rx="2" fill="#e2b29b" stroke="#8a5c46" stroke-width="1"/><path d="M-11.6 -2.6 C-11 -4.2 -9.6 -4.6 -8.4 -4.4" fill="none" stroke="var(--hi)" stroke-width=".8" stroke-linecap="round"/></symbol>
+<symbol id="fr-star" viewBox="-6 -6 12 12" overflow="visible"><path d="M0 -5.5 Q.7 -.7 5.5 0 Q.7 .7 0 5.5 Q-.7 .7 -5.5 0 Q-.7 -.7 0 -5.5Z" fill="#fff8e6" stroke="#8a5c46" stroke-width=".9" stroke-linejoin="round"/></symbol>
+</defs></svg>
+
+<div class="wrap">
+ <div class="fr big" data-k="big"><div class="in"><h4>今日主理人</h4>大圆角信息框：外圈曲奇花边，中间薄荷框，里面奶油纸。四个角放薄荷叶和蝴蝶结，字写在奶油纸上。</div></div>
+ <div class="cap">大信息框</div>
+ <div class="fr drip" data-k="drip"><div class="in"><h4>薄荷可可 · 中杯</h4></div></div>
+ <div class="cap">长条框 · 淋酱</div>
+ <div class="fr list" data-k="list"><div class="in"><h4>海螺 · 已连接</h4></div></div>
+ <div class="cap">长条框 · 奶油</div>
+</div>
+<script>
+const C='#8a5c46',HI='var(--hi)',f=v=>+v.toFixed(2);
+const rr=(x,y,w,h,r)=>`M${x+r} ${y}H${x+w-r}A${r} ${r} 0 0 1 ${x+w} ${y+r}V${y+h-r}A${r} ${r} 0 0 1 ${x+w-r} ${y+h}H${x+r}A${r} ${r} 0 0 1 ${x} ${y+h-r}V${y+r}A${r} ${r} 0 0 1 ${x+r} ${y}Z`;
+/* 沿圆角矩形周长取点，放曲奇花边的小圆 */
+function perim(x,y,w,h,r,step){const segs=[[w-2*r,'t'],[Math.PI*r/2,'c1'],[h-2*r,'r'],[Math.PI*r/2,'c2'],[w-2*r,'b'],[Math.PI*r/2,'c3'],[h-2*r,'l'],[Math.PI*r/2,'c0']];const L=segs.reduce((a,s)=>a+s[0],0),n=Math.round(L/step),pts=[];
+ for(let i=0;i<n;i++){let d=i*L/n;for(const [len,k] of segs){if(d<=len){let p;const a=d/r;
+  if(k==='t')p=[x+r+d,y];else if(k==='r')p=[x+w,y+r+d];else if(k==='b')p=[x+w-r-d,y+h];else if(k==='l')p=[x,y+h-r-d];
+  else{const c={c1:[x+w-r,y+r,-Math.PI/2],c2:[x+w-r,y+h-r,0],c3:[x+r,y+h-r,Math.PI/2],c0:[x+r,y+r,Math.PI]}[k];p=[c[0]+r*Math.cos(c[2]+a),c[1]+r*Math.sin(c[2]+a)]}
+  pts.push(p);break}d-=len}}return pts}
+const use=(id,x,y,s,rot)=>`<use href="#${id}" x="0" y="0" width="${s}" height="${s}" transform="translate(${f(x)} ${f(y)}) rotate(${rot||0}) translate(${-s/2} ${-s/2})"/>`;
+const dot=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#fffaf0" stroke="${C}" stroke-width=".6" stroke-opacity=".6"/>`;
+function big(w,h){const p=12,R=26,sc=10;const pts=perim(p,p,w-2*p,h-2*p,R,sc*1.72);
+ const circ=(st)=>pts.map(q=>`<circle cx="${f(q[0])}" cy="${f(q[1])}" r="${sc}" ${st}/>`).join('');
+ const fx=p+6,fy=p+6,fw=w-2*fx,fh=h-2*fy,ix=fx+20,iy=fy+20,iw=fw-40,ih=fh-40;
+ return `<g filter="url(#fr-shadow)"><g filter="url(#fr-grain)">
+ <g fill="url(#fg-choco)" stroke="${C}" stroke-width="2.4">${circ('')}<path d="${rr(p,p,w-2*p,h-2*p,R)}"/></g>
+ <g fill="url(#fg-choco)">${circ('')}<path d="${rr(p,p,w-2*p,h-2*p,R)}"/></g>
+ <path d="${rr(fx,fy,fw,fh,22)}" fill="url(#fg-mint)" stroke="${C}" stroke-width="1.3"/>
+ <path d="M${fx+6} ${fy+40} C${fx+6} ${fy+18} ${fx+16} ${fy+6} ${fx+40} ${fy+5}" fill="none" stroke="${HI}" stroke-width="2" stroke-linecap="round"/>
+ <path d="M${fx+56} ${fy+4.4}H${fx+92}" stroke="${HI}" stroke-width="1.4" stroke-linecap="round"/>
+ <path d="${rr(ix,iy,iw,ih,6)}" fill="url(#fg-paper)" stroke="${C}" stroke-width=".7" stroke-opacity=".65"/>
+ <path d="M${ix+3} ${iy+4}H${ix+iw-3}" stroke="#5b3a2c" stroke-opacity=".08" stroke-width="3" stroke-linecap="round"/>
+ </g>
+ ${use('fr-leaf',ix+4,iy+14,40,-42)}${use('fr-leaf',ix+24,iy+2,30,28)}${use('fr-bow',ix+iw-10,iy+4,46,12)}${use('fr-bow',ix-4,iy+52,34,-14)}
+ ${use('fr-leaf',ix+10,iy+ih-8,40,-125)}${use('fr-leaf',ix+30,iy+ih+2,28,-80)}${use('fr-leaf',ix+iw-6,iy+ih-48,30,32)}${use('fr-bow',ix+iw-10,iy+ih-10,46,-10)}
+ ${dot(ix+iw*.55,iy-10,1.8)}${dot(fx+12,fy+fh*.7,1.6)}${dot(ix+iw-30,iy+ih+10,1.6)}${dot(ix+24,iy+ih+10,1.4)}</g>`}
+function drip(w,h){const p=6,x=p,y=p,W=w-2*p,H=h-2*p,R=18;
+ const L=`M${x} ${y+R}A${R} ${R} 0 0 1 ${x+R} ${y}H${x+W*.3}C${x+W*.3-6} ${y+10} ${x+W*.27} ${y+9} ${x+W*.255} ${y+13} C${x+W*.24} ${y+17} ${x+W*.245} ${y+30} ${x+W*.22} ${y+30} C${x+W*.195} ${y+30} ${x+W*.205} ${y+18} ${x+W*.18} ${y+16} C${x+W*.15} ${y+14} ${x+W*.14} ${y+22} ${x+W*.12} ${y+22} C${x+W*.1} ${y+22} ${x+W*.105} ${y+15} ${x+W*.07} ${y+16} C${x+W*.04} ${y+17} ${x+W*.045} ${y+36} ${x+W*.02} ${y+36} C${x} ${y+36} ${x} ${y+30} ${x} ${y+26}Z`;
+ const Rt=`M${x+W} ${y+R}A${R} ${R} 0 0 0 ${x+W-R} ${y}H${x+W*.72}C${x+W*.72+5} ${y+8} ${x+W*.75} ${y+12} ${x+W*.78} ${y+12} C${x+W*.81} ${y+12} ${x+W*.815} ${y+26} ${x+W*.84} ${y+26} C${x+W*.865} ${y+26} ${x+W*.86} ${y+14} ${x+W*.89} ${y+14} C${x+W*.92} ${y+14} ${x+W*.925} ${y+30} ${x+W*.95} ${y+30} C${x+W*.975} ${y+30} ${x+W} ${y+24} ${x+W} ${y+20}Z`;
+ return `<defs><clipPath id="dc"><path d="${rr(x,y,W,H,R)}"/></clipPath></defs><g filter="url(#fr-shadow)"><g filter="url(#fr-grain)">
+ <path d="${rr(x,y,W,H,R)}" fill="url(#fg-mint-bar)" stroke="${C}" stroke-width="1.3"/>
+ <path d="${rr(x+4,y+4,W-8,H-8,R-4)}" fill="none" stroke="${C}" stroke-width=".7" stroke-opacity=".4"/>
+ <g clip-path="url(#dc)"><path d="${L}" fill="url(#fg-drip)" stroke="${C}" stroke-width="1" stroke-linejoin="round"/><path d="${Rt}" fill="url(#fg-drip)" stroke="${C}" stroke-width="1" stroke-linejoin="round"/></g>
+ <path d="${rr(x,y,W,H,R)}" fill="none" stroke="${C}" stroke-width="1.3"/>
+ <path d="M${x+5} ${y+14}C${x+7} ${y+8} ${x+12} ${y+4.4} ${x+20} ${y+4}" fill="none" stroke="${HI}" stroke-width="1.4" stroke-linecap="round"/>
+ <circle cx="${f(x+W*.22)}" cy="${y+26.5}" r="1.2" fill="${HI}"/><circle cx="${f(x+W*.84)}" cy="${y+22.5}" r="1.1" fill="${HI}"/><circle cx="${f(x+W*.95)}" cy="${y+26.5}" r="1" fill="${HI}"/></g>
+ ${use('fr-star',x+W*.33,y+20,12)}${use('fr-star',x+W*.4,y+30,7)}${use('fr-star',x+W*.68,y+H-18,10)}${use('fr-star',x+W*.06,y+H-16,9)}</g>`}
+function list(w,h){const p=6,x=p,y=p,W=w-2*p,H=h-2*p,R=16;
+ return `<defs><clipPath id="lc"><path d="${rr(x,y,W,H,R)}"/></clipPath></defs><g filter="url(#fr-shadow)"><g filter="url(#fr-grain)">
+ <path d="${rr(x,y,W,H,R)}" fill="url(#fg-cream)" stroke="${C}" stroke-width="1.3"/>
+ <g clip-path="url(#lc)"><path d="M${x+34} ${y}H${x+96}L${x+86} ${y+10}H${x+24}Z" fill="url(#fp-stripe)" stroke="${C}" stroke-width=".7" stroke-opacity=".6"/><path d="M${x} ${y+30}L${x+10} ${y+22}V${y+52}L${x} ${y+60}Z" fill="url(#fp-stripe)" stroke="${C}" stroke-width=".7" stroke-opacity=".6"/><path d="M${x+W-34} ${y+H}H${x+W-96}L${x+W-86} ${y+H-10}H${x+W-24}Z" fill="url(#fp-stripe)" stroke="${C}" stroke-width=".7" stroke-opacity=".6"/></g>
+ <path d="${rr(x+10,y+10,W-20,H-20,5)}" fill="url(#fg-paper)" stroke="${C}" stroke-width=".7" stroke-opacity=".65"/>
+ <path d="M${x+13} ${y+13.4}H${x+W-13}" stroke="#5b3a2c" stroke-opacity=".07" stroke-width="2.6" stroke-linecap="round"/>
+ <path d="M${x+5} ${y+R+4}C${x+5} ${y+9} ${x+9} ${y+4.4} ${x+18} ${y+4}" fill="none" stroke="${HI}" stroke-width="1.4" stroke-linecap="round"/>
+ ${dot(x+W-60,y+H-5,1.3)}${dot(x+W-52,y+H-5,1)}${dot(x+W*.55,y+5,1.2)}</g>
+ ${use('fr-leaf',x+12,y+13,28,-50)}${use('fr-leaf',x+W-12,y+13,28,50)}${use('fr-leaf',x+14,y+H-13,28,-130)}${use('fr-leaf',x+W-14,y+H-13,28,130)}</g>`}
+const G={big,drip,list};
+function draw(){document.querySelectorAll('.fr').forEach(el=>{const w=el.clientWidth,h=el.clientHeight;let s=el.querySelector('svg.bg');if(!s){s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('class','bg');el.prepend(s)}s.setAttribute('width',w);s.setAttribute('height',h);s.setAttribute('viewBox',`0 0 ${w} ${h}`);s.innerHTML=G[el.dataset.k](w,h)})}
+draw();new ResizeObserver(draw).observe(document.body);
+</script></body></html>
