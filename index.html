@@ -14,7 +14,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#e4f3ec}
 <canvas id="edge" aria-hidden="true"></canvas><div id="shield"></div>
 <script>
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const V=58;const url=k=>k==='gate'?`p/conn/index.html?v=${V}&gate=1`:`p/${k}/index.html?v=${V}`;
+const V=59;const url=k=>k==='gate'?`p/conn/index.html?v=${V}&gate=1`:`p/${k}/index.html?v=${V}`;
 const MAX=10;                      /* 最多常驻 10 页，超出把最久没看的卸掉 */
 const SUB={set:['chn','snd','hlt','use','conn'],today:['room'],list:['room','srch'],mem:['msrch']};
 const pool=new Map();              /* k -> {box,fr,ready,used} */
@@ -30,7 +30,7 @@ function get(k){
   const fr=document.createElement('iframe');fr.title='演示页面';box.appendChild(fr);document.body.appendChild(box);
   p={box,fr,used:0};
   p.ready=new Promise(r=>{let d=false;const f=async()=>{if(d)return;d=true;
-    try{await fr.contentDocument.fonts.ready}catch(e){}r()};fr.onload=f;setTimeout(f,2500)});
+    try{await Promise.race([fr.contentDocument.fonts.ready,new Promise(z=>setTimeout(z,1200))])}catch(e){}r()};fr.onload=f;setTimeout(f,2500)});
   fr.src=url(k);pool.set(k,p);
   if(pool.size>MAX){ /* 卸掉最久没用、且不在返回栈里的页 */
    const old=[...pool].filter(([kk])=>kk!==k&&kk!==curK&&!stack.includes(kk)).sort((a,b)=>a[1].used-b[1].used)[0];
