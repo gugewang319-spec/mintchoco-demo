@@ -218,3 +218,9 @@
 4. 图鉴色：莓果 #e3a08f、焦糖 #e6bf7a 没确认。
 5. 样张 vb1–7、rv1–10、sg4–6 都留作对照；rv-straw-*.png、rs-drop.png 只给旧样张用。
 6. 链接优先给 rawcdn.githack.com/<repo>/<40位sha>/…（raw.githack 偶发 520/503）。
+
+## 2026-11-22 08:30 恢复说明
+- 11-20 的 40eeaf7 用旧副本推送，冲掉了 V58–V65；本次 V66 已从 4914778 恢复（健康页 V65 版、聊天列表 vb12、声音页样张 vb1/vb2 等）。声音页正式页仍是旧版：vb2 被否后声音页暂停。
+- **推送前一定先 `git fetch` 并 reset 到 origin/preview 再改**：tools/apipush.py 只比对文件，会把本地旧文件盖到远端。
+- 看最新版用 GitHub Pages（已改从 preview 发布）：https://gugewang319-spec.github.io/mintchoco-demo/ ；raw.githack 现在图片会裂。
+- 物料图鉴 p/tok（签条 sg7、普通行 rv11、小票）还没用到各页。

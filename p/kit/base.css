@@ -1,0 +1,97 @@
+/* 样板间 · 骨架（base.css）
+   只管结构、间距、交互；颜色/圆角/字体/装饰全部读皮肤变量（skin-*.css）。
+   换皮 = 换一个 skin 文件，不改这里。2026-11-20 */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+button,input,textarea{font:inherit;color:inherit;background:none;border:0;outline:0}
+button{cursor:pointer;user-select:none;-webkit-user-select:none}
+img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
+html,body{height:100%}
+body{color:var(--ink);font:var(--f3)/1.5 var(--ff-body);background:var(--page-bg)}
+.vp{position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;background:var(--page-bg)}
+.vp::-webkit-scrollbar{display:none}
+.app{position:relative;width:min(100%,412px);margin:0 auto;padding:0 var(--pad) 120px;overflow:hidden}
+
+/* —— 页头 —— */
+.hd{position:relative;padding-top:58px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--g2)}
+.hd .t{display:flex;align-items:baseline;gap:8px;min-width:0}
+.hd h1{font:var(--f1)/1.05 var(--ff-title);letter-spacing:.04em;white-space:nowrap}
+.hd .en{font:var(--f2)/1 var(--ff-script);color:var(--accent-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* —— 分组标题 —— */
+.grp{position:relative;display:flex;align-items:center;gap:8px;margin:var(--g3) 0 var(--g2);min-height:34px}
+.grp .no{font:var(--fnum)/1 var(--ff-num);min-width:30px}
+.grp h2{font:var(--f2)/1.1 var(--ff-title);font-weight:400;letter-spacing:.03em;white-space:nowrap}
+.grp .ct{font:var(--f4)/1 var(--ff-body);color:var(--ink2)}
+.grp .end{margin-left:auto}
+
+/* —— 列表行 —— */
+.rows{display:grid;gap:var(--g1)}
+.row{position:relative;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 12px;width:100%;min-height:58px;padding:9px 12px 9px 18px;text-align:left;transition:transform .16s,background-color .25s}
+.row:active{transform:scale(.985)}
+.row .nm{display:flex;align-items:center;gap:6px;min-width:0;font:var(--f3)/1.25 var(--ff-latin)}
+.row .nm b{font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .sub{grid-column:1;font:var(--f4)/1.35 var(--ff-body);color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .num{grid-row:1/3;grid-column:2;text-align:right;font:var(--fnum)/1 var(--ff-num)}
+.row .num sup{font-size:.5em;vertical-align:.9em;margin-left:1px}
+.row .num small{display:block;margin-top:4px;font:var(--f4)/1 var(--ff-body)}
+.ico{flex:none;width:15px;height:15px}
+
+/* —— 按钮四级 —— */
+.b1{position:relative;display:grid;place-items:center;width:100%;height:50px}
+.b1 span{position:relative;font:18px/1 var(--ff-title);letter-spacing:.14em}
+.b1:active{transform:scale(.97)}
+.b1[disabled]{cursor:default}
+.b2s{display:grid;grid-auto-flow:column;grid-auto-columns:1fr}
+.b2{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;height:42px;padding:0 10px;font:var(--f3)/1 var(--ff-body);white-space:nowrap}
+.b2:active{transform:scale(.96)}
+.b3{position:relative;display:grid;place-items:center;width:44px;height:44px;flex:none}
+.b3:active{transform:scale(.9)}
+.b3 svg{position:relative;width:20px;height:20px}
+.b4{display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:0 4px;font:var(--f4)/1 var(--ff-body);white-space:nowrap}
+.b4:active{opacity:.6}
+
+/* —— 输入 —— */
+.fld{display:grid;gap:6px;margin-bottom:var(--g2)}
+.fld label{font:var(--f4)/1 var(--ff-body);color:var(--ink2);padding-left:2px}
+.in{width:100%;height:46px;padding:0 14px;font:var(--f3)/1 var(--ff-body);transition:box-shadow .2s,border-color .2s}
+textarea.in{height:auto;min-height:84px;padding:11px 14px;line-height:1.6;resize:none}
+.key{position:relative}.key .in{padding-right:48px}.key .in[type=password]{letter-spacing:.12em}
+.key .eye{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:38px;display:grid;place-items:center;border-radius:var(--r2)}.key .eye svg{width:20px;height:20px;fill:none;stroke-width:1.5;stroke-linecap:round}.key .eye .off{display:none}.key.show .eye .on{display:none}.key.show .eye .off{display:block}
+.fld .hint{font:var(--f4)/1.5 var(--ff-body);color:var(--ink2);padding-left:2px}
+.in::placeholder{color:var(--ink3)}
+
+/* —— 就地小选单：贴着字段下沿浮出的小菜单，不推开下面的内容；点外面收起 —— */
+.pick{position:relative}
+.pick.open{z-index:20}
+.sec:has(.pick.open){z-index:30}.fld:has(.pick.open){z-index:30}
+.pick .cur{width:100%}
+.pick .opts{position:absolute;left:0;top:calc(100% + 4px);min-width:min(100%,240px);max-width:100%;display:grid;padding:4px;opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .16s,transform .2s cubic-bezier(.3,1,.4,1)}
+.pick.open .opts{opacity:1;transform:none;pointer-events:auto}
+.opt{display:flex;align-items:center;gap:10px;width:100%;min-height:38px;padding:0 10px;text-align:left;font:var(--f3)/1.2 var(--ff-body);white-space:nowrap}
+.opt small{font:var(--f4)/1 var(--ff-body);color:var(--ink2)}
+.opt .ck{margin-left:auto;width:14px;height:14px;opacity:0}
+.opt.on .ck{opacity:1}
+
+/* —— 筛选胶囊 —— */
+.flt{display:flex;flex-wrap:wrap;gap:6px}
+.fp{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;font:var(--f4)/1 var(--ff-body);white-space:nowrap;transition:background-color .2s}
+.fp i{font:11px/1 var(--ff-num);font-style:normal}
+
+/* —— 状态：空 / 加载 / 报错 —— */
+.state{position:relative;display:grid;justify-items:center;gap:8px;padding:22px 16px 18px;text-align:center}
+.state .t{font:var(--f2)/1.2 var(--ff-title)}
+.state .s{font:var(--f4)/1.6 var(--ff-body);color:var(--ink2)}
+.ld{display:flex;gap:7px;padding:6px 0}
+.ld i{width:11px;height:11px;border-radius:50%;animation:ldb 1s cubic-bezier(.4,0,.4,1) infinite}
+.ld i:nth-child(2){animation-delay:.14s}.ld i:nth-child(3){animation-delay:.28s}
+@keyframes ldb{40%{transform:translateY(-7px)}80%{transform:none}}
+.err{grid-template-columns:auto 1fr auto;justify-items:start;text-align:left;padding:12px 10px 12px 16px;gap:10px;align-items:center}
+
+/* —— 装饰层：贴纸绕自己支点微动（Live2D 式，节奏错开） —— */
+.dec{position:absolute;pointer-events:none;z-index:0}
+.sway{animation:sway 5.2s ease-in-out infinite;transform-origin:var(--o,50% 90%)}
+.sway.d2{animation-duration:6.4s;animation-delay:-2s}.sway.d3{animation-duration:4.6s;animation-delay:-3.1s}
+@keyframes sway{50%{transform:rotate(var(--a,4deg))}}
+.sec{position:relative}
+.sec>*:not(.dec){position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.sway,.ld i{animation:none}}

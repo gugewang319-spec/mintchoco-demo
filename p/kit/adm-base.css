@@ -1,0 +1,23 @@
+/* 样板间页面自己的结构（页头、分组、装饰层）。组件结构在 mck.css。 */
+html,body{margin:0;min-height:100%}
+body{background:var(--k-page-bg);background-attachment:fixed}
+.app{position:relative;width:min(100%,412px);margin:0 auto;padding:0 var(--k-pad) 120px;box-sizing:border-box;overflow:hidden;font-family:var(--adm-font-family)}
+.drip{position:absolute;left:-2px;top:0;width:calc(100% + 4px);z-index:2;pointer-events:none}
+img{user-select:none;-webkit-user-drag:none}
+/* 页头：NavBar */
+.hd{position:relative;margin:50px calc(var(--k-pad) * -1) 0;--height:56px;--border-bottom:none}
+.hd .adm-nav-bar-back{margin-left:4px}
+.ttl{display:inline-flex;align-items:baseline;gap:8px}
+.ttl b{font:400 var(--k-f1)/1 var(--k-ff-title);letter-spacing:.04em}
+.ttl i{font:var(--k-f2)/1 var(--k-ff-script);font-style:normal}
+.plate{display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 9px 0 7px;font-size:var(--k-f4);white-space:nowrap}
+.plate b{font:400 14px/1 var(--k-ff-num);padding:3px 4px 2px}
+.sec{position:relative}
+.sec>*:not(.dec){position:relative;z-index:1}
+.note{margin:10px 0 0;font-size:var(--k-f4);line-height:1.6}
+/* 装饰：绕自己支点微动 */
+.dec{position:absolute;pointer-events:none;z-index:0}
+.sway{animation:sway 5.2s ease-in-out infinite;transform-origin:var(--o,50% 90%)}
+.sway.d2{animation-duration:6.4s;animation-delay:-2s}.sway.d3{animation-duration:4.6s;animation-delay:-3.1s}
+@keyframes sway{50%{transform:rotate(var(--a,4deg))}}
+@media (prefers-reduced-motion:reduce){.sway{animation:none}}
