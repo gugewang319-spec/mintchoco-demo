@@ -134,7 +134,14 @@ canvas#fx{position:absolute;inset:0;width:100%;height:100%;z-index:20;pointer-ev
 .pearlbtn:active{transform:scale(.92)}
 .pearlbtn{background:rgba(252,250,244,.62)!important;backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);border:1px solid rgba(255,255,255,.85)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 8px 18px -12px rgba(74,48,39,.45)!important}
 .pearlbtn svg{stroke:#5b3a2c!important}.pearlbtn .dots{fill:#5b3a2c!important}
-/*hdr-align 11-13*/.lhead{margin-left:-6px;margin-top:-8px;align-items:flex-end!important}</style></head><body>
+/*hdr-align 11-13*/.lhead{margin-left:-6px;margin-top:-8px;align-items:flex-end!important}</style><script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add('emb')</script><style>
+/* V68 原地搜索：被聊天/记忆页嵌进来时，不画自己的页头、背景、珍珠，结果点了进当天 */
+html.emb,html.emb body,html.emb .vp{background:transparent!important}
+html.emb .vp{background-image:none!important}
+html.emb .drizzle,html.emb .pearls,html.emb .lhead{display:none!important}
+html.emb .page{padding-top:4px}
+html.emb .hit{cursor:pointer}
+</style></head><body>
 <div class="vp"><div class="app">
 <img class="drizzle" src="today-bg.png" alt="">
 <div class="pearls"><img src="pearls.png" alt=""></div>
@@ -289,4 +296,4 @@ addEventListener('resize',()=>{fit();lineShape()});
   if(f===SV&&shakeT){const a=s-shakeT;if(a<.9){x=Math.sin(a*36)*6*(1-a/.9);r+=Math.sin(a*36)*4*(1-a/.9)}}
   f.e.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${(1-f.sp.x*.03).toFixed(3)},${(1+f.sp.x*.03).toFixed(3)})`}
  requestAnimationFrame(loop)})(0);
-</script><script>window.__DEMO_MAP=[[".pearlbtn.back", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=67"></script></body></html>
+</script><script>window.__DEMO_MAP=[[".pearlbtn.back", "back", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=68"></script><script>if(document.documentElement.classList.contains('emb')){document.addEventListener('click',e=>{const h=e.target.closest('.hit');if(h&&parent!==window)parent.postMessage({demo:'push:room',from:'srch'},'*')},true);addEventListener('message',e=>{if(e.data&&e.data.srchFocus){document.getElementById('qi').focus()}})}</script></body></html>

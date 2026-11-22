@@ -352,6 +352,13 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 /* 10:01 茶茶：抽屉弹出太快 → 放慢、带一点回弹（全站抽屉同一套） */
 .csh .mcal{transform:translateY(64px) scale(.97);opacity:0;transition:transform .55s cubic-bezier(.2,1.25,.35,1),opacity .32s ease}
 .csh .cbg{transition:opacity .45s ease}
+</style><style>
+/* V68 原地搜索：点放大镜，页头留着，下面换成搜索（嵌入 ../msrch/?embed=1），放大镜变 ×；底栏不动 */
+.isrch{position:absolute;left:0;right:0;bottom:0;z-index:30;width:100%;border:0;background:transparent;opacity:0;pointer-events:none;transition:opacity .28s}
+.app.srching .isrch{opacity:1;pointer-events:auto}
+.app.srching [data-srch-hide]{opacity:0!important;pointer-events:none!important;transition:opacity .2s}
+.app.srching .bg .bgi:not([data-pz]){opacity:.18!important;transition:opacity .3s}
+.pearlbtn .x{display:none}.app.srching .pearlbtn.sb .g{display:none}.app.srching .pearlbtn.sb .x{display:block}
 </style></head><body>
 <div class="vp"><div class="app" id="app">
  <div class="cup" id="cup" aria-hidden="true"><div class="ins" id="ins"></div></div>
@@ -562,4 +569,16 @@ function frame(now){const raw=(now-last)/1000,dt=Math.min(.05,raw);last=now;cons
   if(!p.im.complete||!p.im.naturalWidth)continue;const x=p.x*W+Math.sin(p.sw)*8,y=p.y*H;cx.save();cx.translate(x,y);cx.rotate(p.r);cx.globalAlpha=.85;const s=p.s,r=p.im.naturalHeight/p.im.naturalWidth;cx.drawImage(p.im,-s/2,-s*r/2,s,s*r);cx.restore()}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script><script>window.__DEMO_MAP=[["[aria-label=\"搜索记忆\"]", "push:msrch", 0, 0]]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=67"></script></body></html>
+</script><script>(()=>{const b=document.querySelector('[aria-label="搜索记忆"]');if(!b)return;b.classList.add('sb');
+b.insertAdjacentHTML('beforeend','<svg class="x" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5b3a2c" stroke-width="2" stroke-linecap="round"><path d="M7 7l10 10M17 7 7 17"/></svg>');b.querySelector('svg').classList.add('g');
+const app=document.querySelector('.app'),hd=b.closest('header');let fr;
+const sc=()=>{let e=hd.parentElement;while(e&&e!==document.body){const o=getComputedStyle(e).overflowY;if(o==='auto'||o==='scroll')return e;e=e.parentElement}return document.scrollingElement};
+const hide=()=>{[...hd.parentElement.children].forEach(c=>{if(c!==hd)if(!c.classList.contains('drizzle')&&!c.querySelector('.drizzle'))c.setAttribute('data-srch-hide','')})};
+b.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();
+ if(app.classList.toggle('srching')){const s=sc();if(s)s.scrollTop=0;hide();
+  if(!fr){fr=document.createElement('iframe');fr.className='isrch';fr.title='搜索';fr.src='../msrch/index.html?embed=1';app.appendChild(fr)}
+  requestAnimationFrame(()=>{const t=hd.getBoundingClientRect().bottom-app.getBoundingClientRect().top-6;fr.style.top=t+'px';fr.style.height=(app.clientHeight-t)+'px'});
+  b.setAttribute('aria-label','收起搜索');setTimeout(()=>fr.contentWindow&&fr.contentWindow.postMessage({srchFocus:1},'*'),fr.dataset.ok?60:600);fr.dataset.ok=1}
+ else{b.setAttribute('aria-label','搜索记忆');document.querySelectorAll('[data-srch-hide]').forEach(c=>c.removeAttribute('data-srch-hide'))}},true);
+addEventListener('message',e=>{if(fr&&e.source===fr.contentWindow&&e.data&&e.data.demo&&parent!==window)parent.postMessage({demo:e.data.demo},'*')});
+})()</script><script>window.__DEMO_MAP=[]</script><script src="../../bridge.js"></script><script src="../pfix.js?v=68"></script></body></html>
