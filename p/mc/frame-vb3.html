@@ -70,7 +70,7 @@ function cup(x,y,id,k){ // small topping cup
 const TH={mint:{band:['#7cc4ad','#3f9a80'],tint:'#c4e8da',dia:'#9fd6c3',cup:'mint'},cocoa:{band:['#b07a5e','#8a5c46'],tint:'#e9dccd',dia:'#d6c0aa',cup:'cocoa'},car:{band:['#f0cf8f','#c99a48'],tint:'#f5e4c3',dia:'#ecd09c',cup:'caramel'}};
 function frame(o){ // o:{W,H,th,tag,zh,tail,leaf,cup,wave,mug,straw}
  const s=TH[o.th],id='u'+(uid++),T=24,W=o.W,H=o.H,x0=o.x0??10,x1=W-(o.cup?26:12);
- const tagX=o.tail==='r'?x1-28-(o.tagW||90):26,tagW=o.tagW||Math.max(84,o.tag.length*(o.zh?15:7.6)+30);
+ const tagX=26,tagW=o.tagW||Math.max(84,o.tag.length*(o.zh?15:7.6)+30);
  const B=body(x0,x1,T,H,8,o.tail);
  let g=`<svg width="${W}" height="${T+H+16}"><defs>${defs(id)}
  <linearGradient id="f${id}" x1="0" x2="1"><stop offset=".25" stop-color="${P}"/><stop offset="1" stop-color="${s.tint}"/></linearGradient>
@@ -90,19 +90,20 @@ function frame(o){ // o:{W,H,th,tag,zh,tail,leaf,cup,wave,mug,straw}
  let im=`<img src="../tok/tg-bead.png" style="left:${x0-6}px;top:${cy-7}px;width:14px">`
   +(o.straw!==0?`<img class="bk" src="../tok/tg-straw.png" style="left:${tagX+tagW-14}px;top:${T-34}px;height:32px">`:'');
  if(o.cup)im+=`<img src="../tok/tg-${s.cup}.png" style="left:${x1-17}px;top:${cy-18}px;width:30px;height:36px">`;
+ (o.top||[]).forEach(([src,x,y,w,r])=>im+=`<img src="${src}" style="left:${x1+x}px;top:${y}px;width:${w}px;transform:rotate(${r}deg);filter:none">`);
  (o.leaf||[]).forEach(([x,y,w,r])=>im+=`<img src="../tok/tg-leaf.png" style="left:${x<0?x1+x:x}px;top:${y<0?T+H+y:y}px;width:${w}px;transform:rotate(${r}deg)">`);
  d.innerHTML=g+im+`<span class="tg${o.zh?' zh':''}" style="left:${tagX+3}px;width:${tagW-6}px;top:${T-10}px">${o.tag}</span>`+o.html(x0,x1,T,H);
  return d}
 function render(){uid=0;const W=document.getElementById('big').clientWidth;
  ['big','chat','row'].forEach(i=>document.getElementById(i).innerHTML='');
- big.appendChild(frame({W,H:150,th:'mint',tag:'Today',mug:40,wave:12,leaf:[[-62,2,34,-12],[-40,-30,20,150],[2,-24,22,200]],stars:[[W*.52,46,1],[W-30,140,.8]],
-  html:(x0,x1,T,H)=>`<div class="ttl" style="left:${x0+22}px;right:${W-x1+70}px;top:${T+16}px"><b>今日主理人</b><i>mint choco latte</i><p>薄荷可可 · 中杯 · 少冰，奶盖另加一份。</p></div><div class="meta" style="right:${W-x1+78}px;top:${T+10}px">NO.08</div>`}));
- chat.appendChild(frame({W:Math.round(W*.86),H:62,th:'cocoa',tag:'海螺',zh:1,tail:'l',leaf:[[-34,6,20,-20]],
-  html:(x0,x1,T,H)=>`<span class="tx" style="left:${x0+20}px;right:${Math.round(W*.86)-x1+16}px;top:${T+12}px">今天想喝点什么呀？</span><div class="meta" style="right:${Math.round(W*.86)-x1+38}px;top:${T+H-19}px">03:51</div>`}));
- const me=frame({W:Math.round(W*.86),H:62,th:'mint',tag:'茶茶',zh:1,tail:'r',tagW:74,leaf:[[2,-22,20,190]],stars:[[W*.86-30,70,.8]],
+ big.appendChild(frame({W,H:150,th:'mint',tag:'Today',mug:34,wave:12,top:[['../list/catfoam.png',-92,-30,100,4]],leaf:[[-118,6,36,-28],[-14,30,22,120],[0,-28,30,200]],stars:[[W*.52,46,1],[W-36,150,.8]],
+  html:(x0,x1,T,H)=>`<div class="ttl" style="left:${x0+22}px;right:${W-x1+70}px;top:${T+16}px"><b>今日主理人</b><i>mint choco latte</i><p>薄荷可可 · 中杯 · 少冰，奶盖另加一份。</p></div><div class="meta" style="right:${W-x1+64}px;top:${T+H-30}px">NO.08</div>`}));
+ chat.appendChild(frame({W:Math.round(W*.86),H:62,th:'cocoa',tag:'海螺',zh:1,tail:'l',top:[['../list/stk_mac.png',-46,-22,54,10]],leaf:[[-66,0,26,-30]],
+  html:(x0,x1,T,H)=>`<span class="tx" style="left:${x0+20}px;right:${Math.round(W*.86)-x1+16}px;top:${T+12}px">今天想喝点什么呀？</span><div class="meta" style="right:${Math.round(W*.86)-x1+52}px;top:${T+H-19}px">03:51</div>`}));
+ const me=frame({W:Math.round(W*.86),H:62,th:'mint',tag:'茶茶',zh:1,tail:'r',tagW:74,top:[['../list/stk_mm.png',-48,-24,52,-8]],leaf:[[2,-22,26,190],[-70,2,24,-20]],stars:[[W*.86-30,70,.8]],
   html:(x0,x1,T,H)=>`<span class="tx" style="left:${x0+20}px;right:16px;top:${T+12}px">薄荷巧克力，多加一份奶盖！</span><div class="meta" style="left:${x0+22}px;top:${T+H-19}px">03:52</div>`});
  me.style.marginLeft='auto';me.style.marginTop='18px';chat.appendChild(me);
- row.appendChild(frame({W,H:50,th:'car',tag:'connected',cup:1,leaf:[[-64,8,24,-14]],
+ row.appendChild(frame({W,H:50,th:'car',tag:'connected',cup:1,top:[['../tok/rs-ice.png',-92,-4,30,-12],['../tok/rs-pearl.png',-66,2,20,0]],leaf:[[-108,2,30,-24]],
   html:(x0,x1,T,H)=>`<span class="tx" style="left:${x0+20}px;top:${T+15}px"><b style="font:15px ZK">海螺</b><span style="font-size:12px;color:#8a5c46;margin-left:10px">中转站 1 · 刚刚</span></span>`}));
 }
 render();addEventListener('resize',render);
